@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use App\Models\Survey;
 use App\Models\SurveyResponses;
 
 class FormController extends Controller
@@ -21,6 +22,19 @@ class FormController extends Controller
             'auth' => auth()->user(),
         ]);
     }
+
+    public function show($id)
+    {
+        // Mengambil data dari model berdasarkan ID
+        $surveys = Survey::findOrFail($id);
+
+        // Menampilkan halaman detail dengan menggunakan Inertia
+        return inertia('Form', [
+            'surveys' => $surveys,
+            'auth' => auth()->user(),
+        ]);
+    }
+
 
     /**
      * store
@@ -65,4 +79,6 @@ class FormController extends Controller
         // Redirect atau berikan respons sesuai kebutuhan Anda
         return redirect('/')->with('status', 'Pengisian Survey Berhasil!');
     }
+
+
 }

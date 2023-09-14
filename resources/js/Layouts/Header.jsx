@@ -33,11 +33,6 @@ function NonAuthMenu() {
     return (
         <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-                <Link href="/form" className="btn text-white">
-                    Form
-                </Link>
-            </li>
-            <li className="nav-item">
                 <Link href="/login" className="btn text-white">
                     Login
                 </Link>

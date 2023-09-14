@@ -5,7 +5,7 @@ import RadioQuestion from "../Components/RadioQuestionSUS";
 import { Head, usePage } from "@inertiajs/inertia-react";
 
 function Form() {
-    const { errors } = usePage().props;
+    const { errors, surveys, auth } = usePage().props;
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -245,8 +245,7 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-weight-bold">
                                     1. Saya berpikir akan menggunakan sistem{" "}
-                                    <span className="theme-survey"></span> ini
-                                    lagi
+                                    {surveys.theme} ini lagi
                                 </h5>
                                 <RadioQuestion
                                     name="sus1"
@@ -257,8 +256,7 @@ function Form() {
 
                             <div className="mb-3">
                                 <h5 className="font-weight-bold">
-                                    2. Saya merasa sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    2. Saya merasa sistem {surveys.theme} ini
                                     rumit untuk digunakan
                                 </h5>
                                 <RadioQuestion
@@ -270,8 +268,7 @@ function Form() {
 
                             <div className="mb-3">
                                 <h5 className="font-semibold">
-                                    3. Saya merasa sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    3. Saya merasa sistem {surveys.theme} ini
                                     mudah digunakan
                                 </h5>
                                 <RadioQuestion
@@ -285,7 +282,7 @@ function Form() {
                                 <h5 className="font-semibold">
                                     4. Saya membutuhkan bantuan dari orang lain
                                     atau teknisi dalam menggunakan sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    {surveys.theme} ini
                                 </h5>
                                 <RadioQuestion
                                     name="sus4"
@@ -297,8 +294,8 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-semibold">
                                     5. Saya merasa fitur-fitur sistem{" "}
-                                    <span className="theme-survey"></span> ini
-                                    berjalan dengan semestinya
+                                    {surveys.theme} ini berjalan dengan
+                                    semestinya
                                 </h5>
                                 <RadioQuestion
                                     name="sus5"
@@ -311,7 +308,7 @@ function Form() {
                                 <h5 className="font-semibold">
                                     6. Saya merasa ada banyak hal yang tidak
                                     konsisten (tidak serasi pada sistem{" "}
-                                    <span className="theme-survey"></span> ini)
+                                    {surveys.theme} ini)
                                 </h5>
                                 <RadioQuestion
                                     name="sus6"
@@ -323,8 +320,7 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-semibold">
                                     7. Saya merasa orang lain akan memahami cara
-                                    menggunakan sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    menggunakan sistem {surveys.theme} ini
                                     dengan cepat
                                 </h5>
                                 <RadioQuestion
@@ -336,8 +332,7 @@ function Form() {
 
                             <div className="mb-3">
                                 <h5 className="font-semibold">
-                                    8. Saya merasa sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    8. Saya merasa sistem {surveys.theme} ini
                                     membingungkan
                                 </h5>
                                 <RadioQuestion
@@ -350,8 +345,7 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-semibold">
                                     9. Saya merasa tidak ada hambatan dalam
-                                    menggunakan sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    menggunakan sistem {surveys.theme} ini
                                 </h5>
                                 <RadioQuestion
                                     name="sus9"
@@ -364,7 +358,7 @@ function Form() {
                                 <h5 className="font-semibold">
                                     10. Saya perlu membiasakan diri terlebih
                                     dahulu sebelum menggunakan sistem{" "}
-                                    <span className="theme-survey"></span> ini
+                                    {surveys.theme} ini
                                 </h5>
                                 <RadioQuestion
                                     name="sus10"

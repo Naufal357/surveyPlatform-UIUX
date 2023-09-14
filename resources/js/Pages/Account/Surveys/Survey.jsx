@@ -41,7 +41,8 @@ export default function surveyIndex() {
                         <div className="card border-0 rounded shadow-sm border-top-success">
                             <div className="card-header">
                                 <span className="font-weight-bold">
-                                    <i className="fa fa-folder"></i> Surveys Directory
+                                    <i className="fa fa-folder"></i> Surveys
+                                    Directory
                                 </span>
                             </div>
                             <div className="card-body">
@@ -123,7 +124,7 @@ export default function surveyIndex() {
                                                         <td className="text-center">
                                                             <Link
                                                                 href={`/account/surveys/${survey.id}/edit`}
-                                                                className="btn btn-primary btn-sm me-2"
+                                                                className="btn btn-primary btn-sm m-2"
                                                             >
                                                                 <i className="fa fa-pencil-alt"></i>
                                                             </Link>
@@ -133,6 +134,12 @@ export default function surveyIndex() {
                                                                 }
                                                                 id={survey.id}
                                                             />
+                                                            <Link
+                                                                href={`/`}
+                                                                className="btn btn-success btn-sm m-2"
+                                                            >
+                                                                <i class="fas fa-share"></i>
+                                                            </Link>
                                                         </td>
                                                     </tr>
                                                 )

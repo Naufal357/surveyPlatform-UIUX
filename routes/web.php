@@ -28,7 +28,8 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store
 
 Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
 
-Route::get('/form', [\App\Http\Controllers\FormController::class, 'index']);
+// Route::get('/form', [\App\Http\Controllers\FormController::class, 'index']);
+Route::get('/form/{id}', [\App\Http\Controllers\FormController::class, 'show'])->name('form.show');
 Route::post('/form', [\App\Http\Controllers\FormController::class, 'storeData']);
 
 Route::prefix('account')->group(function(){
