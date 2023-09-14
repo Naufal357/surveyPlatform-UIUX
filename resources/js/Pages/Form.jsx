@@ -245,7 +245,8 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-weight-bold">
                                     1. Saya berpikir akan menggunakan sistem{" "}
-                                    {surveys.theme} ini lagi
+                                    <strong> {surveys.theme} </strong>
+                                    ini lagi
                                 </h5>
                                 <RadioQuestion
                                     name="sus1"
@@ -256,8 +257,9 @@ function Form() {
 
                             <div className="mb-3">
                                 <h5 className="font-weight-bold">
-                                    2. Saya merasa sistem {surveys.theme} ini
-                                    rumit untuk digunakan
+                                    2. Saya merasa sistem{" "}
+                                    <strong> {surveys.theme} </strong> ini rumit
+                                    untuk digunakan
                                 </h5>
                                 <RadioQuestion
                                     name="sus2"
@@ -268,8 +270,9 @@ function Form() {
 
                             <div className="mb-3">
                                 <h5 className="font-semibold">
-                                    3. Saya merasa sistem {surveys.theme} ini
-                                    mudah digunakan
+                                    3. Saya merasa sistem{" "}
+                                    <strong> {surveys.theme} </strong> ini mudah
+                                    digunakan
                                 </h5>
                                 <RadioQuestion
                                     name="sus3"
@@ -282,7 +285,7 @@ function Form() {
                                 <h5 className="font-semibold">
                                     4. Saya membutuhkan bantuan dari orang lain
                                     atau teknisi dalam menggunakan sistem{" "}
-                                    {surveys.theme} ini
+                                    <strong> {surveys.theme} </strong> ini
                                 </h5>
                                 <RadioQuestion
                                     name="sus4"
@@ -294,8 +297,8 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-semibold">
                                     5. Saya merasa fitur-fitur sistem{" "}
-                                    {surveys.theme} ini berjalan dengan
-                                    semestinya
+                                    <strong> {surveys.theme} </strong> ini
+                                    berjalan dengan semestinya
                                 </h5>
                                 <RadioQuestion
                                     name="sus5"
@@ -308,7 +311,7 @@ function Form() {
                                 <h5 className="font-semibold">
                                     6. Saya merasa ada banyak hal yang tidak
                                     konsisten (tidak serasi pada sistem{" "}
-                                    {surveys.theme} ini)
+                                    <strong> {surveys.theme} </strong> ini)
                                 </h5>
                                 <RadioQuestion
                                     name="sus6"
@@ -320,7 +323,8 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-semibold">
                                     7. Saya merasa orang lain akan memahami cara
-                                    menggunakan sistem {surveys.theme} ini
+                                    menggunakan sistem{" "}
+                                    <strong> {surveys.theme} </strong> ini
                                     dengan cepat
                                 </h5>
                                 <RadioQuestion
@@ -332,7 +336,8 @@ function Form() {
 
                             <div className="mb-3">
                                 <h5 className="font-semibold">
-                                    8. Saya merasa sistem {surveys.theme} ini
+                                    8. Saya merasa sistem{" "}
+                                    <strong> {surveys.theme} </strong> ini
                                     membingungkan
                                 </h5>
                                 <RadioQuestion
@@ -345,7 +350,8 @@ function Form() {
                             <div className="mb-3">
                                 <h5 className="font-semibold">
                                     9. Saya merasa tidak ada hambatan dalam
-                                    menggunakan sistem {surveys.theme} ini
+                                    menggunakan sistem{" "}
+                                    <strong> {surveys.theme} </strong> ini
                                 </h5>
                                 <RadioQuestion
                                     name="sus9"
@@ -358,7 +364,7 @@ function Form() {
                                 <h5 className="font-semibold">
                                     10. Saya perlu membiasakan diri terlebih
                                     dahulu sebelum menggunakan sistem{" "}
-                                    {surveys.theme} ini
+                                    <strong> {surveys.theme} </strong> ini
                                 </h5>
                                 <RadioQuestion
                                     name="sus10"

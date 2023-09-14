@@ -22,7 +22,13 @@ export default function CategoryEdit() {
     const updateSurvey = async (e) => {
         e.preventDefault();
 
-        //sending data
+        // Periksa apakah tombol "Cancel" diklik
+        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+            handleReset();
+            return;
+        }
+
+        //sending data ketika menekan save
         Inertia.post(
             `/account/surveys/${survey.id}`,
             {
@@ -206,10 +212,19 @@ export default function CategoryEdit() {
                                         </button>
                                         <button
                                             type="reset"
-                                            className="btn btn-md btn-warning"
+                                            className="btn btn-md btn-warning me-2"
                                             onClick={handleReset}
                                         >
                                             <i className="fa fa-redo"></i> Reset
+                                        </button>
+                                        <button
+                                            type="Cancel"
+                                            className="btn btn-md btn-secondary"
+                                            onClick={() => {
+                                                window.history.back();
+                                            }}
+                                        >
+                                            <i class="fas fa-times"></i> Cancel
                                         </button>
                                     </div>
                                 </form>

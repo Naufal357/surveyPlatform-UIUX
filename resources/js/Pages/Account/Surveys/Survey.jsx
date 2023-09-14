@@ -1,16 +1,23 @@
-//import react
 import React from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import Search from "../../../Components/Search";
 import Delete from "../../../Components/Delete";
 import Pagination from "../../../Components/Pagination";
+import Swal from "sweetalert2";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 
-
-export default function surveyIndex() {
-    //destruct props "surveys"
+export default function SurveyIndex() {
+    // Destructuring props "surveys"
     const { auth, surveys } = usePage().props;
-    
+
+    function limitWords(text, limit) {
+        const words = text.split(" ");
+        if (words.length > limit) {
+            return words.slice(0, limit).join(" ") + "...";
+        }
+        return text;
+    }
+
     return (
         <>
             <Head>
@@ -82,7 +89,7 @@ export default function surveyIndex() {
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    style={{ width: "20%" }}
+                                                    style={{ width: "10%" }}
                                                 >
                                                     Image
                                                 </th>
@@ -96,53 +103,92 @@ export default function surveyIndex() {
                                         </thead>
                                         <tbody>
                                             {surveys.data.map(
-                                                (survey, index) => (
-                                                    <tr key={index}>
-                                                        <td className="text-center">
-                                                            {++index +
-                                                                (surveys.current_page -
-                                                                    1) *
-                                                                    surveys.per_page}
-                                                        </td>
-                                                        <td>{survey.title}</td>
-                                                        <td>{survey.theme}</td>
-                                                        <td>
-                                                            {survey.description}
-                                                        </td>
-                                                        <td>
-                                                            {survey.updated_at}
-                                                        </td>
-                                                        <td className="text-center">
-                                                            <img
-                                                                src={
-                                                                    survey.image
+                                                /**
+                                                 * Callback function for each survey in the data array
+                                                 * @param {Object} survey - The survey object
+                                                 * @param {number} index - The index of the current survey in the data array
+                                                 */
+                                                (survey, index) => {
+                                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.id}`;
+
+                                                    return (
+                                                        <tr key={index}>
+                                                            <td className="text-center">
+                                                                {++index +
+                                                                    (surveys.current_page -
+                                                                        1) *
+                                                                        surveys.per_page}
+                                                            </td>
+                                                            <td>
+                                                                {survey.title}
+                                                            </td>
+                                                            <td>
+                                                                {survey.theme}
+                                                            </td>
+                                                            <td>
+                                                                {limitWords(
+                                                                    survey.description,
+                                                                    30
+                                                                )}
+                                                            </td>
+                                                            <td>
+                                                                {
+                                                                    survey.updated_at
                                                                 }
-                                                                className="rounded-3"
-                                                                width={"50"}
-                                                            />
-                                                        </td>
-                                                        <td className="text-center">
-                                                            <Link
-                                                                href={`/account/surveys/${survey.id}/edit`}
-                                                                className="btn btn-primary btn-sm m-2"
-                                                            >
-                                                                <i className="fa fa-pencil-alt"></i>
-                                                            </Link>
-                                                            <Delete
-                                                                URL={
-                                                                    "/account/surveys"
-                                                                }
-                                                                id={survey.id}
-                                                            />
-                                                            <Link
-                                                                href={`/`}
-                                                                className="btn btn-success btn-sm m-2"
-                                                            >
-                                                                <i class="fas fa-share"></i>
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-                                                )
+                                                            </td>
+                                                            <td className="text-center">
+                                                                <img
+                                                                    src={
+                                                                        survey.image
+                                                                    }
+                                                                    className="rounded-3"
+                                                                    width={"50"}
+                                                                />
+                                                            </td>
+                                                            <td className="text-center">
+                                                                <Link
+                                                                    href={`/account/surveys/${survey.id}/edit`}
+                                                                    className="btn btn-primary btn-sm m-2"
+                                                                >
+                                                                    <i className="fa fa-pencil-alt"></i>
+                                                                </Link>
+                                                                <Delete
+                                                                    URL={
+                                                                        "/account/surveys"
+                                                                    }
+                                                                    id={
+                                                                        survey.id
+                                                                    }
+                                                                />
+                                                                <button
+                                                                    className="btn btn-success btn-sm m-2"
+                                                                    onClick={() => {
+                                                                        Swal.fire(
+                                                                            {
+                                                                                title: "Bagikan Survey",
+                                                                                html: `<p>Salin URL di bawah :</p><input id="urlInput" type="text" value="${surveyUrl}" readOnly>`,
+                                                                                showCancelButton: true,
+                                                                                showConfirmButton: false,
+                                                                            }
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <i className="fas fa-share-alt"></i>{" "}
+                                                                </button>
+                                                                <button
+                                                                    className="btn btn-primary btn-sm m-2"
+                                                                    onClick={() =>
+                                                                        window.open(
+                                                                            surveyUrl
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <i className="fa fa-external-link-alt"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                }
                                             )}
                                         </tbody>
                                     </table>
