@@ -6,11 +6,6 @@ function AuthMenu() {
     return (
         <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-                <Link href="/form" className="btn text-white">
-                    Form
-                </Link>
-            </li>
-            <li className="nav-item">
                 <Link href="/account/dashboard" className="btn text-white">
                     Dashboard
                 </Link>
@@ -72,11 +67,6 @@ function Layout({ children }) {
                                 </div>
                                 <div className="navbar">
                                     <ul className="nav navbar-nav navbar-right">
-                                        <li className="nav-item">
-                                            <a href="/" className="btn text-white">
-                                                Home
-                                            </a>
-                                        </li>
                                         {auth ? <AuthMenu /> : <NonAuthMenu />}
                                     </ul>
                                 </div>

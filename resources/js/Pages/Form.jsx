@@ -3,18 +3,19 @@ import { Inertia } from "@inertiajs/inertia";
 import Layout from "../Layouts/Header";
 import RadioQuestion from "../Components/RadioQuestionSUS";
 import { Head, usePage } from "@inertiajs/inertia-react";
+import Swal from "sweetalert2";
 
 function Form() {
     const { errors, surveys, auth } = usePage().props;
 
-    const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
+    let [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
         email: "",
         age: "",
         gender: "",
         profession: "",
-        educationalBackground: "",
+        educational_background: "",
     });
 
     const [questionValues, setQuestionValues] = useState({
@@ -42,7 +43,7 @@ function Form() {
     const submitForm = (e) => {
         e.preventDefault();
 
-        const responsesData = {
+        const response_data = {
             sus1: questionValues.sus1,
             sus2: questionValues.sus2,
             sus3: questionValues.sus3,
@@ -57,11 +58,24 @@ function Form() {
 
         const dataSubmit = {
             ...formData,
-            responses_data: JSON.stringify(responsesData), // Ubah menjadi JSON dan masukkan dalam field responses_data
+            survey_id : surveys.id,
+            response_data: JSON.stringify(response_data), // Ubah menjadi JSON dan masukkan dalam field responses_data
         };
         console.log("Data to be saved to the database:", dataSubmit);
-        Inertia.post("/form", dataSubmit)
+        Inertia.post("/form", dataSubmit, {
+            onSuccess: () => {
+                // Display a success message after the request is successful
+                Swal.fire({
+                    title: "Thank You!",
+                    text: "Survey data submitted successfully!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
+            },
+        });
     };
+    console.log(surveys)
 
     return (
         <>
@@ -70,9 +84,42 @@ function Form() {
             </Head>
             <Layout>
                 <div className="container">
+                    <div className="Introduction">
+                        <h3 className="text-2xl font-bold mb-4 mt-4">
+                            Pengenalan dan Konteks{" "}
+                            <strong>{surveys.title}</strong>
+                        </h3>
+                        <img
+                            src={surveys.image}
+                            alt="Gambar Survei"
+                            className="img-fluid"
+                        />
+                        <p className="mt-4">{surveys.description}</p>
+                    </div>
+                    <hr />
+
+                    <div className="Explore-UI-UX">
+                        <h3 className="text-2xl font-bold mb-4">
+                            Desain UI/UX
+                        </h3>
+                        <iframe
+                            width="100%"
+                            height="560"
+                            src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FjzQVivHqw2zMYgh2YZYNhK%2FMasak-Aja%3Ftype%3Ddesign%26node-id%3D2-10%26t%3DSdkHHSxfETTbyfn2-1%26scaling%3Dmin-zoom%26page-id%3D0%253A1%26starting-point-node-id%3D2%253A2%26mode%3Ddesign"
+                            allowFullScreen
+                        ></iframe>
+                        <iframe
+                            width="100%"
+                            height="450"
+                            allowFullScreen
+                            src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FjzQVivHqw2zMYgh2YZYNhK%2FMasak-Aja%3Ftype%3Ddesign%26node-id%3D0%253A1%26mode%3Ddesign%26t%3DezyaiFFx9poyRVa6-1"
+                        ></iframe>
+                    </div>
+                    <hr />
+
                     <form onSubmit={submitForm}>
-                        <div className="personal-info">
-                            <h3 className="text-2xl font-bold mb-4">
+                        <div className="Personal-Info-Entry">
+                            <h3 className="text-2xl font-bold mb-4 mt-4">
                                 Personal Information
                             </h3>
                             <div className="row">
@@ -86,10 +133,10 @@ function Form() {
                                     <input
                                         type="text"
                                         id="inputFirstName"
-                                        name="firstName"
+                                        name="first_name"
                                         placeholder="First name"
                                         onChange={handleValueChange}
-                                        value={formData.firstName}
+                                        value={formData.first_name}
                                         className="form-control"
                                         required
                                     />
@@ -104,10 +151,10 @@ function Form() {
                                     <input
                                         type="text"
                                         id="inputLastName"
-                                        name="lastName"
+                                        name="last_name"
                                         placeholder="Last name"
                                         onChange={handleValueChange}
-                                        value={formData.lastName}
+                                        value={formData.last_name}
                                         className="form-control"
                                         required
                                     />
@@ -204,9 +251,9 @@ function Form() {
                                 <select
                                     type="text"
                                     id="inputEducation"
-                                    name="educationalBackground"
+                                    name="educational_background"
                                     onChange={handleValueChange}
-                                    value={formData.educationalBackground}
+                                    value={formData.educational_background}
                                     className="form-select"
                                     required
                                 >
@@ -237,8 +284,9 @@ function Form() {
                                 </select>
                             </div>
                         </div>
+                        <hr />
 
-                        <div className="questionnaire-sus">
+                        <div className="Questionnaire-SUS">
                             <h3 className="text-2xl font-bold mb-4">
                                 Questionnaire SUS
                             </h3>

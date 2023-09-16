@@ -11,11 +11,6 @@ use App\Models\SurveyResponses;
 
 class FormController extends Controller
 {
-    /**
-     * index
-     *
-     * @return void
-     */
     public function index()
     {
         return inertia('Form', [
@@ -36,28 +31,23 @@ class FormController extends Controller
     }
 
 
-    /**
-     * store
-     *
-     * @param  mixed $request
-     * @return void
-     */
     public function storeData(Request $request)
     {
         // Validasi data yang diterima dari formulir
         $validatedData = $request->validate([
-            'firstName'             => 'required',
-            'lastName'              => 'required',
+            'survey_id'             => 'required|exists:surveys,id',
+            'first_name'             => 'required',
+            'last_name'              => 'required',
             'email'                 => 'required|email',
             'age'                   => 'required|numeric',
             'gender'                => 'required',
             'profession'            => 'required',
-            'educationalBackground' => 'required',
-            'responses_data'        => 'required|json', // Validasi untuk responses_data sebagai JSON
+            'educational_background' => 'required',
+            'response_data'        => 'required|json', // Validasi untuk responses_data sebagai JSON
         ]);
 
         // Ambil nilai dari sus1 hingga sus10
-        $responsesData = [
+        $responseData = [
             'sus1' => $request->input('sus1'),
             'sus2' => $request->input('sus2'),
             'sus3' => $request->input('sus3'),
@@ -70,8 +60,7 @@ class FormController extends Controller
             'sus10' => $request->input('sus10'),
         ];
 
-        // Set responses_data ke dalam JSON
-        $validatedData['responses_data'] = json_encode($responsesData);
+        // dd($validatedData);
 
         // Simpan data ke dalam database
         $surveyResponse = SurveyResponses::create($validatedData);
@@ -79,6 +68,5 @@ class FormController extends Controller
         // Redirect atau berikan respons sesuai kebutuhan Anda
         return redirect('/')->with('status', 'Pengisian Survey Berhasil!');
     }
-
 
 }
