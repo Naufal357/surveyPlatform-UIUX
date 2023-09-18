@@ -40,7 +40,7 @@ class LoginController extends Controller
             //regenerate session
             $request->session()->regenerate();
 
-            return redirect()->route('account.dashboard');
+            return redirect()->route('account.dashboard0');
         }
 
         //if login fails

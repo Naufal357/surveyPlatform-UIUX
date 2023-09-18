@@ -61,21 +61,20 @@ function Form() {
             survey_id : surveys.id,
             response_data: JSON.stringify(response_data), // Ubah menjadi JSON dan masukkan dalam field responses_data
         };
-        console.log("Data to be saved to the database:", dataSubmit);
         Inertia.post("/form", dataSubmit, {
             onSuccess: () => {
-                // Display a success message after the request is successful
                 Swal.fire({
                     title: "Thank You!",
                     text: "Survey data submitted successfully!",
                     icon: "success",
                     showConfirmButton: false,
                     timer: 3000,
+                }).then(() => {
+                    Inertia.visit("/");
                 });
             },
         });
     };
-    console.log(surveys)
 
     return (
         <>
@@ -84,18 +83,21 @@ function Form() {
             </Head>
             <Layout>
                 <div className="container">
-                    <div className="Introduction">
+                    <div className="Introduction text-center">
                         <h3 className="text-2xl font-bold mb-4 mt-4">
-                            Pengenalan dan Konteks{" "}
-                            <strong>{surveys.title}</strong>
+                            Pengenalan dan Konteks{" "} <br />
+                            "<strong>{surveys.title}</strong>"
                         </h3>
-                        <img
-                            src={surveys.image}
-                            alt="Gambar Survei"
-                            className="img-fluid"
-                        />
+                        <div className="mx-auto">
+                            <img
+                                src={surveys.image}
+                                alt="Gambar Survei"
+                                className="img-fluid"
+                            />
+                        </div>
                         <p className="mt-4">{surveys.description}</p>
                     </div>
+
                     <hr />
 
                     <div className="Explore-UI-UX">
@@ -104,8 +106,9 @@ function Form() {
                         </h3>
                         <iframe
                             width="100%"
-                            height="560"
+                            height="700"
                             src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FjzQVivHqw2zMYgh2YZYNhK%2FMasak-Aja%3Ftype%3Ddesign%26node-id%3D2-10%26t%3DSdkHHSxfETTbyfn2-1%26scaling%3Dmin-zoom%26page-id%3D0%253A1%26starting-point-node-id%3D2%253A2%26mode%3Ddesign"
+                            className="mb-2 mt-2"
                             allowFullScreen
                         ></iframe>
                         <iframe
@@ -113,6 +116,7 @@ function Form() {
                             height="450"
                             allowFullScreen
                             src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FjzQVivHqw2zMYgh2YZYNhK%2FMasak-Aja%3Ftype%3Ddesign%26node-id%3D0%253A1%26mode%3Ddesign%26t%3DezyaiFFx9poyRVa6-1"
+                            className="mb-2 mt-2"
                         ></iframe>
                     </div>
                     <hr />

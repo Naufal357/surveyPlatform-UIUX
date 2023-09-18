@@ -103,11 +103,6 @@ export default function SurveyIndex() {
                                         </thead>
                                         <tbody>
                                             {surveys.data.map(
-                                                /**
-                                                 * Callback function for each survey in the data array
-                                                 * @param {Object} survey - The survey object
-                                                 * @param {number} index - The index of the current survey in the data array
-                                                 */
                                                 (survey, index) => {
                                                     const surveyUrl = `http://127.0.0.1:8000/form/${survey.id}`;
 
