@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import Layout from "../Layouts/Header";
 import RadioQuestion from "../Components/RadioQuestionSUS";
@@ -7,6 +7,18 @@ import Swal from "sweetalert2";
 
 function Form() {
     const { errors, surveys, auth } = usePage().props;
+
+    useEffect(() => {
+        const designContainer = document.getElementById(
+            "embed-design-container"
+        );
+        designContainer.innerHTML = surveys.embed_design;
+
+        const prototypeContainer = document.getElementById(
+            "embed-prototype-container"
+        );
+        prototypeContainer.innerHTML = surveys.embed_prototype;
+    }, [surveys]);
 
     let [formData, setFormData] = useState({
         first_name: "",
@@ -85,8 +97,8 @@ function Form() {
                 <div className="container">
                     <div className="Introduction text-center">
                         <h3 className="text-2xl font-bold mb-4 mt-4">
-                            Pengenalan dan Konteks{" "} <br />
-                            "<strong>{surveys.title}</strong>"
+                            Pengenalan dan Konteks <br />"
+                            <strong>{surveys.title}</strong>"
                         </h3>
                         <div className="mx-auto">
                             <img
@@ -104,20 +116,12 @@ function Form() {
                         <h3 className="text-2xl font-bold mb-4">
                             Desain UI/UX
                         </h3>
-                        <iframe
-                            width="100%"
-                            height="700"
-                            src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FjzQVivHqw2zMYgh2YZYNhK%2FMasak-Aja%3Ftype%3Ddesign%26node-id%3D2-10%26t%3DSdkHHSxfETTbyfn2-1%26scaling%3Dmin-zoom%26page-id%3D0%253A1%26starting-point-node-id%3D2%253A2%26mode%3Ddesign"
-                            className="mb-2 mt-2"
-                            allowFullScreen
-                        ></iframe>
-                        <iframe
-                            width="100%"
-                            height="450"
-                            allowFullScreen
-                            src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FjzQVivHqw2zMYgh2YZYNhK%2FMasak-Aja%3Ftype%3Ddesign%26node-id%3D0%253A1%26mode%3Ddesign%26t%3DezyaiFFx9poyRVa6-1"
-                            className="mb-2 mt-2"
-                        ></iframe>
+                        <div className="content-center align-items-center">
+                            <div>
+                                <div id="embed-design-container"></div>
+                                <div id="embed-prototype-container"></div>
+                            </div>
+                        </div>
                     </div>
                     <hr />
 

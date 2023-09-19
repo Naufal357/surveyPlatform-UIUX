@@ -41,12 +41,14 @@ export default function LayoutAccount({ children }) {
             <div className="d-flex sb-sidenav-toggled" id="wrapper">
                 <div className="bg-sidebar" id="sidebar-wrapper">
                     <div className="sidebar-heading bg-light text-center">
-                        <img
-                            src="/assets/images/logo.png"
-                            width={"23"}
-                            alt="Logo"
-                        />
-                        <strong>Survey</strong> <small>Platform</small>
+                        <a href="/" className="btn text-white">
+                            <img
+                                src="/assets/images/logo.png"
+                                width={"50"}
+                                alt="Logo"
+                            />
+                            <strong>Survey</strong> <small>Platform</small>
+                        </a>
                     </div>
                     <Sidebar />
                 </div>

@@ -13,17 +13,19 @@ class DashboardController extends Controller
 {
     public function index0(Request $request)
     {
-        $surveyTitles = Survey::where('user_id', auth()->user()->id)->get(['id', 'title']);
+        $user = auth()->user();
 
+        $surveyTitles = Survey::where('user_id', $user->id)->get(['id', 'title']);
         if ($surveyTitles->isEmpty()) {
             return redirect()->route('account.surveys.create');
         }
 
-        return inertia('Account/Index', [
-            'auth' => auth()->user(),
-            'surveyTitles' => $surveyTitles,
-        ]);
+        $sortedSurveyTitles = $surveyTitles->sortBy('id');
+        $lowestTitleId = $sortedSurveyTitles->first()->id;
+
+        return redirect()->route('account.dashboard', ['id' => $lowestTitleId]);
     }
+
 
     public function index(Request $request, $id)
     {
@@ -36,14 +38,11 @@ class DashboardController extends Controller
         $responses = SurveyResponses::where('survey_id', $id)->get();
         $respondentCount = $this->countRespondents($id);
 
-        // Menghitung Kepuasan Rata-rata
         $averageSatisfaction = $this->calculateAverageSatisfaction($responses);
-
-        // Menghitung Skor SUS Rata-rata
         $averageSUS = $this->calculateAverageSUS($responses);
-
-        // Mengambil data hasil survey SUS
         $susSurveyResults = $this->getSUSResults($responses);
+        $getSUSChartData = $this->getSUSChartData($id);
+
 
         // Mengembalikan tampilan
         return inertia('Account/Index', [
@@ -55,6 +54,7 @@ class DashboardController extends Controller
             'averageSatisfaction' => $averageSatisfaction,
             'averageSUS' => $averageSUS,
             'susSurveyResults' => $susSurveyResults,
+            'getSUSChartData' => $getSUSChartData,
         ])->with('currentSurveyTitle', $survey->title);
     }
 
@@ -121,23 +121,51 @@ class DashboardController extends Controller
         return $susScore * 2.5; // Mengubah skala SUS menjadi 0-100
     }
 
-        private function getSUSResults($responses)
+    private function getSUSResults($responses)
     {
         $susSurveyResults = [];
-
+    
         foreach ($responses as $response) {
             $responseData = json_decode($response->response_data, true);
-
-            // Sesuaikan dengan struktur data yang ada di database
-            $result = [
+    
+            $susSurveyResults[] = [
                 'id' => $response->id,
-                'respondentName' => $response->respondent_name, // Ganti dengan nama kolom yang sesuai
-                'susScore' => $this->calculateSUS($responseData), // Menghitung skor SUS
+                'respondentName' => $response->first_name . " " . $response->last_name,
+                'susScore' => $this->calculateSUS($responseData),
+                'answerData' => $responseData,
             ];
-
-            $susSurveyResults[] = $result;
         }
-
+    
         return $susSurveyResults;
     }
+
+    private function getSUSChartData($survey_id)
+    {
+        // Ambil semua respons berdasarkan $survey_id
+        $responses = SurveyResponses::where('survey_id', $survey_id)->get();
+
+        // Inisialisasi array kosong untuk setiap pertanyaan (sus1, sus2, dst)
+        $suspensions = [];
+
+        // Loop melalui setiap respons
+        foreach ($responses as $response) {
+            // Decode response_data dari JSON ke dalam array asosiatif
+            $responseData = json_decode($response->response_data, true);
+
+            // Loop melalui setiap pertanyaan (sus1, sus2, dst)
+            foreach ($responseData as $question => $answer) {
+                // Jika pertanyaan belum ada dalam array $suspensions, inisialisasikan dengan array kosong
+                if (!isset($suspensions[$question])) {
+                    $suspensions[$question] = [];
+                }
+
+                // Tambahkan nilai jawaban ke array yang sesuai
+                $suspensions[$question][] = $answer;
+            }
+        }
+
+        // Kembalikan hasil dalam format JSON tanpa headers tambahan
+        return response()->json($suspensions);
+    }
+
 }

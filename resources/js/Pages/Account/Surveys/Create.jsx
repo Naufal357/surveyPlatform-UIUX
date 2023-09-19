@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
+import InputField from "../../../Components/InputField";
+import ButtonCRUD from "../../../Components/ButtonCRUD";
 import Swal from "sweetalert2";
 
 export default function CategoryCreate() {
@@ -19,6 +21,11 @@ export default function CategoryCreate() {
 
     const storeSurvey = async (e) => {
         e.preventDefault();
+
+        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+            handleReset();
+            return;
+        }
 
         Inertia.post(
             "/account/surveys",
@@ -73,140 +80,89 @@ export default function CategoryCreate() {
                             </div>
                             <div className="card-body">
                                 <form onSubmit={storeSurvey}>
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Image Thumbnail
-                                        </label>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            onChange={(e) =>
-                                                setImage(e.target.files[0])
-                                            }
-                                        />
-                                    </div>
-                                    {errors.image && (
-                                        <div className="alert alert-danger">
-                                            {errors.image}
-                                        </div>
-                                    )}
+                                    <InputField
+                                        label="Image Thumbnail"
+                                        type="file"
+                                        value={image}
+                                        onChange={(e) =>
+                                            setImage(e.target.files[0])
+                                        }
+                                        error={errors.image}
+                                    />
 
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Title Design
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={title}
-                                            onChange={(e) =>
-                                                setTitle(e.target.value)
-                                            }
-                                            placeholder=""
-                                        />
-                                    </div>
-                                    {errors.title && (
-                                        <div className="alert alert-danger">
-                                            {errors.title}
-                                        </div>
-                                    )}
+                                    <InputField
+                                        label="Title Design"
+                                        type="text"
+                                        value={title}
+                                        onChange={(e) =>
+                                            setTitle(e.target.value)
+                                        }
+                                        error={errors.title}
+                                    />
 
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Theme Design
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={theme}
-                                            onChange={(e) =>
-                                                setTheme(e.target.value)
-                                            }
-                                            placeholder=""
-                                        />
-                                    </div>
-                                    {errors.theme && (
-                                        <div className="alert alert-danger">
-                                            {errors.theme}
-                                        </div>
-                                    )}
+                                    <InputField
+                                        label="Theme Design"
+                                        type="text"
+                                        value={theme}
+                                        onChange={(e) =>
+                                            setTheme(e.target.value)
+                                        }
+                                        error={errors.theme}
+                                    />
 
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Description
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={description}
-                                            onChange={(e) =>
-                                                setDescription(e.target.value)
-                                            }
-                                            placeholder=""
-                                        />
-                                    </div>
-                                    {errors.description && (
-                                        <div className="alert alert-danger">
-                                            {errors.description}
-                                        </div>
-                                    )}
+                                    <InputField
+                                        label="Description"
+                                        type="text"
+                                        value={description}
+                                        onChange={(e) =>
+                                            setDescription(e.target.value)
+                                        }
+                                        error={errors.description}
+                                    />
 
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Embed Design (Figma)
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={embed_design}
-                                            onChange={(e) =>
-                                                setEmbedDesign(e.target.value)
-                                            }
-                                            placeholder=""
-                                        />
-                                    </div>
-                                    {errors.embed_design && (
-                                        <div className="alert alert-danger">
-                                            {errors.embed_design}
-                                        </div>
-                                    )}
+                                    <InputField
+                                        label="Embed Design (Figma)"
+                                        type="text"
+                                        value={embed_design}
+                                        onChange={(e) =>
+                                            setEmbedDesign(e.target.value)
+                                        }
+                                        error={errors.embed_design}
+                                    />
 
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Embed Prototype (Figma)
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={embed_prototype}
-                                            onChange={(e) =>
-                                                setEmbedPrototype(
-                                                    e.target.value
-                                                )
-                                            }
-                                            placeholder=""
-                                        />
-                                    </div>
-                                    {errors.embed_prototype && (
-                                        <div className="alert alert-danger">
-                                            {errors.embed_prototype}
-                                        </div>
-                                    )}
+                                    <InputField
+                                        label="Embed Prototype (Figma)"
+                                        type="text"
+                                        value={embed_prototype}
+                                        onChange={(e) =>
+                                            setEmbedPrototype(e.target.value)
+                                        }
+                                        error={errors.embed_prototype}
+                                    />
 
                                     <div>
-                                        <button
+                                        <ButtonCRUD
                                             type="submit"
-                                            className="btn btn-md btn-success me-2"
-                                        >
-                                            <i className="fa fa-save"></i> Save
-                                        </button>
-                                        <button
+                                            label="Save"
+                                            color="btn-success"
+                                            iconClass="fa fa-save"
+                                        />
+                                        <ButtonCRUD
                                             type="reset"
-                                            className="btn btn-md btn-warning"
+                                            label="Reset"
+                                            color="btn-warning"
+                                            iconClass="fa fa-redo"
                                             onClick={handleReset}
-                                        >
-                                            <i className="fa fa-redo"></i> Reset
-                                        </button>
+                                        />
+                                        <ButtonCRUD
+                                            type="Cancel"
+                                            label="Cancel"
+                                            color="btn-secondary"
+                                            iconClass="fas fa-times"
+                                            onClick={() =>
+                                                window.history.back()
+                                            }
+                                        />
                                     </div>
                                 </form>
                             </div>

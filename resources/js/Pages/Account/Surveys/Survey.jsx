@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 
 export default function SurveyIndex() {
-    // Destructuring props "surveys"
     const { auth, surveys } = usePage().props;
 
     function limitWords(text, limit) {
