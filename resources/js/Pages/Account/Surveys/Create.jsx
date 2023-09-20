@@ -80,15 +80,18 @@ export default function CategoryCreate() {
                             </div>
                             <div className="card-body">
                                 <form onSubmit={storeSurvey}>
-                                    <InputField
-                                        label="Image Thumbnail"
-                                        type="file"
-                                        value={image}
-                                        onChange={(e) =>
-                                            setImage(e.target.files[0])
-                                        }
-                                        error={errors.image}
-                                    />
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">
+                                            Image Thumbnail
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className="form-control"
+                                            onChange={(e) =>
+                                                setImage(e.target.files[0])
+                                            }
+                                        />
+                                    </div>
 
                                     <InputField
                                         label="Title Design"

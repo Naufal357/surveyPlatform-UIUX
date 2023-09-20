@@ -40,13 +40,9 @@ const AccordionLayout = ({ title, children, defaultOpen = false }) => {
     };
 
     return (
-        <div
-            className="accordion"
-            style={accordionStyle}
-            onClick={toggleAccordion}
-        >
+        <div className="accordion" style={accordionStyle}>
             <div className="card">
-                <div className="card-header">
+                <div className="card-header" onClick={toggleAccordion}>
                     <h5
                         className="mb-0 d-flex align-items-center justify-content-between"
                         style={titleStyle}

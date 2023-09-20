@@ -58,6 +58,8 @@ export default function Dashboard() {
         data: getChartData(getSUSChartData.original[question]),
     }));
 
+    console.log(susData)
+
     const handleSelectChange = (e) => {
         setSelectedValue(e.target.value);
     };
@@ -156,7 +158,7 @@ export default function Dashboard() {
 
                     <AccordionLayout title="Tabel Hasil" defaultOpen={false}>
                         <div>
-                            <h1>Hasil SUS</h1>
+                            <h4>Hasil SUS</h4>
                             <SUSTableUser data={susSurveyResults} />
                         </div>
                     </AccordionLayout>

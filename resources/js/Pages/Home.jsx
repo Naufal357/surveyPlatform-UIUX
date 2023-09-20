@@ -9,7 +9,7 @@ export default function Home() {
                 <title>Form Survey</title>
             </Head>
             <Layout>
-                <h1>dffd</h1>
+                
             </Layout>
         </>
     );
