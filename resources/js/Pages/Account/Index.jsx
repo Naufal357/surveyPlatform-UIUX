@@ -3,7 +3,7 @@ import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import LayoutAccount from "../../Layouts/Account";
 import AccordionLayout from "../../Layouts/Accordion";
 import SUSPieChart from "../../Components/SUSPieChart";
-import InfoCard from "../../Components/InfoCard";
+import InfoCard from "../../Components/CardInfo";
 import SUSTableUser from "../../Components/SUSTableUser";
 
 export default function Dashboard() {
@@ -58,7 +58,7 @@ export default function Dashboard() {
         data: getChartData(getSUSChartData.original[question]),
     }));
 
-    console.log(susData)
+    console.log(survey);
 
     const handleSelectChange = (e) => {
         setSelectedValue(e.target.value);
@@ -136,7 +136,10 @@ export default function Dashboard() {
                         />
                     </div>
 
-                    <AccordionLayout title="Grafik Hasil Dari Setiap Pertanyaan" defaultOpen={true}>
+                    <AccordionLayout
+                        title="Grafik Hasil Dari Setiap Pertanyaan"
+                        defaultOpen={true}
+                    >
                         <div className="row">
                             {susData.map((item, index) => (
                                 <div

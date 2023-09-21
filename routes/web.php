@@ -14,11 +14,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return inertia('Home', [
-        'auth' => auth()->user(),
-    ]);
-});
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register');
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'store'])->name('register.store');
