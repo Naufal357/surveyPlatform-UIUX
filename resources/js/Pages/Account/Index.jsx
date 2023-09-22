@@ -20,6 +20,13 @@ export default function Dashboard() {
         susSurveyResults,
     } = usePage().props;
 
+    console.log(respondentCount);
+    console.log(averageSatisfaction);
+    console.log(averageSUS);
+    console.log(currentSurveyTitle);
+    console.log(getSUSChartData);
+    console.log(susSurveyResults);
+
     // Fungsi untuk menghitung data chart
     const getChartData = (data) => {
         const labels = [
@@ -57,8 +64,6 @@ export default function Dashboard() {
         question,
         data: getChartData(getSUSChartData.original[question]),
     }));
-
-    console.log(survey);
 
     const handleSelectChange = (e) => {
         setSelectedValue(e.target.value);
@@ -128,12 +133,12 @@ export default function Dashboard() {
                             value={`${averageSUS} dari 100`}
                             title="Skor SUS Rata-rata"
                         />
-                        <InfoCard
+                        {/* <InfoCard
                             icon="fa-chart-bar"
                             background="warning"
                             value={`${averageSatisfaction} dari 5`}
                             title="Kepuasan Rata-rata"
-                        />
+                        /> */}
                     </div>
 
                     <AccordionLayout

@@ -38,7 +38,7 @@ class DashboardController extends Controller
         $responses = SurveyResponses::where('survey_id', $id)->get();
         $respondentCount = $this->countRespondents($id);
 
-        $averageSatisfaction = $this->calculateAverageSatisfaction($responses);
+        // $averageSatisfaction = $this->calculateAverageSatisfaction($responses);
         $averageSUS = $this->calculateAverageSUS($responses);
         $susSurveyResults = $this->getSUSResults($responses);
         $getSUSChartData = $this->getSUSChartData($id);
@@ -51,7 +51,7 @@ class DashboardController extends Controller
             'survey' => $survey,
             'responses' => $responses,
             'respondentCount' => $respondentCount,
-            'averageSatisfaction' => $averageSatisfaction,
+            // 'averageSatisfaction' => $averageSatisfaction,
             'averageSUS' => $averageSUS,
             'susSurveyResults' => $susSurveyResults,
             'getSUSChartData' => $getSUSChartData,
@@ -64,25 +64,41 @@ class DashboardController extends Controller
         return SurveyResponses::where('survey_id', $surveyId)->count();
     }
 
-    private function calculateAverageSatisfaction($responses)
-    {
-        $totalSatisfaction = 0;
-        $count = count($responses);
+    // private function calculateAverageSatisfaction($responses)
+    // {
+    //     $totalSatisfaction = 0;
+    //     $count = count($responses);
 
-        // Menghitung total kepuasan dari semua respons
-        foreach ($responses as $response) {
-            $responseData = json_decode($response->response_data, true);
-            $totalSatisfaction += array_sum($responseData);
-        }
-        // Menghitung Kepuasan Rata-rata
-        if ($count > 0) {
-            $averageSatisfaction = $totalSatisfaction / ($count * 10); // Kepuasan dalam skala 1-5
-            return $averageSatisfaction = number_format($averageSatisfaction, 2); // Format menjadi 2 angka dibelakang koma
-        } else {
-            return $averageSatisfaction = 0;
-        }
+    //     // Menghitung total kepuasan dari semua respons
+    //     foreach ($responses as $response) {
+    //         $responseData = json_decode($response->response_data, true);
 
-    }
+    //         // Inisialisasi skor untuk ganjil dan genap
+    //         $oddScore = 5;
+    //         $evenScore = 1;
+
+    //         // Menghitung total kepuasan berdasarkan aturan yang Anda tentukan
+    //         foreach ($responseData as $index => $value) {
+    //             // Konversi indeks ke integer
+    //             $index = (int)$index;
+
+    //             if ($index % 2 == 0) {
+    //                 $totalSatisfaction += $evenScore * $value;
+    //             } else {
+    //                 $totalSatisfaction += $oddScore * $value;
+    //             }
+    //         }
+    //     }
+
+    //     // Menghitung Kepuasan Rata-rata
+    //     if ($count > 0) {
+    //         $averageSatisfaction = $totalSatisfaction / ($count * 10); // Kepuasan dalam skala 1-5
+    //         return number_format($averageSatisfaction, 2); // Format menjadi 2 angka dibelakang koma
+    //     } else {
+    //         return 0;
+    //     }
+    // }
+
 
     private function calculateAverageSUS($responses)
     {
@@ -107,16 +123,16 @@ class DashboardController extends Controller
     {
         // Menghitung Skor SUS dari respons
         $susScore = 0;
-        $susScore += 5 - $responseData['sus1'];
+        $susScore += $responseData['sus1'] - 1;
         $susScore += 5 - $responseData['sus2'];
-        $susScore += $responseData['sus3'];
-        $susScore += $responseData['sus4'];
-        $susScore += 5 - $responseData['sus5'];
-        $susScore += $responseData['sus6'];
-        $susScore += 5 - $responseData['sus7'];
-        $susScore += $responseData['sus8'];
-        $susScore += $responseData['sus9'];
-        $susScore += $responseData['sus10'];
+        $susScore += $responseData['sus3'] - 1;
+        $susScore += 5 - $responseData['sus4'];
+        $susScore += $responseData['sus5'] - 1;
+        $susScore += 5 - $responseData['sus6'];
+        $susScore += $responseData['sus7'] - 1;
+        $susScore += 5 - $responseData['sus8'];
+        $susScore += $responseData['sus9'] - 1;
+        $susScore += 5 - $responseData['sus10'];
 
         return $susScore * 2.5; // Mengubah skala SUS menjadi 0-100
     }

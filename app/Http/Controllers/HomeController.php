@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-uSE App\Models\Survey;
+use App\Models\Survey;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -12,7 +12,6 @@ class HomeController extends Controller
         $surveys = Survey::when(request()->q, function ($surveys) {
             $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
         })
-        ->where('user_id', auth()->user()->id)
         ->latest()
         ->paginate(20);
 

@@ -8,17 +8,17 @@ import Swal from "sweetalert2";
 function Form() {
     const { errors, surveys, auth } = usePage().props;
 
-    useEffect(() => {
-        const designContainer = document.getElementById(
-            "embed-design-container"
-        );
-        designContainer.innerHTML = surveys.embed_design;
+    // useEffect(() => {
+    //     const designContainer = document.getElementById(
+    //         "embed-design-container"
+    //     );
+    //     designContainer.innerHTML = surveys.embed_design;
 
-        const prototypeContainer = document.getElementById(
-            "embed-prototype-container"
-        );
-        prototypeContainer.innerHTML = surveys.embed_prototype;
-    }, [surveys]);
+    //     const prototypeContainer = document.getElementById(
+    //         "embed-prototype-container"
+    //     );
+    //     prototypeContainer.innerHTML = surveys.embed_prototype;
+    // }, [surveys]);
 
     let [formData, setFormData] = useState({
         first_name: "",
@@ -70,8 +70,8 @@ function Form() {
 
         const dataSubmit = {
             ...formData,
-            survey_id : surveys.id,
-            response_data: JSON.stringify(response_data), // Ubah menjadi JSON dan masukkan dalam field responses_data
+            survey_id: surveys.id,
+            response_data: JSON.stringify(response_data),
         };
         Inertia.post("/form", dataSubmit, {
             onSuccess: () => {
@@ -112,7 +112,7 @@ function Form() {
 
                     <hr />
 
-                    <div className="Explore-UI-UX">
+                    {/* <div className="Explore-UI-UX">
                         <h3 className="text-2xl font-bold mb-4">
                             Desain UI/UX
                         </h3>
@@ -123,7 +123,7 @@ function Form() {
                             </div>
                         </div>
                     </div>
-                    <hr />
+                    <hr /> */}
 
                     <form onSubmit={submitForm}>
                         <div className="Personal-Info-Entry">
