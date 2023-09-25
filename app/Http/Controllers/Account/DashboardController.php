@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ResponsesExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
 
@@ -37,9 +39,8 @@ class DashboardController extends Controller
         $surveyTitles = Survey::where('user_id', auth()->user()->id)->get(['id', 'title']);
         $responses = SurveyResponses::where('survey_id', $id)->get();
         $respondentCount = $this->countRespondents($id);
-
-        // $averageSatisfaction = $this->calculateAverageSatisfaction($responses);
         $averageSUS = $this->calculateAverageSUS($responses);
+        $classifySUSGrade = $this->classifySUSGrade($averageSUS);
         $susSurveyResults = $this->getSUSResults($responses);
         $getSUSChartData = $this->getSUSChartData($id);
 
@@ -51,8 +52,8 @@ class DashboardController extends Controller
             'survey' => $survey,
             'responses' => $responses,
             'respondentCount' => $respondentCount,
-            // 'averageSatisfaction' => $averageSatisfaction,
             'averageSUS' => $averageSUS,
+            'classifySUSGrade' => $classifySUSGrade,
             'susSurveyResults' => $susSurveyResults,
             'getSUSChartData' => $getSUSChartData,
         ])->with('currentSurveyTitle', $survey->title);
@@ -63,42 +64,6 @@ class DashboardController extends Controller
         // Mengambil jumlah responden berdasarkan survei_id
         return SurveyResponses::where('survey_id', $surveyId)->count();
     }
-
-    // private function calculateAverageSatisfaction($responses)
-    // {
-    //     $totalSatisfaction = 0;
-    //     $count = count($responses);
-
-    //     // Menghitung total kepuasan dari semua respons
-    //     foreach ($responses as $response) {
-    //         $responseData = json_decode($response->response_data, true);
-
-    //         // Inisialisasi skor untuk ganjil dan genap
-    //         $oddScore = 5;
-    //         $evenScore = 1;
-
-    //         // Menghitung total kepuasan berdasarkan aturan yang Anda tentukan
-    //         foreach ($responseData as $index => $value) {
-    //             // Konversi indeks ke integer
-    //             $index = (int)$index;
-
-    //             if ($index % 2 == 0) {
-    //                 $totalSatisfaction += $evenScore * $value;
-    //             } else {
-    //                 $totalSatisfaction += $oddScore * $value;
-    //             }
-    //         }
-    //     }
-
-    //     // Menghitung Kepuasan Rata-rata
-    //     if ($count > 0) {
-    //         $averageSatisfaction = $totalSatisfaction / ($count * 10); // Kepuasan dalam skala 1-5
-    //         return number_format($averageSatisfaction, 2); // Format menjadi 2 angka dibelakang koma
-    //     } else {
-    //         return 0;
-    //     }
-    // }
-
 
     private function calculateAverageSUS($responses)
     {
@@ -119,6 +84,33 @@ class DashboardController extends Controller
         }
     }
 
+    private function classifySUSGrade($averageSUS)
+    {
+        if ($averageSUS >= 84.1) {
+            return 'A+ (Luar Biasa)';
+        } elseif ($averageSUS >= 80.8) {
+            return 'A (Sangat Baik)';
+        } elseif ($averageSUS >= 78.9) {
+            return 'A- (Baik)';
+        } elseif ($averageSUS >= 77.2) {
+            return 'B+ (Cukup Baik';
+        } elseif ($averageSUS >= 74.1) {
+            return 'B (Memadai)';
+        } elseif ($averageSUS >= 72.6) {
+            return 'B- (Kurang Baik)';
+        } elseif ($averageSUS >= 71.1) {
+            return 'C+ (Sedikit Lebih dari Cukup)';
+        } elseif ($averageSUS >= 65.0) {
+            return 'C (Cukup)';
+        } elseif ($averageSUS >= 62.7) {
+            return 'C- (Kurang Cukup)';
+        } elseif ($averageSUS >= 51.7) {
+            return 'D (Buruk)';
+        } else {
+            return 'F (Sangat Buruk)';
+        }
+    }
+
     private function calculateSUS($responseData)
     {
         // Menghitung Skor SUS dari respons
@@ -135,24 +127,6 @@ class DashboardController extends Controller
         $susScore += 5 - $responseData['sus10'];
 
         return $susScore * 2.5; // Mengubah skala SUS menjadi 0-100
-    }
-
-    private function getSUSResults($responses)
-    {
-        $susSurveyResults = [];
-    
-        foreach ($responses as $response) {
-            $responseData = json_decode($response->response_data, true);
-    
-            $susSurveyResults[] = [
-                'id' => $response->id,
-                'respondentName' => $response->first_name . " " . $response->last_name,
-                'susScore' => $this->calculateSUS($responseData),
-                'answerData' => $responseData,
-            ];
-        }
-    
-        return $susSurveyResults;
     }
 
     private function getSUSChartData($survey_id)
@@ -182,6 +156,29 @@ class DashboardController extends Controller
 
         // Kembalikan hasil dalam format JSON tanpa headers tambahan
         return response()->json($suspensions);
+    }
+
+    private function getSUSResults($responses)
+    {
+        $susSurveyResults = [];
+    
+        foreach ($responses as $response) {
+            $responseData = json_decode($response->response_data, true);
+    
+            $susSurveyResults[] = [
+                'id' => $response->id,
+                'respondentName' => $response->first_name . " " . $response->last_name,
+                'susScore' => $this->calculateSUS($responseData),
+                'answerData' => $responseData,
+            ];
+        }
+    
+        return $susSurveyResults;
+    }
+
+    public function export($survey_id)
+    {
+        return Excel::download(new ResponsesExport($survey_id), 'SurveyResponses.xlsx');
     }
 
 }

@@ -32,5 +32,6 @@ Route::prefix('account')->group(function(){
         Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index0'])->name('account.dashboard0');
         Route::get('/dashboard/{id}', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account']);
+        Route::get('/responses/{id}/export', [App\Http\Controllers\Account\DashboardController::class, 'export'])->name('responses.export');
     });
 });
