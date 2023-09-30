@@ -2,23 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import Layout from "../Layouts/Header";
 import RadioQuestion from "../Components/RadioQuestionSUS";
+import EmbedFigma from "../Components/EmbedFigma";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import Swal from "sweetalert2";
 
 function Form() {
     const { errors, surveys, auth } = usePage().props;
-
-    // useEffect(() => {
-    //     const designContainer = document.getElementById(
-    //         "embed-design-container"
-    //     );
-    //     designContainer.innerHTML = surveys.embed_design;
-
-    //     const prototypeContainer = document.getElementById(
-    //         "embed-prototype-container"
-    //     );
-    //     prototypeContainer.innerHTML = surveys.embed_prototype;
-    // }, [surveys]);
 
     let [formData, setFormData] = useState({
         first_name: "",
@@ -112,22 +101,22 @@ function Form() {
 
                     <hr />
 
-                    {/* <div className="Explore-UI-UX">
-                        <h3 className="text-2xl font-bold mb-4">
+                    <div className="Explore-UI-UX">
+                        <h3 className="text-center text-2xl font-bold mb-4">
                             Desain UI/UX
                         </h3>
-                        <div className="content-center align-items-center">
-                            <div>
-                                <div id="embed-design-container"></div>
-                                <div id="embed-prototype-container"></div>
+                        <div className="d-flex justify-content-center align-items-center">
+                            <div style={{ textAlign: "center", width: "100%" }}>
+                                <EmbedFigma surveys={surveys} />
                             </div>
                         </div>
                     </div>
-                    <hr /> */}
+
+                    <hr />
 
                     <form onSubmit={submitForm}>
                         <div className="Personal-Info-Entry">
-                            <h3 className="text-2xl font-bold mb-4 mt-4">
+                            <h3 className="text-center text-2xl font-bold mb-4 mt-4">
                                 Personal Information
                             </h3>
                             <div className="row">
@@ -295,7 +284,7 @@ function Form() {
                         <hr />
 
                         <div className="Questionnaire-SUS">
-                            <h3 className="text-2xl font-bold mb-4">
+                            <h3 className="text-center text-2xl font-bold mb-4">
                                 Questionnaire SUS
                             </h3>
                             <div className="mb-3">

@@ -70,7 +70,6 @@ export default function Dashboard() {
         };
     };
 
-    // Mengubah format data dari getSUSChartData ke format yang sesuai dengan react-chartjs-2
     const susData = Object.keys(getSUSChartData.original).map((question) => ({
         question,
         data: getChartData(getSUSChartData.original[question]),

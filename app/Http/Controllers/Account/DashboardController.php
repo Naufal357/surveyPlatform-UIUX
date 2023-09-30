@@ -54,8 +54,8 @@ class DashboardController extends Controller
             'respondentCount' => $respondentCount,
             'averageSUS' => $averageSUS,
             'classifySUSGrade' => $classifySUSGrade,
-            'susSurveyResults' => $susSurveyResults,
             'getSUSChartData' => $getSUSChartData,
+            'susSurveyResults' => $susSurveyResults,
         ])->with('currentSurveyTitle', $survey->title);
     }
 

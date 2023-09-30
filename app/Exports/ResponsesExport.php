@@ -7,9 +7,12 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings
+class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, WithStyles
 {
     use Exportable;
     protected $survey_id;
@@ -23,7 +26,6 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings
     {
         // Mendapatkan data SurveyResponses
         $responses = SurveyResponses::select('first_name', 'last_name', 'email', 'age', 'gender', 'profession', 'educational_background', 'created_at', 'response_data')->where('survey_id', $this->survey_id)->get();
-
         // Memanipulasi data sebelum diekspor
         $formattedResponses = $responses->map(function ($response) {
             // Menggabungkan first_name dan last_name
@@ -67,27 +69,49 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings
         return $formattedResponses;
     }
 
-public function headings(): array
-{
-    return [
-        'Full Name',
-        'Email',
-        'Age',
-        'Gender',
-        'Profession',
-        'Educational Background',
-        'Created At',
-        'SUS1',
-        'SUS2',
-        'SUS3',
-        'SUS4',
-        'SUS5',
-        'SUS6',
-        'SUS7',
-        'SUS8',
-        'SUS9',
-        'SUS10',
-    ];
-}
+    public function headings(): array
+    {
+        return [
+            'Full Name',
+            'Email',
+            'Age',
+            'Gender',
+            'Profession',
+            'Educational Background',
+            'Created At',
+            'SUS1',
+            'SUS2',
+            'SUS3',
+            'SUS4',
+            'SUS5',
+            'SUS6',
+            'SUS7',
+            'SUS8',
+            'SUS9',
+            'SUS10',
+        ];
+    }
 
+    public function styles(Worksheet $sheet)
+    {
+        $styles = [];
+        $collection = $this->collection();
+        $totalRows = count($collection);
+    
+        // Mengatur warna header menjadi coklat
+        $styles[1] = [
+            'font' => ['bold' => true],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'cc6633']],
+        ];
+    
+        $fillColor1 = 'FFFFFF';
+        $fillColor2 = 'D3D3D3';
+    
+        for ($rowNumber = 2; $rowNumber <= $totalRows + 1; $rowNumber++) {
+            $fillColor = ($rowNumber % 2 == 0) ? $fillColor1 : $fillColor2;
+            $styles[$rowNumber] = ['fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => $fillColor]]];
+        }
+    
+        return $styles;
+    }
 }
