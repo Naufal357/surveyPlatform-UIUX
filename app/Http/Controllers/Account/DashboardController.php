@@ -78,7 +78,7 @@ class DashboardController extends Controller
         // Menghitung Skor SUS Rata-rata
         if ($count > 0) {
             $averageSUS = $totalSUS / $count;
-            return $averageSUS = number_format($averageSUS, 2); // Format menjadi 2 angka dibelakang koma
+            return $averageSUS = number_format($averageSUS, 2);
         } else {
             return $averageSUS = 0;
         }
@@ -86,28 +86,16 @@ class DashboardController extends Controller
 
     private function classifySUSGrade($averageSUS)
     {
-        if ($averageSUS >= 84.1) {
-            return 'A+ (Luar Biasa)';
-        } elseif ($averageSUS >= 80.8) {
-            return 'A (Sangat Baik)';
-        } elseif ($averageSUS >= 78.9) {
-            return 'A- (Baik)';
-        } elseif ($averageSUS >= 77.2) {
-            return 'B+ (Cukup Baik';
-        } elseif ($averageSUS >= 74.1) {
-            return 'B (Memadai)';
-        } elseif ($averageSUS >= 72.6) {
-            return 'B- (Kurang Baik)';
-        } elseif ($averageSUS >= 71.1) {
-            return 'C+ (Sedikit Lebih dari Cukup)';
-        } elseif ($averageSUS >= 65.0) {
-            return 'C (Cukup)';
-        } elseif ($averageSUS >= 62.7) {
-            return 'C- (Kurang Cukup)';
-        } elseif ($averageSUS >= 51.7) {
-            return 'D (Buruk)';
+        if ($averageSUS >= 90) {
+            return 'A';
+        } elseif ($averageSUS >= 80) {
+            return 'B';
+        } elseif ($averageSUS >= 70) {
+            return 'C';
+        } elseif ($averageSUS >= 60) {
+            return 'D';
         } else {
-            return 'F (Sangat Buruk)';
+            return 'F';
         }
     }
 
