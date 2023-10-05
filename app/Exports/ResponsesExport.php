@@ -11,8 +11,10 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, WithStyles
+class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, WithStyles, WithEvents
 {
     use Exportable;
     protected $survey_id;
@@ -136,5 +138,31 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
         }
 
         return $styles;
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                // Mendapatkan sheet
+                $sheet = $event->sheet;
+                // Mendapatkan total baris dalam data
+                $totalRows = count($this->collection());
+
+                $sheet->setCellValue('Q' . ($totalRows + 2), 'Hasil SUS Rata-rata');
+                $resultTitleCell = $sheet->getCell('Q' . ($totalRows + 2));
+                $resultTitleCell->getStyle()->getFont()->setBold(true);
+
+                // Hitung rata-rata SUS
+                $averageSUSFormula = '=AVERAGE(R2:R' . ($totalRows + 1) . ')';
+                // Menambahkan rata-rata SUS di akhir data
+                $sheet->setCellValue('R' . ($totalRows + 2), $averageSUSFormula);
+                // Mendapatkan sel rata-rata SUS
+                $averageSUSCell = $sheet->getCell('R' . ($totalRows + 2));
+
+                $averageSUSCell->getStyle()->getFont()->setBold(true);
+                $averageSUSCell->getStyle()->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('cc6633');
+            },
+        ];
     }
 }

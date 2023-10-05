@@ -14,18 +14,18 @@ const SUSTableUser = ({ data }) => {
             <table className="table table-striped table-bordered">
                 <thead className="thead-dark">
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <th>Respondent Name</th>
                         <th>SUS Score</th>
-                        {susKeys.map((key) => (
-                            <th key={key}>{key}</th>
+                        {Array.from({ length: 10 }, (_, i) => (
+                            <th key={`question-${i + 1}`}>Question {i + 1}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((result) => (
+                    {data.map((result, index) => (
                         <tr key={result.id}>
-                            <td>{result.id}</td>
+                            <td>{index + 1}</td>
                             <td>{result.respondentName}</td>
                             <td>{result.susScore}</td>
                             {susKeys.map((key) => (
