@@ -24,23 +24,6 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
         $this->survey_id = $survey_id;
     }
 
-    private function calculateSUS($responseData)
-    {
-        $susScore = 0;
-        $susScore += $responseData['SUS1'] - 1;
-        $susScore += 5 - $responseData['SUS2'];
-        $susScore += $responseData['SUS3'] - 1;
-        $susScore += 5 - $responseData['SUS4'];
-        $susScore += $responseData['SUS5'] - 1;
-        $susScore += 5 - $responseData['SUS6'];
-        $susScore += $responseData['SUS7'] - 1;
-        $susScore += 5 - $responseData['SUS8'];
-        $susScore += $responseData['SUS9'] - 1;
-        $susScore += 5 - $responseData['SUS10'];
-
-        return $susScore * 2.5; // Mengubah skala SUS menjadi 0-100
-    }
-
     public function collection()
     {
         // Mendapatkan data SurveyResponses
@@ -56,10 +39,6 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
             for ($i = 1; $i <= 10; $i++) {
                 $response['SUS' . $i] = isset($responseData->{'sus' . $i}) ? $responseData->{'sus' . $i} : null;
             }
-
-            // Hitung rata-rata SUS
-            $susAverage = $this->calculateSUS($response);
-            $response['SUS Average'] = $susAverage;
 
             // Hapus kolom first_name dan last_name
             unset($response['first_name']);
@@ -157,6 +136,30 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
                 $averageSUSFormula = '=AVERAGE(R2:R' . ($totalRows + 1) . ')';
                 // Menambahkan rata-rata SUS di akhir data
                 $sheet->setCellValue('R' . ($totalRows + 2), $averageSUSFormula);
+                // Mendapatkan sel rata-rata SUS
+                $averageSUSCell = $sheet->getCell('R' . ($totalRows + 2));
+
+                $averageSUSCell->getStyle()->getFont()->setBold(true);
+                $averageSUSCell->getStyle()->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB('cc6633');
+            },
+            AfterSheet::class => function (AfterSheet $event) {
+                // Mendapatkan sheet
+                $sheet = $event->sheet;
+                // Mendapatkan total baris dalam data
+                $totalRows = count($this->collection());
+
+                // Menambahkan rumus rata-rata SUS ke setiap baris pada kolom "SUS Average"
+                for ($rowNumber = 2; $rowNumber <= $totalRows + 1; $rowNumber++) {
+                    $averageSUSFormula = '=(((H' . $rowNumber . '-1)+(5-I' . $rowNumber . ')+(J' . $rowNumber . '-1)+(5-K' . $rowNumber . ')+(L' . $rowNumber . '-1)+(5-M' . $rowNumber . ')+(N' . $rowNumber . '-1)+(5-O' . $rowNumber . ')+(P' . $rowNumber . '-1)+(5-Q' . $rowNumber . '))*2.5)';
+                    $sheet->setCellValue('R' . $rowNumber, $averageSUSFormula);
+                }
+
+                $sheet->setCellValue('Q' . ($totalRows + 2), 'Hasil SUS Rata-rata');
+                $resultTitleCell = $sheet->getCell('Q' . ($totalRows + 2));
+                $resultTitleCell->getStyle()->getFont()->setBold(true);
+
+                // Hitung rata-rata SUS di akhir data
+                $sheet->setCellValue('R' . ($totalRows + 2), '=AVERAGE(R2:R' . ($totalRows + 1) . ')');
                 // Mendapatkan sel rata-rata SUS
                 $averageSUSCell = $sheet->getCell('R' . ($totalRows + 2));
 
