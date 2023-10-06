@@ -3,6 +3,7 @@ import LayoutAccount from "../../../Layouts/Account";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import InputField from "../../../Components/InputField";
+import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import Swal from "sweetalert2";
 
@@ -113,14 +114,10 @@ export default function CategoryCreate() {
                                         error={errors.theme}
                                     />
 
-                                    <InputField
+                                    <QuillEditor
                                         label="Description"
-                                        type="text"
                                         value={description}
-                                        onChange={(e) =>
-                                            setDescription(e.target.value)
-                                        }
-                                        error={errors.description}
+                                        onChange={setDescription}
                                     />
 
                                     <InputField

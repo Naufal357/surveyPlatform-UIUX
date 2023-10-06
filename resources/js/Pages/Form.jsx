@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import Layout from "../Layouts/Header";
+import SurveyDescription from "../Components/SurveyDescription";
 import RadioQuestion from "../Components/RadioQuestionSUS";
 import EmbedFigma from "../Components/EmbedFigma";
 import { Head, usePage } from "@inertiajs/inertia-react";
@@ -96,8 +97,9 @@ function Form() {
                                 className="img-fluid"
                             />
                         </div>
-                        <p className="mt-4">{surveys.description}</p>
                     </div>
+                    
+                    <SurveyDescription description={surveys.description}/>
 
                     <hr />
 

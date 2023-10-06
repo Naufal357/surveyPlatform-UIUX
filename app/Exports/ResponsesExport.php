@@ -92,7 +92,7 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
             'SUS8',
             'SUS9',
             'SUS10',
-            'SUS Average',
+            'SUS Score',
         ];
     }
 

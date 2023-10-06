@@ -146,12 +146,6 @@ const handleExport = () => {
                             value={classifySUSGrade}
                             title="Kategori Nilai SUS"
                         />
-                        {/* <InfoCard
-                        icon="fa-circle-notch fa-spin"
-                        background="info"
-                        value={`${angka} menit`}
-                        title="Durasi Survei Rata-Rata"
-                    /> */}
                     </div>
 
                     <AccordionLayout

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LayoutAccount from '../../../Layouts/Account';
 import InputField from "../../../Components/InputField";
+import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import { Head, usePage } from '@inertiajs/inertia-react';
 import { Inertia } from "@inertiajs/inertia";
@@ -125,14 +126,10 @@ export default function SurveyEdit() {
                                         error={errors.theme}
                                     />
 
-                                    <InputField
+                                    <QuillEditor
                                         label="Description"
-                                        type="text"
                                         value={description}
-                                        onChange={(e) =>
-                                            setDescription(e.target.value)
-                                        }
-                                        error={errors.description}
+                                        onChange={setDescription}
                                     />
 
                                     <InputField
