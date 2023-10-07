@@ -8,7 +8,7 @@ function QuillEditor({ value, onChange, label }) {
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
             [{ font: [] }],
             ["bold", "italic"],
-            ["link", "blockquote"],
+            ["link"],
             [{ list: "ordered" }, { list: "bullet" }],
             [{ script: "sub" }, { script: "super" }],
             [{ color: [] }, { background: [] }],

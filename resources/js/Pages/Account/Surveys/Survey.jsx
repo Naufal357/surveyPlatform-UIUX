@@ -58,7 +58,7 @@ export default function SurveyIndex() {
                                             <tr>
                                                 <th
                                                     scope="col"
-                                                    style={{ width: "5%" }}
+                                                    style={{ width: "2%" }}
                                                 >
                                                     No.
                                                 </th>
@@ -76,13 +76,13 @@ export default function SurveyIndex() {
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    style={{ width: "25%" }}
+                                                    style={{ width: "31%" }}
                                                 >
                                                     Description
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    style={{ width: "15%" }}
+                                                    style={{ width: "12%" }}
                                                 >
                                                     Updated At
                                                 </th>
@@ -122,7 +122,7 @@ export default function SurveyIndex() {
                                                             <td>
                                                                 {limitWords(
                                                                     survey.description,
-                                                                    30
+                                                                    70
                                                                 )}
                                                             </td>
                                                             <td>
@@ -199,4 +199,4 @@ export default function SurveyIndex() {
             </LayoutAccount>
         </>
     );
-}
+};
