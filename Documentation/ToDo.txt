@@ -1,1 +1,3 @@
 email pada tambah user tidak terverif
+Error edit emage
+Personal info di form dipindah ke register

@@ -20,6 +20,16 @@ export default function Sidebar() {
                     <i className="fa fa-tachometer-alt me-2"></i> Dashboard
                 </Link>
                 <Link
+                    href="/account/sus"
+                    className={`${
+                        url.startsWith("/account/sus")
+                            ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                            : "list-group-item list-group-item-action list-group-item-light p-3"
+                    }`}
+                >
+                    <i className="fa fa-poll-h me-2"></i> SUS Results
+                </Link>
+                <Link
                     href="/account/surveys"
                     className={`${
                         url.startsWith("/account/surveys")

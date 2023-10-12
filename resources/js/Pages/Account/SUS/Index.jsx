@@ -1,11 +1,11 @@
 import React from "react";
 import { Head, Inertia, usePage, Link } from "@inertiajs/inertia-react";
-import hasAnyPermission from "../../Utils/Permissions";
-import LayoutAccount from "../../Layouts/Account";
-import AccordionLayout from "../../Layouts/Accordion";
-import SUSPieChart from "../../Components/SUSPieChart";
-import InfoCard from "../../Components/CardInfo";
-import SUSTableUser from "../../Components/SUSTableUser";
+import hasAnyPermission from "../../../Utils/Permissions";
+import LayoutAccount from "../../../Layouts/Account";
+import AccordionLayout from "../../../Layouts/Accordion";
+import SUSPieChart from "../../../Components/SUSPieChart";
+import InfoCard from "../../../Components/CardInfo";
+import SUSTableUser from "../../../Components/SUSTableUser";
 
 export default function Dashboard() {
     const {

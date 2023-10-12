@@ -33,6 +33,7 @@ Route::prefix('account')->group(function(){
         Route::get('/dashboard/{id}', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
 
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account']);
+        
         Route::get('/responses/{id}/export', [App\Http\Controllers\Account\DashboardController::class, 'export'])->name('responses.export');
 
         Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index');
@@ -40,5 +41,8 @@ Route::prefix('account')->group(function(){
         Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account']);
 
         Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account']);
+
+        Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index0'])->name('account.sus');
+        Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
     });
 });

@@ -18,7 +18,7 @@ export default function CategoryCreate() {
     const [description, setDescription] = useState("");
     const [embed_design, setEmbedDesign] = useState("");
     const [embed_prototype, setEmbedPrototype] = useState("");
-    const [user_id, setUserId] = useState(auth.id);
+    const [user_id, setUserId] = useState(auth.user.id);
 
     const storeSurvey = async (e) => {
         e.preventDefault();
@@ -31,7 +31,6 @@ export default function CategoryCreate() {
         Inertia.post(
             "/account/surveys",
             {
-                //data
                 title: title,
                 image: image,
                 theme: theme,

@@ -12,7 +12,6 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        // dapatkan survei
         $surveys = Survey::when(request()->q, function($surveys){
             $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
         })
@@ -20,10 +19,8 @@ class SurveyController extends Controller
         ->latest()
         ->paginate(10);
 
-        // tambahkan query string ke tautan halaman paginasi
         $surveys->appends(['q' => request()->q]);
 
-        // kembalikan inertia
         return inertia('Account/Surveys/Survey', [
             'surveys' => $surveys,
         ]);
@@ -38,24 +35,19 @@ class SurveyController extends Controller
 
     public function store(Request $request)
     {
-        /**
-         * validate
-         */
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
-            'image'         => 'required|image|mimes:jpeg,jpg,png|max:5000',
+            'image'         => 'required|image|mimes:jpeg,jpg,png|max:80000',
             'theme'          => 'required',
             'description'    => 'required',
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
         ]);
 
-        //upload image
         $image = $request->file('image');
         $image->storeAs('public/surveys', $image->hashName());
 
-        //create Survey
         Survey::create([
             'user_id'        => $request->user_id,
             'title'          => $request->title,
@@ -67,7 +59,6 @@ class SurveyController extends Controller
             'slug'          => Str::slug($request->title, '-'),
         ]);
 
-        //redirect
         return redirect()->route('account.surveys.index');
     }
 
@@ -82,9 +73,6 @@ class SurveyController extends Controller
 
     public function update(Request $request, Survey $Survey)
     {
-        /**
-         * validate
-         */
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
@@ -93,26 +81,21 @@ class SurveyController extends Controller
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
         ]);
-
-        //check image update
+        
         if ($request->file('image')) {
 
-            //remove old image
             Storage::disk('local')->delete('public/surveys/' . basename($Survey->image));
 
-            //upload new image
             $image = $request->file('image');
             $image->storeAs('public/surveys', $image->hashName());
 
-            //update Survey with new image
             $Survey->update([
                 'image' => $image->hashName(),
                 'name' => $request->name,
-                'slug'          => Str::slug($request->name, '-')
+                'slug'=> Str::slug($request->name, '-')
             ]);
         }
 
-        //update Survey without image
         $Survey->update([
             'title'          => $request->title,
             'theme'          => $request->theme,
@@ -121,24 +104,19 @@ class SurveyController extends Controller
             'embed_prototype' => $request->embed_prototype,
             'slug'          => Str::slug($request->title, '-')
         ]);
-
-        //redirect
+        
         return redirect()->route('account.surveys.index');
     }
 
 
     public function destroy($id)
     {
-        //find by ID
         $Survey = Survey::findOrFail($id);
 
-        //remove image
         Storage::disk('local')->delete('public/surveys/' . basename($Survey->image));
 
-        //delete
         $Survey->delete();
 
-        //redirect
         return redirect()->route('account.surveys.index');
     }
 }

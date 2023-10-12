@@ -22,7 +22,6 @@ export default function SurveyEdit() {
     const [user_id, setUserId] = useState(auth.id);
 
     useEffect(() => {
-        // Isi state dengan data dari objek "survey" saat halaman dimuat
         setTitle(survey.title);
         setTheme(survey.theme);
         setDescription(survey.description);
@@ -45,7 +44,6 @@ export default function SurveyEdit() {
         Inertia.post(
             `/account/surveys/${survey.id}`,
             {
-                //data
                 title: title,
                 image: image,
                 theme: theme,
@@ -57,7 +55,6 @@ export default function SurveyEdit() {
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data updated successfully!",
@@ -78,6 +75,9 @@ export default function SurveyEdit() {
         setEmbedDesign("");
         setEmbedPrototype("");
     };
+
+    console.log("Title:", title);
+    console.log("Image:", image);
 
     return (
         <>
@@ -100,12 +100,15 @@ export default function SurveyEdit() {
                                         label="Image Thumbnail"
                                         type="file"
                                         value={image}
-                                        onChange={(e) =>
-                                            setImage(e.target.files[0])
-                                        }
+                                        onChange={(e) => [
+                                            setImage(e.target.files[0]),
+                                            console.log(
+                                                "Image changed:",
+                                                e.target.files[0]
+                                            ),
+                                        ]}
                                         error={errors.image}
                                     />
-
                                     <InputField
                                         label="Title Design"
                                         type="text"
@@ -115,7 +118,6 @@ export default function SurveyEdit() {
                                         }
                                         error={errors.title}
                                     />
-
                                     <InputField
                                         label="Theme Design"
                                         type="text"
@@ -125,13 +127,11 @@ export default function SurveyEdit() {
                                         }
                                         error={errors.theme}
                                     />
-
                                     <QuillEditor
                                         label="Description"
                                         value={description}
                                         onChange={setDescription}
                                     />
-
                                     <InputField
                                         label="Embed Design (Figma)"
                                         type="text"
@@ -141,7 +141,6 @@ export default function SurveyEdit() {
                                         }
                                         error={errors.embed_design}
                                     />
-
                                     <InputField
                                         label="Embed Prototype (Figma)"
                                         type="text"
@@ -151,7 +150,6 @@ export default function SurveyEdit() {
                                         }
                                         error={errors.embed_prototype}
                                     />
-
                                     <div>
                                         <ButtonCRUD
                                             type="submit"
