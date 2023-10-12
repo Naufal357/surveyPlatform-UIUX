@@ -48,7 +48,6 @@ class DashboardController extends Controller
         // Mengembalikan tampilan
         return inertia('Account/Index', [
             'surveyTitles' => $surveyTitles,
-            'auth' => auth()->user(),
             'survey' => $survey,
             'responses' => $responses,
             'respondentCount' => $respondentCount,

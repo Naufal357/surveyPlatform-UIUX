@@ -5,8 +5,7 @@ import Pagination from "../Components/Pagination";
 import CardSurvey from "../Components/CardSurvey";
 
 export default function Home() {
-    const { surveys } = usePage().props;
-    console.log(surveys);
+    const { surveys, auth } = usePage().props;
 
     return (
         <>

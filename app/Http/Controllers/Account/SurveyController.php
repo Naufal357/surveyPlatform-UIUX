@@ -26,16 +26,13 @@ class SurveyController extends Controller
         // kembalikan inertia
         return inertia('Account/Surveys/Survey', [
             'surveys' => $surveys,
-            'auth' => auth()->user(),
         ]);
     }
 
 
     public function create()
     {
-        return inertia('Account/Surveys/Create', [
-            'auth' => auth()->user(),
-        ]);
+        return inertia('Account/Surveys/Create');
     }
 
 
@@ -79,7 +76,6 @@ class SurveyController extends Controller
     {
         return inertia('Account/Surveys/Edit', [
             'survey' => $survey,
-            'auth' => auth()->user(),
         ]);
     }
 

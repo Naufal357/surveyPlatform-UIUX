@@ -19,6 +19,7 @@ class HomeController extends Controller
         $surveys->appends(['q' => request()->q]);
 
         return inertia('Home', [
+            'auth' => auth()->user(),
             'surveys' => $surveys,
         ]);
     }

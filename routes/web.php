@@ -16,11 +16,11 @@ use Inertia\Inertia;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
-Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register');
-Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'store'])->name('register.store');
+Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register')->middleware('guest');
+Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'store'])->name('register.store')->middleware('guest');
 
-Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
-Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store');
+Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store')->middleware('guest');
 
 Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
 
@@ -31,7 +31,14 @@ Route::prefix('account')->group(function(){
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index0'])->name('account.dashboard0');
         Route::get('/dashboard/{id}', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
+
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account']);
         Route::get('/responses/{id}/export', [App\Http\Controllers\Account\DashboardController::class, 'export'])->name('responses.export');
+
+        Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index');
+
+        Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account']);
+
+        Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account']);
     });
 });

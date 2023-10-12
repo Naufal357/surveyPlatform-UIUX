@@ -7,22 +7,15 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /**
-     * index
-     *
-     * @return void
-     */
     public function index()
     {
-        return inertia('Auth/Login');
+        return inertia(
+            'Auth/Login',
+            [
+                'auth' => auth()->user(),
+            ]);
     }
 
-    /**
-     * store
-     *
-     * @param  mixed $request
-     * @return void
-     */
     public function store(Request $request)
     {
         //set validation
