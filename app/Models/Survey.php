@@ -46,5 +46,18 @@ class Survey extends Model
         );
     }
 
+    public function getTitleAndResponseCount()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'response_count' => $this->surveyResponses()->count(),
+        ];
+    }
+
+    public function surveyResponses()
+    {
+        return $this->hasMany(SurveyResponses::class);
+    }
 
 }

@@ -23,7 +23,7 @@ class SurveyResponses extends Model
     ];
 
     protected $casts = [
-        'responses_data' => 'json', // Cast responses_data sebagai JSON
+        'responses_data' => 'json',
     ];
 
     public function survey()

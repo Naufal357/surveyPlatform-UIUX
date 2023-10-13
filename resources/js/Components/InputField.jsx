@@ -1,6 +1,6 @@
 import React from "react";
 
-function InputField({ label, type, value, onChange, placeholder, error }) {
+export default function InputField({ label, type, value, onChange, placeholder, error }) {
     const sanitizedValue = value || "";
 
     return (
@@ -13,11 +13,18 @@ function InputField({ label, type, value, onChange, placeholder, error }) {
                     onChange={onChange}
                     placeholder={placeholder}
                 />
+            ) : type === "file" ? (
+                <input
+                    type="file"
+                    className="form-control"
+                    onChange={onChange}
+                    accept="image/*"
+                />
             ) : (
                 <input
                     type={type}
                     className="form-control"
-                    value={sanitizedValue}
+                    defaultValue={sanitizedValue}
                     onChange={onChange}
                     placeholder={placeholder}
                 />
@@ -26,5 +33,3 @@ function InputField({ label, type, value, onChange, placeholder, error }) {
         </div>
     );
 }
-
-export default InputField;

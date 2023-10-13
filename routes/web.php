@@ -29,8 +29,7 @@ Route::post('/form', [\App\Http\Controllers\FormController::class, 'storeData'])
 
 Route::prefix('account')->group(function(){
     Route::group(['middleware' => ['auth']], function () {
-        Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index0'])->name('account.dashboard0');
-        Route::get('/dashboard/{id}', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
 
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account']);
         

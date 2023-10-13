@@ -76,9 +76,6 @@ export default function SurveyEdit() {
         setEmbedPrototype("");
     };
 
-    console.log("Title:", title);
-    console.log("Image:", image);
-
     return (
         <>
             <Head>

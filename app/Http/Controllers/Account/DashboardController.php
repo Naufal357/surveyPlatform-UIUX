@@ -13,6 +13,17 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        return inertia('Account/Index')->with('currentSurveyTitle');
+        $user = auth()->user();
+        $surveys = Survey::where('user_id', $user->id)->get();
+
+        $surveyData = [];
+
+        foreach ($surveys as $survey) {
+            $surveyData[] = $survey->getTitleAndResponseCount();
+        }
+
+        return inertia('Account/Dashboard', [
+            'surveys' => $surveyData,
+        ])->with('currentSurveyTitle');
     }
 }

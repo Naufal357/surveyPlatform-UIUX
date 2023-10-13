@@ -21,6 +21,8 @@ export default function Dashboard() {
         susSurveyResults,
     } = usePage().props;
 
+    // console.log(auth)
+
     const questionTexts = [
         `1. Saya berpikir akan menggunakan sistem ${survey.theme} ini lagi.`,
         `2. Saya merasa sistem ${survey.theme} ini rumit untuk digunakan.`,
@@ -90,7 +92,8 @@ export default function Dashboard() {
                 <div className="m-3">
                     <div className="row alert alert-success border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{auth.name}</strong> <br />
+                            Selamat Datang, <strong>{auth.user.name}</strong>{" "}
+                            <br />
                             {currentSurveyTitle ? (
                                 <span>
                                     Hasil :{" "}
@@ -108,7 +111,7 @@ export default function Dashboard() {
                                         const selectedId = event.target.value;
                                         if (selectedId) {
                                             window.location.replace(
-                                                `/account/dashboard/${selectedId}`
+                                                `${selectedId}`
                                             );
                                         }
                                     }}
@@ -126,7 +129,7 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    { hasAnyPermission(['dashboard.statistics']) &&
+                    {hasAnyPermission(["dashboard.statistics"]) && (
                         <div className="row mt-2">
                             <InfoCard
                                 icon="fa-users "
@@ -138,7 +141,7 @@ export default function Dashboard() {
                                 icon="fa-chart-pie"
                                 background="primary"
                                 value={`${averageSUS} dari 100`}
-                                title="Skor SUS Rata-rata"
+                                title="Skor SUS Total"
                             />
                             <InfoCard
                                 icon="fa-star"
@@ -147,48 +150,67 @@ export default function Dashboard() {
                                 title="Kategori Nilai SUS"
                             />
                         </div>
-                    }
+                    )}
 
-                    { hasAnyPermission(['dashboard.charts']) &&
+                    {hasAnyPermission(["dashboard.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
                             defaultOpen={true}
                         >
-                            <div className="row">
-                                {susData.map((item, index) => (
-                                    <div
-                                        className="col-lg-4 col-md-6 mb-4 mx-auto"
-                                        key={index}
-                                    >
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <h6 className="card-title">
-                                                    {questionTexts[index]}
-                                                </h6>
-                                                <SUSPieChart data={item.data} />
+                            {susData.length > 0 ? (
+                                <div className="row">
+                                    {susData.map((item, index) => (
+                                        <div
+                                            className="col-lg-4 col-md-6 mb-4 mx-auto"
+                                            key={index}
+                                        >
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <h6 className="card-title">
+                                                        {questionTexts[index]}
+                                                    </h6>
+                                                    <SUSPieChart
+                                                        data={item.data}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center">
+                                    Tidak ada data
+                                </div>
+                            )}
                         </AccordionLayout>
-                    }
+                    )}
 
-                    { hasAnyPermission(['dashboard.charts']) &&
-                        <AccordionLayout title="Tabel Hasil" defaultOpen={false}>
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h4>Hasil SUS</h4>
-                                <button
-                                    className="btn btn-success"
-                                    onClick={handleExport}
-                                >
-                                    Export to Excel
-                                </button>
-                            </div>
-                            <SUSTableUser data={susSurveyResults} />
+                    {hasAnyPermission(["dashboard.charts"]) && (
+                        <AccordionLayout
+                            title="Tabel Hasil"
+                            defaultOpen={false}
+                        >
+                            {susSurveyResults.length > 0 ? ( 
+                                <div>
+                                    <div className="d-flex justify-content-between align-items-center mb-4">
+                                        <h4>Hasil SUS</h4>
+                                        <button
+                                            className="btn btn-success"
+                                            onClick={handleExport}
+                                        >
+                                            Export to Excel
+                                        </button>
+                                    </div>
+                                    <SUSTableUser data={susSurveyResults} />
+                                </div>
+                            ) : (
+                                <div className="text-center">
+                                    Tidak ada data
+                                </div>
+                            )}
                         </AccordionLayout>
-                    }
-                </div>          
+                    )}
+                </div>
             </LayoutAccount>
         </>
     );

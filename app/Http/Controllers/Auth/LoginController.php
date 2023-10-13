@@ -18,7 +18,6 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        //set validation
         $request->validate([
             'email'     => 'required|email',
             'password'  => 'required',
@@ -33,7 +32,7 @@ class LoginController extends Controller
             //regenerate session
             $request->session()->regenerate();
 
-            return redirect()->route('account.dashboard0');
+            return redirect()->route('account.dashboard');
         }
 
         //if login fails

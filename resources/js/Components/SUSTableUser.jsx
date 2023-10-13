@@ -1,12 +1,6 @@
 import React from "react";
 
 const SUSTableUser = ({ data }) => {
-    // Periksa apakah 'data' adalah null atau undefined
-    if (!data || data.length === 0) {
-        return <div>Tidak Ada Data</div>;
-    }
-
-    // Jika 'data' ada, maka kita dapat mengambil susKeys
     const susKeys = Object.keys(data[0]?.answerData);
 
     return (
