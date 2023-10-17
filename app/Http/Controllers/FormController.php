@@ -35,13 +35,13 @@ class FormController extends Controller
         $validatedData = $request->validate([
             'survey_id'             => 'required|exists:surveys,id',
             'first_name'             => 'required',
-            'last_name'              => 'required',
+            'surname'              => 'required',
             'email'                 => 'required|email',
-            'age'                   => 'required|numeric',
+            'birth_date'                   => 'required|date',
             'gender'                => 'required',
             'profession'            => 'required',
             'educational_background' => 'required',
-            'response_data'        => 'required|json', // Validasi untuk responses_data sebagai JSON
+            'response_data'        => 'required|json', 
         ]);
 
         // Ambil nilai dari sus1 hingga sus10

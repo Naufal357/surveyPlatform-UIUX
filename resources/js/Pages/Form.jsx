@@ -11,13 +11,13 @@ function Form() {
     const { errors, surveys, auth } = usePage().props;
 
     let [formData, setFormData] = useState({
-        first_name: "",
-        last_name: "",
-        email: "",
-        age: "",
-        gender: "",
-        profession: "",
-        educational_background: "",
+        first_name: auth.first_name,
+        surname: auth.surname,
+        email: auth.email,
+        birth_date: auth.birth_date,
+        gender: auth.gender,
+        profession: auth.profession,
+        educational_background: auth.educational_background,
     });
 
     const [questionValues, setQuestionValues] = useState({
@@ -117,7 +117,7 @@ function Form() {
                     <hr />
 
                     <form onSubmit={submitForm}>
-                        <div className="Personal-Info-Entry">
+                        {/* <div className="Personal-Info-Entry">
                             <h3 className="text-center text-2xl font-bold mb-4 mt-4">
                                 Personal Information
                             </h3>
@@ -283,7 +283,7 @@ function Form() {
                                 </select>
                             </div>
                         </div>
-                        <hr />
+                        <hr /> */}
 
                         <div className="Questionnaire-SUS">
                             <h3 className="text-center text-2xl font-bold mb-4">

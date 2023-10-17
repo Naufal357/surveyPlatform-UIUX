@@ -153,7 +153,7 @@ class SusController extends Controller
 
             $susSurveyResults[] = [
                 'id' => $response->id,
-                'respondentName' => $response->first_name . " " . $response->last_name,
+                'respondentName' => $response->first_name . " " . $response->surname,
                 'susScore' => $this->calculateSUS($responseData),
                 'answerData' => $responseData,
             ];

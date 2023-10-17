@@ -12,9 +12,9 @@ class SurveyResponses extends Model
 
     protected $fillable = [
         'first_name',
-        'last_name',
+        'surname',
         'email',
-        'age',
+        'birth_date',
         'gender',
         'profession',
         'educational_background',

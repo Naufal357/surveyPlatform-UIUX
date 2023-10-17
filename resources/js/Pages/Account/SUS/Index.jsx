@@ -86,7 +86,7 @@ export default function Dashboard() {
     return (
         <>
             <Head>
-                <title>Dashboard - SurveyPlatform</title>
+                <title>SUS Result - SurveyPlatform</title>
             </Head>
             <LayoutAccount>
                 <div className="m-3">
@@ -129,7 +129,7 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    {hasAnyPermission(["dashboard.statistics"]) && (
+                    {hasAnyPermission(["sus.statistics"]) && (
                         <div className="row mt-2">
                             <InfoCard
                                 icon="fa-users "
@@ -152,7 +152,7 @@ export default function Dashboard() {
                         </div>
                     )}
 
-                    {hasAnyPermission(["dashboard.charts"]) && (
+                    {hasAnyPermission(["sus.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
                             defaultOpen={true}
@@ -185,21 +185,25 @@ export default function Dashboard() {
                         </AccordionLayout>
                     )}
 
-                    {hasAnyPermission(["dashboard.charts"]) && (
+                    {hasAnyPermission(["sus.responses"]) && (
                         <AccordionLayout
                             title="Tabel Hasil"
                             defaultOpen={false}
                         >
-                            {susSurveyResults.length > 0 ? ( 
+                            {susSurveyResults.length > 0 ? (
                                 <div>
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <h4>Hasil SUS</h4>
-                                        <button
-                                            className="btn btn-success"
-                                            onClick={handleExport}
-                                        >
-                                            Export to Excel
-                                        </button>
+                                        {hasAnyPermission([
+                                            "sus.export",
+                                        ]) && (
+                                            <button
+                                                className="btn btn-success"
+                                                onClick={handleExport}
+                                            >
+                                                Export to Excel
+                                            </button>
+                                        )}
                                     </div>
                                     <SUSTableUser data={susSurveyResults} />
                                 </div>

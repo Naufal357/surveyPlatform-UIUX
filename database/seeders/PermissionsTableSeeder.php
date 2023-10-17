@@ -17,16 +17,19 @@ class PermissionsTableSeeder extends Seeder
     {
         //permission dashboard
         Permission::create(['name' => 'dashboard.index', 'guard_name' => 'web']);
-        Permission::create(['name' => 'dashboard.statistics', 'guard_name' => 'web']);
-        Permission::create(['name' => 'dashboard.charts', 'guard_name' => 'web']);
-        Permission::create(['name' => 'dashboard.responses', 'guard_name' => 'web']);
-        Permission::create(['name' => 'dashboard.users', 'guard_name' => 'web']);
 
-        //permission users
-        Permission::create(['name' => 'users.index', 'guard_name' => 'web']);
-        Permission::create(['name' => 'users.create', 'guard_name' => 'web']);
-        Permission::create(['name' => 'users.edit', 'guard_name' => 'web']);
-        Permission::create(['name' => 'users.delete', 'guard_name' => 'web']);
+        //permission sus result
+        Permission::create(['name' => 'sus.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'sus.statistics', 'guard_name' => 'web']);
+        Permission::create(['name' => 'sus.charts', 'guard_name' => 'web']);
+        Permission::create(['name' => 'sus.responses', 'guard_name' => 'web']);
+        Permission::create(['name' => 'sus.export', 'guard_name' => 'web']);
+
+        //permission surveys
+        Permission::create(['name' => 'surveys.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'surveys.create', 'guard_name' => 'web']);
+        Permission::create(['name' => 'surveys.edit', 'guard_name' => 'web']);
+        Permission::create(['name' => 'surveys.delete', 'guard_name' => 'web']);
 
         //permission roles
         Permission::create(['name' => 'roles.index', 'guard_name' => 'web']);
@@ -37,11 +40,10 @@ class PermissionsTableSeeder extends Seeder
         //permission permissions
         Permission::create(['name' => 'permissions.index', 'guard_name' => 'web']);
 
-        //permission surveys
-        Permission::create(['name' => 'surveys.index', 'guard_name' => 'web']);
-        Permission::create(['name' => 'surveys.create', 'guard_name' => 'web']);
-        Permission::create(['name' => 'surveys.show', 'guard_name' => 'web']);
-        Permission::create(['name' => 'surveys.edit', 'guard_name' => 'web']);
-        Permission::create(['name' => 'surveys.delete', 'guard_name' => 'web']);
+        //permission users
+        Permission::create(['name' => 'users.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'users.create', 'guard_name' => 'web']);
+        Permission::create(['name' => 'users.edit', 'guard_name' => 'web']);
+        Permission::create(['name' => 'users.delete', 'guard_name' => 'web']);
     }
 }

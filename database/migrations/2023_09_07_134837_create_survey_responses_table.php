@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('survey_id')->references('id')->on('surveys')->cascadeOnDelete();
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('surname');
             $table->string('email');
-            $table->integer('age');
+            $table->date('birth_date');
             $table->string('gender');
             $table->string('profession');
             $table->string('educational_background');

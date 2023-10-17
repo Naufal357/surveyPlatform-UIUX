@@ -4,7 +4,7 @@ import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import hasAnyPermission from "../../../Utils/Permissions";
 import Search from "../../../Components/Search";
 import Pagination from "../../../Components/Pagination";
-import Delete from "../../../Components/Delete"
+import Delete from "../../../Components/Delete";
 
 export default function RoleIndex() {
     //destruct props "roles"
@@ -19,16 +19,18 @@ export default function RoleIndex() {
                 <div className="row mt-5">
                     <div className="col-md-8">
                         <div className="row">
-                            <div className="col-md-3 col-12 mb-2">
-                                <Link
-                                    href="/account/roles/create"
-                                    className="btn btn-md btn-success border-0 shadow w-100"
-                                    type="button"
-                                >
-                                    <i className="fa fa-plus-circle me-2"></i>
-                                    Add
-                                </Link>
-                            </div>
+                            {hasAnyPermission(["roles.create"]) && (
+                                <div className="col-md-3 col-12 mb-2">
+                                    <Link
+                                        href="/account/roles/create"
+                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        type="button"
+                                    >
+                                        <i className="fa fa-plus-circle me-2"></i>
+                                        Add
+                                    </Link>
+                                </div>
+                            )}
                             <div className="col-md-9 col-12 mb-2">
                                 <Search URL={"/account/roles"} />
                             </div>

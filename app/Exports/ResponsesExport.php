@@ -27,12 +27,12 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
     public function collection()
     {
         // Mendapatkan data SurveyResponses
-        $responses = SurveyResponses::select('first_name', 'last_name', 'email', 'age', 'gender', 'profession', 'educational_background', 'created_at', 'response_data')->where('survey_id', $this->survey_id)->get();
+        $responses = SurveyResponses::select('first_name', 'surname', 'email', 'birth_date', 'gender', 'profession', 'educational_background', 'created_at', 'response_data')->where('survey_id', $this->survey_id)->get();
 
         // Memanipulasi data sebelum diekspor
         $formattedResponses = $responses->map(function ($response) {
-            // Menggabungkan first_name dan last_name
-            $response['Full Name'] = $response['first_name'] . ' ' . $response['last_name'];
+            // Menggabungkan first_name dan surname
+            $response['Full Name'] = $response['first_name'] . ' ' . $response['surname'];
 
             // Menguraikan response_data dari format JSON ke kolom SUS1 hingga SUS10 jika tersedia
             $responseData = json_decode($response['response_data']);
@@ -40,9 +40,9 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
                 $response['SUS' . $i] = isset($responseData->{'sus' . $i}) ? $responseData->{'sus' . $i} : null;
             }
 
-            // Hapus kolom first_name dan last_name
+            // Hapus kolom first_name dan surname
             unset($response['first_name']);
-            unset($response['last_name']);
+            unset($response['surname']);
             return $response;
         });
 
@@ -51,7 +51,7 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
             return [
                 'Full Name' => $response['Full Name'],
                 'Email' => $response['email'],
-                'Age' => $response['age'],
+                'Birth Date' => $response['birth_date'],
                 'Gender' => $response['gender'],
                 'Profession' => $response['profession'],
                 'Educational Background' => $response['educational_background'],
@@ -77,7 +77,7 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
         return [
             'Full Name',
             'Email',
-            'Age',
+            'Birth Date',
             'Gender',
             'Profession',
             'Educational Background',

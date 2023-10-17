@@ -1,5 +1,6 @@
 import React from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import hasAnyPermission from "../../../Utils/Permissions";
 import Search from "../../../Components/Search";
 import Delete from "../../../Components/Delete";
 import Pagination from "../../../Components/Pagination";
@@ -26,16 +27,18 @@ export default function SurveyIndex() {
                 <div className="row mt-5">
                     <div className="col-md-8">
                         <div className="row">
-                            <div className="col-md-3 col-12 mb-2">
-                                <Link
-                                    href="/account/surveys/create"
-                                    className="btn btn-md btn-success border-0 shadow w-100"
-                                    type="button"
-                                >
-                                    <i className="fa fa-plus-circle me-2"></i>
-                                    Tambah
-                                </Link>
-                            </div>
+                            {hasAnyPermission(["surveys.create"]) && (
+                                <div className="col-md-3 col-12 mb-2">
+                                    <Link
+                                        href="/account/surveys/create"
+                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        type="button"
+                                    >
+                                        <i className="fa fa-plus-circle me-2"></i>
+                                        Tambah
+                                    </Link>
+                                </div>
+                            )}
                             <div className="col-md-9 col-12 mb-2">
                                 <Search URL={"/account/Surveys"} />
                             </div>
@@ -140,20 +143,32 @@ export default function SurveyIndex() {
                                                                 />
                                                             </td>
                                                             <td className="text-center">
-                                                                <Link
-                                                                    href={`/account/surveys/${survey.id}/edit`}
-                                                                    className="btn btn-primary btn-sm m-2"
-                                                                >
-                                                                    <i className="fa fa-pencil-alt"></i>
-                                                                </Link>
-                                                                <Delete
-                                                                    URL={
-                                                                        "/account/surveys"
-                                                                    }
-                                                                    id={
-                                                                        survey.id
-                                                                    }
-                                                                />
+                                                                {hasAnyPermission(
+                                                                    [
+                                                                        "surveys.edit",
+                                                                    ]
+                                                                ) && (
+                                                                    <Link
+                                                                        href={`/account/surveys/${survey.id}/edit`}
+                                                                        className="btn btn-primary btn-sm m-2"
+                                                                    >
+                                                                        <i className="fa fa-pencil-alt"></i>
+                                                                    </Link>
+                                                                )}
+                                                                {hasAnyPermission(
+                                                                    [
+                                                                        "surveys.delete",
+                                                                    ]
+                                                                ) && (
+                                                                    <Delete
+                                                                        URL={
+                                                                            "/account/surveys"
+                                                                        }
+                                                                        id={
+                                                                            survey.id
+                                                                        }
+                                                                    />
+                                                                )}
                                                                 <button
                                                                     className="btn btn-success btn-sm m-2"
                                                                     onClick={() => {
@@ -199,4 +214,4 @@ export default function SurveyIndex() {
             </LayoutAccount>
         </>
     );
-};
+}

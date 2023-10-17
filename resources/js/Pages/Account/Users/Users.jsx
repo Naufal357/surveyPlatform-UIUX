@@ -19,16 +19,18 @@ export default function UserIndex() {
                 <div className="row mt-5">
                     <div className="col-md-8">
                         <div className="row">
-                            <div className="col-md-3 col-12 mb-2">
-                                <Link
-                                    href="/account/users/create"
-                                    className="btn btn-md btn-success border-0 shadow w-100"
-                                    type="button"
-                                >
-                                    <i className="fa fa-plus-circle me-2"></i>
-                                    Add
-                                </Link>
-                            </div>
+                            {hasAnyPermission(["users.create"]) && (
+                                <div className="col-md-3 col-12 mb-2">
+                                    <Link
+                                        href="/account/users/create"
+                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        type="button"
+                                    >
+                                        <i className="fa fa-plus-circle me-2"></i>
+                                        Add
+                                    </Link>
+                                </div>
+                            )}
                             <div className="col-md-9 col-12 mb-2">
                                 <Search URL={"/account/users"} />
                             </div>
