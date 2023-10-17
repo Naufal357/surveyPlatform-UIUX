@@ -11,7 +11,6 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        //return inertia
         return inertia(
             'Auth/Register',
             [
@@ -22,27 +21,32 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        //set validation
         $request->validate([
-            'name'      => 'required',
+            'first_name'      => 'required',
+            'surname'         => 'required',
             'email'     => 'required|email|unique:users',
+            'birth_date'     => 'required|date',
+            'gender'     => 'required',
+            'profession'     => 'required',
+            'educational_background'     => 'required',
             'password'  => 'required|confirmed',
         ]);
 
-        //insert data user
         $user = User::create([
-            'name'      => $request->name,
+            'first_name'      => $request->first_name,
+            'surname'         => $request->surname,
             'email'     => $request->email,
+            'birth_date'     => $request->birth_date,
+            'gender'     => $request->gender,
+            'profession'     => $request->profession,
+            'educational_background'     => $request->educational_background,
             'password'  => bcrypt($request->password)
         ]);
 
-        //find role "customer
         $role = Role::findByName('user');
 
-        //assing role "customer" to user
         $user->assignRole($role);
 
-        //redirect to login
         return redirect()->route('login');
     }
 }

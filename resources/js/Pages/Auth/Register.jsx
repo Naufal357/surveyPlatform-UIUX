@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import Layout from "../../Layouts/Header";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
+import AuthField from "../../Components/AuthField";
+import CustomDatePicker from "../../Components/DatePicker";
 
 export default function Register() {
     //destruct props "errors"
     const { errors } = usePage().props;
 
     //state user
-    const [name, setName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
+    const [gender, setGender] = useState("");
+    const [birthDate, setBirthDate] = useState(null);
+    const [profession, setProfession] = useState("");
+    const [educationalBackground, setEducationalBackground] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
@@ -19,8 +26,13 @@ export default function Register() {
 
         //register
         Inertia.post("/register", {
-            name: name,
+            first_name: firstName,
+            surname: surname,
             email: email,
+            birth_date: birthDate,
+            gender: gender,
+            profession: profession,
+            educational_background: educationalBackground,
             password: password,
             password_confirmation: passwordConfirmation,
         });
@@ -36,7 +48,10 @@ export default function Register() {
                     <div className="row justify-content-center">
                         <div className="col-md-6 mt-80">
                             <div className="text-center mb-4">
-                                <img src="/assets/images/logo.png" width={"60"} />
+                                <img
+                                    src="/assets/images/logo.png"
+                                    width={"60"}
+                                />
                                 <h4>
                                     <strong>Survey</strong> Platform
                                 </h4>
@@ -52,101 +67,155 @@ export default function Register() {
                                     <form onSubmit={registerHandler}>
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <label className="mb-1">
-                                                    Full Name
-                                                </label>
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">
-                                                        <i className="fa fa-user"></i>
-                                                    </span>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={name}
-                                                        onChange={(e) =>
-                                                            setName(e.target.value)
-                                                        }
-                                                        placeholder="Full Name"
-                                                    />
-                                                </div>
-                                                {errors.name && (
-                                                    <div className="alert alert-danger">
-                                                        {errors.name}
-                                                    </div>
-                                                )}
+                                                <AuthField
+                                                    icon="fa fa-user"
+                                                    label="First Name"
+                                                    type="text"
+                                                    value={firstName}
+                                                    onChange={(e) =>
+                                                        setFirstName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    placeholder="First Name"
+                                                    error={errors.firstName}
+                                                    required
+                                                />
                                             </div>
+
                                             <div className="col-md-6">
-                                                <label className="mb-1">
-                                                    Email Address
-                                                </label>
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">
-                                                        <i className="fa fa-envelope"></i>
-                                                    </span>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        value={email}
-                                                        onChange={(e) =>
-                                                            setEmail(e.target.value)
-                                                        }
-                                                        placeholder="Email Address"
-                                                    />
-                                                </div>
-                                                {errors.email && (
-                                                    <div className="alert alert-danger">
-                                                        {errors.email}
-                                                    </div>
-                                                )}
+                                                <AuthField
+                                                    icon="fa fa-user"
+                                                    label="Surname"
+                                                    type="text"
+                                                    value={surname}
+                                                    onChange={(e) =>
+                                                        setSurname(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    placeholder="Surname"
+                                                    error={errors.surname}
+                                                    required
+                                                />
                                             </div>
                                         </div>
+
+                                        <AuthField
+                                            icon="fa fa-envelope"
+                                            label="Email Address"
+                                            type="text"
+                                            value={email}
+                                            onChange={(e) =>
+                                                setEmail(e.target.value)
+                                            }
+                                            placeholder="Email Address"
+                                            error={errors.email}
+                                            required
+                                        />
+
+                                        <AuthField
+                                            icon="fas fa-venus-mars"
+                                            label="Gender"
+                                            value={gender}
+                                            onChange={(e) =>
+                                                setGender(e.target.value)
+                                            }
+                                            options={["Male", "Female"]}
+                                            error={errors.gender}
+                                            fieldselect="true"
+                                            required
+                                        />
+
+                                        <AuthField
+                                            icon="fas fa-user-tie"
+                                            label="Profession"
+                                            value={profession}
+                                            onChange={(e) =>
+                                                setProfession(e.target.value)
+                                            }
+                                            options={[
+                                                "Government Employee",
+                                                "Armed Forces",
+                                                "Police",
+                                                "Entrepreneur",
+                                                "Private Workers",
+                                                "Freelancer",
+                                                "Homemaker",
+                                                "Professor",
+                                                "Student",
+                                                "other",
+                                            ]}
+                                            error={errors.profession}
+                                            fieldselect="true"
+                                            required
+                                        />
+
+                                        <AuthField
+                                            icon="fas fa-user-graduate"
+                                            label="Educational Background"
+                                            value={educationalBackground}
+                                            onChange={(e) =>
+                                                setEducationalBackground(
+                                                    e.target.value
+                                                )
+                                            }
+                                            options={[
+                                                "Elementary School",
+                                                "Junior High School",
+                                                "High School",
+                                                "Associate's Degree",
+                                                "Bachelor's Degree",
+                                                "Master's Degree",
+                                                "Doctorate Degree",
+                                            ]}
+                                            error={errors.educationalBackground}
+                                            fieldselect="true"
+                                            required
+                                        />
+
+                                        <CustomDatePicker
+                                            label="Birth Date"
+                                            icon="fas fa-calendar-alt"
+                                            selectedDate={birthDate}
+                                            onChange={(date) =>
+                                                setBirthDate(date)
+                                            }
+                                            error={errors.birthDate}
+                                            required
+                                        />
+
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <label className="mb-1">
-                                                    Password
-                                                </label>
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">
-                                                        <i className="fa fa-lock"></i>
-                                                    </span>
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        value={password}
-                                                        onChange={(e) =>
-                                                            setPassword(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        placeholder="Password"
-                                                    />
-                                                </div>
-                                                {errors.password && (
-                                                    <div className="alert alert-danger">
-                                                        {errors.password}
-                                                    </div>
-                                                )}
+                                                <AuthField
+                                                    icon="fa fa-lock"
+                                                    label="Password"
+                                                    type="password"
+                                                    value={password}
+                                                    onChange={(e) =>
+                                                        setPassword(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    placeholder="Password"
+                                                    error={errors.password}
+                                                    required
+                                                />
                                             </div>
                                             <div className="col-md-6">
-                                                <label className="mb-1">
-                                                    Password Confirmation
-                                                </label>
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">
-                                                        <i className="fa fa-lock"></i>
-                                                    </span>
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        value={passwordConfirmation}
-                                                        onChange={(e) =>
-                                                            setPasswordConfirmation(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        placeholder="Password Confirmation"
-                                                    />
-                                                </div>
+                                                <AuthField
+                                                    icon="fa fa-lock"
+                                                    label="Password Confirmation"
+                                                    type="password"
+                                                    value={passwordConfirmation}
+                                                    onChange={(e) =>
+                                                        setPasswordConfirmation(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    placeholder="Password Confirmation"
+                                                    required
+                                                />
                                             </div>
                                         </div>
                                         <button
@@ -159,7 +228,8 @@ export default function Register() {
                                 </div>
                             </div>
                             <div className="register text-center mt-3">
-                                Have an account? <Link href="/login">Login!</Link>
+                                Have an account?{" "}
+                                <Link href="/login">Login!</Link>
                             </div>
                         </div>
                     </div>

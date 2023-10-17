@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import AuthField from "../../../Components/AuthField";
+import CustomDatePicker from "../../../Components/DatePicker";
+import ButtonCRUD from "../../../Components/ButtonCRUD";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
@@ -8,8 +11,13 @@ export default function UserEdit() {
     const { errors, roles, user } = usePage().props;
 
     //state
-    const [name, setName] = useState(user.name);
+    const [firstName, setFirstName] = useState(user.first_name);
+    const [surname, setSurname] = useState(user.surname);
     const [email, setEmail] = useState(user.email);
+    const [gender, setGender] = useState(user.gender);
+    const [birthDate, setBirthDate] = useState(null);
+    const [profession, setProfession] = useState(user.profession);
+    const [educationalBackground, setEducationalBackground] = useState(user.educational_background);
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [rolesData, setRolesData] = useState(
@@ -37,13 +45,23 @@ export default function UserEdit() {
     const updateUser = async (e) => {
         e.preventDefault();
 
+        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+            handleReset();
+            return;
+        }
+
         //sending data
         Inertia.put(
             `/account/users/${user.id}`,
             {
                 //data
-                name: name,
+                first_name: firstName,
+                surname: surname,
                 email: email,
+                gender: gender,
+                birth_date: birthDate,
+                profession: profession,
+                educational_background: educationalBackground,
                 password: password,
                 password_confirmation: passwordConfirmation,
                 roles: rolesData,
@@ -61,6 +79,19 @@ export default function UserEdit() {
                 },
             }
         );
+    };
+
+    const handleReset = () => {
+        setFirstName("");
+        setSurname("");
+        setEmail("");
+        setGender("");
+        setBirthDate(null);
+        setProfession("");
+        setEducationalBackground("");
+        setPassword("");
+        setPasswordConfirmation("");
+        setRolesData([]);
     };
 
     return (
@@ -82,87 +113,180 @@ export default function UserEdit() {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="mb-3">
-                                                <label className="form-label fw-bold">
-                                                    Full Name
-                                                </label>
-                                                <input
+                                                <AuthField
+                                                    icon="fa fa-user"
+                                                    label="First Name"
                                                     type="text"
-                                                    className="form-control"
-                                                    value={name}
+                                                    value={firstName}
                                                     onChange={(e) =>
-                                                        setName(e.target.value)
+                                                        setFirstName(
+                                                            e.target.value
+                                                        )
                                                     }
-                                                    placeholder="Enter Full Name"
+                                                    placeholder="First Name"
+                                                    error={errors.firstName}
+                                                    required
                                                 />
                                             </div>
-                                            {errors.name && (
-                                                <div className="alert alert-danger">
-                                                    {errors.name}
-                                                </div>
-                                            )}
                                         </div>
                                         <div className="col-md-6">
                                             <div className="mb-3">
-                                                <label className="form-label fw-bold">
-                                                    Email Address
-                                                </label>
-                                                <input
+                                                <AuthField
+                                                    icon="fa fa-user"
+                                                    label="Surname"
                                                     type="text"
-                                                    className="form-control"
-                                                    value={email}
+                                                    value={surname}
                                                     onChange={(e) =>
-                                                        setEmail(e.target.value)
+                                                        setSurname(
+                                                            e.target.value
+                                                        )
                                                     }
-                                                    placeholder="Enter Email Address"
+                                                    placeholder="Surname"
+                                                    error={errors.surname}
+                                                    required
                                                 />
                                             </div>
-                                            {errors.email && (
-                                                <div className="alert alert-danger">
-                                                    {errors.email}
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="mb-3">
-                                                <label className="form-label fw-bold">
-                                                    Password
-                                                </label>
-                                                <input
+                                                <AuthField
+                                                    icon="fa fa-envelope"
+                                                    label="Email Address"
+                                                    type="text"
+                                                    value={email}
+                                                    onChange={(e) =>
+                                                        setEmail(e.target.value)
+                                                    }
+                                                    placeholder="Email Address"
+                                                    error={errors.email}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <AuthField
+                                                    icon="fas fa-venus-mars"
+                                                    label="Gender"
+                                                    value={gender}
+                                                    onChange={(e) =>
+                                                        setGender(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    options={["Male", "Female"]}
+                                                    error={errors.gender}
+                                                    fieldselect="true"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <AuthField
+                                                    icon="fas fa-user-tie"
+                                                    label="Profession"
+                                                    value={profession}
+                                                    onChange={(e) =>
+                                                        setProfession(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    options={[
+                                                        "Government Employee",
+                                                        "Armed Forces",
+                                                        "Police",
+                                                        "Entrepreneur",
+                                                        "Private Workers",
+                                                        "Freelancer",
+                                                        "Homemaker",
+                                                        "Professor",
+                                                        "Student",
+                                                        "other",
+                                                    ]}
+                                                    error={errors.profession}
+                                                    fieldselect="true"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <AuthField
+                                                    icon="fas fa-user-graduate"
+                                                    label="Educational Background"
+                                                    value={
+                                                        educationalBackground
+                                                    }
+                                                    onChange={(e) =>
+                                                        setEducationalBackground(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    options={[
+                                                        "Elementary School",
+                                                        "Junior High School",
+                                                        "High School",
+                                                        "Associate's Degree",
+                                                        "Bachelor's Degree",
+                                                        "Master's Degree",
+                                                        "Doctorate Degree",
+                                                    ]}
+                                                    error={
+                                                        errors.educationalBackground
+                                                    }
+                                                    fieldselect="true"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <CustomDatePicker
+                                        label="Birth Date"
+                                        icon="fas fa-calendar-alt"
+                                        selectedDate={birthDate}
+                                        onChange={(date) => setBirthDate(date)}
+                                        error={errors.birthDate}
+                                    />
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <AuthField
+                                                    icon="fa fa-lock"
+                                                    label="Password"
                                                     type="password"
-                                                    className="form-control"
                                                     value={password}
                                                     onChange={(e) =>
                                                         setPassword(
                                                             e.target.value
                                                         )
                                                     }
-                                                    placeholder="Enter Password"
+                                                    placeholder="Password"
+                                                    error={errors.password}
                                                 />
                                             </div>
-                                            {errors.password && (
-                                                <div className="alert alert-danger">
-                                                    {errors.password}
-                                                </div>
-                                            )}
                                         </div>
                                         <div className="col-md-6">
                                             <div className="mb-3">
-                                                <label className="form-label fw-bold">
-                                                    Password Confirmation
-                                                </label>
-                                                <input
+                                                <AuthField
+                                                    icon="fa fa-lock"
+                                                    label="Password Confirmation"
                                                     type="password"
-                                                    className="form-control"
                                                     value={passwordConfirmation}
                                                     onChange={(e) =>
                                                         setPasswordConfirmation(
                                                             e.target.value
                                                         )
                                                     }
-                                                    placeholder="Enter Password Confirmation"
+                                                    placeholder="Password Confirmation"
                                                 />
                                             </div>
                                         </div>
@@ -199,28 +323,31 @@ export default function UserEdit() {
                                                 </label>
                                             </div>
                                         ))}
-
-                                        {errors.roles && (
-                                            <div className="alert alert-danger mt-2">
-                                                {errors.roles}
-                                            </div>
-                                        )}
                                     </div>
 
                                     <div>
-                                        <button
+                                        <ButtonCRUD
                                             type="submit"
-                                            className="btn btn-md btn-success me-2"
-                                        >
-                                            <i className="fa fa-save"></i>{" "}
-                                            Update
-                                        </button>
-                                        <button
+                                            label="Save"
+                                            color="btn-success"
+                                            iconClass="fa fa-save"
+                                        />
+                                        <ButtonCRUD
                                             type="reset"
-                                            className="btn btn-md btn-warning"
-                                        >
-                                            <i className="fa fa-redo"></i> Reset
-                                        </button>
+                                            label="Reset"
+                                            color="btn-warning"
+                                            iconClass="fa fa-redo"
+                                            onClick={handleReset}
+                                        />
+                                        <ButtonCRUD
+                                            type="Cancel"
+                                            label="Cancel"
+                                            color="btn-secondary"
+                                            iconClass="fas fa-times"
+                                            onClick={() =>
+                                                window.history.back()
+                                            }
+                                        />
                                     </div>
                                 </form>
                             </div>

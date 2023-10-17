@@ -7,9 +7,7 @@ import InfoCard from "../../Components/CardInfo";
 import TableDashboard from "../../Components/SUSTableDashboard";
 
 export default function Dashboard() {
-    const { auth, surveys, surveyResponseCounts } = usePage().props;
-
-    console.table(surveys);
+    const { auth, surveys } = usePage().props;
 
     return (
         <>
@@ -22,7 +20,8 @@ export default function Dashboard() {
                         <div className="m-3">
                             <div className="col-md-6">
                                 Selamat Datang,{" "}
-                                <strong>{auth.user.name}</strong> <br />
+                                <strong>{`${auth.user.first_name} ${auth.user.surname}`}</strong>{" "}
+                                <br />
                             </div>
                         </div>
                     </div>

@@ -16,6 +16,11 @@ class UserController extends Controller
         })->with('roles')->latest()->paginate(5);
 
         $users->appends(['q' => request()->q]);
+
+        $users->each(function ($user) {
+            $user->fullname = $user->first_name . ' ' . $user->surname;
+        });
+
         return inertia('Account/Users/Users', [
             'users' => $users
         ]);
@@ -32,15 +37,25 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'     => 'required',
-            'email'    => 'required|unique:users',
-            'password' => 'required|confirmed',
+            'first_name'      => 'required',
+            'surname'         => 'required',
+            'email'     => 'required|email|unique:users',
+            'birth_date'     => 'required|date',
+            'gender'     => 'required',
+            'profession'     => 'required',
+            'educational_background'     => 'required',
+            'password'  => 'required|confirmed',
         ]);
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => bcrypt($request->password)
+            'first_name'      => $request->first_name,
+            'surname'         => $request->surname,
+            'email'     => $request->email,
+            'birth_date'     => $request->birth_date,
+            'gender'     => $request->gender,
+            'profession'     => $request->profession,
+            'educational_background'     => $request->educational_background,
+            'password'  => bcrypt($request->password)
         ]);
         $user->assignRole($request->roles);
         return redirect()->route('account.users.index');
@@ -60,26 +75,49 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+
         $this->validate($request, [
-            'name'     => 'required',
+            'first_name'      => 'required',
+            'surname'         => 'required',
             'email'    => 'required|unique:users,email,' . $user->id,
+            'birth_date'     => 'nullable|date',
+            'gender'     => 'required',
+            'profession'     => 'required',
+            'educational_background'     => 'required',
             'password' => 'nullable|confirmed'
         ]);
 
-        if ($request->password == '') {
-
+        if ($request->password == '' && $request->birth_date == '') {
             $user->update([
-                'name'     => $request->name,
-                'email'    => $request->email
+                'first_name'      => $request->first_name,
+                'surname'         => $request->surname,
+                'email'     => $request->email,
+                'gender'     => $request->gender,
+                'profession'     => $request->profession,
+                'educational_background'     => $request->educational_background,
             ]);
-        } else {
-
+        } else if ($request->password == '') {
             $user->update([
-                'name'     => $request->name,
-                'email'    => $request->email,
-                'password' => bcrypt($request->password)
+                'first_name'      => $request->first_name,
+                'surname'         => $request->surname,
+                'email'     => $request->email,
+                'birth_date'     => $request->birth_date,
+                'gender'     => $request->gender,
+                'profession'     => $request->profession,
+                'educational_background'     => $request->educational_background,
+            ]);
+        } else if ($request->birth_date == '') {
+            $user->update([
+                'first_name'      => $request->first_name,
+                'surname'         => $request->surname,
+                'email'     => $request->email,
+                'gender'     => $request->gender,
+                'profession'     => $request->profession,
+                'educational_background'     => $request->educational_background,
+                'password'  => bcrypt($request->password)
             ]);
         }
+
         $user->syncRoles($request->roles);
         return redirect()->route('account.users.index');
     }

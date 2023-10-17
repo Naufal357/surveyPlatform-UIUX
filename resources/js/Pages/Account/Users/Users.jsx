@@ -89,7 +89,7 @@ export default function UserIndex() {
                                                                 1) *
                                                                 users.per_page}
                                                     </td>
-                                                    <td>{user.name}</td>
+                                                    <td>{user.fullname}</td>
                                                     <td>{user.email}</td>
                                                     <td>
                                                         {user.roles.map(

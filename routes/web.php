@@ -33,7 +33,7 @@ Route::prefix('account')->group(function(){
 
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account']);
         
-        Route::get('/responses/{id}/export', [App\Http\Controllers\Account\DashboardController::class, 'export'])->name('responses.export');
+        Route::get('/responses/{id}/export', [App\Http\Controllers\Account\SusController::class, 'export'])->name('responses.export');
 
         Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index');
 

@@ -64,7 +64,7 @@ export default function LayoutAccount({ children }) {
                             <div className="d-flex align-items-center">
                                 <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
                                     <NavDropdown
-                                        title={auth.user.name}
+                                        title={`${auth.user.first_name} ${auth.user.surname}`}
                                         className="fw-bold"
                                         id="basic-nav-dropdown"
                                     >
