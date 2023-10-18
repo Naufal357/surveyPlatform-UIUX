@@ -27,12 +27,12 @@ class UserTableSeeder extends Seeder
         $user2 = User::create([
             'first_name' => 'Naufal',
             'surname' => 'Rozan',
-            'email' => 'naufal@gmail.com',
+            'email' => 'naufal@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
             'profession' => 'Student',
             'educational_background' => "Bachelor's Degree",
-            'password' => bcrypt('naufal'),
+            'password' => bcrypt('123'),
         ]);
 
         //get all permissions
@@ -40,7 +40,7 @@ class UserTableSeeder extends Seeder
         $permissions2 = Permission::whereIn('name', [
             'dashboard.index', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
             'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete' 
-            ])->get();
+        ])->get();
 
         //get role
         $role1 = Role::find(1);

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image');
             $table->string('theme');
-            $table->string('description');
+            $table->longText('description');
             $table->text('embed_design');
             $table->text('embed_prototype');
             $table->timestamps();
