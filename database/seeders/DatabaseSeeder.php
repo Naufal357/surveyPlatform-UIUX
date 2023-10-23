@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionsTableSeeder::class);
         $this->call(UserTableSeeder::class);
         $this->call(SurveySeeder::class);
+        $this->call(CategoriesTableSeeder::class);
+        $this->call(UserSelectCategorySeeder::class);
+        $this->call(SurveyHasCategoriesSeeder::class);
     }
 }
