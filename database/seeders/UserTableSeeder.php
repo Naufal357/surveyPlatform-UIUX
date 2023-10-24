@@ -12,7 +12,6 @@ class UserTableSeeder extends Seeder
 {
     public function run()
     {
-        //create user
         $user1 = User::create([
             'first_name'      => 'Super',
             'surname'         => 'Admin',
@@ -35,22 +34,18 @@ class UserTableSeeder extends Seeder
             'password' => bcrypt('123'),
         ]);
 
-        //get all permissions
         $permissions1 = Permission::all();
         $permissions2 = Permission::whereIn('name', [
             'dashboard.index', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
             'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete' 
         ])->get();
 
-        //get role
         $role1 = Role::find(1);
         $role2 = Role::find(2);
 
-        //assign permission to role
         $role1->syncPermissions($permissions1);
         $role2->syncPermissions($permissions2);
 
-        //assign role to user
         $user1->assignRole($role1);
         $user2->assignRole($role2);
     }

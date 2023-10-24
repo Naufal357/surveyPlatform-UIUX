@@ -8,10 +8,8 @@ import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function UserCreate() {
-    //destruct props "errors" & "roles"
-    const { errors, roles } = usePage().props;
+    const { errors, roles, categories } = usePage().props;
 
-    //state
     const [firstName, setFirstName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
@@ -22,20 +20,22 @@ export default function UserCreate() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [rolesData, setRolesData] = useState([]);
+    const [userPrefsData, setUserPrefsData] = useState([]);
 
-    //define method "handleCheckboxChange"
-    const handleCheckboxChange = (e) => {
-        //define data
+    const handleCheckboxRolesChange = (e) => {
         let data = rolesData;
-
-        //push data on state
         data.push(e.target.value);
 
-        //set data to state
         setRolesData(data);
     };
 
-    //method "storeUser"
+    const handleCheckboxUserPrefsChange = (e) => {
+        let data = userPrefsData;
+        data.push(parseInt(e.target.value, 10));
+
+        setUserPrefsData(data);
+    };
+
     const storeUser = async (e) => {
         e.preventDefault();
 
@@ -44,7 +44,6 @@ export default function UserCreate() {
             return;
         }
 
-        //sending data
         Inertia.post(
             "/account/users",
             {
@@ -59,10 +58,10 @@ export default function UserCreate() {
                 password: password,
                 password_confirmation: passwordConfirmation,
                 roles: rolesData,
+                user_prefs: userPrefsData,
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data saved successfully!",
@@ -86,7 +85,8 @@ export default function UserCreate() {
         setPassword("");
         setPasswordConfirmation("");
         setRolesData([]);
-    }
+        setUserPrefsData([]);
+    };
 
     return (
         <>
@@ -302,7 +302,7 @@ export default function UserCreate() {
                                                     type="checkbox"
                                                     value={role.name}
                                                     onChange={
-                                                        handleCheckboxChange
+                                                        handleCheckboxRolesChange
                                                     }
                                                     id={`check-${role.id}`}
                                                 />
@@ -315,11 +315,42 @@ export default function UserCreate() {
                                             </div>
                                         ))}
 
-                                        {errors.roles && (
-                                            <div className="alert alert-danger mt-2">
-                                                {errors.roles}
-                                            </div>
-                                        )}
+                                        <div className="mb-3">
+                                            <label className="fw-bold">
+                                                Preference Categories
+                                            </label>
+                                            <br />
+                                            {categories.map(
+                                                (category, index) => (
+                                                    <div
+                                                        className="form-check form-check-inline"
+                                                        key={index}
+                                                    >
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            value={category.id}
+                                                            defaultChecked={userPrefsData.some(
+                                                                (category_id) =>
+                                                                    category_id ===
+                                                                        category.id ??
+                                                                    true
+                                                            )}
+                                                            onChange={
+                                                                handleCheckboxUserPrefsChange
+                                                            }
+                                                            id={`check-${category.id}`}
+                                                        />
+                                                        <label
+                                                            className="form-check-label"
+                                                            htmlFor={`check-${category.id}`}
+                                                        >
+                                                            {category.name}
+                                                        </label>
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
                                     </div>
 
                                     <div>

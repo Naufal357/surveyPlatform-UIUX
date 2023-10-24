@@ -31,12 +31,15 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $categories = Category::all();
+
         return inertia('Account/Users/Create', [
-            'roles' => $roles
+            'roles' => $roles,
+            'categories' => $categories,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, UserSelectCategory $userPref)
     {
         $this->validate($request, [
             'first_name'      => 'required',
@@ -46,6 +49,8 @@ class UserController extends Controller
             'gender'     => 'required',
             'profession'     => 'required',
             'educational_background'     => 'required',
+            'roles' => 'required',
+            'user_prefs' => 'required',
             'password'  => 'required|confirmed',
         ]);
 
@@ -60,6 +65,15 @@ class UserController extends Controller
             'password'  => bcrypt($request->password)
         ]);
         $user->assignRole($request->roles);
+
+        if ($request->has('user_prefs')) {
+            $userPrefsData = $request->user_prefs;
+            $userPref->where('user_id', $user->id)->delete();
+
+            foreach ($userPrefsData as $category_id) {
+                $userPref->create(['category_id' => $category_id, 'user_id' => $user->id]);
+            }
+        }
         return redirect()->route('account.users.index');
     }
 

@@ -9,6 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_select_category', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
