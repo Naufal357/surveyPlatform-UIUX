@@ -9,6 +9,8 @@ class UserSelectCategory extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_select_category';
+
     protected $fillable = [
         'category_id',
         'user_id',

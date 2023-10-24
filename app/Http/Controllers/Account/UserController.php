@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Account;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Models\Category;
+use App\Models\UserSelectCategory;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -64,12 +66,15 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::with('roles')->findOrFail($id);
-
         $roles = Role::all();
+        $categories = Category::all();
+        $userprefs = UserSelectCategory::where('user_id', $id)->get();
 
         return inertia('Account/Users/Edit', [
             'user' => $user,
-            'roles' => $roles
+            'roles' => $roles,
+            'categories' => $categories,
+            'userpref' => $userprefs
         ]);
     }
 

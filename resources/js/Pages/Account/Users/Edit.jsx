@@ -8,7 +8,9 @@ import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function UserEdit() {
-    const { errors, roles, user } = usePage().props;
+    const { errors, roles, user, categories, userpref } = usePage().props;
+
+    console.log(userpref);
 
     //state
     const [firstName, setFirstName] = useState(user.first_name);
@@ -17,14 +19,16 @@ export default function UserEdit() {
     const [gender, setGender] = useState(user.gender);
     const [birthDate, setBirthDate] = useState(null);
     const [profession, setProfession] = useState(user.profession);
-    const [educationalBackground, setEducationalBackground] = useState(user.educational_background);
+    const [educationalBackground, setEducationalBackground] = useState(
+        user.educational_background
+    );
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [rolesData, setRolesData] = useState(
         user.roles.map((obj) => obj.name)
     );
+    const userprefData = userpref.map((item) => item.category_id);
 
-    //define method "handleCheckboxChange"
     const handleCheckboxChange = (e) => {
         //define data
         let data = rolesData;
@@ -320,6 +324,41 @@ export default function UserEdit() {
                                                     htmlFor={`check-${role.id}`}
                                                 >
                                                     {role.name}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="fw-bold">
+                                            Preference Categories
+                                        </label>
+                                        <br />
+                                        {categories.map((category, index) => (
+                                            <div
+                                                className="form-check form-check-inline"
+                                                key={index}
+                                            >
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    value={category.name}
+                                                    defaultChecked={userprefData.some(
+                                                        (category_id) =>
+                                                            category_id ===
+                                                                category.id ??
+                                                            true
+                                                    )}
+                                                    onChange={
+                                                        handleCheckboxChangehg
+                                                    }
+                                                    id={`check-${category.id}`}
+                                                />
+                                                <label
+                                                    className="form-check-label"
+                                                    htmlFor={`check-${category.id}`}
+                                                >
+                                                    {category.name}
                                                 </label>
                                             </div>
                                         ))}
