@@ -8,11 +8,10 @@ use App\Models\Category;
 
 class CategoriesTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        Category::create(['name' => 'Umum',]);
+        Category::create(['name' => 'Khusus',]);
         Category::create(['name' => 'Web',]);
         Category::create(['name' => 'Mobile',]);
         Category::create(['name' => 'Desktop',]);

@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const CustomDatePicker = (props) => {    
     return (
         <div className="mb-3">
-            <label className="mb-1">{props.label}</label>
+            <label className="mb-1 fw-bold">{props.label}</label>
             <div className="input-group mb-3">
                 <span className="input-group-text">
                     <i className={props.icon}></i>

@@ -3,12 +3,9 @@ import { Fullscreen } from 'react-bootstrap-icons';
 
 function EmbedFigma({ surveys }) {
   useEffect(() => {
-    // Dapatkan referensi ke elemen kontainer design
     const designContainer = document.getElementById('embed-design-container');
-    // Dapatkan referensi ke elemen kontainer prototype
     const prototypeContainer = document.getElementById('embed-prototype-container');
     
-    // Periksa jika surveys.embed_design mengandung <iframe>
     if (surveys.embed_design.includes('<iframe')) {
         designContainer.innerHTML = surveys.embed_design;
     } else {
@@ -22,11 +19,9 @@ function EmbedFigma({ surveys }) {
             surveys.embed_design
         );
 
-        // Menambahkan iframe ke kontainer design
         designContainer.appendChild(figmaEmbed);
     }
     
-    // Periksa jika surveys.embed_prototype mengandung <iframe>
     if (surveys.embed_prototype.includes("<iframe")) {
         prototypeContainer.innerHTML = surveys.embed_prototype;
     } else {
@@ -37,7 +32,6 @@ function EmbedFigma({ surveys }) {
         figmaEmbed.setAttribute("allowfullscreen", true);
         figmaEmbed.setAttribute("src", surveys.embed_prototype);
 
-        // Menambahkan iframe ke kontainer design
         designContainer.appendChild(figmaEmbed);
     }
 

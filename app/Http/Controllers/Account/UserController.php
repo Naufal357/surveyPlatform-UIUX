@@ -68,17 +68,17 @@ class UserController extends Controller
         $user = User::with('roles')->findOrFail($id);
         $roles = Role::all();
         $categories = Category::all();
-        $userprefs = UserSelectCategory::where('user_id', $id)->get();
+        $userPrefs = UserSelectCategory::where('user_id', $id)->get();
 
         return inertia('Account/Users/Edit', [
             'user' => $user,
             'roles' => $roles,
             'categories' => $categories,
-            'userpref' => $userprefs
+            'userPrefs' => $userPrefs
         ]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user, UserSelectCategory $userPref)
     {
 
         $this->validate($request, [
@@ -124,6 +124,15 @@ class UserController extends Controller
         }
 
         $user->syncRoles($request->roles);
+
+        if ($request->has('user_prefs')) {
+            $userPrefsData = $request->user_prefs;
+            $userPref->where('user_id', $user->id)->delete();
+
+            foreach ($userPrefsData as $category_id) {
+                $userPref->create(['category_id' => $category_id, 'user_id' => $user->id]);
+            }
+        }
         return redirect()->route('account.users.index');
     }
 

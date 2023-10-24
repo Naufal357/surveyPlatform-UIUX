@@ -8,11 +8,8 @@ import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function UserEdit() {
-    const { errors, roles, user, categories, userpref } = usePage().props;
+    const { errors, roles, user, categories, userPrefs } = usePage().props;
 
-    console.log(userpref);
-
-    //state
     const [firstName, setFirstName] = useState(user.first_name);
     const [surname, setSurname] = useState(user.surname);
     const [email, setEmail] = useState(user.email);
@@ -25,27 +22,33 @@ export default function UserEdit() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [rolesData, setRolesData] = useState(
-        user.roles.map((obj) => obj.name)
+        user.roles.map((item) => item.name)
     );
-    const userprefData = userpref.map((item) => item.category_id);
+    const [userPrefsData, setUserPrefsData] = useState(
+        userPrefs.map((item) => parseInt(item.category_id, 10))
+    );
 
-    const handleCheckboxChange = (e) => {
-        //define data
-        let data = rolesData;
-
-        //check item already exists, if so, remove with filter
-        if (data.some((name) => name === e.target.value)) {
-            data = data.filter((name) => name !== e.target.value);
+    const handleCheckboxRolesChange = (e) => {
+        const roleName = e.target.value;
+        if (rolesData.includes(roleName)) {
+            setRolesData(rolesData.filter((name) => name !== roleName));
         } else {
-            //push new item to array
-            data.push(e.target.value);
+            setRolesData([...rolesData, roleName]);
         }
-
-        //set data to state
-        setRolesData(data);
     };
 
-    //method "updateUser"
+    const handleCheckboxUserPrefsChange = (e) => {
+        const categoryId = parseInt(e.target.value, 10);
+        if (userPrefsData.includes(categoryId)) {
+            setUserPrefsData(
+                userPrefsData.filter((id) => id !== categoryId)
+            );
+        } else {
+            setUserPrefsData([...userPrefsData, categoryId]);
+        }
+    };
+
+
     const updateUser = async (e) => {
         e.preventDefault();
 
@@ -54,11 +57,9 @@ export default function UserEdit() {
             return;
         }
 
-        //sending data
         Inertia.put(
             `/account/users/${user.id}`,
             {
-                //data
                 first_name: firstName,
                 surname: surname,
                 email: email,
@@ -69,10 +70,10 @@ export default function UserEdit() {
                 password: password,
                 password_confirmation: passwordConfirmation,
                 roles: rolesData,
+                user_prefs: userPrefsData,
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data updated successfully!",
@@ -96,6 +97,7 @@ export default function UserEdit() {
         setPassword("");
         setPasswordConfirmation("");
         setRolesData([]);
+        setUserPrefsData([]);
     };
 
     return (
@@ -315,7 +317,7 @@ export default function UserEdit() {
                                                             true
                                                     )}
                                                     onChange={
-                                                        handleCheckboxChange
+                                                        handleCheckboxRolesChange
                                                     }
                                                     id={`check-${role.id}`}
                                                 />
@@ -342,15 +344,15 @@ export default function UserEdit() {
                                                 <input
                                                     className="form-check-input"
                                                     type="checkbox"
-                                                    value={category.name}
-                                                    defaultChecked={userprefData.some(
+                                                    value={category.id}
+                                                    defaultChecked={userPrefsData.some(
                                                         (category_id) =>
                                                             category_id ===
                                                                 category.id ??
                                                             true
                                                     )}
                                                     onChange={
-                                                        handleCheckboxChangehg
+                                                        handleCheckboxUserPrefsChange
                                                     }
                                                     id={`check-${category.id}`}
                                                 />

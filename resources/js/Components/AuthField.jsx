@@ -5,7 +5,7 @@ const AuthField = ({ label, type, value, onChange, placeholder, error, icon, fie
       <div className="mb-3">
           {fieldselect ? (
               <div>
-                  <label className="mb-1">{label}</label>
+                  <label className="mb-1 fw-bold">{label}</label>
                   <div className="input-group mb-3">
                       <span className="input-group-text">
                           <i className={icon}></i>
