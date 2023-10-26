@@ -29,23 +29,25 @@ Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name
 Route::get('/form/{id}', [\App\Http\Controllers\FormController::class, 'show'])->name('form.show')->middleware('auth');
 Route::post('/form', [\App\Http\Controllers\FormController::class, 'storeData'])->middleware('auth');
 
-Route::prefix('account')->group(function(){
+Route::prefix('account')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
 
+        Route::get('/profile', [App\Http\Controllers\Account\ProfileController::class, 'index'])->name('account.profile');
+
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
-        ->middleware('permission:surveys.index|surveys.create|surveys.edit|surveys.delete');
-        
+            ->middleware('permission:surveys.index|surveys.create|surveys.edit|surveys.delete');
+
         Route::get('/responses/{id}/export', [App\Http\Controllers\Account\SusController::class, 'export'])->name('responses.export');
 
         Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index')
-        ->middleware('permission:permissions.index');
+            ->middleware('permission:permissions.index');
 
         Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account'])
-        ->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
+            ->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
 
         Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account'])
-        ->middleware('permission:users.index|users.create|users.edit|users.delete');
+            ->middleware('permission:users.index|users.create|users.edit|users.delete');
 
         Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index0'])->name('account.sus');
         Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');

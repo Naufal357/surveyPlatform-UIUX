@@ -8,7 +8,6 @@ import ButtonCRUD from "../../../Components/ButtonCRUD";
 import Swal from "sweetalert2";
 
 export default function CategoryCreate() {
-    //destruct props "errors"
     const { errors, auth } = usePage().props;
 
     //state
@@ -90,7 +89,20 @@ export default function CategoryCreate() {
                                             onChange={(e) =>
                                                 setImage(e.target.files[0])
                                             }
+                                            accept="image/*"
                                         />
+                                        {errors.image && (
+                                            <div className="alert alert-danger">
+                                                {errors.image}
+                                            </div>
+                                        )}
+                                        {/* <input
+                                            type="file"
+                                            className="form-control"
+                                            onChange={(e) =>
+                                                setImage(e.target.files[0])
+                                            }
+                                        /> */}
                                     </div>
 
                                     <InputField

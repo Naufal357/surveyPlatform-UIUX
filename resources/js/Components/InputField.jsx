@@ -1,6 +1,13 @@
 import React from "react";
 
-export default function InputField({ label, type, value, onChange, placeholder, error }) {
+export default function InputField({
+    label,
+    type,
+    value,
+    onChange,
+    placeholder,
+    error,
+}) {
     const sanitizedValue = value || "";
 
     return (

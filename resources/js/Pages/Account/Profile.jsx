@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import LayoutAccount from "../../../Layouts/Account";
-import AuthField from "../../../Components/AuthField";
-import CustomDatePicker from "../../../Components/DatePicker";
-import ButtonCRUD from "../../../Components/ButtonCRUD";
-import SelectCheckbox from "../../../Components/SelectCheckbox";
+import LayoutAccount from "../../Layouts/Account";
+import Sidebar from "../../Components/Sidebar";
+import ButtonCRUD from "../../Components/ButtonCRUD";
+import AuthField from "../../Components/AuthField";
+import CustomDatePicker from "../../Components/DatePicker";
+import SelectCheckbox from "../../Components/SelectCheckbox";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
-export default function UserEdit() {
-    const { errors, roles, user, categories, userPrefs } = usePage().props;
+export default function UserCreate() {
+    const { errors, user, userPrefs, categories } = usePage().props;
 
     const [firstName, setFirstName] = useState(user.first_name);
     const [surname, setSurname] = useState(user.surname);
@@ -22,21 +23,9 @@ export default function UserEdit() {
     );
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [rolesData, setRolesData] = useState(
-        user.roles.map((item) => item.name)
-    );
     const [userPrefsData, setUserPrefsData] = useState(
         userPrefs.map((item) => parseInt(item.category_id, 10))
     );
-
-    const handleCheckboxRolesChange = (e) => {
-        const roleName = e.target.value;
-        if (rolesData.includes(roleName)) {
-            setRolesData(rolesData.filter((name) => name !== roleName));
-        } else {
-            setRolesData([...rolesData, roleName]);
-        }
-    };
 
     const handleCheckboxUserPrefsChange = (e) => {
         const categoryId = parseInt(e.target.value, 10);
@@ -47,7 +36,7 @@ export default function UserEdit() {
         }
     };
 
-    const updateUser = async (e) => {
+    const storeUser = async (e) => {
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
@@ -55,8 +44,8 @@ export default function UserEdit() {
             return;
         }
 
-        Inertia.put(
-            `/account/users/${user.id}`,
+        Inertia.post(
+            "/account/users",
             {
                 first_name: firstName,
                 surname: surname,
@@ -67,14 +56,12 @@ export default function UserEdit() {
                 educational_background: educationalBackground,
                 password: password,
                 password_confirmation: passwordConfirmation,
-                roles: rolesData,
-                user_prefs: userPrefsData,
             },
             {
                 onSuccess: () => {
                     Swal.fire({
                         title: "Success!",
-                        text: "Data updated successfully!",
+                        text: "Data saved successfully!",
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500,
@@ -94,14 +81,13 @@ export default function UserEdit() {
         setEducationalBackground("");
         setPassword("");
         setPasswordConfirmation("");
-        setRolesData([]);
         setUserPrefsData([]);
     };
 
     return (
         <>
             <Head>
-                <title>Edit Users - Survey Platform</title>
+                <title>Create Users - Survey Platform</title>
             </Head>
             <LayoutAccount>
                 <div className="row mt-4">
@@ -109,11 +95,11 @@ export default function UserEdit() {
                         <div className="card border-0 rounded shadow-sm border-top-success">
                             <div className="card-header">
                                 <span className="font-weight-bold">
-                                    <i className="fa fa-users"></i> Edit User
+                                    <i className="fa fa-users"></i> Add New User
                                 </span>
                             </div>
                             <div className="card-body">
-                                <form onSubmit={updateUser}>
+                                <form onSubmit={storeUser}>
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="mb-3">
@@ -258,6 +244,7 @@ export default function UserEdit() {
                                         selectedDate={birthDate}
                                         onChange={(date) => setBirthDate(date)}
                                         error={errors.birthDate}
+                                        required
                                     />
 
                                     <div className="row">
@@ -275,6 +262,7 @@ export default function UserEdit() {
                                                     }
                                                     placeholder="Password"
                                                     error={errors.password}
+                                                    required
                                                 />
                                             </div>
                                         </div>
@@ -291,20 +279,10 @@ export default function UserEdit() {
                                                         )
                                                     }
                                                     placeholder="Password Confirmation"
+                                                    required
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <SelectCheckbox
-                                            label="Roles"
-                                            options={roles}
-                                            valueKey="name"
-                                            labelKey="name"
-                                            selectedValues={rolesData}
-                                            onChange={handleCheckboxRolesChange}
-                                        />
                                     </div>
 
                                     <div className="mb-3">

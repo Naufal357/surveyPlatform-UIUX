@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Account;
 
 use App\Models\Survey;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,12 +13,20 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::when(request()->q, function($surveys){
-            $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
-        })
-        ->where('user_id', auth()->user()->id)
-        ->latest()
-        ->paginate(10);
+        if (auth()->user()->hasPermissionTo('surveys.index.full')) {
+            $surveys = Survey::when(request()->q, function ($surveys) {
+                $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
+            }) ->latest() ->paginate(15);
+
+            $surveys->load('user');
+        } else {
+            $surveys = Survey::when(request()->q, function ($surveys) {
+                $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
+            })
+                ->where('user_id', auth()->user()->id)
+                ->latest()
+                ->paginate(10);
+        }
 
         $surveys->appends(['q' => request()->q]);
 
@@ -25,6 +34,7 @@ class SurveyController extends Controller
             'surveys' => $surveys,
         ]);
     }
+
 
 
     public function create()

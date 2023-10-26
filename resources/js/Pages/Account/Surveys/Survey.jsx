@@ -71,6 +71,16 @@ export default function SurveyIndex() {
                                                 >
                                                     Survey Name
                                                 </th>
+                                                {hasAnyPermission([
+                                                    "surveys.index.full",
+                                                ]) && (
+                                                    <th
+                                                        scope="col"
+                                                        style={{ width: "10%" }}
+                                                    >
+                                                        Creator Name
+                                                    </th>
+                                                )}
                                                 <th
                                                     scope="col"
                                                     style={{ width: "10%" }}
@@ -119,6 +129,13 @@ export default function SurveyIndex() {
                                                             <td>
                                                                 {survey.title}
                                                             </td>
+                                                            {hasAnyPermission([
+                                                                "surveys.index.full",
+                                                            ]) && (
+                                                                <td>
+                                                                    {`${survey.user.first_name} ${survey.user.surname}`}
+                                                                </td>
+                                                            )}
                                                             <td>
                                                                 {survey.theme}
                                                             </td>

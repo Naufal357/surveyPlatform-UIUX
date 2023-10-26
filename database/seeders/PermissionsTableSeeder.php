@@ -27,6 +27,7 @@ class PermissionsTableSeeder extends Seeder
 
         //permission surveys
         Permission::create(['name' => 'surveys.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'surveys.index.full', 'guard_name' => 'web']);
         Permission::create(['name' => 'surveys.create', 'guard_name' => 'web']);
         Permission::create(['name' => 'surveys.edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'surveys.delete', 'guard_name' => 'web']);

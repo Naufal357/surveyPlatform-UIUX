@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavDropdown } from "react-bootstrap";
-import { usePage } from "@inertiajs/inertia-react";
+import { usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Sidebar from "../Components/Sidebar";
 
@@ -68,6 +68,15 @@ export default function LayoutAccount({ children }) {
                                         className="fw-bold"
                                         id="basic-nav-dropdown"
                                     >
+                                        <NavDropdown.Item>
+                                            <Link
+                                                href="/account/profile"
+                                                className="d-flex align-items-center text-black text-decoration-none"
+                                            >
+                                                <i className="fa fa-user me-2"></i>
+                                                Profile
+                                            </Link>
+                                        </NavDropdown.Item>
                                         <NavDropdown.Item
                                             onClick={logoutHandler}
                                         >
