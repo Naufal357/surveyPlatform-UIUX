@@ -17,7 +17,9 @@ use Inertia\Inertia;
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register')->middleware('guest');
-Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'store'])->name('register.store')->middleware('guest');
+Route::get('/register/preferences', [\App\Http\Controllers\Auth\RegisterController::class, 'index1'])->name('register1');
+Route::post('/register/personaldata', [\App\Http\Controllers\Auth\RegisterController::class, 'storePersonalData'])->name('PersonalData.store')->middleware('guest');
+Route::post('/register/preferencedata', [\App\Http\Controllers\Auth\RegisterController::class, 'storePreferenceData'])->name('PreferenceData.store')->middleware('guest');
 
 Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store')->middleware('guest');

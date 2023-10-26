@@ -147,6 +147,7 @@ class UserController extends Controller
                 $userPref->create(['category_id' => $category_id, 'user_id' => $user->id]);
             }
         }
+        
         return redirect()->route('account.users.index');
     }
 

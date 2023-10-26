@@ -5,7 +5,6 @@ import Search from "../../Components/Search";
 import Pagination from "../../Components/Pagination"
 
 export default function PermissionIndex() {
-    //destruct props "permissions"
     const { permissions } = usePage().props;
 
     return (

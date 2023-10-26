@@ -3,6 +3,7 @@ import LayoutAccount from "../../../Layouts/Account";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import AuthField from "../../../Components/AuthField";
 import CustomDatePicker from "../../../Components/DatePicker";
+import SelectCheckbox from "../../../Components/SelectCheckbox";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
@@ -47,7 +48,6 @@ export default function UserCreate() {
         Inertia.post(
             "/account/users",
             {
-                //data
                 first_name: firstName,
                 surname: surname,
                 email: email,
@@ -290,67 +290,25 @@ export default function UserCreate() {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label className="fw-bold">Roles</label>
-                                        <br />
-                                        {roles.map((role, index) => (
-                                            <div
-                                                className="form-check form-check-inline"
-                                                key={index}
-                                            >
-                                                <input
-                                                    className="form-check-input"
-                                                    type="checkbox"
-                                                    value={role.name}
-                                                    onChange={
-                                                        handleCheckboxRolesChange
-                                                    }
-                                                    id={`check-${role.id}`}
-                                                />
-                                                <label
-                                                    className="form-check-label"
-                                                    htmlFor={`check-${role.id}`}
-                                                >
-                                                    {role.name}
-                                                </label>
-                                            </div>
-                                        ))}
+                                        <SelectCheckbox
+                                            label="Roles"
+                                            options={roles}
+                                            valueKey="name"
+                                            labelKey="name" 
+                                            onChange={handleCheckboxRolesChange}
+                                        />
+                                    </div>
 
-                                        <div className="mb-3">
-                                            <label className="fw-bold">
-                                                Preference Categories
-                                            </label>
-                                            <br />
-                                            {categories.map(
-                                                (category, index) => (
-                                                    <div
-                                                        className="form-check form-check-inline"
-                                                        key={index}
-                                                    >
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            value={category.id}
-                                                            defaultChecked={userPrefsData.some(
-                                                                (category_id) =>
-                                                                    category_id ===
-                                                                        category.id ??
-                                                                    true
-                                                            )}
-                                                            onChange={
-                                                                handleCheckboxUserPrefsChange
-                                                            }
-                                                            id={`check-${category.id}`}
-                                                        />
-                                                        <label
-                                                            className="form-check-label"
-                                                            htmlFor={`check-${category.id}`}
-                                                        >
-                                                            {category.name}
-                                                        </label>
-                                                    </div>
-                                                )
-                                            )}
-                                        </div>
+                                    <div className="mb-3">
+                                        <SelectCheckbox
+                                            label="Preference Categories"
+                                            options={categories}
+                                            valueKey="id" 
+                                            labelKey="name" 
+                                            onChange={
+                                                handleCheckboxUserPrefsChange
+                                            }
+                                        />
                                     </div>
 
                                     <div>

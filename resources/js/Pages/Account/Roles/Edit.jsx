@@ -1,51 +1,42 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import SelectCheckbox from "../../../Components/SelectCheckbox";
+import ButtonCRUD from "../../../Components/ButtonCRUD";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function RoleEdit() {
-    //destruct props "errors", "permissions" & "role"
     const { errors, permissions, role } = usePage().props;
 
-    //define state
     const [name, setName] = useState(role.name);
     const [permissionsData, setPermissionsData] = useState(
         role.permissions.map((obj) => obj.name)
     );
 
-    //define method "handleCheckboxChange"
     const handleCheckboxChange = (e) => {
-        //define data
         let data = permissionsData;
 
-        //check item already exists, if so, remove with filter
         if (data.some((name) => name === e.target.value)) {
             data = data.filter((name) => name !== e.target.value);
         } else {
-            //push new item to array
             data.push(e.target.value);
         }
 
-        //set data to state
         setPermissionsData(data);
     };
 
-    //define method
     const updateRole = async (e) => {
         e.preventDefault();
 
-        //sending data
         Inertia.put(
             `/account/roles/${role.id}`,
             {
-                //data
                 name: name,
                 permissions: permissionsData,
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data updated successfully!",
@@ -57,6 +48,11 @@ export default function RoleEdit() {
             }
         );
     };
+
+    const handleReset = () => {
+        setName("");
+        setPermissionsData([]);
+    }
 
     return (
         <>
@@ -130,27 +126,29 @@ export default function RoleEdit() {
                                                 </div>
                                             )
                                         )}
-
-                                        {errors.permissions && (
-                                            <div className="alert alert-danger mt-2">
-                                                {errors.permissions}
-                                            </div>
-                                        )}
                                     </div>
                                     <div>
-                                        <button
+                                        <ButtonCRUD
                                             type="submit"
-                                            className="btn btn-md btn-success me-2"
-                                        >
-                                            <i className="fa fa-save"></i>{" "}
-                                            Update
-                                        </button>
+                                            label="Save"
+                                            color="btn-success"
+                                            iconClass="fa fa-save"
+                                        />
                                         <button
                                             type="reset"
-                                            className="btn btn-md btn-warning"
+                                            className="btn btn-md btn-warning me-2"
                                         >
                                             <i className="fa fa-redo"></i> Reset
                                         </button>
+                                        <ButtonCRUD
+                                            type="Cancel"
+                                            label="Cancel"
+                                            color="btn-secondary"
+                                            iconClass="fas fa-times"
+                                            onClick={() =>
+                                                window.history.back()
+                                            }
+                                        />
                                     </div>
                                 </form>
                             </div>

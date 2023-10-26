@@ -6,10 +6,8 @@ import AuthField from "../../Components/AuthField";
 import CustomDatePicker from "../../Components/DatePicker";
 
 export default function Register() {
-    //destruct props "errors"
     const { errors } = usePage().props;
 
-    //state user
     const [firstName, setFirstName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
@@ -20,12 +18,10 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-    //function "registerHandler"
     const registerHandler = async (e) => {
         e.preventDefault();
 
-        //register
-        Inertia.post("/register", {
+        Inertia.post("/register/personaldata", {
             first_name: firstName,
             surname: surname,
             email: email,
@@ -222,7 +218,7 @@ export default function Register() {
                                             className="btn btn-success shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
-                                            REGISTER
+                                            Next
                                         </button>
                                     </form>
                                 </div>

@@ -1,44 +1,35 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import ButtonCRUD from "../../../Components/ButtonCRUD";
+import SelectCheckbox from "../../../Components/SelectCheckbox";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function RoleCreate() {
-    //destruct props "errors" & "permissions"
     const { errors, permissions } = usePage().props;
 
-    //define state
     const [name, setName] = useState("");
     const [permissionsData, setPermissionsData] = useState([]);
 
-    //define method "handleCheckboxChange"
     const handleCheckboxChange = (e) => {
-        //define data
         let data = permissionsData;
-
-        //push data on state
         data.push(e.target.value);
 
-        //set data to state
         setPermissionsData(data);
     };
 
-    //define method
     const storeRole = async (e) => {
         e.preventDefault();
 
-        //sending data
         Inertia.post(
             "/account/roles",
             {
-                //data
                 name: name,
                 permissions: permissionsData,
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data saved successfully!",
@@ -89,54 +80,37 @@ export default function RoleCreate() {
                                     )}
                                     <hr />
                                     <div className="mb-3">
-                                        <label className="fw-bold">
-                                            Permissions
-                                        </label>
-                                        <br />
-                                        {permissions.map(
-                                            (permission, index) => (
-                                                <div
-                                                    className="form-check form-check-inline"
-                                                    key={index}
-                                                >
-                                                    <input
-                                                        className="form-check-input"
-                                                        type="checkbox"
-                                                        value={permission.name}
-                                                        onChange={
-                                                            handleCheckboxChange
-                                                        }
-                                                        id={`check-${permission.id}`}
-                                                    />
-                                                    <label
-                                                        className="form-check-label"
-                                                        htmlFor={`check-${permission.id}`}
-                                                    >
-                                                        {permission.name}
-                                                    </label>
-                                                </div>
-                                            )
-                                        )}
-
-                                        {errors.permissions && (
-                                            <div className="alert alert-danger mt-2">
-                                                {errors.permissions}
-                                            </div>
-                                        )}
+                                        <SelectCheckbox
+                                            label="Permissions"
+                                            options={permissions}
+                                            valueKey="name"
+                                            labelKey="name"
+                                            onChange={handleCheckboxChange}
+                                        />
                                     </div>
+
                                     <div>
-                                        <button
+                                        <ButtonCRUD
                                             type="submit"
-                                            className="btn btn-md btn-success me-2"
-                                        >
-                                            <i className="fa fa-save"></i> Save
-                                        </button>
+                                            label="Save"
+                                            color="btn-success"
+                                            iconClass="fa fa-save"
+                                        />
                                         <button
                                             type="reset"
-                                            className="btn btn-md btn-warning"
+                                            className="btn btn-md btn-warning me-2"
                                         >
                                             <i className="fa fa-redo"></i> Reset
                                         </button>
+                                        <ButtonCRUD
+                                            type="Cancel"
+                                            label="Cancel"
+                                            color="btn-secondary"
+                                            iconClass="fas fa-times"
+                                            onClick={() =>
+                                                window.history.back()
+                                            }
+                                        />
                                     </div>
                                 </form>
                             </div>

@@ -10,23 +10,20 @@ export default function Home() {
     return (
         <>
             <Head>
-                <title>Form Survey</title>
+                <title>Survey Platform</title>
             </Head>
             <Layout>
                 <div className="container">
                     <div className="row mt-3">
-                            {surveys.data.map((survey, index) => (
-                                <div
-                                    className="col-md-4 mb-4 col-6"
-                                    key={index}
-                                >
-                                    <CardSurvey survey={survey} key={index} />
-                                </div>
-                            ))}
+                        {surveys.data.map((survey, index) => (
+                            <div className="col-md-4 mb-4 col-6" key={index}>
+                                <CardSurvey survey={survey} key={index} />
+                            </div>
+                        ))}
                     </div>
+                    
+                    <Pagination links={surveys.links} align="end" />
                 </div>
-
-                <Pagination links={surveys.links} align="end" />
             </Layout>
         </>
     );
