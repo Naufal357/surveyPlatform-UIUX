@@ -2,12 +2,23 @@ import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
+import hasAnyPermission from "../../../Utils/Permissions";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function RoleCreate() {
     const { errors, permissions } = usePage().props;
+
+    let filteredPermissions = permissions;
+
+    if (!hasAnyPermission(["roles.index.full"])) {
+        filteredPermissions = filteredPermissions.filter(
+            (permission) =>
+                permission.name !== "users.index.full" &&
+                permission.name !== "roles.index.full"
+        );
+    }
 
     const [name, setName] = useState("");
     const [permissionsData, setPermissionsData] = useState([]);
@@ -21,6 +32,11 @@ export default function RoleCreate() {
 
     const storeRole = async (e) => {
         e.preventDefault();
+
+        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+            handleReset();
+            return;
+        }
 
         Inertia.post(
             "/account/roles",
@@ -82,7 +98,7 @@ export default function RoleCreate() {
                                     <div className="mb-3">
                                         <SelectCheckbox
                                             label="Permissions"
-                                            options={permissions}
+                                            options={filteredPermissions}
                                             valueKey="name"
                                             labelKey="name"
                                             onChange={handleCheckboxChange}

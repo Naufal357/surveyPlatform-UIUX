@@ -4,12 +4,21 @@ import ButtonCRUD from "../../../Components/ButtonCRUD";
 import AuthField from "../../../Components/AuthField";
 import CustomDatePicker from "../../../Components/DatePicker";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
+import hasAnyPermission from "../../../Utils/Permissions";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function UserCreate() {
     const { errors, roles, categories } = usePage().props;
+
+    let filteredRoles = roles;
+
+    if (!hasAnyPermission(["users.index.full"])) {
+        filteredRoles = filteredRoles.filter(
+            (role) => role.name !== "super admin"
+        );
+    }
 
     const [firstName, setFirstName] = useState("");
     const [surname, setSurname] = useState("");
@@ -22,6 +31,7 @@ export default function UserCreate() {
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [rolesData, setRolesData] = useState([]);
     const [userPrefsData, setUserPrefsData] = useState([]);
+
 
     const handleCheckboxRolesChange = (e) => {
         let data = rolesData;
@@ -292,9 +302,9 @@ export default function UserCreate() {
                                     <div className="mb-3">
                                         <SelectCheckbox
                                             label="Roles"
-                                            options={roles}
+                                            options={filteredRoles}
                                             valueKey="name"
-                                            labelKey="name" 
+                                            labelKey="name"
                                             onChange={handleCheckboxRolesChange}
                                         />
                                     </div>
@@ -303,8 +313,8 @@ export default function UserCreate() {
                                         <SelectCheckbox
                                             label="Preference Categories"
                                             options={categories}
-                                            valueKey="id" 
-                                            labelKey="name" 
+                                            valueKey="id"
+                                            labelKey="name"
                                             onChange={
                                                 handleCheckboxUserPrefsChange
                                             }

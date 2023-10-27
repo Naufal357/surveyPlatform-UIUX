@@ -17,7 +17,7 @@ use Inertia\Inertia;
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register')->middleware('guest');
-Route::get('/register/preferences', [\App\Http\Controllers\Auth\RegisterController::class, 'index1'])->name('register1');
+Route::get('/register/preferences', [\App\Http\Controllers\Auth\RegisterController::class, 'index1'])->name('register1')->middleware('guest');
 Route::post('/register/personaldata', [\App\Http\Controllers\Auth\RegisterController::class, 'storePersonalData'])->name('PersonalData.store')->middleware('guest');
 Route::post('/register/preferencedata', [\App\Http\Controllers\Auth\RegisterController::class, 'storePreferenceData'])->name('PreferenceData.store')->middleware('guest');
 
@@ -48,7 +48,7 @@ Route::prefix('account')->group(function () {
 
         Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account'])
             ->middleware('permission:users.index|users.create|users.edit|users.delete');
-
+        
         Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index0'])->name('account.sus');
         Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
     });

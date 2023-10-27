@@ -9,18 +9,18 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    public function index()
-    {
-        $roles = Role::when(request()->q, function ($roles) {
-            $roles = $roles->where('name', 'like', '%' . request()->q . '%');
-        })->with('permissions')->latest()->paginate(5);
+public function index()
+{
+    $roles = Role::when(request()->q, function ($roles) {
+        $roles = $roles->where('name', 'like', '%' . request()->q . '%');
+    })->with('permissions')->orderBy('id')->paginate(5);
 
-        $roles->appends(['q' => request()->q]);
+    $roles->appends(['q' => request()->q]);
 
-        return inertia('Account/Roles/Roles', [
-            'roles' => $roles,
-        ]);
-    }
+    return inertia('Account/Roles/Roles', [
+        'roles' => $roles,
+    ]);
+}
 
     public function create()
     {
@@ -47,6 +47,10 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        if ($id == 1) {
+            abort(403, "The user is not allowed to be edited.");
+        }
+
         $role = Role::with('permissions')->findOrFail($id);
 
         $permissions = Permission::all();
@@ -59,6 +63,10 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
+        if ($request -> name == "super admin") {
+            abort(403, "The user is not allowed to be edited.");
+        }
+
         $this->validate($request, [
             'name'          => 'required',
             'permissions'   => 'required',
@@ -73,6 +81,10 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
+        if ($id == 1) {
+            abort(403, "The system will not allow you to delete this role. The role cannot be deleted.");
+        }
+
         $role = Role::findOrFail($id);
 
         $role->delete();

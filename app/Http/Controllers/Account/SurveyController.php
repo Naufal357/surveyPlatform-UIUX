@@ -35,13 +35,10 @@ class SurveyController extends Controller
         ]);
     }
 
-
-
     public function create()
     {
         return inertia('Account/Surveys/Create');
     }
-
 
     public function store(Request $request)
     {

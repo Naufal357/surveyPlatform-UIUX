@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
+import hasAnyPermission from "../../../Utils/Permissions";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
@@ -9,13 +10,31 @@ import Swal from "sweetalert2";
 export default function RoleEdit() {
     const { errors, permissions, role } = usePage().props;
 
+    let filteredPermissions = permissions;
+
+    if (!hasAnyPermission(["roles.index.full"])) {
+        filteredPermissions = filteredPermissions.filter(
+            (permission) =>
+                permission.name !== "users.index.full" &&
+                permission.name !== "roles.index.full"
+        );
+    }
+
     const [name, setName] = useState(role.name);
     const [permissionsData, setPermissionsData] = useState(
         role.permissions.map((obj) => obj.name)
     );
 
     const handleCheckboxChange = (e) => {
-        let data = permissionsData;
+        const permissionName = e.target.value;
+
+        if (permissionsData.includes(permissionName)) {
+            setPermissionsData(
+                permissionsData.filter((name) => name !== permissionName)
+            );
+        } else {
+            setPermissionsData([...permissionsData, permissionName]);
+        }
 
         if (data.some((name) => name === e.target.value)) {
             data = data.filter((name) => name !== e.target.value);
@@ -28,6 +47,11 @@ export default function RoleEdit() {
 
     const updateRole = async (e) => {
         e.preventDefault();
+
+        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+            handleReset();
+            return;
+        }
 
         Inertia.put(
             `/account/roles/${role.id}`,
@@ -52,7 +76,7 @@ export default function RoleEdit() {
     const handleReset = () => {
         setName("");
         setPermissionsData([]);
-    }
+    };
 
     return (
         <>
@@ -92,40 +116,14 @@ export default function RoleEdit() {
                                     )}
                                     <hr />
                                     <div className="mb-3">
-                                        <label className="fw-bold">
-                                            Permissions
-                                        </label>
-                                        <br />
-                                        {permissions.map(
-                                            (permission, index) => (
-                                                <div
-                                                    className="form-check form-check-inline"
-                                                    key={index}
-                                                >
-                                                    <input
-                                                        className="form-check-input"
-                                                        type="checkbox"
-                                                        value={permission.name}
-                                                        defaultChecked={permissionsData.some(
-                                                            (name) =>
-                                                                name ===
-                                                                    permission.name ??
-                                                                true
-                                                        )}
-                                                        onChange={
-                                                            handleCheckboxChange
-                                                        }
-                                                        id={`check-${permission.id}`}
-                                                    />
-                                                    <label
-                                                        className="form-check-label"
-                                                        htmlFor={`check-${permission.id}`}
-                                                    >
-                                                        {permission.name}
-                                                    </label>
-                                                </div>
-                                            )
-                                        )}
+                                        <SelectCheckbox
+                                            label="Permissions"
+                                            options={filteredPermissions}
+                                            valueKey="name"
+                                            labelKey="name"
+                                            selectedValues={permissionsData}
+                                            onChange={handleCheckboxChange}
+                                        />
                                     </div>
                                     <div>
                                         <ButtonCRUD

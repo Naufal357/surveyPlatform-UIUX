@@ -40,7 +40,6 @@ export default function CategoryCreate() {
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data saved successfully!",

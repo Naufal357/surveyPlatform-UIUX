@@ -7,7 +7,6 @@ import Pagination from "../../../Components/Pagination";
 import Delete from "../../../Components/Delete";
 
 export default function UserIndex() {
-    //destruct props "users"
     const { users } = usePage().props;
 
     return (
@@ -106,9 +105,8 @@ export default function UserIndex() {
                                                         )}
                                                     </td>
                                                     <td className="text-center">
-                                                        {hasAnyPermission([
-                                                            "users.edit",
-                                                        ]) && (
+                                                        {((hasAnyPermission(["users.edit"]) && !user.roles.some((role) =>role.name ==="super admin")) ||
+                                                            hasAnyPermission(["users.index.full",])) && (
                                                             <Link
                                                                 href={`/account/users/${user.id}/edit`}
                                                                 className="btn btn-primary btn-sm me-2"
@@ -116,13 +114,19 @@ export default function UserIndex() {
                                                                 <i className="fa fa-pencil-alt"></i>
                                                             </Link>
                                                         )}
-                                                        {hasAnyPermission([
+                                                        {((hasAnyPermission([
                                                             "users.delete",
-                                                        ]) && (
+                                                        ]) &&
+                                                            !user.roles.some(
+                                                                (role) =>
+                                                                    role.name ===
+                                                                    "super admin"
+                                                            )) ||
+                                                            hasAnyPermission([
+                                                                "users.index.full",
+                                                            ])) && (
                                                             <Delete
-                                                                URL={
-                                                                    "/account/users"
-                                                                }
+                                                                URL="/account/users"
                                                                 id={user.id}
                                                             />
                                                         )}
@@ -132,7 +136,6 @@ export default function UserIndex() {
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <Pagination links={users.links} align={"end"} />
                             </div>
                         </div>

@@ -7,7 +7,6 @@ import Pagination from "../../../Components/Pagination";
 import Delete from "../../../Components/Delete";
 
 export default function RoleIndex() {
-    //destruct props "roles"
     const { roles } = usePage().props;
 
     return (
@@ -104,9 +103,14 @@ export default function RoleIndex() {
                                                         )}
                                                     </td>
                                                     <td className="text-center">
-                                                        {hasAnyPermission([
+                                                        {((hasAnyPermission([
                                                             "roles.edit",
-                                                        ]) && (
+                                                        ]) &&
+                                                            role.name !==
+                                                                "super admin") ||
+                                                            hasAnyPermission([
+                                                                "users.index.full",
+                                                            ])) && (
                                                             <Link
                                                                 href={`/account/roles/${role.id}/edit`}
                                                                 className="btn btn-primary btn-sm me-2"
@@ -114,9 +118,14 @@ export default function RoleIndex() {
                                                                 <i className="fa fa-pencil-alt"></i>
                                                             </Link>
                                                         )}
-                                                        {hasAnyPermission([
+                                                        {((hasAnyPermission([
                                                             "roles.delete",
-                                                        ]) && (
+                                                        ]) &&
+                                                            role.name !==
+                                                                "super admin") ||
+                                                            hasAnyPermission([
+                                                                "users.index.full",
+                                                            ])) && (
                                                             <Delete
                                                                 URL={
                                                                     "/account/roles"

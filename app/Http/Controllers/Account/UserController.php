@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $users = User::when(request()->q, function ($users) {
             $users = $users->where('name', 'like', '%' . request()->q . '%');
-        })->with('roles')->latest()->paginate(5);
+        })->with('roles')->orderBy('id')->paginate(5);
 
         $users->appends(['q' => request()->q]);
 
@@ -79,6 +79,10 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        if ($id == 1) {
+            abort(403, "The user is not allowed to be edited.");
+        }
+
         $user = User::with('roles')->findOrFail($id);
         $roles = Role::all();
         $categories = Category::all();
@@ -94,6 +98,9 @@ class UserController extends Controller
 
     public function update(Request $request, User $user, UserSelectCategory $userPref)
     {
+        if ($request->email == "admin@123") {
+            abort(403, "The user is not allowed to be edited.");
+        }
 
         $this->validate($request, [
             'first_name'      => 'required',
@@ -153,6 +160,10 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        if ($id == 1) {
+            abort(403, "The system will not allow you to delete this user. The user cannot be deleted.");
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('account.users.index');

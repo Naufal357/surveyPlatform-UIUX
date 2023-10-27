@@ -13,7 +13,6 @@ class UserSelectCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Isi data untuk user_id 1
         $categories = Category::all();
 
         $dataUser1 = [];
@@ -27,7 +26,6 @@ class UserSelectCategorySeeder extends Seeder
             ];
         }
 
-        // Isi data untuk user_id 2
         $dataUser2 = [
             [
                 'user_id' => 2,
@@ -55,8 +53,41 @@ class UserSelectCategorySeeder extends Seeder
             ],
         ];
 
-        // Insert data ke tabel
+        $dataUser3 = [
+            [
+                'user_id' => 3,
+                'category_id' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 3,
+                'category_id' => 6,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 3,
+                'category_id' => 7,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 3,
+                'category_id' => 8,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 3,
+                'category_id' => 9,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ];
+
         DB::table('user_select_category')->insert($dataUser1);
         DB::table('user_select_category')->insert($dataUser2);
+        DB::table('user_select_category')->insert($dataUser3);
     }
 }

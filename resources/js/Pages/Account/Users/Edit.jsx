@@ -4,12 +4,21 @@ import AuthField from "../../../Components/AuthField";
 import CustomDatePicker from "../../../Components/DatePicker";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
+import hasAnyPermission from "../../../Utils/Permissions";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function UserEdit() {
     const { errors, roles, user, categories, userPrefs } = usePage().props;
+
+    let filteredRoles = roles;
+
+    if (!hasAnyPermission(["users.index.full"])) {
+        filteredRoles = filteredRoles.filter(
+            (role) => role.name !== "super admin"
+        );
+    }
 
     const [firstName, setFirstName] = useState(user.first_name);
     const [surname, setSurname] = useState(user.surname);
@@ -40,6 +49,7 @@ export default function UserEdit() {
 
     const handleCheckboxUserPrefsChange = (e) => {
         const categoryId = parseInt(e.target.value, 10);
+        
         if (userPrefsData.includes(categoryId)) {
             setUserPrefsData(userPrefsData.filter((id) => id !== categoryId));
         } else {
@@ -299,7 +309,7 @@ export default function UserEdit() {
                                     <div className="mb-3">
                                         <SelectCheckbox
                                             label="Roles"
-                                            options={roles}
+                                            options={filteredRoles}
                                             valueKey="name"
                                             labelKey="name"
                                             selectedValues={rolesData}

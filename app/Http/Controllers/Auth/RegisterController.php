@@ -81,7 +81,7 @@ class RegisterController extends Controller
             'password'  => $personaldata['password']
         ]);
 
-        $role = Role::findByName('creator');
+        $role = Role::findByName('user');
 
         $user->assignRole($role);
 
