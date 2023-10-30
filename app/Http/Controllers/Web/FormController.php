@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,27 +11,24 @@ class FormController extends Controller
 {
     public function index()
     {
-        return inertia('Form', [
+        return inertia('Web/Form', [
             'auth' => auth()->user(),
         ]);
     }
 
     public function show($id)
     {
-        // Mengambil data dari model berdasarkan ID
         $surveys = Survey::findOrFail($id);
 
-        // Menampilkan halaman detail dengan menggunakan Inertia
-        return inertia('Form', [
+        return inertia('Web/Form', [
             'surveys' => $surveys,
             'auth' => auth()->user(),
         ]);
     }
 
 
-    public function storeData(Request $request)
+    public function store(Request $request)
     {
-        // Validasi data yang diterima dari formulir
         $validatedData = $request->validate([
             'survey_id'             => 'required|exists:surveys,id',
             'first_name'             => 'required',
@@ -44,7 +41,6 @@ class FormController extends Controller
             'response_data'        => 'required|json', 
         ]);
 
-        // Ambil nilai dari sus1 hingga sus10
         $responseData = [
             'sus1' => $request->input('sus1'),
             'sus2' => $request->input('sus2'),
@@ -58,13 +54,9 @@ class FormController extends Controller
             'sus10' => $request->input('sus10'),
         ];
 
-        // dd($validatedData);
 
-        // Simpan data ke dalam database
         $surveyResponse = SurveyResponses::create($validatedData);
 
-        // Redirect atau berikan respons sesuai kebutuhan Anda
         return redirect('/')->with('status', 'Pengisian Survey Berhasil!');
     }
-
 }

@@ -5,20 +5,28 @@ import { Inertia } from "@inertiajs/inertia";
 import InputField from "../../../Components/InputField";
 import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
+import SelectCheckbox from "../../../Components/SelectCheckbox";
 import Swal from "sweetalert2";
 
 export default function CategoryCreate() {
-    const { errors, auth } = usePage().props;
+    const { errors, auth, categories } = usePage().props;
 
-    //state
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
     const [theme, setTheme] = useState("");
     const [description, setDescription] = useState("");
     const [embed_design, setEmbedDesign] = useState("");
     const [embed_prototype, setEmbedPrototype] = useState("");
-    const [user_id, setUserId] = useState(auth.user.id);
+    const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
+    const [user_id] = useState(auth.user.id);
 
+    const handleCheckboxCategoriesChange = (e) => {
+        let data = surveyCategoriesData;
+        data.push(parseInt(e.target.value, 10));
+
+        setSurveyCategoriesData(data);
+    };
+    
     const storeSurvey = async (e) => {
         e.preventDefault();
 
@@ -36,6 +44,7 @@ export default function CategoryCreate() {
                 description: description,
                 embed_design: embed_design,
                 embed_prototype: embed_prototype,
+                survey_categories: surveyCategoriesData,
                 user_id: user_id,
             },
             {
@@ -59,6 +68,7 @@ export default function CategoryCreate() {
         setDescription("");
         setEmbedDesign("");
         setEmbedPrototype("");
+        setSurveyCategoriesData([]);
     };
 
     return (
@@ -149,6 +159,18 @@ export default function CategoryCreate() {
                                         }
                                         error={errors.embed_prototype}
                                     />
+
+                                    <div className="mb-3">
+                                        <SelectCheckbox
+                                            label="Categories Survey"
+                                            options={categories}
+                                            valueKey="id"
+                                            labelKey="name"
+                                            onChange={
+                                                handleCheckboxCategoriesChange
+                                            }
+                                        />
+                                    </div>
 
                                     <div>
                                         <ButtonCRUD

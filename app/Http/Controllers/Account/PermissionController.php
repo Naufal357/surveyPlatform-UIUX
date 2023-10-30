@@ -11,7 +11,7 @@ class PermissionController extends Controller
     {
         $permissions = Permission::when(request()->q, function ($permissions) {
             $permissions = $permissions->where('name', 'like', '%' . request()->q . '%');
-        })->latest()->paginate(15);
+        })->latest()->paginate(17);
 
         $permissions->appends(['q' => request()->q]);
 

@@ -14,8 +14,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
-
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register')->middleware('guest');
 Route::get('/register/preferences', [\App\Http\Controllers\Auth\RegisterController::class, 'index1'])->name('register1')->middleware('guest');
 Route::post('/register/personaldata', [\App\Http\Controllers\Auth\RegisterController::class, 'storePersonalData'])->name('PersonalData.store')->middleware('guest');
@@ -26,8 +24,15 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store
 
 Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout')->middleware('auth');
 
-Route::get('/form/{id}', [\App\Http\Controllers\FormController::class, 'show'])->name('form.show')->middleware('auth');
-Route::post('/form', [\App\Http\Controllers\FormController::class, 'storeData'])->middleware('auth');
+Route::get('/', \App\Http\Controllers\Web\HomeController::class)->name('web.home.index');
+
+Route::get('/categories', [\App\Http\Controllers\Web\CategoryController::class, 'index'])->name('web.categories.index');
+Route::get('/categories/{slug}', [\App\Http\Controllers\Web\CategoryController::class, 'show'])->name('web.categories.show');
+
+Route::get('/form/{id}', [\App\Http\Controllers\Web\FormController::class, 'show'])->name('form.show')->middleware('auth');
+Route::post('/form', [\App\Http\Controllers\Web\FormController::class, 'store'])->middleware('auth');
+
+
 
 Route::prefix('account')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
@@ -37,6 +42,9 @@ Route::prefix('account')->group(function () {
 
         Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
             ->middleware('permission:surveys.index|surveys.create|surveys.edit|surveys.delete');
+
+        Route::resource('/categories', \App\Http\Controllers\Account\CategoryController::class, ['as' => 'account'])
+            ->middleware('permission:categories.index|categories.create|categories.edit|categories.delete');
 
         Route::get('/responses/{id}/export', [App\Http\Controllers\Account\SusController::class, 'export'])->name('responses.export');
 
@@ -48,8 +56,8 @@ Route::prefix('account')->group(function () {
 
         Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account'])
             ->middleware('permission:users.index|users.create|users.edit|users.delete');
-        
-        Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index0'])->name('account.sus');
-        Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
+
+        Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
+        Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])->name('account.sus');
     });
 });

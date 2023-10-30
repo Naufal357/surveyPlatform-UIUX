@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavDropdown } from "react-bootstrap";
 import { usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
-import Sidebar from "../Components/Sidebar";
+import Sidebar from "../Layouts/Sidebar";
 
 export default function LayoutAccount({ children }) {
     //get props auth

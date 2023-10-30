@@ -68,6 +68,7 @@ class UserController extends Controller
 
         if ($request->has('user_prefs')) {
             $userPrefsData = $request->user_prefs;
+            
             $userPref->where('user_id', $user->id)->delete();
 
             foreach ($userPrefsData as $category_id) {

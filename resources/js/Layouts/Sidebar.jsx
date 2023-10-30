@@ -3,7 +3,6 @@ import hasAnyPermission from "../Utils/Permissions";
 import { Link, usePage } from "@inertiajs/inertia-react";
 
 export default function Sidebar() {
-    //destruct URL from props
     const { url } = usePage();
 
     return (
@@ -45,6 +44,19 @@ export default function Sidebar() {
                         }`}
                     >
                         <i className="fa fa-scroll me-2"></i> Surveys
+                    </Link>
+                )}
+
+                {hasAnyPermission(["categories.index"]) && (
+                    <Link
+                        href="/account/categories"
+                        className={`${
+                            url.startsWith("/account/categories")
+                                ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                                : "list-group-item list-group-item-action list-group-item-light p-3"
+                        }`}
+                    >
+                        <i className="fa fa-folder me-2"></i> Categories
                     </Link>
                 )}
 

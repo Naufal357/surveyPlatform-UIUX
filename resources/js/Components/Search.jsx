@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function Search({ URL }) {
-    //define state search
     const [search, setSearch] = useState("");
 
-    //function "searchHandler"
     const searchHandler = (e) => {
         e.preventDefault();
 
-        //fetch to search
         Inertia.get(`${URL}?q=${search}`);
     };
 

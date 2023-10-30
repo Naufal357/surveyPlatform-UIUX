@@ -35,7 +35,7 @@ export default function SurveyIndex() {
                                         type="button"
                                     >
                                         <i className="fa fa-plus-circle me-2"></i>
-                                        Tambah
+                                        Add
                                     </Link>
                                 </div>
                             )}

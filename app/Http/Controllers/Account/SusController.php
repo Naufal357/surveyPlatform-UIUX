@@ -13,7 +13,7 @@ use App\Models\Survey;
 
 class SusController extends Controller
 {
-    public function index0(Request $request)
+    public function index(Request $request)
     {
         $user = auth()->user();
 
@@ -29,7 +29,7 @@ class SusController extends Controller
     }
 
 
-    public function index(Request $request, $id)
+    public function show(Request $request, $id)
     {
         $survey = Survey::find($id);
         if ($survey->user_id !== auth()->user()->id) {

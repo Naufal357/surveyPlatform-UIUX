@@ -75,10 +75,6 @@ export default function Dashboard() {
         data: getChartData(getSUSChartData.original[question]),
     }));
 
-    const handleSelectChange = (e) => {
-        setSelectedValue(e.target.value);
-    };
-
     const handleExport = () => {
         window.location.href = `/account/responses/${survey.id}/export`;
     };

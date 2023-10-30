@@ -1,8 +1,7 @@
 import React from "react";
 import LayoutAccount from "../../Layouts/Account";
 import { Head, usePage } from "@inertiajs/inertia-react";
-import Search from "../../Components/Search";
-import Pagination from "../../Components/Pagination"
+import Pagination from "../../Components/Pagination";
 
 export default function PermissionIndex() {
     const { permissions } = usePage().props;
@@ -13,15 +12,6 @@ export default function PermissionIndex() {
                 <title>Permissions - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <div className="row mt-5">
-                    <div className="col-md-8">
-                        <div className="row">
-                            <div className="col-md-9 col-12 mb-2">
-                                <Search URL={"/account/permissions"} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="row mt-2 mb-4">
                     <div className="col-12">
                         <div className="card border-0 rounded shadow-sm border-top-success">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Account;
 
 use App\Models\Survey;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\SurveyHasCategories;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,7 +18,7 @@ class SurveyController extends Controller
         if (auth()->user()->hasPermissionTo('surveys.index.full')) {
             $surveys = Survey::when(request()->q, function ($surveys) {
                 $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
-            }) ->latest() ->paginate(15);
+            })->orderBy('id')->paginate(15);
 
             $surveys->load('user');
         } else {
@@ -37,10 +39,14 @@ class SurveyController extends Controller
 
     public function create()
     {
-        return inertia('Account/Surveys/Create');
+        $categories = Category::all();
+
+        return inertia('Account/Surveys/Create', [
+            'categories' => $categories,
+        ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, SurveyHasCategories $surveyHasCategories)
     {
         $this->validate($request, [
             'user_id'        => 'required',
@@ -50,12 +56,13 @@ class SurveyController extends Controller
             'description'    => 'required',
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
+            'survey_categories' => 'required',
         ]);
 
         $image = $request->file('image');
         $image->storeAs('public/surveys', $image->hashName());
 
-        Survey::create([
+        $survey = Survey::create([
             'user_id'        => $request->user_id,
             'title'          => $request->title,
             'image'         => $image->hashName(),
@@ -65,6 +72,16 @@ class SurveyController extends Controller
             'embed_prototype'   => $request->embed_prototype,
             'slug'          => Str::slug($request->title, '-'),
         ]);
+
+        if ($request->has('survey_categories')) {
+            $surveyCategoriesData = $request->survey_categories;
+
+            $surveyHasCategories->where('survey_id', $survey->id)->delete();
+
+            foreach ($surveyCategoriesData as $category_id) {
+                $surveyHasCategories->create(['category_id' => $category_id, 'survey_id' => $survey->id]);
+            }
+        }
 
         return redirect()->route('account.surveys.index');
     }

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
-import Layout from "../Layouts/Header";
-import SurveyDescription from "../Components/SurveyDescription";
-import RadioQuestion from "../Components/RadioQuestionSUS";
-import EmbedFigma from "../Components/EmbedFigma";
+import Layout from "../../Layouts/Header";
+import SurveyDescription from "../../Components/SurveyDescription";
+import RadioQuestion from "../../Components/RadioQuestionSUS";
+import EmbedFigma from "../../Components/EmbedFigma";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import Swal from "sweetalert2";
 
