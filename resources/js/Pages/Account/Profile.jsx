@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../Layouts/Account";
-import Sidebar from "../../Components/Sidebar";
 import ButtonCRUD from "../../Components/ButtonCRUD";
 import AuthField from "../../Components/AuthField";
 import CustomDatePicker from "../../Components/DatePicker";

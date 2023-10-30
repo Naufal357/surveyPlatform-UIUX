@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import AuthField from "../../../Components/AuthField";
 import CustomDatePicker from "../../../Components/DatePicker";
@@ -20,23 +20,30 @@ export default function UserEdit() {
         );
     }
 
-    const [firstName, setFirstName] = useState(user.first_name);
-    const [surname, setSurname] = useState(user.surname);
-    const [email, setEmail] = useState(user.email);
-    const [gender, setGender] = useState(user.gender);
+    const [firstName, setFirstName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [email, setEmail] = useState("");
+    const [gender, setGender] = useState("");
     const [birthDate, setBirthDate] = useState(null);
-    const [profession, setProfession] = useState(user.profession);
-    const [educationalBackground, setEducationalBackground] = useState(
-        user.educational_background
-    );
+    const [profession, setProfession] = useState("");
+    const [educationalBackground, setEducationalBackground] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [rolesData, setRolesData] = useState(
-        user.roles.map((item) => item.name)
-    );
-    const [userPrefsData, setUserPrefsData] = useState(
-        userPrefs.map((item) => parseInt(item.category_id, 10))
-    );
+    const [rolesData, setRolesData] = useState([]);
+    const [userPrefsData, setUserPrefsData] = useState([]);
+
+    useEffect(() => {
+        setFirstName(user.first_name);
+        setSurname(user.surname);
+        setEmail(user.email);
+        setGender(user.gender);
+        setProfession(user.profession);
+        setEducationalBackground(user.educational_background);
+        setRolesData(user.roles.map((item) => item.name));
+        setUserPrefsData(
+            userPrefs.map((item) => parseInt(item.category_id, 10))
+        );
+    }, [user, userPrefs]);
 
     const handleCheckboxRolesChange = (e) => {
         const roleName = e.target.value;
@@ -49,7 +56,7 @@ export default function UserEdit() {
 
     const handleCheckboxUserPrefsChange = (e) => {
         const categoryId = parseInt(e.target.value, 10);
-        
+
         if (userPrefsData.includes(categoryId)) {
             setUserPrefsData(userPrefsData.filter((id) => id !== categoryId));
         } else {

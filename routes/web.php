@@ -32,8 +32,6 @@ Route::get('/categories/{slug}', [\App\Http\Controllers\Web\CategoryController::
 Route::get('/form/{id}', [\App\Http\Controllers\Web\FormController::class, 'show'])->name('form.show')->middleware('auth');
 Route::post('/form', [\App\Http\Controllers\Web\FormController::class, 'store'])->middleware('auth');
 
-
-
 Route::prefix('account')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');

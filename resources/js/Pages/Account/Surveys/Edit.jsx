@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
-import LayoutAccount from '../../../Layouts/Account';
+import LayoutAccount from "../../../Layouts/Account";
 import InputField from "../../../Components/InputField";
 import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
-import { Head, usePage } from '@inertiajs/inertia-react';
+import SelectCheckbox from "../../../Components/SelectCheckbox";
+import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export default function SurveyEdit() {
+    const { errors, survey, auth, categories, surveyCategories } =
+        usePage().props;
 
-    //destruct props "errors" & "category"
-    const { errors, survey, auth } = usePage().props;
-
-    //state
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
     const [theme, setTheme] = useState("");
     const [description, setDescription] = useState("");
     const [embed_design, setEmbedDesign] = useState("");
     const [embed_prototype, setEmbedPrototype] = useState("");
+    const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
     const [user_id, setUserId] = useState(auth.id);
 
     useEffect(() => {
@@ -27,20 +27,32 @@ export default function SurveyEdit() {
         setDescription(survey.description);
         setEmbedDesign(survey.embed_design);
         setEmbedPrototype(survey.embed_prototype);
+        setSurveyCategoriesData(
+            surveyCategories.map((item) => parseInt(item.category_id, 10))
+        );
         setUserId(survey.user_id);
-    }, [survey]);
+    }, [survey, surveyCategories]);
 
-    //method "updateCategory"
+    const handleCheckboxCategoriesChange = (e) => {
+        const categoryId = parseInt(e.target.value, 10);
+
+        if (surveyCategoriesData.includes(categoryId)) {
+            setSurveyCategoriesData(
+                surveyCategoriesData.filter((id) => id !== categoryId)
+            );
+        } else {
+            setSurveyCategoriesData([...surveyCategoriesData, categoryId]);
+        }
+    };
+
     const updateSurvey = async (e) => {
         e.preventDefault();
 
-        // Periksa apakah tombol "Cancel" diklik
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
             return;
         }
 
-        //sending data ketika menekan save
         Inertia.post(
             `/account/surveys/${survey.id}`,
             {
@@ -50,6 +62,7 @@ export default function SurveyEdit() {
                 description: description,
                 embed_design: embed_design,
                 embed_prototype: embed_prototype,
+                survey_categories: surveyCategoriesData,
                 user_id: user_id,
                 _method: "PUT",
             },
@@ -65,7 +78,7 @@ export default function SurveyEdit() {
                 },
             }
         );
-    }
+    };
 
     const handleReset = () => {
         setImage(null);
@@ -74,6 +87,7 @@ export default function SurveyEdit() {
         setDescription("");
         setEmbedDesign("");
         setEmbedPrototype("");
+        setSurveyCategoriesData([]);
     };
 
     return (
@@ -147,6 +161,19 @@ export default function SurveyEdit() {
                                         }
                                         error={errors.embed_prototype}
                                     />
+                                    <div className="mb-3">
+                                        <SelectCheckbox
+                                            label="Categories Survey"
+                                            options={categories}
+                                            valueKey="id"
+                                            labelKey="name"
+                                            onChange={
+                                                handleCheckboxCategoriesChange
+                                            }
+                                            selectedValues={surveyCategoriesData}
+                                        />
+                                    </div>
+
                                     <div>
                                         <ButtonCRUD
                                             type="submit"

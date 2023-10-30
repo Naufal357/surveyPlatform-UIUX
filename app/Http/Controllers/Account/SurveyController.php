@@ -89,13 +89,18 @@ class SurveyController extends Controller
 
     public function edit(Survey $survey)
     {
+        $categories = Category::all();
+        $surveyCategories = SurveyHasCategories::where('survey_id', $survey->id)->get();
+
         return inertia('Account/Surveys/Edit', [
             'survey' => $survey,
+            'categories' => $categories,
+            'surveyCategories' => $surveyCategories,
         ]);
     }
 
 
-    public function update(Request $request, Survey $Survey)
+    public function update(Request $request, Survey $Survey, SurveyHasCategories $surveyHasCategories)
     {
         $this->validate($request, [
             'user_id'        => 'required',
@@ -128,6 +133,15 @@ class SurveyController extends Controller
             'embed_prototype' => $request->embed_prototype,
             'slug'          => Str::slug($request->title, '-')
         ]);
+
+        if ($request->has('survey_categories')) {
+            $surveyCategoriesData = $request->survey_categories;
+            $surveyHasCategories->where('survey_id', $Survey->id)->delete();
+
+            foreach ($surveyCategoriesData as $category_id) {
+                $surveyHasCategories->create(['category_id' => $category_id, 'survey_id' => $Survey->id]);
+            }
+        }
         
         return redirect()->route('account.surveys.index');
     }
