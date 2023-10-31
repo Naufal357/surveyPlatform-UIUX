@@ -6,7 +6,6 @@ export default function Search({ URL }) {
 
     const searchHandler = (e) => {
         e.preventDefault();
-
         Inertia.get(`${URL}?q=${search}`);
     };
 
@@ -21,7 +20,11 @@ export default function Search({ URL }) {
                         className="form-control border-0 shadow-sm"
                         placeholder="type keywords and press enter..."
                     />
-                    <span className="input-group-text-search border-0 shadow-sm">
+                    <span
+                        className="input-group-text-search border-0 shadow-sm"
+                        style={{ cursor: "pointer" }}
+                        onClick={searchHandler} 
+                    >
                         <i className="fa fa-search"></i>
                     </span>
                 </div>

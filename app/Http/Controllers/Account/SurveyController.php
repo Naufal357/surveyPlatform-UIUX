@@ -65,6 +65,7 @@ class SurveyController extends Controller
         $survey = Survey::create([
             'user_id'        => $request->user_id,
             'title'          => $request->title,
+            'slug'          => Str::slug($request->title, '-'),
             'image'         => $image->hashName(),
             'theme'          => $request->theme,
             'description'    => $request->description,

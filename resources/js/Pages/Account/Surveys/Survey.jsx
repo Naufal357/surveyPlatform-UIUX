@@ -40,7 +40,7 @@ export default function SurveyIndex() {
                                 </div>
                             )}
                             <div className="col-md-9 col-12 mb-2">
-                                <Search URL={"/account/Surveys"} />
+                                <Search URL={"/account/surveys/"} />
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@ export default function SurveyIndex() {
                                         <tbody>
                                             {surveys.data.map(
                                                 (survey, index) => {
-                                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.id}`;
+                                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.slug}`;
 
                                                     return (
                                                         <tr key={index}>

@@ -13,20 +13,28 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::when(request()->q, function ($users) {
-            $users = $users->where('name', 'like', '%' . request()->q . '%');
-        })->with('roles')->orderBy('id')->paginate(5);
+        $searchTerm = request()->input('q', '');
+        $query = User::with('roles')->orderBy('id');
 
-        $users->appends(['q' => request()->q]);
+        if (!empty($searchTerm)) {
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('first_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('surname', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        $users = $query->paginate(5);
+        $users->appends(['q' => $searchTerm]);
 
         $users->each(function ($user) {
             $user->fullname = $user->first_name . ' ' . $user->surname;
         });
 
         return inertia('Account/Users/Users', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
+
 
     public function create()
     {

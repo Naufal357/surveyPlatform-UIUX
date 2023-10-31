@@ -11,14 +11,18 @@ class FormController extends Controller
 {
     public function index()
     {
-        return inertia('Web/Form', [
+        $surveys = Survey::latest()->paginate(12);
+
+        return inertia('Web/Surveys', [
             'auth' => auth()->user(),
+            'surveys' => $surveys
         ]);
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $surveys = Survey::findOrFail($id);
+        $surveys = Survey::where('slug', $slug)->firstOrFail();
+
 
         return inertia('Web/Form', [
             'surveys' => $surveys,

@@ -15,6 +15,7 @@ class SurveyFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
+            'slug' => Str::slug($this->faker->sentence),
             'image' => 'surveyFactory.jpg',
             'theme' => $this->faker->word,
             'description' => $this->faker->paragraph,

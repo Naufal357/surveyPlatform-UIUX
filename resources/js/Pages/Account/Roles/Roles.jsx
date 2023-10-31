@@ -2,7 +2,6 @@ import React from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import hasAnyPermission from "../../../Utils/Permissions";
-import Search from "../../../Components/Search";
 import Pagination from "../../../Components/Pagination";
 import Delete from "../../../Components/Delete";
 
@@ -30,9 +29,6 @@ export default function RoleIndex() {
                                     </Link>
                                 </div>
                             )}
-                            <div className="col-md-9 col-12 mb-2">
-                                <Search URL={"/account/roles"} />
-                            </div>
                         </div>
                     </div>
                 </div>
