@@ -16,7 +16,7 @@ export default function UserEdit() {
 
     if (!hasAnyPermission(["users.index.full"])) {
         filteredRoles = filteredRoles.filter(
-            (role) => role.name !== "super admin"
+            (role) => !["super admin", "admin"].includes(role.name)
         );
     }
 
@@ -99,20 +99,6 @@ export default function UserEdit() {
                 },
             }
         );
-    };
-
-    const handleReset = () => {
-        setFirstName("");
-        setSurname("");
-        setEmail("");
-        setGender("");
-        setBirthDate(null);
-        setProfession("");
-        setEducationalBackground("");
-        setPassword("");
-        setPasswordConfirmation("");
-        setRolesData([]);
-        setUserPrefsData([]);
     };
 
     return (
@@ -343,13 +329,6 @@ export default function UserEdit() {
                                             label="Save"
                                             color="btn-success"
                                             iconClass="fa fa-save"
-                                        />
-                                        <ButtonCRUD
-                                            type="reset"
-                                            label="Reset"
-                                            color="btn-warning"
-                                            iconClass="fa fa-redo"
-                                            onClick={handleReset}
                                         />
                                         <ButtonCRUD
                                             type="Cancel"

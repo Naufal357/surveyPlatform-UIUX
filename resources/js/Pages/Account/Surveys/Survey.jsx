@@ -116,7 +116,7 @@ export default function SurveyIndex() {
                                         <tbody>
                                             {surveys.data.map(
                                                 (survey, index) => {
-                                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.slug}`;
+                                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.id}/${survey.slug}`;
 
                                                     return (
                                                         <tr key={index}>

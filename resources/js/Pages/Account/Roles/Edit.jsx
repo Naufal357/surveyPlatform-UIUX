@@ -73,11 +73,6 @@ export default function RoleEdit() {
         );
     };
 
-    const handleReset = () => {
-        setName("");
-        setPermissionsData([]);
-    };
-
     return (
         <>
             <Head>
@@ -132,12 +127,6 @@ export default function RoleEdit() {
                                             color="btn-success"
                                             iconClass="fa fa-save"
                                         />
-                                        <button
-                                            type="reset"
-                                            className="btn btn-md btn-warning me-2"
-                                        >
-                                            <i className="fa fa-redo"></i> Reset
-                                        </button>
                                         <ButtonCRUD
                                             type="Cancel"
                                             label="Cancel"

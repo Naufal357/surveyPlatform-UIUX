@@ -19,16 +19,21 @@ class FormController extends Controller
         ]);
     }
 
-    public function show($slug)
+    public function show($id, $slug)
     {
-        $surveys = Survey::where('slug', $slug)->firstOrFail();
+        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail();        $userEmail = auth()->user()->email;
+        $response = SurveyResponses::where('email', $userEmail)->where('survey_id', $survey->id)->first();
 
+        if ($response) {
+            abort(403, 'You have already submitted this survey and cannot participate again.');
+        }
 
         return inertia('Web/Form', [
-            'surveys' => $surveys,
+            'surveys' => $survey,
             'auth' => auth()->user(),
         ]);
     }
+
 
 
     public function store(Request $request)
@@ -42,8 +47,17 @@ class FormController extends Controller
             'gender'                => 'required',
             'profession'            => 'required',
             'educational_background' => 'required',
-            'response_data'        => 'required|json', 
+            'response_data'        => 'required|json',
         ]);
+
+        $userId = auth()->user()->id;
+
+        $survey = Survey::find($validatedData['survey_id']);
+        $surveyUserId = $survey->user_id;
+
+        if ($userId === $surveyUserId) {
+            abort(403, 'Survey authors cannot submit their own surveys.');
+        }
 
         $responseData = [
             'sus1' => $request->input('sus1'),

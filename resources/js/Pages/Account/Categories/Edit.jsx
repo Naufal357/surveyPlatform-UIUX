@@ -40,10 +40,6 @@ export default function CategoryEdit() {
         );
     };
 
-    const handleReset = () => {
-        setName("");
-    };
-
     return (
         <>
             <Head>
@@ -79,13 +75,6 @@ export default function CategoryEdit() {
                                             label="Save"
                                             color="btn-success"
                                             iconClass="fa fa-save"
-                                        />
-                                        <ButtonCRUD
-                                            type="reset"
-                                            label="Reset"
-                                            color="btn-warning"
-                                            iconClass="fa fa-redo"
-                                            onClick={handleReset}
                                         />
                                         <ButtonCRUD
                                             type="Cancel"

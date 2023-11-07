@@ -31,7 +31,7 @@ Route::get('/categories/{slug}', [\App\Http\Controllers\Web\CategoryController::
 
 Route::get('/surveys', [\App\Http\Controllers\Web\FormController::class, 'index'])->name('web.forms.index');
 
-Route::get('/form/{slug}', [\App\Http\Controllers\Web\FormController::class, 'show'])->name('form.show')->middleware('auth');
+Route::get('/form/{id}/{slug}', [\App\Http\Controllers\Web\FormController::class, 'show'])->name('form.show')->middleware('auth');
 Route::post('/form', [\App\Http\Controllers\Web\FormController::class, 'store'])->middleware('auth');
 
 Route::prefix('account')->group(function () {

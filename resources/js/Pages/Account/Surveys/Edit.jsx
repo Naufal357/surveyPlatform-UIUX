@@ -20,7 +20,7 @@ export default function SurveyEdit() {
     const [embed_prototype, setEmbedPrototype] = useState("");
     const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
     const [user_id, setUserId] = useState(auth.id);
-
+    
     useEffect(() => {
         setTitle(survey.title);
         setTheme(survey.theme);
@@ -78,16 +78,6 @@ export default function SurveyEdit() {
                 },
             }
         );
-    };
-
-    const handleReset = () => {
-        setImage(null);
-        setTitle("");
-        setTheme("");
-        setDescription("");
-        setEmbedDesign("");
-        setEmbedPrototype("");
-        setSurveyCategoriesData([]);
     };
 
     return (
@@ -167,9 +157,7 @@ export default function SurveyEdit() {
                                             options={categories}
                                             valueKey="id"
                                             labelKey="name"
-                                            onChange={
-                                                handleCheckboxCategoriesChange
-                                            }
+                                            onChange={handleCheckboxCategoriesChange}
                                             selectedValues={surveyCategoriesData}
                                         />
                                     </div>
@@ -180,13 +168,6 @@ export default function SurveyEdit() {
                                             label="Save"
                                             color="btn-success"
                                             iconClass="fa fa-save"
-                                        />
-                                        <ButtonCRUD
-                                            type="reset"
-                                            label="Reset"
-                                            color="btn-warning"
-                                            iconClass="fa fa-redo"
-                                            onClick={handleReset}
                                         />
                                         <ButtonCRUD
                                             type="Cancel"

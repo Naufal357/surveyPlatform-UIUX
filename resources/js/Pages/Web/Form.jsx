@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 function Form() {
     const { errors, surveys, auth } = usePage().props;
 
-    let [formData, setFormData] = useState({
+    const initialFormData = {
         first_name: auth.first_name,
         surname: auth.surname,
         email: auth.email,
@@ -18,9 +18,9 @@ function Form() {
         gender: auth.gender,
         profession: auth.profession,
         educational_background: auth.educational_background,
-    });
+    };
 
-    const [questionValues, setQuestionValues] = useState({
+    const initialQuestionValues = {
         sus1: null,
         sus2: null,
         sus3: null,
@@ -31,15 +31,53 @@ function Form() {
         sus8: null,
         sus9: null,
         sus10: null,
-    });
+    };
 
-    const handleValueChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    const [formData, setFormData] = useState(initialFormData);
+    const [questionValues, setQuestionValues] = useState(initialQuestionValues);
+
+    const currentDate = new Date();
+    const formattedDate = currentDate
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+
+    useEffect(() => {
+        loadSurveyData();
+    }, [surveys.id]);
+
+    useEffect(() => {
+        saveSurveyData();
+    }, [formData, questionValues]);
+
+    const loadSurveyData = () => {
+        const storedData = localStorage.getItem(`surveyData_${surveys.id}`);
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            setFormData(parsedData.formData);
+            setQuestionValues(parsedData.questionValues);
+        }
+    };
+
+    const saveSurveyData = () => {
+        const surveyData = {
+            title: surveys.title,
+            formData,
+            questionValues,
+            update_at: formattedDate,
+        };
+        localStorage.setItem(
+            `surveyData_${surveys.id}`,
+            JSON.stringify(surveyData)
+        );
     };
 
     const handleQuestionChange = (questionName, value) => {
         setQuestionValues({ ...questionValues, [questionName]: value });
+    };
+
+    const removeSurveyData = () => {
+        localStorage.removeItem(`surveyData_${surveys.id}`);
     };
 
     const submitForm = (e) => {
@@ -72,6 +110,7 @@ function Form() {
                     showConfirmButton: false,
                     timer: 3000,
                 }).then(() => {
+                    removeSurveyData();
                     Inertia.visit("/");
                 });
             },
@@ -98,8 +137,8 @@ function Form() {
                             />
                         </div>
                     </div>
-                    
-                    <SurveyDescription description={surveys.description}/>
+
+                    <SurveyDescription description={surveys.description} />
 
                     <hr />
 

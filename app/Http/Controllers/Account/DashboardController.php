@@ -13,13 +13,21 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $user = auth()->user();
-        $surveys = Survey::where('user_id', $user->id)->get();
+        if (auth()->user()->hasPermissionTo('dashboard.index.full')) {
+            $surveys = Survey::all();
+            $surveyData = [];
 
-        $surveyData = [];
+            foreach ($surveys as $survey) {
+                $surveyData[] = $survey->getTitleAndResponseCount();
+            }
+        } else {
+            $user = auth()->user();
+            $surveys = Survey::where('user_id', $user->id)->get();
+            $surveyData = [];
 
-        foreach ($surveys as $survey) {
-            $surveyData[] = $survey->getTitleAndResponseCount();
+            foreach ($surveys as $survey) {
+                $surveyData[] = $survey->getTitleAndResponseCount();
+            }
         }
 
         return inertia('Account/Dashboard', [

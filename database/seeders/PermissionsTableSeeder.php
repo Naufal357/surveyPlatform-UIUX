@@ -17,6 +17,7 @@ class PermissionsTableSeeder extends Seeder
     {
         //permission dashboard
         Permission::create(['name' => 'dashboard.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'dashboard.index.full', 'guard_name' => 'web']);
 
         //permission sus result
         Permission::create(['name' => 'sus.index', 'guard_name' => 'web']);
@@ -40,7 +41,6 @@ class PermissionsTableSeeder extends Seeder
 
         //permission roles
         Permission::create(['name' => 'roles.index', 'guard_name' => 'web']);
-        Permission::create(['name' => 'roles.index.full', 'guard_name' => 'web']);
         Permission::create(['name' => 'roles.create', 'guard_name' => 'web']);
         Permission::create(['name' => 'roles.edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'roles.delete', 'guard_name' => 'web']);
@@ -50,7 +50,6 @@ class PermissionsTableSeeder extends Seeder
 
         //permission users
         Permission::create(['name' => 'users.index', 'guard_name' => 'web']);
-        Permission::create(['name' => 'users.index.full', 'guard_name' => 'web']);
         Permission::create(['name' => 'users.create', 'guard_name' => 'web']);
         Permission::create(['name' => 'users.edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'users.delete', 'guard_name' => 'web']);

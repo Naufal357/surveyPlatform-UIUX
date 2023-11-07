@@ -105,8 +105,7 @@ export default function UserIndex() {
                                                         )}
                                                     </td>
                                                     <td className="text-center">
-                                                        {((hasAnyPermission(["users.edit"]) && !user.roles.some((role) =>role.name ==="super admin")) ||
-                                                            hasAnyPermission(["users.index.full",])) && (
+                                                        {hasAnyPermission(["users.edit"])&& (
                                                             <Link
                                                                 href={`/account/users/${user.id}/edit`}
                                                                 className="btn btn-primary btn-sm me-2"
@@ -114,17 +113,10 @@ export default function UserIndex() {
                                                                 <i className="fa fa-pencil-alt"></i>
                                                             </Link>
                                                         )}
-                                                        {((hasAnyPermission([
+                                                        {hasAnyPermission([
                                                             "users.delete",
                                                         ]) &&
-                                                            !user.roles.some(
-                                                                (role) =>
-                                                                    role.name ===
-                                                                    "super admin"
-                                                            )) ||
-                                                            hasAnyPermission([
-                                                                "users.index.full",
-                                                            ])) && (
+                                                            (
                                                             <Delete
                                                                 URL="/account/users"
                                                                 id={user.id}

@@ -1,6 +1,13 @@
 import React from "react";
 
-const SelectCheckbox = ({ label, options, valueKey, labelKey, selectedValues, onChange,}) => {
+const SelectCheckbox = ({
+    label,
+    options,
+    valueKey,
+    labelKey,
+    selectedValues,
+    onChange,
+}) => {
     return (
         <div className="mb-3">
             {selectedValues ? (
@@ -22,6 +29,7 @@ const SelectCheckbox = ({ label, options, valueKey, labelKey, selectedValues, on
                                     option[valueKey]
                                 )}
                             />
+                    
                             <label
                                 className="form-check-label"
                                 htmlFor={`check-${option[valueKey]}`}

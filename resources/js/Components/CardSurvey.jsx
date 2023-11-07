@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/inertia-react";
 const CardSurvey = ({ survey }) => {
     return (
         <Link
-            href={`/form/${survey.slug}`}
+            href={`/form/${survey.id}/${survey.slug}`}
             className="text-dark text-decoration-none"
         >
             <div className="card border-0 h-100 rounded-3 shadow-sm">

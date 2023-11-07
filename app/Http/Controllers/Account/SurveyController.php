@@ -111,7 +111,7 @@ class SurveyController extends Controller
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
         ]);
-        
+
         if ($request->file('image')) {
 
             Storage::disk('local')->delete('public/surveys/' . basename($Survey->image));
@@ -122,7 +122,7 @@ class SurveyController extends Controller
             $Survey->update([
                 'image' => $image->hashName(),
                 'name' => $request->name,
-                'slug'=> Str::slug($request->name, '-')
+                'slug' => Str::slug($request->name, '-')
             ]);
         }
 
@@ -143,7 +143,7 @@ class SurveyController extends Controller
                 $surveyHasCategories->create(['category_id' => $category_id, 'survey_id' => $Survey->id]);
             }
         }
-        
+
         return redirect()->route('account.surveys.index');
     }
 

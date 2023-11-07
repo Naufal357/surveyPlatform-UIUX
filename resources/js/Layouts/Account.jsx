@@ -32,6 +32,7 @@ export default function LayoutAccount({ children }) {
     //function logout
     const logoutHandler = async (e) => {
         e.preventDefault();
+        localStorage.clear();
 
         Inertia.post("/logout");
     };
