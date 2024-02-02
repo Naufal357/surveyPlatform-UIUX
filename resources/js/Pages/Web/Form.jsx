@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Layout from "../../Layouts/Header";
 import SurveyDescription from "../../Components/SurveyDescription";
 import RadioQuestion from "../../Components/RadioQuestionSUS";
 import EmbedFigma from "../../Components/EmbedFigma";
-import { Head, usePage } from "@inertiajs/inertia-react";
 import Swal from "sweetalert2";
 
 function Form() {
@@ -123,7 +123,7 @@ function Form() {
                 <title>Form Survey</title>
             </Head>
             <Layout>
-                <div className="container">
+                <div className="container" style={{ marginTop: "80px" }}>
                     <div className="Introduction text-center">
                         <h3 className="text-2xl font-bold mb-4 mt-4">
                             Pengenalan dan Konteks <br />"

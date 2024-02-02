@@ -34,6 +34,19 @@ export default function Sidebar() {
                     </Link>
                 )}
 
+                {hasAnyPermission(["sus.index"]) && (
+                    <Link
+                        href="/account/tam"
+                        className={`${
+                            url.startsWith("/account/tam")
+                                ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                                : "list-group-item list-group-item-action list-group-item-light p-3"
+                        }`}
+                    >
+                        <i className="fa fa-poll-h me-2"></i> TAM Results
+                    </Link>
+                )}
+
                 {hasAnyPermission(["surveys.index"]) && (
                     <Link
                         href="/account/surveys"

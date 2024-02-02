@@ -59,5 +59,8 @@ Route::prefix('account')->group(function () {
 
         Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
         Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])->name('account.sus');
+
+        Route::get('/tam', [\App\Http\Controllers\Account\TamController::class, 'index'])->name('account.tam');
+        Route::get('/tam/{id}', [App\Http\Controllers\Account\TamController::class, 'show'])->name('account.tam');
     });
 });
