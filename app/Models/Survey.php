@@ -61,4 +61,7 @@ class Survey extends Model
         return $this->hasMany(SurveyResponses::class);
     }
 
+    public function methods()
+    {
+        return $this->belongsToMany(Method::class, 'survey_has_methods', 'survey_id', 'method_id');    }
 }

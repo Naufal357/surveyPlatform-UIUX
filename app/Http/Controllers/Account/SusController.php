@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ResponsesExport;
+use App\Exports\ResponsesSUSExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
 
@@ -17,7 +17,12 @@ class SusController extends Controller
     {
         $user = auth()->user();
 
-        $surveyTitles = Survey::where('user_id', $user->id)->get(['id', 'title']);
+        $surveyTitles = Survey::where('user_id', $user->id)
+            ->whereHas('methods', function ($query) {
+                $query->where('method_id', 1);
+            })
+            ->get(['surveys.id', 'surveys.title']);
+
         if ($surveyTitles->isEmpty()) {
             return redirect()->route('account.surveys.create');
         }
@@ -31,18 +36,28 @@ class SusController extends Controller
 
     public function show(Request $request, $id)
     {
+        $userID = auth()->user()->id;
+
         $survey = Survey::find($id);
-        if ($survey->user_id !== auth()->user()->id) {
+        if ($survey->user_id !== $userID) {
             return abort(403, 'Unauthorized');
         }
 
-        $surveyTitles = Survey::where('user_id', auth()->user()->id)->get(['id', 'title']);
-        $responses = SurveyResponses::where('survey_id', $id)->get();
+        $surveyTitles = Survey::where('user_id', $userID)
+            ->whereHas('methods', function ($query) {
+                $query->where('method_id', 1);
+            })
+            ->get(['surveys.id', 'surveys.title']);
+
+        $responses = SurveyResponses::where('survey_id', $id)
+            ->where('response_data', 'LIKE', '%"sus"%')
+            ->get();
+
         $respondentCount = $this->countRespondents($id);
         $averageSUS = $this->calculateAverageSUS($responses);
         $classifySUSGrade = $this->classifySUSGrade($averageSUS);
         $susSurveyResults = $this->getSUSResults($responses);
-        $getSUSChartData = $this->getSUSChartData($id);
+        $getSUSChartData = $this->getSUSChartData($id, $responses);
 
 
         return inertia('Account/SUS/Index', [
@@ -59,18 +74,23 @@ class SusController extends Controller
 
     private function countRespondents($surveyId)
     {
-        // Mengambil jumlah responden berdasarkan survei_id
-        return SurveyResponses::where('survey_id', $surveyId)->count();
+        // Menghitung jumlah responden dengan "sus" dalam response_data
+        $totalResponsesWithSUS = SurveyResponses::where('survey_id', $surveyId)
+            ->where('response_data', 'LIKE', '%"sus"%')
+            ->count();
+
+        return $totalResponsesWithSUS;
     }
 
     private function calculateAverageSUS($responses)
     {
+
         $totalSUS = 0;
         $count = count($responses);
 
         // Menghitung total skor SUS dari semua respons
         foreach ($responses as $response) {
-            $responseData = json_decode($response->response_data, true);
+            $responseData = json_decode($response->response_data, true)['sus'];
             $totalSUS += $this->calculateSUS($responseData);
         }
         // Menghitung Skor SUS Rata-rata
@@ -115,33 +135,30 @@ class SusController extends Controller
         return $susScore * 2.5; // Mengubah skala SUS menjadi 0-100
     }
 
-    private function getSUSChartData($survey_id)
+    private function getSUSChartData($survey_id, $responses)
     {
-        // Ambil semua respons berdasarkan $survey_id
-        $responses = SurveyResponses::where('survey_id', $survey_id)->get();
-
         // Inisialisasi array kosong untuk setiap pertanyaan (sus1, sus2, dst)
-        $suspensions = [];
+        $sus_data = [];
 
         // Loop melalui setiap respons
         foreach ($responses as $response) {
             // Decode response_data dari JSON ke dalam array asosiatif
-            $responseData = json_decode($response->response_data, true);
+            $responseData = json_decode($response->response_data, true)['sus'];
 
             // Loop melalui setiap pertanyaan (sus1, sus2, dst)
             foreach ($responseData as $question => $answer) {
-                // Jika pertanyaan belum ada dalam array $suspensions, inisialisasikan dengan array kosong
-                if (!isset($suspensions[$question])) {
-                    $suspensions[$question] = [];
+                // Jika pertanyaan belum ada dalam array $sus_data, inisialisasikan dengan array kosong
+                if (!isset($sus_data[$question])) {
+                    $sus_data[$question] = [];
                 }
 
                 // Tambahkan nilai jawaban ke array yang sesuai
-                $suspensions[$question][] = $answer;
+                $sus_data[$question][] = $answer;
             }
         }
 
         // Kembalikan hasil dalam format JSON tanpa headers tambahan
-        return response()->json($suspensions);
+        return response()->json($sus_data);
     }
 
     private function getSUSResults($responses)
@@ -149,7 +166,7 @@ class SusController extends Controller
         $susSurveyResults = [];
 
         foreach ($responses as $response) {
-            $responseData = json_decode($response->response_data, true);
+            $responseData = json_decode($response->response_data, true)['sus'];
 
             $susSurveyResults[] = [
                 'id' => $response->id,
@@ -164,6 +181,6 @@ class SusController extends Controller
 
     public function export($survey_id)
     {
-        return Excel::download(new ResponsesExport($survey_id), 'SurveyResponses.xlsx');
+        return Excel::download(new ResponsesSUSExport($survey_id), 'SurveyResponses.xlsx');
     }
 }

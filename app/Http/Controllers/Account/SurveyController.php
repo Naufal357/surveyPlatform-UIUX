@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Account;
 
 use App\Models\Survey;
-use App\Models\User;
+use App\Models\Method;
 use App\Models\Category;
 use App\Models\SurveyHasCategories;
+use App\Models\SurveyHasMethods;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,13 +41,15 @@ class SurveyController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $methods = Method::all();
 
         return inertia('Account/Surveys/Create', [
             'categories' => $categories,
+            'methods' => $methods,
         ]);
     }
 
-    public function store(Request $request, SurveyHasCategories $surveyHasCategories)
+    public function store(Request $request, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {
         $this->validate($request, [
             'user_id'        => 'required',
@@ -57,6 +60,7 @@ class SurveyController extends Controller
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
             'survey_categories' => 'required',
+            'survey_methods' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -84,6 +88,16 @@ class SurveyController extends Controller
             }
         }
 
+        if ($request->has('survey_methods')) {
+            $surveyMethodsData = $request->survey_methods;
+
+            $surveyHasMethods->where('survey_id', $survey->id)->delete();
+
+            foreach ($surveyMethodsData as $method_id) {
+                $surveyHasMethods->create(['method_id' => $method_id, 'survey_id' => $survey->id]);
+            }
+        }
+
         return redirect()->route('account.surveys.index');
     }
 
@@ -91,17 +105,21 @@ class SurveyController extends Controller
     public function edit(Survey $survey)
     {
         $categories = Category::all();
+        $methods = Method::all();
         $surveyCategories = SurveyHasCategories::where('survey_id', $survey->id)->get();
+        $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
 
         return inertia('Account/Surveys/Edit', [
             'survey' => $survey,
             'categories' => $categories,
+            'methods' => $methods,
             'surveyCategories' => $surveyCategories,
+            'surveyMethods' => $surveyMethods,
         ]);
     }
 
 
-    public function update(Request $request, Survey $Survey, SurveyHasCategories $surveyHasCategories)
+    public function update(Request $request, Survey $Survey, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {
         $this->validate($request, [
             'user_id'        => 'required',
@@ -141,6 +159,15 @@ class SurveyController extends Controller
 
             foreach ($surveyCategoriesData as $category_id) {
                 $surveyHasCategories->create(['category_id' => $category_id, 'survey_id' => $Survey->id]);
+            }
+        }
+
+        if ($request->has('survey_methods')) {
+            $surveyMethodsData = $request->survey_methods;
+            $surveyHasMethods->where('survey_id', $Survey->id)->delete();
+
+            foreach ($surveyMethodsData as $method_id) {
+                $surveyHasMethods->create(['method_id' => $method_id, 'survey_id' => $Survey->id]);
             }
         }
 

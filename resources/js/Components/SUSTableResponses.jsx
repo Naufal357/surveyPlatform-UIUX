@@ -1,6 +1,6 @@
 import React from "react";
 
-const SUSTableUser = ({ data }) => {
+const SUSTableResponses = ({ data }) => {
     const susKeys = Object.keys(data[0]?.answerData);
 
     return (
@@ -33,4 +33,4 @@ const SUSTableUser = ({ data }) => {
     );
 };
 
-export default SUSTableUser;
+export default SUSTableResponses;

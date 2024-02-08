@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use App\Models\SurveyResponses;
+use App\Models\SurveyHasMethods;
 
 class FormController extends Controller
 {
@@ -21,8 +22,10 @@ class FormController extends Controller
 
     public function show($id, $slug)
     {
-        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail();        $userEmail = auth()->user()->email;
+        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail();        
+        $userEmail = auth()->user()->email;
         $response = SurveyResponses::where('email', $userEmail)->where('survey_id', $survey->id)->first();
+        $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
 
         if ($response) {
             abort(403, 'You have already submitted this survey and cannot participate again.');
@@ -31,6 +34,7 @@ class FormController extends Controller
         return inertia('Web/Form', [
             'surveys' => $survey,
             'auth' => auth()->user(),
+            'surveyMethods' => $surveyMethods,
         ]);
     }
 
@@ -59,19 +63,7 @@ class FormController extends Controller
             abort(403, 'Survey authors cannot submit their own surveys.');
         }
 
-        $responseData = [
-            'sus1' => $request->input('sus1'),
-            'sus2' => $request->input('sus2'),
-            'sus3' => $request->input('sus3'),
-            'sus4' => $request->input('sus4'),
-            'sus5' => $request->input('sus5'),
-            'sus6' => $request->input('sus6'),
-            'sus7' => $request->input('sus7'),
-            'sus8' => $request->input('sus8'),
-            'sus9' => $request->input('sus9'),
-            'sus10' => $request->input('sus10'),
-        ];
-
+        $responseData = json_decode($validatedData['response_data'], true);
 
         $surveyResponse = SurveyResponses::create($validatedData);
 

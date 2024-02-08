@@ -46,7 +46,7 @@ Route::prefix('account')->group(function () {
         Route::resource('/categories', \App\Http\Controllers\Account\CategoryController::class, ['as' => 'account'])
             ->middleware('permission:categories.index|categories.create|categories.edit|categories.delete');
 
-        Route::get('/responses/{id}/export', [App\Http\Controllers\Account\SusController::class, 'export'])->name('responses.export');
+        Route::get('/responses/sus/{id}/export', [App\Http\Controllers\Account\SusController::class, 'export'])->name('responses.sus.export');
 
         Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index')
             ->middleware('permission:permissions.index');

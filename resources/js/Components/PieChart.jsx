@@ -3,7 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const SUSPieChart = ({ data }) => {
+const PieChart = ({ data }) => {
     const calculatePercentage = (value, total) => {
         return ((value / total) * 100).toFixed(2) + "%";
     };
@@ -48,4 +48,4 @@ const SUSPieChart = ({ data }) => {
     );
 };
 
-export default SUSPieChart;
+export default PieChart;

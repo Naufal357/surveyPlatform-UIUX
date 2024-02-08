@@ -1,11 +1,12 @@
 import React from "react";
-import { Head, Inertia, usePage, Link } from "@inertiajs/inertia-react";
+import { Head, usePage, Link } from "@inertiajs/inertia-react";
+import { Inertia } from "@inertiajs/inertia";
 import hasAnyPermission from "../../../Utils/Permissions";
 import LayoutAccount from "../../../Layouts/Account";
 import AccordionLayout from "../../../Layouts/Accordion";
-import SUSPieChart from "../../../Components/SUSPieChart";
+import PieChart from "../../../Components/PieChart";
 import InfoCard from "../../../Components/CardInfo";
-import SUSTableUser from "../../../Components/SUSTableUser";
+import SUSTableResponses from "../../../Components/SUSTableResponses";
 
 export default function Dashboard() {
     const {
@@ -35,8 +36,6 @@ export default function Dashboard() {
         `9. Saya merasa tidak ada hambatan dalam menggunakan sistem ${survey.theme} ini.`,
         `10. Saya perlu membiasakan diri terlebih dahulu sebelum menggunakan sistem ${survey.theme} ini.`,
     ];
-
-
 
     // Fungsi untuk menghitung data chart
     const getChartData = (data) => {
@@ -76,7 +75,7 @@ export default function Dashboard() {
     }));
 
     const handleExport = () => {
-        window.location.href = `/account/responses/${survey.id}/export`;
+        Inertia.get("/account/responses/sus/${survey.id}/export");
     };
 
     return (
@@ -106,8 +105,8 @@ export default function Dashboard() {
                                     onChange={(event) => {
                                         const selectedId = event.target.value;
                                         if (selectedId) {
-                                            window.location.replace(
-                                                `${selectedId}`
+                                            Inertia.get(
+                                                `/account/sus/${selectedId}`
                                             );
                                         }
                                     }}
@@ -165,7 +164,7 @@ export default function Dashboard() {
                                                     <h6 className="card-title">
                                                         {questionTexts[index]}
                                                     </h6>
-                                                    <SUSPieChart
+                                                    <PieChart
                                                         data={item.data}
                                                     />
                                                 </div>
@@ -190,9 +189,7 @@ export default function Dashboard() {
                                 <div>
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <h4>Hasil SUS</h4>
-                                        {hasAnyPermission([
-                                            "sus.export",
-                                        ]) && (
+                                        {hasAnyPermission(["sus.export"]) && (
                                             <button
                                                 className="btn btn-success"
                                                 onClick={handleExport}
@@ -201,7 +198,9 @@ export default function Dashboard() {
                                             </button>
                                         )}
                                     </div>
-                                    <SUSTableUser data={susSurveyResults} />
+                                    <SUSTableResponses
+                                        data={susSurveyResults}
+                                    />
                                 </div>
                             ) : (
                                 <div className="text-center">

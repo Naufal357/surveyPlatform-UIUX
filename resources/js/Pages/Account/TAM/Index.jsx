@@ -1,11 +1,12 @@
 import React from "react";
-import { Head, Inertia, usePage, Link } from "@inertiajs/inertia-react";
+import { Head, usePage, Link } from "@inertiajs/inertia-react";
+import { Inertia } from "@inertiajs/inertia";
 import hasAnyPermission from "../../../Utils/Permissions";
 import LayoutAccount from "../../../Layouts/Account";
 import AccordionLayout from "../../../Layouts/Accordion";
-import SUSPieChart from "../../../Components/SUSPieChart";
 import InfoCard from "../../../Components/CardInfo";
-import SUSTableUser from "../../../Components/SUSTableUser";
+import PieChart from "../../../Components/PieChart";
+import TAMTable from "../../../Components/TAMTable";
 
 export default function Dashboard() {
     const {
@@ -14,31 +15,32 @@ export default function Dashboard() {
         surveyTitles,
         responses,
         respondentCount,
-        averageSUS,
-        classifySUSGrade,
         currentSurveyTitle,
-        getSUSChartData,
-        susSurveyResults,
+        test,
+        tamSurveyResults,
+        calculateDescriptiveStatistics,
+        getTAMChartData,
     } = usePage().props;
-
-    // console.log(auth)
-
+console.log(calculateDescriptiveStatistics );
     const questionTexts = [
-        `1. Saya berpikir akan menggunakan sistem {survey.theme} ini lagi.`,
-        `2. Saya merasa sistem {survey.theme} ini rumit untuk digunakan.`,
-        `3. Saya merasa sistem {survey.theme} ini mudah digunakan.`,
-        `4. Saya membutuhkan bantuan dari orang lain atau teknisi dalam menggunakan sistem {survey.theme} ini.`,
-        `5. Saya merasa fitur-fitur sistem {survey.theme} ini berjalan dengan semestinya.`,
-        `6. Saya merasa ada banyak hal yang tidak konsisten (tidak serasi pada sistem {survey.theme} ini).`,
-        `7. Saya merasa orang lain akan memahami cara menggunakan sistem {survey.theme} ini dengan cepat.`,
-        `8. Saya merasa sistem {survey.theme} ini membingungkan.`,
-        `9. Saya merasa tidak ada hambatan dalam menggunakan sistem {survey.theme} ini.`,
-        `10. Saya perlu membiasakan diri terlebih dahulu sebelum menggunakan sistem {survey.theme} ini.`,
+        `1. Saya tidak mengalami kesulitan menggunakan ${survey.theme}.`,
+        `2. Dengan adanya ${survey.theme} dapat mencapai tujuan pekerjaan saya.`,
+        `3. Secara keseluruhan Saya merasa ${survey.theme} mudah dipahami.`,
+        `4. ${survey.theme} ini menjadikan pekerjaan saya lebih mudah.`,
+        `5. Menggunakan ${survey.theme} dapat meningkatkan kemampuan saya.`,
+        `6. Secara keseluruhan saya merasa ${survey.theme} memiliki banyak manfaat.`,
+        `7. Saya menerima penerapan ${survey.theme} ini`,
+        `8. Saya menolak untuk menggunkan ${survey.theme} selain ini`,
+        `9. Secara keseluruhan saya menikmati penggunaan ${survey.theme} ini`,
+        `10. Saya berharap ${survey.theme} ini akan selalu digunakan di masa depan.`,
+        `11. Saya termotivasi untuk tetap menggunakan ${survey.theme} untuk dimasa yang akan datang.`,
+        `12. Saya selalu menggunakan ${survey.theme} ini dalam kondisi apapun.`,
+        `13. Saya menggunakan ${survey.theme} ini sesuai dengan prosedur yang telah diberikan.`,
+        `14. Saya menggunakan ${survey.theme} ini secara jujur sesuai ketentuan dan prosedur.`,
+        `15. Saya menggunakan ${survey.theme} ini sesuai dengan durasi waktu yang telah ditentukan secara real time.`,
     ];
 
-
-
-    // Fungsi untuk menghitung data chart
+    //Fungsi untuk menghitung data chart
     const getChartData = (data) => {
         const labels = [
             "Sangat Tidak Setuju",
@@ -70,13 +72,13 @@ export default function Dashboard() {
         };
     };
 
-    // const susData = Object.keys(getSUSChartData.original).map((question) => ({
-    //     question,
-    //     data: getChartData(getSUSChartData.original[question]),
-    // }));
+    const tamData = Object.keys(getTAMChartData.original).map((question) => ({
+        question,
+        data: getChartData(getTAMChartData.original[question]),
+    }));
 
     const handleExport = () => {
-        window.location.href = `/account/responses/${survey.id}/export`;
+        Inertia.get("/account/responses/tam/${survey.id}/export");
     };
 
     return (
@@ -106,26 +108,26 @@ export default function Dashboard() {
                                     onChange={(event) => {
                                         const selectedId = event.target.value;
                                         if (selectedId) {
-                                            window.location.replace(
-                                                `${selectedId}`
+                                            Inertia.get(
+                                                `/account/tam/${selectedId}`
                                             );
                                         }
                                     }}
                                 >
                                     <option value="">Pilih Survey</option>
-                                    {/* {surveyTitles.map((survey) => (
+                                    {surveyTitles.map((survey) => (
                                         <option
                                             key={survey.id}
                                             value={survey.id}
                                         >
                                             {survey.title}
                                         </option>
-                                    ))} */}
+                                    ))}
                                 </select>
                             </div>
                         </div>
                     </div>
-                    {/* {hasAnyPermission(["sus.statistics"]) && (
+                    {hasAnyPermission(["sus.statistics"]) && (
                         <div className="row mt-2">
                             <InfoCard
                                 icon="fa-users "
@@ -133,7 +135,7 @@ export default function Dashboard() {
                                 value={respondentCount}
                                 title="Jumlah Responden"
                             />
-                            <InfoCard
+                            {/* <InfoCard
                                 icon="fa-chart-pie"
                                 background="primary"
                                 value={`${averageSUS} dari 100`}
@@ -144,18 +146,18 @@ export default function Dashboard() {
                                 background="#FFD700"
                                 value={classifySUSGrade}
                                 title="Kategori Nilai SUS"
-                            />
+                            /> */}
                         </div>
-                    )} */}
+                    )}
 
-                    {/* {hasAnyPermission(["sus.charts"]) && (
+                    {hasAnyPermission(["sus.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
                             defaultOpen={true}
                         >
-                            {susData.length > 0 ? (
+                            {tamData.length > 0 ? (
                                 <div className="row">
-                                    {susData.map((item, index) => (
+                                    {tamData.map((item, index) => (
                                         <div
                                             className="col-lg-4 col-md-6 mb-4 mx-auto"
                                             key={index}
@@ -165,7 +167,7 @@ export default function Dashboard() {
                                                     <h6 className="card-title">
                                                         {questionTexts[index]}
                                                     </h6>
-                                                    <SUSPieChart
+                                                    <PieChart
                                                         data={item.data}
                                                     />
                                                 </div>
@@ -179,37 +181,75 @@ export default function Dashboard() {
                                 </div>
                             )}
                         </AccordionLayout>
-                    )} */}
+                    )}
 
-                    {/* {hasAnyPermission(["sus.responses"]) && (
-                        // <AccordionLayout
-                        //     title="Tabel Hasil"
-                        //     defaultOpen={false}
-                        // >
-                        //     {susSurveyResults.length > 0 ? (
-                        //         <div>
-                        //             <div className="d-flex justify-content-between align-items-center mb-4">
-                        //                 <h4>Hasil SUS</h4>
-                        //                 {hasAnyPermission([
-                        //                     "sus.export",
-                        //                 ]) && (
-                        //                     <button
-                        //                         className="btn btn-success"
-                        //                         onClick={handleExport}
-                        //                     >
-                        //                         Export to Excel
-                        //                     </button>
-                        //                 )}
-                        //             </div>
-                        //             <SUSTableUser data={susSurveyResults} />
-                        //         </div>
-                        //     ) : (
-                        //         <div className="text-center">
-                        //             Tidak ada data
-                        //         </div>
-                        //     )}
-                        // </AccordionLayout>
-                    )} */}
+                    {hasAnyPermission(["sus.responses"]) && (
+                        <AccordionLayout title="Hasil TAM" defaultOpen={false}>
+                            <AccordionLayout
+                                title="Tabel Hasil"
+                                defaultOpen={false}
+                            >
+                                {tamSurveyResults.length > 0 ? (
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-4">
+                                            <h4>Hasil TAM</h4>
+                                            {hasAnyPermission([
+                                                "sus.export",
+                                            ]) && (
+                                                <button
+                                                    className="btn btn-success"
+                                                    onClick={handleExport}
+                                                >
+                                                    Export to Excel
+                                                </button>
+                                            )}
+                                        </div>
+                                        <TAMTable
+                                            data={
+                                                calculateDescriptiveStatistics
+                                            }
+                                            type={"descriptiveStatisticsTable"}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="text-center">
+                                        Tidak ada data
+                                    </div>
+                                )}
+                            </AccordionLayout>
+
+                            <AccordionLayout
+                                title="Data Responses TAM"
+                                defaultOpen={false}
+                            >
+                                {tamSurveyResults.length > 0 ? (
+                                    <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-4">
+                                            <h4>Data Responses</h4>
+                                            {hasAnyPermission([
+                                                "sus.export",
+                                            ]) && (
+                                                <button
+                                                    className="btn btn-success"
+                                                    onClick={handleExport}
+                                                >
+                                                    Export to Excel
+                                                </button>
+                                            )}
+                                        </div>
+                                        <TAMTable
+                                            data={tamSurveyResults}
+                                            type={"responsesTable"}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="text-center">
+                                        Tidak ada data
+                                    </div>
+                                )}
+                            </AccordionLayout>
+                        </AccordionLayout>
+                    )}
                 </div>
             </LayoutAccount>
         </>

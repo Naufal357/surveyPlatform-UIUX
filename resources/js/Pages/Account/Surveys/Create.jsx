@@ -9,7 +9,7 @@ import SelectCheckbox from "../../../Components/SelectCheckbox";
 import Swal from "sweetalert2";
 
 export default function CategoryCreate() {
-    const { errors, auth, categories } = usePage().props;
+    const { errors, auth, categories, methods } = usePage().props;
 
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
@@ -18,6 +18,7 @@ export default function CategoryCreate() {
     const [embed_design, setEmbedDesign] = useState("");
     const [embed_prototype, setEmbedPrototype] = useState("");
     const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
+    const [surveyMethodsData, setSurveyMethodsData] = useState([]);
     const [user_id] = useState(auth.user.id);
 
     const handleCheckboxCategoriesChange = (e) => {
@@ -25,6 +26,13 @@ export default function CategoryCreate() {
         data.push(parseInt(e.target.value, 10));
 
         setSurveyCategoriesData(data);
+    };
+
+    const handleCheckboxMethodsChange = (e) => {
+        let data = surveyMethodsData;
+        data.push(parseInt(e.target.value, 10));
+
+        setSurveyMethodsData(data);
     };
     
     const storeSurvey = async (e) => {
@@ -45,6 +53,7 @@ export default function CategoryCreate() {
                 embed_design: embed_design,
                 embed_prototype: embed_prototype,
                 survey_categories: surveyCategoriesData,
+                survey_methods: surveyMethodsData,
                 user_id: user_id,
             },
             {
@@ -170,6 +179,18 @@ export default function CategoryCreate() {
                                                 handleCheckboxCategoriesChange
                                             }
                                         />
+                                    </div>
+
+                                    <div>
+                                        <SelectCheckbox
+                                            label="Methods Survey"
+                                            options={methods}
+                                            valueKey="id"
+                                            labelKey="name"
+                                            onChange={
+                                                handleCheckboxMethodsChange
+                                            }
+                                        ></SelectCheckbox>
                                     </div>
 
                                     <div>

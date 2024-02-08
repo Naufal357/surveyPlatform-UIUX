@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, WithStyles, WithEvents
+class ResponsesSUSExport implements FromCollection, ShouldAutoSize, WithHeadings, WithStyles, WithEvents
 {
     use Exportable;
     protected $survey_id;
@@ -30,22 +30,32 @@ class ResponsesExport implements FromCollection, ShouldAutoSize, WithHeadings, W
         $responses = SurveyResponses::select('first_name', 'surname', 'email', 'birth_date', 'gender', 'profession', 'educational_background', 'created_at', 'response_data')->where('survey_id', $this->survey_id)->get();
 
         // Memanipulasi data sebelum diekspor
-        $formattedResponses = $responses->map(function ($response) {
+        $formattedResponses = $responses->filter(function ($response) {
+            // Menguraikan response_data dari format JSON
+            $responseData = json_decode($response['response_data']);
+
+            // Mengambil hanya data "sus" jika tersedia
+            return isset($responseData->sus);
+        })->map(function ($response) {
             // Menggabungkan first_name dan surname
             $response['Full Name'] = $response['first_name'] . ' ' . $response['surname'];
 
-            // Menguraikan response_data dari format JSON ke kolom SUS1 hingga SUS10 jika tersedia
+            // Menguraikan response_data dari format JSON
             $responseData = json_decode($response['response_data']);
+            $susData = (array) $responseData->sus;
+
+            // Looping untuk mengambil SUS1 hingga SUS10
             for ($i = 1; $i <= 10; $i++) {
-                $response['SUS' . $i] = isset($responseData->{'sus' . $i}) ? $responseData->{'sus' . $i} : null;
+                $response['SUS' . $i] = isset($susData['sus' . $i]) ? $susData['sus' . $i] : null;
             }
 
-            // Hapus kolom first_name dan surname
+            // Hapus kolom first_name, surname, dan response_data
             unset($response['first_name']);
             unset($response['surname']);
+            unset($response['response_data']);
+
             return $response;
         });
-
 
         $formattedResponses = $formattedResponses->map(function ($response) {
             return [

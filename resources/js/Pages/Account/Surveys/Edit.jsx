@@ -9,7 +9,7 @@ import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function SurveyEdit() {
-    const { errors, survey, auth, categories, surveyCategories } =
+    const { errors, survey, auth, categories, methods, surveyCategories, surveyMethods } =
         usePage().props;
 
     const [title, setTitle] = useState("");
@@ -19,8 +19,9 @@ export default function SurveyEdit() {
     const [embed_design, setEmbedDesign] = useState("");
     const [embed_prototype, setEmbedPrototype] = useState("");
     const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
+    const [surveyMethodsData, setSurveyMethodsData] = useState([]);
     const [user_id, setUserId] = useState(auth.id);
-    
+
     useEffect(() => {
         setTitle(survey.title);
         setTheme(survey.theme);
@@ -30,8 +31,11 @@ export default function SurveyEdit() {
         setSurveyCategoriesData(
             surveyCategories.map((item) => parseInt(item.category_id, 10))
         );
+        setSurveyMethodsData(
+            surveyMethods.map((item) => parseInt(item.method_id, 10))
+        );
         setUserId(survey.user_id);
-    }, [survey, surveyCategories]);
+    }, [survey, surveyCategories, surveyMethods]);
 
     const handleCheckboxCategoriesChange = (e) => {
         const categoryId = parseInt(e.target.value, 10);
@@ -42,6 +46,18 @@ export default function SurveyEdit() {
             );
         } else {
             setSurveyCategoriesData([...surveyCategoriesData, categoryId]);
+        }
+    };
+
+    const handleCheckboxMethodsChange = (e) => {
+        const methodId = parseInt(e.target.value, 10);
+
+        if (surveyMethodsData.includes(methodId)) {
+            setSurveyMethodsData(
+                surveyMethodsData.filter((id) => id !== methodId)
+            );
+        } else {
+            setSurveyMethodsData([...surveyMethodsData, methodId]);
         }
     };
 
@@ -63,6 +79,7 @@ export default function SurveyEdit() {
                 embed_design: embed_design,
                 embed_prototype: embed_prototype,
                 survey_categories: surveyCategoriesData,
+                survey_methods: surveyMethodsData,
                 user_id: user_id,
                 _method: "PUT",
             },
@@ -151,14 +168,33 @@ export default function SurveyEdit() {
                                         }
                                         error={errors.embed_prototype}
                                     />
+
                                     <div className="mb-3">
                                         <SelectCheckbox
                                             label="Categories Survey"
                                             options={categories}
                                             valueKey="id"
                                             labelKey="name"
-                                            onChange={handleCheckboxCategoriesChange}
-                                            selectedValues={surveyCategoriesData}
+                                            onChange={
+                                                handleCheckboxCategoriesChange
+                                            }
+                                            selectedValues={
+                                                surveyCategoriesData
+                                            }
+                                        />
+                                    </div>
+                                    <div>
+                                        <SelectCheckbox
+                                            label="Methods Survey"
+                                            options={methods}
+                                            valueKey="id"
+                                            labelKey="name"
+                                            onChange={
+                                                handleCheckboxMethodsChange
+                                            }
+                                            selectedValues={
+                                                surveyMethodsData
+                                            }
                                         />
                                     </div>
 

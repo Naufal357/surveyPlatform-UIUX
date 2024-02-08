@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link, usePage, Inertia } from "@inertiajs/inertia-react";
+import { Link, usePage } from "@inertiajs/inertia-react";
+import { Inertia } from "@inertiajs/inertia";
 
 function AuthMenu() {
-    const handleLogout = () => {
-        Inertia.post("/logout").then(() => {
-            localStorage.clear(); 
-        });
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        Inertia.post("/logout");
     };
 
     return (
