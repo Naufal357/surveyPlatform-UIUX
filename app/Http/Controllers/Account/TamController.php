@@ -55,19 +55,17 @@ class TamController extends Controller
             'responses' => $responses,
             'respondentCount' => $respondentCount,
             'test' => $responses,
-            'tamSurveyResults' => $tamSurveyResults,
-            'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
             'getTAMChartData' => $getTAMChartData,
+            'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
+            'tamSurveyResults' => $tamSurveyResults,
         ])->with('currentSurveyTitle', $survey->title);
     }
 
     private function countRespondents($surveyId, $responses)
     {
-        // Menghitung jumlah responden dengan "tam" dalam response_data
         $totalResponsesWithTAM = collect($responses)->filter(function ($response) {
             return isset(json_decode($response->response_data)->tam);
         })->count();
-
 
         return $totalResponsesWithTAM;
     }

@@ -17,7 +17,6 @@ export default function Register() {
     const [educationalBackground, setEducationalBackground] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
-
     const registerHandler = async (e) => {
         e.preventDefault();
 

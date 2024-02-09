@@ -16,7 +16,7 @@ export default function UserEdit() {
 
     if (!hasAnyPermission(["users.index.full"])) {
         filteredRoles = filteredRoles.filter(
-            (role) => !["super admin", "admin"].includes(role.name)
+            (role) => !["super admin"].includes(role.name)
         );
     }
 
@@ -37,6 +37,7 @@ export default function UserEdit() {
         setSurname(user.surname);
         setEmail(user.email);
         setGender(user.gender);
+        setBirthDate(user.birth_date);
         setProfession(user.profession);
         setEducationalBackground(user.educational_background);
         setRolesData(user.roles.map((item) => item.name));

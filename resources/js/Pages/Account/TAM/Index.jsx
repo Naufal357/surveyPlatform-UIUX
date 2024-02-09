@@ -186,24 +186,11 @@ console.log(calculateDescriptiveStatistics );
                     {hasAnyPermission(["sus.responses"]) && (
                         <AccordionLayout title="Hasil TAM" defaultOpen={false}>
                             <AccordionLayout
-                                title="Tabel Hasil"
+                                title="Hasil Statistik Deskriptif"
                                 defaultOpen={false}
                             >
                                 {tamSurveyResults.length > 0 ? (
                                     <div>
-                                        <div className="d-flex justify-content-between align-items-center mb-4">
-                                            <h4>Hasil TAM</h4>
-                                            {hasAnyPermission([
-                                                "sus.export",
-                                            ]) && (
-                                                <button
-                                                    className="btn btn-success"
-                                                    onClick={handleExport}
-                                                >
-                                                    Export to Excel
-                                                </button>
-                                            )}
-                                        </div>
                                         <TAMTable
                                             data={
                                                 calculateDescriptiveStatistics
@@ -224,19 +211,6 @@ console.log(calculateDescriptiveStatistics );
                             >
                                 {tamSurveyResults.length > 0 ? (
                                     <div>
-                                        <div className="d-flex justify-content-between align-items-center mb-4">
-                                            <h4>Data Responses</h4>
-                                            {hasAnyPermission([
-                                                "sus.export",
-                                            ]) && (
-                                                <button
-                                                    className="btn btn-success"
-                                                    onClick={handleExport}
-                                                >
-                                                    Export to Excel
-                                                </button>
-                                            )}
-                                        </div>
                                         <TAMTable
                                             data={tamSurveyResults}
                                             type={"responsesTable"}
