@@ -97,31 +97,15 @@ export default function CategoryCreate() {
                             </div>
                             <div className="card-body">
                                 <form onSubmit={storeSurvey}>
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Image Thumbnail
-                                        </label>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            onChange={(e) =>
-                                                setImage(e.target.files[0])
-                                            }
-                                            accept="image/*"
-                                        />
-                                        {errors.image && (
-                                            <div className="alert alert-danger">
-                                                {errors.image}
-                                            </div>
-                                        )}
-                                        {/* <input
-                                            type="file"
-                                            className="form-control"
-                                            onChange={(e) =>
-                                                setImage(e.target.files[0])
-                                            }
-                                        /> */}
-                                    </div>
+                                    <InputField
+                                        label="Image Thumbnail"
+                                        type="file"
+                                        value={image}
+                                        onChange={(e) => [
+                                            setImage(e.target.files[0]),
+                                        ]}
+                                        error={errors.image}
+                                    />
 
                                     <InputField
                                         label="Title Design"

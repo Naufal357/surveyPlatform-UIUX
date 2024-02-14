@@ -10,8 +10,6 @@ class CategoriesTableSeeder extends Seeder
 {
     public function run(): void
     {
-        Category::create(['name' => 'Umum', 'slug' => 'umum']);
-        Category::create(['name' => 'Khusus', 'slug' => 'khusus']);
         Category::create(['name' => 'Web', 'slug' => 'web']);
         Category::create(['name' => 'Mobile', 'slug' => 'mobile']);
         Category::create(['name' => 'Desktop', 'slug' => 'desktop']);

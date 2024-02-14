@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export default function InputField({
     label,
@@ -8,7 +8,25 @@ export default function InputField({
     placeholder,
     error,
 }) {
+    const [previewImage, setPreviewImage] = useState(value);
+
+    useEffect(() => {
+        setPreviewImage(value);
+    }, [value]);
+
     const sanitizedValue = value || "";
+
+    const handleFileChange = (e) => {
+        onChange(e); 
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setPreviewImage(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div className="mb-3">
@@ -21,17 +39,33 @@ export default function InputField({
                     placeholder={placeholder}
                 />
             ) : type === "file" ? (
-                <input
-                    type="file"
-                    className="form-control"
-                    onChange={onChange}
-                    accept="image/*"
-                />
+                <>
+                    <input
+                        type="file"
+                        className="form-control mb-2"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                    />
+                    <div>
+                        {previewImage && (
+                            <div>
+                                <img
+                                    src={previewImage}
+                                    alt="Preview"
+                                    style={{
+                                        maxWidth: "100%",
+                                        maxHeight: "200px",
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </>
             ) : (
                 <input
                     type={type}
                     className="form-control"
-                    defaultValue={sanitizedValue}
+                    value={sanitizedValue}
                     onChange={onChange}
                     placeholder={placeholder}
                 />

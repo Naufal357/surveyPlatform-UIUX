@@ -143,7 +143,6 @@ class SurveyController extends Controller
                 'slug' => Str::slug($request->name, '-')
             ]);
         }
-
         $Survey->update([
             'title'          => $request->title,
             'theme'          => $request->theme,

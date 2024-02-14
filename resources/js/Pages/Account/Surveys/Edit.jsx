@@ -9,8 +9,15 @@ import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
 export default function SurveyEdit() {
-    const { errors, survey, auth, categories, methods, surveyCategories, surveyMethods } =
-        usePage().props;
+    const {
+        errors,
+        survey,
+        auth,
+        categories,
+        methods,
+        surveyCategories,
+        surveyMethods,
+    } = usePage().props;
 
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
@@ -82,6 +89,7 @@ export default function SurveyEdit() {
                 survey_methods: surveyMethodsData,
                 user_id: user_id,
                 _method: "PUT",
+                console: console.log(image),
             },
             {
                 onSuccess: () => {
@@ -117,13 +125,9 @@ export default function SurveyEdit() {
                                     <InputField
                                         label="Image Thumbnail"
                                         type="file"
-                                        value={image}
+                                        value={survey.image}
                                         onChange={(e) => [
                                             setImage(e.target.files[0]),
-                                            console.log(
-                                                "Image changed:",
-                                                e.target.files[0]
-                                            ),
                                         ]}
                                         error={errors.image}
                                     />
@@ -192,9 +196,7 @@ export default function SurveyEdit() {
                                             onChange={
                                                 handleCheckboxMethodsChange
                                             }
-                                            selectedValues={
-                                                surveyMethodsData
-                                            }
+                                            selectedValues={surveyMethodsData}
                                         />
                                     </div>
 
