@@ -3,6 +3,8 @@ import Layout from "../../Layouts/Header";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import SelectButton from "../../Components/SelectButton";
+import FileUpload from "../../Components/FileUpload";
+import Swal from "sweetalert2";
 
 export default function SelectCategory() {
     const { errors, categories } = usePage().props;
@@ -22,9 +24,23 @@ export default function SelectCategory() {
     const storeCategories = async (e) => {
         e.preventDefault();
 
-        Inertia.post("/register/preferencedata", {
-            userPrefsData: userPrefsData,
-        });
+        Inertia.post(
+            "/register/preferencedata",
+            {
+                userPrefsData: userPrefsData,
+            },
+            {
+                onSuccess: () => {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Registration successful! Welcome to our community!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                },
+            }
+        );
     };
 
     return (
@@ -63,6 +79,19 @@ export default function SelectCategory() {
                                                 handleCheckboxUserPrefsChange
                                             }
                                         />
+
+                                        <hr />
+                                        <p>
+                                            Pilih kategori yang Anda kuasai atau
+                                            sukai, dan jika Anda memiliki
+                                            sertifikat atau ijasah yang
+                                            mendukung preferensi Anda, Anda
+                                            dapat mengunggahnya di sini. Dokumen
+                                            tersebut digunakan untuk mengajukan anda
+                                            sebagai "Certified User".
+                                        </p>
+                                        <FileUpload></FileUpload>
+
                                         <button
                                             className="btn btn-success shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
