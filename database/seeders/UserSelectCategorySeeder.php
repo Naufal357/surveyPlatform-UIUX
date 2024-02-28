@@ -86,8 +86,42 @@ class UserSelectCategorySeeder extends Seeder
             ]
         ];
 
+        $dataUser4 = [
+            [
+                'user_id' => 4,
+                'category_id' => 5,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 4,
+                'category_id' => 6,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 4,
+                'category_id' => 7,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 4,
+                'category_id' => 8,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 4,
+                'category_id' => 9,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ];
+
         DB::table('user_select_category')->insert($dataUser1);
         DB::table('user_select_category')->insert($dataUser2);
         DB::table('user_select_category')->insert($dataUser3);
+        DB::table('user_select_category')->insert($dataUser4);
     }
 }

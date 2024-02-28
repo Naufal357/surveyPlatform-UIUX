@@ -9,18 +9,18 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-public function index()
-{
-    $roles = Role::when(request()->q, function ($roles) {
-        $roles = $roles->where('name', 'like', '%' . request()->q . '%');
-    })->with('permissions')->orderBy('id')->paginate(5);
+    public function index()
+    {
+        $roles = Role::when(request()->q, function ($roles) {
+            $roles = $roles->where('name', 'like', '%' . request()->q . '%');
+        })->with('permissions')->orderBy('id')->paginate(5);
 
-    $roles->appends(['q' => request()->q]);
+        $roles->appends(['q' => request()->q]);
 
-    return inertia('Account/Roles/Roles', [
-        'roles' => $roles,
-    ]);
-}
+        return inertia('Account/Roles/Roles', [
+            'roles' => $roles,
+        ]);
+    }
 
     public function create()
     {
@@ -63,7 +63,7 @@ public function index()
 
     public function update(Request $request, Role $role)
     {
-        if ($request -> name == "super admin") {
+        if ($request->name == "super admin") {
             abort(403, "The user is not allowed to be edited.");
         }
 

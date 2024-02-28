@@ -15,16 +15,13 @@ export default function LayoutAccount({ children }) {
         e.preventDefault();
 
         if (!sidebarToggle) {
-            //add class on body
             document.body.classList.add("sb-sidenav-toggled");
 
             //set state "sidebarToggle" to true
             setSidebarToggle(true);
         } else {
-            //remove class on body
             document.body.classList.remove("sb-sidenav-toggled");
 
-            //set state "sidebarToggle" to false
             setSidebarToggle(false);
         }
     };

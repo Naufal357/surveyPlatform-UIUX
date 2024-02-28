@@ -42,22 +42,24 @@ const AccordionLayout = ({ title, children, defaultOpen = false }) => {
     return (
         <div className="accordion" style={accordionStyle}>
             <div className="card">
-                <div className="card-header" onClick={toggleAccordion}>
-                    <h5
-                        className="mb-0 d-flex align-items-center justify-content-between"
-                        style={titleStyle}
-                    >
-                        {title}
-                        {isOpen ? (
-                            <CaretDownFill size={20} style={iconStyle} />
-                        ) : (
-                            <CaretRightFill size={20} style={iconStyle} />
-                        )}
-                    </h5>
+                <div className="card border-0 rounded shadow-sm border-top-success">
+                    <div className="card-header" onClick={toggleAccordion}>
+                        <h5
+                            className="mb-0 d-flex align-items-center justify-content-between"
+                            style={titleStyle}
+                        >
+                            {title}
+                            {isOpen ? (
+                                <CaretDownFill size={20} style={iconStyle} />
+                            ) : (
+                                <CaretRightFill size={20} style={iconStyle} />
+                            )}
+                        </h5>
+                    </div>
+                    <Collapse in={isOpen}>
+                        <div className="card-body">{children}</div>
+                    </Collapse>
                 </div>
-                <Collapse in={isOpen}>
-                    <div className="card-body">{children}</div>
-                </Collapse>
             </div>
         </div>
     );

@@ -30,7 +30,7 @@ class SusController extends Controller
         $sortedSurveyTitles = $surveyTitles->sortBy('id');
         $lowestTitleId = $sortedSurveyTitles->first()->id;
 
-        return redirect()->route('account.sus', ['id' => $lowestTitleId]);
+        return redirect()->route('account.sus.id', ['id' => $lowestTitleId]);
     }
 
 

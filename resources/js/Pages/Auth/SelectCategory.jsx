@@ -3,13 +3,14 @@ import Layout from "../../Layouts/Header";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import SelectButton from "../../Components/SelectButton";
-import FileUpload from "../../Components/FileUpload";
+import PDFDropzone from "../../Components/FileUpload"; // Mengubah import dari FileUpload ke PDFDropzone
 import Swal from "sweetalert2";
 
 export default function SelectCategory() {
     const { errors, categories } = usePage().props;
 
     const [userPrefsData, setUserPrefsData] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const handleCheckboxUserPrefsChange = (value) => {
         setUserPrefsData((prevData) => {
@@ -21,26 +22,30 @@ export default function SelectCategory() {
         });
     };
 
+    const handleFileUpload = (files) => {
+        setUploadedFiles(files);
+    };
+
     const storeCategories = async (e) => {
         e.preventDefault();
 
-        Inertia.post(
-            "/register/preferencedata",
-            {
-                userPrefsData: userPrefsData,
+        const formData = new FormData();
+        formData.append("userPrefsData", JSON.stringify(userPrefsData));
+        uploadedFiles.forEach((file) => {
+            formData.append("files[]", file);
+        });
+
+        Inertia.post("/register/preferencedata", formData, {
+            onSuccess: () => {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Registration successful! Welcome to our community!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
             },
-            {
-                onSuccess: () => {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Registration successful! Welcome to our community!",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                },
-            }
-        );
+        });
     };
 
     return (
@@ -87,10 +92,13 @@ export default function SelectCategory() {
                                             sertifikat atau ijasah yang
                                             mendukung preferensi Anda, Anda
                                             dapat mengunggahnya di sini. Dokumen
-                                            tersebut digunakan untuk mengajukan anda
-                                            sebagai "Certified User".
+                                            tersebut digunakan untuk mengajukan
+                                            anda sebagai "Certified User".
                                         </p>
-                                        <FileUpload></FileUpload>
+
+                                        <PDFDropzone
+                                            onFileUpload={handleFileUpload}
+                                        />
 
                                         <button
                                             className="btn btn-success shadow-sm rounded-sm px-4 w-100"

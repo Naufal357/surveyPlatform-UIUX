@@ -35,9 +35,20 @@ class UserTableSeeder extends Seeder
         ]);
 
         $user3 = User::create([
-            'first_name' => 'Rozan',
+            'first_name' => 'Verified',
             'surname' => 'User',
-            'email' => 'rozan@123',
+            'email' => 'verif@123',
+            'birth_date' => '2002-05-17',
+            'gender' => 'Male',
+            'profession' => 'Student',
+            'educational_background' => "Bachelor's Degree",
+            'password' => bcrypt('123'),
+        ]);
+
+        $user4 = User::create([
+            'first_name' => 'Basic',
+            'surname' => 'User',
+            'email' => 'basic@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
             'profession' => 'Student',
@@ -54,17 +65,25 @@ class UserTableSeeder extends Seeder
             'dashboard.index', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
             'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete'
         ])->get();
+        $permissions4 = Permission::whereIn('name', [
+            'dashboard.index', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
+            'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete'
+        ])->get();
+
 
         $role1 = Role::find(1);
         $role2 = Role::find(2);
         $role3 = Role::find(3);
+        $role4 = Role::find(4);
 
         $role1->syncPermissions($permissions1);
         $role2->syncPermissions($permissions2);
         $role3->syncPermissions($permissions3);
+        $role4->syncPermissions($permissions4);
 
         $user1->assignRole($role1);
         $user2->assignRole($role2);
         $user3->assignRole($role3);
+        $user4->assignRole($role4);
     }
 }

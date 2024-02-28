@@ -64,7 +64,7 @@ class SurveyController extends Controller
         ]);
 
         $image = $request->file('image');
-        $image->storeAs('public/surveys', $image->hashName());
+        $image->storeAs('public/image/surveys/', $image->hashName());
 
         $survey = Survey::create([
             'user_id'        => $request->user_id,
@@ -132,10 +132,10 @@ class SurveyController extends Controller
 
         if ($request->file('image')) {
 
-            Storage::disk('local')->delete('public/surveys/' . basename($Survey->image));
+            Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
 
             $image = $request->file('image');
-            $image->storeAs('public/surveys', $image->hashName());
+            $image->storeAs('public/image/surveys/', $image->hashName());
 
             $Survey->update([
                 'image' => $image->hashName(),
@@ -178,7 +178,7 @@ class SurveyController extends Controller
     {
         $Survey = Survey::findOrFail($id);
 
-        Storage::disk('local')->delete('public/surveys/' . basename($Survey->image));
+        Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
 
         $Survey->delete();
 

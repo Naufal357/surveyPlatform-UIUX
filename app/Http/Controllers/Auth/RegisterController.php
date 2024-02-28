@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Certificate;
+use App\Models\CertificateHasCategory;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\Category;
 use App\Models\UserSelectCategory;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -46,7 +49,7 @@ class RegisterController extends Controller
             'password'  => 'required|confirmed',
         ]);
 
-        $personaldata=[
+        $personaldata = [
             'first_name'      => $request->first_name,
             'surname'         => $request->surname,
             'email'     => $request->email,
@@ -62,38 +65,49 @@ class RegisterController extends Controller
         return redirect()->route('register1');
     }
 
-    public function storePreferenceData(Request $request, UserSelectCategory $userPref)
+    public function storePreferenceData(Request $request, UserSelectCategory $userPref, Certificate $certificate, CertificateHasCategory $certificateHasCategory)
     {
         $this->validate($request, [
             'userPrefsData' => 'required',
+            'files.*' => 'file|mimes:pdf|max:2048',
         ]);
 
         $personaldata = $request->session()->get('personaldata');
 
         $user = User::create([
-            'first_name'      => $personaldata['first_name'],
-            'surname'         => $personaldata['surname'],
-            'email'     => $personaldata['email'],
-            'birth_date'     => $personaldata['birth_date'],
-            'gender'     => $personaldata['gender'],
-            'profession'     => $personaldata['profession'],
-            'educational_background'     => $personaldata['educational_background'],
-            'password'  => $personaldata['password']
+            'first_name' => $personaldata['first_name'],
+            'surname' => $personaldata['surname'],
+            'email' => $personaldata['email'],
+            'birth_date' => $personaldata['birth_date'],
+            'gender' => $personaldata['gender'],
+            'profession' => $personaldata['profession'],
+            'educational_background' => $personaldata['educational_background'],
+            'password' => $personaldata['password']
         ]);
 
-        $role = Role::findByName('user');
-
+        $role = Role::findByName('basic user');
         $user->assignRole($role);
 
-        if ($request->has('userPrefsData')) {
-            $userPrefsData = $request->userPrefsData;
-            $userPref->where('user_id', $user->id)->delete();
-
-            foreach ($userPrefsData as $category_id) {
-                $userPref->create(['category_id' => $category_id, 'user_id' => $user->id]);
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $certificate = $file->hashName();
+                $file->storeAs('public/file/certificates', $certificate); 
+                Certificate::create([
+                    'user_id' => $user->id, 
+                    'certificate' => $certificate, 
+                    'status' => 'pending',
+                ]);
             }
+        }
+
+        $userPrefsData = json_decode($request->userPrefsData);
+        $userPref->where('user_id', $user->id)->delete();
+
+        foreach ($userPrefsData as $category_id) {
+            $userPref->create(['category_id' => $category_id, 'user_id' => $user->id]);
         }
 
         return redirect()->route('login');
     }
+
 }

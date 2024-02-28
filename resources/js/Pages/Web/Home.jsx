@@ -77,14 +77,6 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="row mt-3">
-                        {surveys.data.map((survey, index) => (
-                            <div className="col-md-4 mb-4 col-6" key={index}>
-                                <CardSurvey survey={survey} key={index} />
-                            </div>
-                        ))}
-                    </div>
-                    <Pagination links={surveys.links} align="end" /> */}
                 </div>
             </Layout>
         </>

@@ -22,7 +22,7 @@ class TamController extends Controller
         $sortedSurveyTitles = $surveyTitles->sortBy('id');
         $lowestTitleId = $sortedSurveyTitles->first()->id;
 
-        return redirect()->route('account.tam', ['id' => $lowestTitleId]);
+        return redirect()->route('account.tam.id', ['id' => $lowestTitleId]);
     }
 
     public function show(Request $request, $id)
@@ -98,36 +98,36 @@ class TamController extends Controller
                 'name' => 'Perceived Ease of Use',
                 'questions' => 3,
                 'max_score' => 5,
-                'start_question' => 1, 
-                'end_question' => 3,   
+                'start_question' => 1,
+                'end_question' => 3,
             ],
             [
                 'name' => 'Perceived Usefulness',
                 'questions' => 3,
                 'max_score' => 5,
-                'start_question' => 4, 
-                'end_question' => 6,   
+                'start_question' => 4,
+                'end_question' => 6,
             ],
             [
                 'name' => 'Attitude Toward Using',
                 'questions' => 3,
                 'max_score' => 5,
-                'start_question' => 7, 
-                'end_question' => 9,   
+                'start_question' => 7,
+                'end_question' => 9,
             ],
             [
                 'name' => 'Behavioral intention to use',
                 'questions' => 3,
                 'max_score' => 5,
-                'start_question' => 10, 
-                'end_question' => 12,    
+                'start_question' => 10,
+                'end_question' => 12,
             ],
             [
                 'name' => 'Actual System use',
                 'questions' => 3,
                 'max_score' => 5,
-                'start_question' => 13, 
-                'end_question' => 15,    
+                'start_question' => 13,
+                'end_question' => 15,
             ],
         ];
 
@@ -149,7 +149,11 @@ class TamController extends Controller
             }
 
             $sum_sk = $variable['questions'] * $variable['max_score'] * $respondents;
-            $p = ($total_responses / $sum_sk) * 100; 
+            $p = 0;
+
+            if ($sum_sk != 0) {
+                $p = ($total_responses / $sum_sk) * 100;
+            }
 
             $descriptiveStatistics[] = [
                 'variable' => $variable['name'],

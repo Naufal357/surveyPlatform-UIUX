@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // setting ngrok 
+        // if(config('app.env') === 'local') {
+        //     \URL::forceScheme('https');
+        // }
     }
 }

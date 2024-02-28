@@ -7,7 +7,6 @@ import Delete from "../../../Components/Delete";
 
 export default function RoleIndex() {
     const { roles } = usePage().props;
-
     return (
         <>
             <Head>

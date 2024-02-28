@@ -156,7 +156,7 @@ export default function SurveyIndex() {
                                                                         survey.image
                                                                     }
                                                                     className="rounded-3"
-                                                                    width={"50"}
+                                                                    width={"100"}
                                                                 />
                                                             </td>
                                                             <td className="text-center">

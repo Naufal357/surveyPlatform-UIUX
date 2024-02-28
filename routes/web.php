@@ -48,19 +48,21 @@ Route::prefix('account')->group(function () {
 
         Route::get('/responses/sus/{id}/export', [App\Http\Controllers\Account\SusController::class, 'export'])->name('responses.sus.export');
 
+        Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account'])
+            ->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
+
         Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index')
             ->middleware('permission:permissions.index');
 
-        Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account'])
-            ->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
+        Route::resource('/certificates', \App\HTTP\Controllers\Account\CertificateController::class, ['as' => 'account']);
 
         Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account'])
             ->middleware('permission:users.index|users.create|users.edit|users.delete');
 
         Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
-        Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])->name('account.sus');
+        Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])->name('account.sus.id');
 
         Route::get('/tam', [\App\Http\Controllers\Account\TamController::class, 'index'])->name('account.tam');
-        Route::get('/tam/{id}', [App\Http\Controllers\Account\TamController::class, 'show'])->name('account.tam');
+        Route::get('/tam/{id}', [App\Http\Controllers\Account\TamController::class, 'show'])->name('account.tam.id');
     });
 });

@@ -9,9 +9,7 @@ import Swal from "sweetalert2";
 
 function Form() {
     const { surveys, auth, surveyMethods } = usePage().props;
-    console.log(surveyMethods);
 
-    // Initial form data
     const initialFormData = {
         first_name: auth.first_name,
         surname: auth.surname,
@@ -22,7 +20,6 @@ function Form() {
         educational_background: auth.educational_background,
     };
 
-    // Initial SUS question values
     const initialSUSValues = {
         sus1: null,
         sus2: null,
@@ -36,7 +33,6 @@ function Form() {
         sus10: null,
     };
 
-    // Initial TAM question values
     const initialTAMValues = {
         tam1: null,
         tam2: null,
@@ -60,24 +56,20 @@ function Form() {
     const [susValues, setSUSValues] = useState(initialSUSValues);
     const [tamValues, setTAMValues] = useState(initialTAMValues);
 
-    // Current date for survey submission timestamp
     const currentDate = new Date();
     const formattedDate = currentDate
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
 
-    // Load survey data from localStorage when component mounts
     useEffect(() => {
         loadSurveyData();
     }, [surveys.id]);
 
-    // Save survey data to localStorage when form data or question values change
     useEffect(() => {
         saveSurveyData();
     }, [formData, susValues, tamValues]);
 
-    // Load survey data from localStorage
     const loadSurveyData = () => {
         const storedData = localStorage.getItem(`surveyData_${surveys.id}`);
         if (storedData) {
@@ -88,7 +80,6 @@ function Form() {
         }
     };
 
-    // Save survey data to localStorage
     const saveSurveyData = () => {
         const surveyData = {
             title: surveys.title,
@@ -103,26 +94,21 @@ function Form() {
         );
     };
 
-    // Handle change in SUS question values
     const handleSUSChange = (questionName, value) => {
         setSUSValues({ ...susValues, [questionName]: value });
     };
 
-    // Handle change in TAM question values
     const handleTAMChange = (questionName, value) => {
         setTAMValues({ ...tamValues, [questionName]: value });
     };
 
-    // Remove survey data from localStorage
     const removeSurveyData = () => {
         localStorage.removeItem(`surveyData_${surveys.id}`);
     };
 
-    // Submit the form
     const submitForm = (e) => {
         e.preventDefault();
 
-        // Extract SUS response data
         const susResponseData = {
             sus1: susValues.sus1,
             sus2: susValues.sus2,
@@ -136,7 +122,6 @@ function Form() {
             sus10: susValues.sus10,
         };
 
-        // Extract TAM response data
         const tamResponseData = {
             tam1: tamValues.tam1,
             tam2: tamValues.tam2,
@@ -155,7 +140,6 @@ function Form() {
             tam15: tamValues.tam15,
         };
 
-        // Prepare data for submission
         const dataSubmit = {
             ...formData,
             survey_id: surveys.id,
@@ -169,10 +153,8 @@ function Form() {
             }),
         };
 
-        // Post the data using Inertia
         Inertia.post("/form", dataSubmit, {
             onSuccess: () => {
-                // Show success message and redirect on successful submission
                 Swal.fire({
                     title: "Thank You!",
                     text: "Survey data submitted successfully!",
@@ -224,9 +206,9 @@ function Form() {
                     </div>
 
                     <form onSubmit={submitForm}>
-                        {surveyMethods.map((method) =>
+                        {surveyMethods.map((method, index) =>
                             method.method_id === 1 ? (
-                                <div className="Questionnaire-SUS">
+                                <div key={index} className="Questionnaire-SUS">
                                     <hr />
                                     <h3 className="text-center text-2xl font-bold mb-4">
                                         Questionnaire SUS
@@ -362,7 +344,7 @@ function Form() {
                                     </div>
                                 </div>
                             ) : method.method_id === 2 ? (
-                                <div className="Questionnaire-TAM">
+                                <div key={index} className="Questionnaire-TAM">
                                     <hr />
                                     <h3 className="text-center text-2xl font-bold mb-4">
                                         Questionnaire TAM
@@ -558,7 +540,7 @@ function Form() {
                                     </div>
                                 </div>
                             ) : (
-                                <div>Eror Method</div>
+                                <div key={index}>Eror Method</div>
                             )
                         )}
                         <div className="d-grid gap-2">

@@ -41,10 +41,13 @@ export default function UserCreate() {
     };
 
     const handleCheckboxUserPrefsChange = (e) => {
-        let data = userPrefsData;
-        data.push(parseInt(e.target.value, 10));
+        const categoryId = parseInt(e.target.value, 10);
 
-        setUserPrefsData(data);
+        if (userPrefsData.includes(categoryId)) {
+            setUserPrefsData(userPrefsData.filter((id) => id !== categoryId));
+        } else {
+            setUserPrefsData([...userPrefsData, categoryId]);
+        }
     };
 
     const storeUser = async (e) => {

@@ -99,6 +99,17 @@ export default function Sidebar() {
                     </Link>
                 )}
 
+                <Link
+                    href="/account/certificates"
+                    className={`${
+                        url.startsWith("/account/certificates")
+                            ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                            : "list-group-item list-group-item-action list-group-item-light p-3"
+                    }`}
+                >
+                    <i className="fas fa-certificate me-2"></i> Certificates
+                </Link>
+
                 {hasAnyPermission(["users.index"]) && (
                     <Link
                         href="/account/users"

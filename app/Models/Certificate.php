@@ -4,21 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+
 use Illuminate\Database\Eloquent\Model;
 
-class Survey extends Model
+class Certificate extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'slug',
-        'image',
-        'theme',
-        'description',
-        'embed_design',
-        'embed_prototype',
         'user_id',
+        'certificate',
+        'status',
     ];
 
     public function user()
@@ -26,20 +22,15 @@ class Survey extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function surveyResponses()
+    public function categories()
     {
-        return $this->hasMany(SurveyResponses::class);
+        return $this->belongsToMany(CertificateHasCategory::class, 'certificate_has_category');
     }
 
-    public function methods()
-    {
-        return $this->belongsToMany(Method::class, 'survey_has_methods', 'survey_id', 'method_id');
-    }
-
-    protected function image(): Attribute
+    protected function certificate(): Attribute
     {
         return Attribute::make(
-            get: fn ($image) => asset('storage/image/surveys/' . $image),
+            get: fn ($certificate) => asset('storage/file/certificates/' . $certificate),
         );
     }
 
@@ -55,14 +46,5 @@ class Survey extends Model
         return Attribute::make(
             get: fn ($value) => \Carbon\Carbon::parse($value)->timezone('Asia/Jakarta')->translatedFormat('H:i \W\I\B d/m/Y'),
         );
-    }
-
-    public function getTitleAndResponseCount()
-    {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'response_count' => $this->surveyResponses()->count(),
-        ];
     }
 }

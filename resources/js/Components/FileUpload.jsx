@@ -29,7 +29,7 @@ const rejectStyle = {
     borderColor: "#ff1744",
 };
 
-function PDFDropzone(props) {
+function PDFDropzone({ onFileUpload }) {
     const {
         acceptedFiles,
         fileRejections,
@@ -42,8 +42,18 @@ function PDFDropzone(props) {
         accept: {
             "application/pdf": [".pdf"],
         },
-        onDrop: (acceptedFiles, fileRejections) => {
-            // Do something with the files
+        onDrop: async (acceptedFiles, fileRejections) => {
+            // Simpan file yang diunggah ke state atau kirim ke server
+            const formData = new FormData();
+            acceptedFiles.forEach((file) => {
+                formData.append("files[]", file);
+            });
+
+            try {
+                onFileUpload(acceptedFiles); // Mengubah menjadi acceptedFiles agar dapat diakses di komponen SelectCategory
+            } catch (error) {
+                console.error("Error uploading files:", error);
+            }
         },
     });
 
