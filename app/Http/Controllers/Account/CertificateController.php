@@ -52,4 +52,11 @@ class CertificateController extends Controller
             'status' => 'approved'
         ]);
     }
+
+    public function destroy($id)
+    {
+        $certificate = Certificate::findOrFail($id);
+        $certificate->delete();
+        return redirect()->route('account.certificates.index');
+    }
 }

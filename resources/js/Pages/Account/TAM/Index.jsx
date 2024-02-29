@@ -21,7 +21,7 @@ export default function Dashboard() {
         calculateDescriptiveStatistics,
         getTAMChartData,
     } = usePage().props;
-console.log(calculateDescriptiveStatistics );
+
     const questionTexts = [
         `1. Saya tidak mengalami kesulitan menggunakan ${survey.theme}.`,
         `2. Dengan adanya ${survey.theme} dapat mencapai tujuan pekerjaan saya.`,
@@ -105,8 +105,8 @@ console.log(calculateDescriptiveStatistics );
                             <div className="mb-2">
                                 <select
                                     className="form-select"
-                                    onChange={(event) => {
-                                        const selectedId = event.target.value;
+                                    onChange={(e) => {
+                                        const selectedId = e.target.value;
                                         if (selectedId) {
                                             Inertia.get(
                                                 `/account/tam/${selectedId}`
@@ -153,7 +153,7 @@ console.log(calculateDescriptiveStatistics );
                     {hasAnyPermission(["sus.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
-                            defaultOpen={true}
+                            defaultOpen={false}
                         >
                             {tamData.length > 0 ? (
                                 <div className="row">
@@ -184,7 +184,7 @@ console.log(calculateDescriptiveStatistics );
                     )}
 
                     {hasAnyPermission(["sus.responses"]) && (
-                        <AccordionLayout title="Hasil TAM" defaultOpen={false}>
+                        <>
                             <AccordionLayout
                                 title="Hasil Statistik Deskriptif"
                                 defaultOpen={false}
@@ -206,6 +206,13 @@ console.log(calculateDescriptiveStatistics );
                             </AccordionLayout>
 
                             <AccordionLayout
+                                title="Hasil Statistik Inferensial"
+                                defaultOpen={true}
+                            >
+                                
+                            </AccordionLayout>
+
+                            <AccordionLayout
                                 title="Data Responses TAM"
                                 defaultOpen={false}
                             >
@@ -222,7 +229,7 @@ console.log(calculateDescriptiveStatistics );
                                     </div>
                                 )}
                             </AccordionLayout>
-                        </AccordionLayout>
+                        </>
                     )}
                 </div>
             </LayoutAccount>

@@ -15,7 +15,7 @@ class CertificateTableSeeder extends Seeder
     {
         Certificate::create(['user_id' => 1, 'certificate' => 'certificate.pdf', 'status' => 'pending']);
         Certificate::create(['user_id' => 1, 'certificate' => 'certificate2.pdf', 'status' => 'pending']);
-        Certificate::create(['user_id' => 2, 'certificate' => 'certificate3.pdf', 'status' => 'approved']);
+        Certificate::create(['user_id' => 2, 'certificate' => 'certificate3.pdf', 'status' => 'pending']);
         Certificate::create(['user_id' => 3, 'certificate' => 'certificate4.pdf', 'status' => 'pending']);
         Certificate::create(['user_id' => 4, 'certificate' => 'certificate5.pdf', 'status' => 'pending']);
         Certificate::create(['user_id' => 4, 'certificate' => 'certificate6.pdf', 'status' => 'pending']);

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import Swal from "sweetalert2";
 import LayoutAccount from "../../Layouts/Account";
@@ -44,6 +45,7 @@ export default function Certificates() {
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, save it!",
         });
+
         if (shouldProceed.isConfirmed) {
             Inertia.post(
                 "/account/certificates",
@@ -65,9 +67,32 @@ export default function Certificates() {
         }
     };
 
-    const handleReject = () => {
-        // Handle reject functionality
-        // Perform actions when the Reject button is clicked
+    const handleReject = async (e) => {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to reject this certificate?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, reject it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.delete(
+                    `/account/certificates/${selectedCertificateId}`
+                );
+
+                Swal.fire({
+                    title: "Success!",
+                    text: "Certificate rejected successfully!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
+        });
     };
 
     return (
@@ -201,9 +226,6 @@ export default function Certificates() {
                                 onClick={handleReject}
                             />
                         </form>
-                    </AccordionLayout>
-                    <AccordionLayout title="Riwayat Sertifikat">
-                        {/* Tambahkan navigasi di sini */}
                     </AccordionLayout>
                 </AccordionLayout>
             </LayoutAccount>
