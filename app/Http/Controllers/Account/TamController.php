@@ -46,20 +46,22 @@ class TamController extends Controller
             ->where('response_data', 'LIKE', '%"tam"%')
             ->get();
 
+        $respondents = $this->countRespondents($id, $responses);
+
         $respondentCount = $this->countRespondents($id, $responses);
         $getTAMChartData = $this->getTAMChartData($id, $responses);
-        $tamSurveyResults = $this->getTAMResults($id, $responses);
-        $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($id, $responses, $this->variables);
-        $calculateRegression = $this->calculateRegression($id, $responses);
-dd($calculateRegression);
+        $tamSurveyResults = $this->getTAMResults($responses);
+        $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses, $this->variables);
+        $calculateRegression = $this->getCalculateRegression($respondents, $this->variables, $responses);
+
         return inertia('Account/TAM/Index', [
             'surveyTitles' => $surveyTitles,
             'survey' => $survey,
             'responses' => $responses,
             'respondentCount' => $respondentCount,
-            'test' => $responses,
             'getTAMChartData' => $getTAMChartData,
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
+            'calculateRegression' => $calculateRegression,
             'tamSurveyResults' => $tamSurveyResults,
         ])->with('currentSurveyTitle', $survey->title);
     }
@@ -130,14 +132,12 @@ dd($calculateRegression);
         return response()->json($tam_data);
     }
 
-    private function getCalculateDescriptiveStatistics($surveyId, $responses, $variables)
+    private function getCalculateDescriptiveStatistics($respondents, $responses, $variables)
     {
-        $respondents = $this->countRespondents($surveyId, $responses);
-
         $descriptiveStatistics = [];
 
         foreach ($variables as $variable) {
-            $total_responses = 0;
+            $sum_sh = 0;
 
             foreach ($responses as $response) {
                 $responseData = json_decode($response->response_data, true);
@@ -145,7 +145,7 @@ dd($calculateRegression);
                     for ($i = $variable['start_question']; $i <= $variable['end_question']; $i++) {
                         $questionKey = 'tam' . $i;
                         if (isset($responseData['tam'][$questionKey])) {
-                            $total_responses += $responseData['tam'][$questionKey];
+                            $sum_sh += $responseData['tam'][$questionKey];
                         }
                     }
                 }
@@ -155,79 +155,117 @@ dd($calculateRegression);
             $p = 0;
 
             if ($sum_sk != 0) {
-                $p = ($total_responses / $sum_sk) * 100;
+                $p = ($sum_sh / $sum_sk) * 100;
             }
 
             $descriptiveStatistics[] = [
                 'variable' => $variable['name'],
                 'nI' => $variable['questions'],
                 'sum_SK' => $sum_sk,
-                'sum_SH' => $total_responses,
+                'sum_SH' => $sum_sh,
                 'P' => number_format($p, 2) . '%',
             ];
         }
         return $descriptiveStatistics;
     }
 
-    private function calculateRegression($surveyId, $responses)
+    private function getCalculateRegression($respondents, $variables, $responses)
     {
-        $regressionResults = []; // Inisialisasi array untuk menyimpan hasil regresi
+        $PU = [];
+        $PEU = [];
+        $ATU = [];
+        $BI = [];
+        $ASU = [];
 
-        $variables = [
-            [
-                'name' => 'Behavioral intention to use',
-                'questions' => 3,
-                'max_score' => 5,
-                'start_question' => 10,
-                'end_question' => 12,
-            ],
-            [
-                'name' => 'Actual System use',
-                'questions' => 3,
-                'max_score' => 5,
-                'start_question' => 13,
-                'end_question' => 15,
-            ],
-        ];
+        $avg_PU = 0;
+        $avg_PEU = 0;
+        $avg_ATU = 0;
+        $avg_BI = 0;
+        $avg_ASU = 0;
 
         foreach ($variables as $variable) {
-            $regressionValues = []; // Inisialisasi array untuk menyimpan nilai regresi untuk setiap variabel
+            $variableName = $variable['name'];
+            $startQuestion = $variable['start_question'];
+            $endQuestion = $variable['end_question'];
+
+            $variableValues = [];
 
             foreach ($responses as $response) {
-                echo $variable['name'] . '<br>';
                 $responseData = json_decode($response->response_data, true);
-                $total_responses = 0;
-
-                for ($i = $variable['start_question']; $i <= $variable['end_question']; $i++) {
-                    $questionKey = 'tam' . $i;
-                    if (isset($responseData['tam'][$questionKey])) {
-                        $total_responses += $responseData['tam'][$questionKey];
-                        echo $responseData['tam'][$questionKey] . '<br>';
-                    }
-                }
-                echo $total_responses . '<br>';
-
-                $sum_sk = $variable['questions'] * $variable['max_score'];
-                $value = 0;
-
-                // Menghitung nilai regresi jika sum_sk tidak sama dengan 0
-                if ($sum_sk != 0) {
-                    $value = ($total_responses / $sum_sk) * 100;
-                    echo 'value : ' . $value . '<br>';
-                }
-
-                // Menyimpan nilai regresi dalam array regressionValues
-                $regressionValues[$variable['name']] = number_format($value, 2) . '%';
-                echo $regressionValues[$variable['name']] . '<br>'. '<br>';
+                $values = array_values(array_slice($responseData['tam'], $startQuestion - 1, $endQuestion - $startQuestion + 1));
+                $variableValues[] = array_sum($values);
             }
 
-            $regressionResults[] = $regressionValues; // Tambahkan nilai regresi untuk variabel ke dalam array hasil
+            $avg = array_sum($variableValues) / count($variableValues);
+
+            if ($variableName == 'Perceived Ease of Use') {
+                $PU = $variableValues;
+                $avg_PU = $avg;
+            } elseif ($variableName == 'Perceived Usefulness') {
+                $PEU = $variableValues;
+                $avg_PEU = $avg;
+            } elseif ($variableName == 'Attitude Toward Using') {
+                $ATU = $variableValues;
+                $avg_ATU = $avg;
+            } elseif ($variableName == 'Behavioral intention to use') {
+                $BI = $variableValues;
+                $avg_BI = $avg;
+            } elseif ($variableName == 'Actual System use') {
+                $ASU = $variableValues;
+                $avg_ASU = $avg;
+            }
+            echo $variableName . ': ' . $avg . '<br>';
         }
 
-        return $regressionResults; // Mengembalikan hasil regresi
+        $PEU_PU = $this->calculateRegressionCoefficient($PEU, $PU, $avg_PEU, $avg_PU);
+        $PEU_ATU = $this->calculateRegressionCoefficient($PEU, $ATU, $avg_PEU, $avg_ATU);
+        $PU_ATU = $this->calculateRegressionCoefficient($PU, $ATU, $avg_PU, $avg_ATU);
+        $PU_BI = $this->calculateRegressionCoefficient($PU, $BI, $avg_PU, $avg_BI);
+        $ATU_BI = $this->calculateRegressionCoefficient($ATU, $BI, $avg_ATU, $avg_BI);
+        $BI_ASU = $this->calculateRegressionCoefficient($BI, $ASU, $avg_BI, $avg_ASU);
+
+        $regressionResults = [
+            'PEU_PU' => $this->calculateRegressionResult($avg_PEU, $PEU_PU['intercept'], $PEU_PU['slope']),
+            'PEU_ATU' => $this->calculateRegressionResult($avg_PEU, $PEU_ATU['intercept'], $PEU_ATU['slope']),
+            'PU_ATU' => $this->calculateRegressionResult($avg_PU, $PU_ATU['intercept'], $PU_ATU['slope']),
+            'PU_BI' => $this->calculateRegressionResult($avg_PU, $PU_BI['intercept'], $PU_BI['slope']),
+            'ATU_BI' => $this->calculateRegressionResult($avg_ATU, $ATU_BI['intercept'], $ATU_BI['slope']),
+            'BI_ASU' => $this->calculateRegressionResult($avg_BI, $BI_ASU['intercept'], $BI_ASU['slope']),
+        ];
+
+        return $regressionResults;
     }
 
-    private function getTamResults($id, $responses)
+    private function calculateRegressionCoefficient($valueX, $valueY, $avgX, $avgY)
+    {
+        $numerator = 0;
+        $denominator = 0;
+
+        foreach ($valueX as $key => $x) {
+            $numerator += ($x - $avgX) * ($valueY[$key] - $avgY);
+            $denominator += pow($x - $avgX, 2);
+        }
+
+        $slope = $numerator / $denominator;
+        $intercept = $avgY - $slope * $avgX;
+
+        return [
+            'slope' => $slope,
+            'intercept' => $intercept,
+        ];
+    }
+
+    private function calculateRegressionResult($x, $intercept, $slope)
+    {
+        echo $intercept . ' + ' . $slope . ' * ' . $x . ' = ' . ($intercept + $slope * $x) . '<br>';
+        $predictedValues = $intercept + $slope * $x;
+
+        return $predictedValues;
+    }
+
+
+
+    private function getTamResults($responses)
     {
         $tamSurveyResults = [];
 

@@ -16,12 +16,12 @@ export default function Dashboard() {
         responses,
         respondentCount,
         currentSurveyTitle,
-        test,
         tamSurveyResults,
         calculateDescriptiveStatistics,
+        calculateRegression,
         getTAMChartData,
     } = usePage().props;
-
+console.log(calculateRegression)
     const questionTexts = [
         `1. Saya tidak mengalami kesulitan menggunakan ${survey.theme}.`,
         `2. Dengan adanya ${survey.theme} dapat mencapai tujuan pekerjaan saya.`,
@@ -209,7 +209,18 @@ export default function Dashboard() {
                                 title="Hasil Statistik Inferensial"
                                 defaultOpen={true}
                             >
-                                
+                                {tamSurveyResults.length > 0 ? (
+                                    <div>
+                                        <TAMTable
+                                            data={calculateRegression}
+                                            type={"regressionTable"}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="text-center">
+                                        Tidak ada data
+                                    </div>
+                                )}
                             </AccordionLayout>
 
                             <AccordionLayout

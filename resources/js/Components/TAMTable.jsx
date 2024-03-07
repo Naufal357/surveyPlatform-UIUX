@@ -4,8 +4,8 @@ const TAMTable = ({ data, type }) => {
     return (
         <div className="table-responsive">
             {type === "responsesTable" && renderResponseTable(data)}
-            {type === "descriptiveStatisticsTable" &&
-                renderDescriptiveStatisticsTable(data)}
+            {type === "descriptiveStatisticsTable" && renderDescriptiveStatisticsTable(data)}
+            {type === "regressionTable" && renderRegressionTable(data)}
         </div>
     );
 };
@@ -65,5 +65,27 @@ const renderDescriptiveStatisticsTable = (data) => {
         </table>
     );
 };
+
+const renderRegressionTable = (data) => {
+    return (
+        <table className="table table-striped table-bordered">
+            <thead className="thead-dark">
+                <tr>
+                    <th>Variable</th>
+                    <th>Regression</th>
+                </tr>
+            </thead>
+            <tbody>
+                {Object.entries(data).map(([key, value], index) => (
+                    <tr key={index}>
+                        <td>{key.replace("_", " - ")}</td>
+                        <td>{value}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
+
 
 export default TAMTable;

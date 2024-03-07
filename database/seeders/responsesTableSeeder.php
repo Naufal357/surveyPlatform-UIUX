@@ -46,9 +46,9 @@ class responsesTableSeeder extends Seeder
                                     "tam10": 4,
                                     "tam11": 2,
                                     "tam12": 4,
-                                    "tam13": 2,
-                                    "tam14": 4,
-                                    "tam15": 2
+                                    "tam13": 5,
+                                    "tam14": 5,
+                                    "tam15": 5
                                 }
                             }',
             'survey_id' => 1
@@ -87,8 +87,8 @@ class responsesTableSeeder extends Seeder
                             "tam10": 3,
                             "tam11": 5,
                             "tam12": 2,
-                            "tam13": 4,
-                            "tam14": 3,
+                            "tam13": 5,
+                            "tam14": 5,
                             "tam15": 5
                         }
                     }',
@@ -128,8 +128,8 @@ class responsesTableSeeder extends Seeder
                             "tam10": 3,
                             "tam11": 5,
                             "tam12": 2,
-                            "tam13": 4,
-                            "tam14": 3,
+                            "tam13": 5,
+                            "tam14": 5,
                             "tam15": 5
                         }
                     }',
@@ -169,9 +169,9 @@ class responsesTableSeeder extends Seeder
                             "tam10": 2,
                             "tam11": 4,
                             "tam12": 1,
-                            "tam13": 3,
-                            "tam14": 2,
-                            "tam15": 4
+                            "tam13": 5,
+                            "tam14": 5,
+                            "tam15": 5
                         }
                     }',
             'survey_id' => 1
@@ -210,9 +210,9 @@ class responsesTableSeeder extends Seeder
                             "tam10": 5,
                             "tam11": 2,
                             "tam12": 3,
-                            "tam13": 4,
+                            "tam13": 5,
                             "tam14": 5,
-                            "tam15": 4
+                            "tam15": 5
                         }
                     }',
             'survey_id' => 1
@@ -239,20 +239,20 @@ class responsesTableSeeder extends Seeder
                             "sus10": 2
                         },
                         "tam": {
-                            "tam1": 4,
-                            "tam2": 3,
+                            "tam1": 5,
+                            "tam2": 5,
                             "tam3": 5,
-                            "tam4": 2,
-                            "tam5": 4,
-                            "tam6": 3,
+                            "tam4": 5,
+                            "tam5": 5,
+                            "tam6": 5,
                             "tam7": 5,
-                            "tam8": 2,
-                            "tam9": 4,
-                            "tam10": 3,
+                            "tam8": 5,
+                            "tam9": 5,
+                            "tam10": 5,
                             "tam11": 5,
-                            "tam12": 2,
-                            "tam13": 4,
-                            "tam14": 3,
+                            "tam12": 5,
+                            "tam13": 5,
+                            "tam14": 5,
                             "tam15": 5
                         }
                     }',
