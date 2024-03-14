@@ -196,7 +196,8 @@ class TamController extends Controller
                 $variableValues[] = array_sum($values);
             }
 
-            $avg = array_sum($variableValues) / count($variableValues);
+            $variableCount = count($variableValues);
+            $avg = $variableCount ? array_sum($variableValues) / $variableCount : 0;
 
             if ($variableName == 'Perceived Ease of Use') {
                 $PU = $variableValues;
@@ -214,7 +215,6 @@ class TamController extends Controller
                 $ASU = $variableValues;
                 $avg_ASU = $avg;
             }
-            echo $variableName . ': ' . $avg . '<br>';
         }
 
         $PEU_PU = $this->calculateRegressionCoefficient($PEU, $PU, $avg_PEU, $avg_PU);
@@ -246,9 +246,9 @@ class TamController extends Controller
             $denominator += pow($x - $avgX, 2);
         }
 
-        $slope = $numerator / $denominator;
-        $intercept = $avgY - $slope * $avgX;
+        $slope = ($denominator != 0) ? $numerator / $denominator : 0;
 
+        $intercept = $avgY - $slope * $avgX;
         return [
             'slope' => $slope,
             'intercept' => $intercept,
@@ -257,7 +257,6 @@ class TamController extends Controller
 
     private function calculateRegressionResult($x, $intercept, $slope)
     {
-        echo $intercept . ' + ' . $slope . ' * ' . $x . ' = ' . ($intercept + $slope * $x) . '<br>';
         $predictedValues = $intercept + $slope * $x;
 
         return $predictedValues;

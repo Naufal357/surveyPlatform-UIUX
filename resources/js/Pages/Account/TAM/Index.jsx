@@ -13,7 +13,6 @@ export default function Dashboard() {
         auth,
         survey,
         surveyTitles,
-        responses,
         respondentCount,
         currentSurveyTitle,
         tamSurveyResults,
@@ -21,7 +20,7 @@ export default function Dashboard() {
         calculateRegression,
         getTAMChartData,
     } = usePage().props;
-console.log(calculateRegression)
+
     const questionTexts = [
         `1. Saya tidak mengalami kesulitan menggunakan ${survey.theme}.`,
         `2. Dengan adanya ${survey.theme} dapat mencapai tujuan pekerjaan saya.`,

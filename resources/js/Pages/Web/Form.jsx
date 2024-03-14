@@ -51,7 +51,6 @@ function Form() {
         tam15: null,
     };
 
-    // State for form data and question values
     const [formData, setFormData] = useState(initialFormData);
     const [susValues, setSUSValues] = useState(initialSUSValues);
     const [tamValues, setTAMValues] = useState(initialTAMValues);

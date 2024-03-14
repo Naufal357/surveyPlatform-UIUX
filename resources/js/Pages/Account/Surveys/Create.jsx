@@ -6,6 +6,7 @@ import InputField from "../../../Components/InputField";
 import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
+import AccordionLayout from "../../../Layouts/Accordion";
 import Swal from "sweetalert2";
 
 export default function CategoryCreate() {
@@ -34,7 +35,7 @@ export default function CategoryCreate() {
 
         setSurveyMethodsData(data);
     };
-    
+
     const storeSurvey = async (e) => {
         e.preventDefault();
 
@@ -206,6 +207,78 @@ export default function CategoryCreate() {
                         </div>
                     </div>
                 </div>
+
+                <AccordionLayout
+                    title="Preview Question - System Usability Scale"
+                    defaultOpen={true}
+                >
+                    <div className="card-body">
+                        {susQuestionsData.map((question) => (
+                            <InputField
+                                key={question.id}
+                                label={`Pertanyaan ${question.id.substring(6)}`}
+                                type="text"
+                                value={question.question}
+                                onChange={(e) =>
+                                    handleSusQuestionChange(
+                                        question.id,
+                                        e.target.value
+                                    )
+                                }
+                                error={
+                                    errors[
+                                        `question${question.id.substring(6)}`
+                                    ]
+                                }
+                            />
+                        ))}
+                    </div>
+                    <div>
+                        <ButtonCRUD
+                            type="reset"
+                            label="Reset"
+                            color="btn-warning"
+                            iconClass="fa fa-redo"
+                            onClick={resetSusQuestions}
+                        />
+                    </div>
+                </AccordionLayout>
+
+                {/* <AccordionLayout
+                    title="Preview Question - System Usability Scale"
+                    defaultOpen={true}
+                >
+                    <div className="card-body">
+                        {susQuestionsData.map((question) => (
+                            <InputField
+                                key={question.id}
+                                label={`Pertanyaan ${question.id.substring(6)}`}
+                                type="text"
+                                value={question.question}
+                                onChange={(e) =>
+                                    handleSusQuestionChange(
+                                        question.id,
+                                        e.target.value
+                                    )
+                                }
+                                error={
+                                    errors[
+                                        `question${question.id.substring(6)}`
+                                    ]
+                                }
+                            />
+                        ))}
+                    </div>
+                    <div>
+                        <ButtonCRUD
+                            type="reset"
+                            label="Reset"
+                            color="btn-warning"
+                            iconClass="fa fa-redo"
+                            onClick={resetSusQuestions}
+                        />
+                    </div>
+                </AccordionLayout> */}
             </LayoutAccount>
         </>
     );

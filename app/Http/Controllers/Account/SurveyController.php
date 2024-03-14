@@ -7,6 +7,7 @@ use App\Models\Method;
 use App\Models\Category;
 use App\Models\SurveyHasCategories;
 use App\Models\SurveyHasMethods;
+use App\Models\SurveyQuestion;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -108,6 +109,7 @@ class SurveyController extends Controller
         $methods = Method::all();
         $surveyCategories = SurveyHasCategories::where('survey_id', $survey->id)->get();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
+        $surveyQuestions = SurveyQuestion::where('survey_id', $survey->id)->get();
 
         return inertia('Account/Surveys/Edit', [
             'survey' => $survey,
@@ -115,9 +117,9 @@ class SurveyController extends Controller
             'methods' => $methods,
             'surveyCategories' => $surveyCategories,
             'surveyMethods' => $surveyMethods,
+            'surveyQuestions' => $surveyQuestions,
         ]);
     }
-
 
     public function update(Request $request, Survey $Survey, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {

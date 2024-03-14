@@ -22,7 +22,7 @@ export default function Dashboard() {
         susSurveyResults,
     } = usePage().props;
 
-    // console.log(auth)
+    console.log(typeof susSurveyResults)
 
     const questionTexts = [
         `1. Saya berpikir akan menggunakan sistem ${survey.theme} ini lagi.`,
