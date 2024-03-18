@@ -22,8 +22,6 @@ export default function Dashboard() {
         susSurveyResults,
     } = usePage().props;
 
-    console.log(typeof susSurveyResults)
-
     const questionTexts = [
         `1. Saya berpikir akan menggunakan sistem ${survey.theme} ini lagi.`,
         `2. Saya merasa sistem ${survey.theme} ini rumit untuk digunakan.`,
@@ -75,7 +73,7 @@ export default function Dashboard() {
     }));
 
     const handleExport = () => {
-        Inertia.get("/account/responses/sus/${survey.id}/export");
+        window.location.href = `/account/responses/sus/${survey.id}/export`;
     };
 
     return (
