@@ -30,7 +30,7 @@ export default function InputField({
 
     return (
         <div className="mb-3">
-            <label className="form-label fw-bold">{label}</label>
+            {label && <label className="form-label fw-bold">{label}</label>}{" "}
             {type === "textarea" ? (
                 <textarea
                     className="form-control"

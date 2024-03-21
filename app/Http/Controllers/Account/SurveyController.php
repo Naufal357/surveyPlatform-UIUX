@@ -7,7 +7,7 @@ use App\Models\Method;
 use App\Models\Category;
 use App\Models\SurveyHasCategories;
 use App\Models\SurveyHasMethods;
-use App\Models\SurveyQuestion;
+use App\Models\SurveyQuestions;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -43,10 +43,12 @@ class SurveyController extends Controller
     {
         $categories = Category::all();
         $methods = Method::all();
+        $surveyQuestionsExample = SurveyQuestions::where('survey_id', 1)->get();
 
         return inertia('Account/Surveys/Create', [
             'categories' => $categories,
             'methods' => $methods,
+            'surveyQuestionsExample' => $surveyQuestionsExample
         ]);
     }
 
@@ -58,10 +60,12 @@ class SurveyController extends Controller
             'image'         => 'required|image|mimes:jpeg,jpg,png|max:80000',
             'theme'          => 'required',
             'description'    => 'required',
+            'url_website'    => 'required',
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
             'survey_categories' => 'required',
             'survey_methods' => 'required',
+            'survey_questions' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -74,9 +78,15 @@ class SurveyController extends Controller
             'image'         => $image->hashName(),
             'theme'          => $request->theme,
             'description'    => $request->description,
+            'url_website'    => $request->url_website,
             'embed_design'   => $request->embed_design,
             'embed_prototype'   => $request->embed_prototype,
             'slug'          => Str::slug($request->title, '-'),
+        ]);
+
+        SurveyQuestions::create([
+            'survey_id' => $survey->id,
+            'questions_data' => $request->survey_questions
         ]);
 
         if ($request->has('survey_categories')) {
@@ -109,7 +119,7 @@ class SurveyController extends Controller
         $methods = Method::all();
         $surveyCategories = SurveyHasCategories::where('survey_id', $survey->id)->get();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
-        $surveyQuestions = SurveyQuestion::where('survey_id', $survey->id)->get();
+        $surveyQuestions = SurveyQuestions::where('survey_id', $survey->id)->get();
 
         return inertia('Account/Surveys/Edit', [
             'survey' => $survey,
@@ -121,34 +131,39 @@ class SurveyController extends Controller
         ]);
     }
 
-    public function update(Request $request, Survey $Survey, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
+    public function update(Request $request, Survey $survey, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods, SurveyQuestions $surveyQuestion)
     {
+
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
             'theme'          => 'required',
             'description'    => 'required',
+            'url_website'    => 'required',
             'embed_design'   => 'required',
             'embed_prototype'   => 'required',
+            'survey_questions' => 'required',
         ]);
 
         if ($request->file('image')) {
 
-            Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
+            Storage::disk('local')->delete('public/image/surveys/' . basename($survey->image));
 
             $image = $request->file('image');
             $image->storeAs('public/image/surveys/', $image->hashName());
 
-            $Survey->update([
+            $survey->update([
                 'image' => $image->hashName(),
                 'name' => $request->name,
                 'slug' => Str::slug($request->name, '-')
             ]);
         }
-        $Survey->update([
+
+        $survey->update([
             'title'          => $request->title,
             'theme'          => $request->theme,
             'description'    => $request->description,
+            'url_website'    => $request->url_website,
             'embed_design'   => $request->embed_design,
             'embed_prototype' => $request->embed_prototype,
             'slug'          => Str::slug($request->title, '-')
@@ -156,20 +171,29 @@ class SurveyController extends Controller
 
         if ($request->has('survey_categories')) {
             $surveyCategoriesData = $request->survey_categories;
-            $surveyHasCategories->where('survey_id', $Survey->id)->delete();
+            $surveyHasCategories->where('survey_id', $survey->id)->delete();
 
             foreach ($surveyCategoriesData as $category_id) {
-                $surveyHasCategories->create(['category_id' => $category_id, 'survey_id' => $Survey->id]);
+                $surveyHasCategories->create(['category_id' => $category_id, 'survey_id' => $survey->id]);
             }
         }
 
         if ($request->has('survey_methods')) {
             $surveyMethodsData = $request->survey_methods;
-            $surveyHasMethods->where('survey_id', $Survey->id)->delete();
+            $surveyHasMethods->where('survey_id', $survey->id)->delete();
 
             foreach ($surveyMethodsData as $method_id) {
-                $surveyHasMethods->create(['method_id' => $method_id, 'survey_id' => $Survey->id]);
+                $surveyHasMethods->create(['method_id' => $method_id, 'survey_id' => $survey->id]);
             }
+        }
+
+        if ($request->has('survey_questions')) {
+            $surveyQuestion->where('survey_id', $survey->id)->delete();
+            $surveyQuestionsData = $request->survey_questions;
+            $surveyQuestion->create([
+                'survey_id' => $survey->id,
+                'questions_data' => $request->survey_questions
+            ]);
         }
 
         return redirect()->route('account.surveys.index');

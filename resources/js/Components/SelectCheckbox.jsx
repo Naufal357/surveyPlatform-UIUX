@@ -7,6 +7,7 @@ const SelectCheckbox = ({
     labelKey,
     selectedValues,
     onChange,
+    error,
 }) => {
     return (
         <div className="mb-3">
@@ -29,7 +30,7 @@ const SelectCheckbox = ({
                                     option[valueKey]
                                 )}
                             />
-                    
+
                             <label
                                 className="form-check-label"
                                 htmlFor={`check-${option[valueKey]}`}
@@ -65,6 +66,7 @@ const SelectCheckbox = ({
                     ))}
                 </>
             )}
+            {error && <div className="alert alert-danger">{error}</div>}
         </div>
     );
 };

@@ -16,6 +16,7 @@ class Survey extends Model
         'image',
         'theme',
         'description',
+        'url_website',
         'embed_design',
         'embed_prototype',
         'user_id',

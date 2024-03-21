@@ -25,17 +25,47 @@ export default function SurveyEdit() {
     const [image, setImage] = useState(null);
     const [theme, setTheme] = useState("");
     const [description, setDescription] = useState("");
+    const [url_website, setUrlWebsite] = useState("");
     const [embed_design, setEmbedDesign] = useState("");
     const [embed_prototype, setEmbedPrototype] = useState("");
     const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
     const [surveyMethodsData, setSurveyMethodsData] = useState([]);
     const [susQuestionsData, setSusQuestionsData] = useState([]);
-    const [user_id, setUserId] = useState(auth.id);
+    const [tamQuestionsData, setTamQuestionsData] = useState([]);
+    const [user_id] = useState(auth.user.id);
+
+    const [isMethodSusFilled, setIsMethodSusFilled] = useState();
+    const [isMethodTamFilled, setIsMethodTamFilled] = useState();
+
+    const tamJson = [];
+    const susJson = {};
+
+    let idTamCounter = 0;
+    let idSusCounter = 0;
+    
+    const data = JSON.parse(surveyQuestions[0].questions_data);
+
+    const parsedSusQuestions = Object.entries(data.sus).map(([key, value]) => ({
+        id: `${idSusCounter++}`,
+        question: value,
+    }));
+
+    const parsedTamQuestions = data.tam.flatMap((variable) =>
+        variable.indicators.flatMap((indicator) =>
+            indicator.questions.map((question) => ({
+                id: `${idTamCounter++}`,
+                variable: variable.name,
+                indicator: indicator.name,
+                question: question,
+            }))
+        )
+    );
 
     useEffect(() => {
         setTitle(survey.title);
         setTheme(survey.theme);
         setDescription(survey.description);
+        setUrlWebsite(survey.url_website);
         setEmbedDesign(survey.embed_design);
         setEmbedPrototype(survey.embed_prototype);
         setSurveyCategoriesData(
@@ -44,17 +74,36 @@ export default function SurveyEdit() {
         setSurveyMethodsData(
             surveyMethods.map((item) => parseInt(item.method_id, 10))
         );
-        setSusQuestionsData(
-            Object.entries(
-                JSON.parse(surveyQuestions[0].questions_data).sus
-            ).map(([key, value]) => ({
-                id: key,
-                question: value,
-            }))
-        );
-        setUserId(survey.user_id);
+
+        setSusQuestionsData(parsedSusQuestions);
+        setTamQuestionsData(parsedTamQuestions);
     }, [survey, surveyCategories, surveyMethods]);
-    console.log(susQuestionsData);
+
+    const checkSurveyMethods = (data) => {
+        let isSusFilled = false;
+        let isTamFilled = false;
+
+        if (data.includes(1) && data.includes(2)) {
+            isSusFilled = true;
+            isTamFilled = true;
+        } else if (data.includes(1)) {
+            isSusFilled = true;
+            isTamFilled = false;
+        } else if (data.includes(2)) {
+            isSusFilled = false;
+            isTamFilled = true;
+        }
+
+        return { isSusFilled, isTamFilled };
+    };
+
+    useEffect(() => {
+        const { isSusFilled, isTamFilled } =
+            checkSurveyMethods(surveyMethodsData);
+        setIsMethodSusFilled(isSusFilled);
+        setIsMethodTamFilled(isTamFilled);
+    }, [surveyMethodsData]);
+
     const handleCheckboxCategoriesChange = (e) => {
         const categoryId = parseInt(e.target.value, 10);
 
@@ -83,22 +132,105 @@ export default function SurveyEdit() {
         setSusQuestionsData(
             susQuestionsData.map((question) => {
                 if (question.id === questionId) {
-                    return { ...question, question: value };
+                    question.question = value;
                 }
                 return question;
             })
         );
     };
 
-    const resetSusQuestions = () => {
-        setSusQuestionsData(
-            Object.entries(
-                JSON.parse(surveyQuestions[0].questions_data).sus
-            ).map(([key, value]) => ({
-                id: key,
-                question: value,
-            }))
+    const handleTamVariableChange = (questionId, value) => {
+        setTamQuestionsData(
+            tamQuestionsData.map((question) => {
+                if (question.id === questionId) {
+                    question.variable = value;
+                }
+                return question;
+            })
         );
+    };
+
+    const handleTamIndicatorChange = (questionId, value) => {
+        setTamQuestionsData(
+            tamQuestionsData.map((question) => {
+                if (question.id === questionId) {
+                    question.indicator = value;
+                }
+                return question;
+            })
+        );
+    };
+
+    const handleTamQuestionChange = (questionId, value) => {
+        setTamQuestionsData(
+            tamQuestionsData.map((question) => {
+                if (question.id === questionId) {
+                    question.question = value;
+                }
+                return question;
+            })
+        );
+    };
+
+    susQuestionsData.forEach((item, index) => {
+        susJson[`sus${index + 1}`] = item.question;
+    });
+
+    tamQuestionsData.forEach((item) => {
+        // Check if the variable already exists in tamJson
+        let variableIndex = tamJson.findIndex(
+            (element) => element.name === item.variable
+        );
+
+        // If the variable doesn't exist, create a new entry
+        if (variableIndex === -1) {
+            let variable = {
+                name: item.variable,
+                indicators: [
+                    {
+                        name: item.indicator,
+                        questions: [item.question],
+                    },
+                ],
+            };
+            tamJson.push(variable);
+        } else {
+            // If the variable exists, add the question to its corresponding indicator
+            let indicatorIndex = tamJson[variableIndex].indicators.findIndex(
+                (element) => element.name === item.indicator
+            );
+
+            if (indicatorIndex === -1) {
+                tamJson[variableIndex].indicators.push({
+                    name: item.indicator,
+                    questions: [item.question],
+                });
+            } else {
+                tamJson[variableIndex].indicators[
+                    indicatorIndex
+                ].questions.push(item.question);
+            }
+        }
+    });
+
+    const combineSurveyData = () => {
+        checkSurveyMethods(surveyMethodsData);
+        if (isMethodSusFilled && isMethodTamFilled) {
+            return JSON.stringify({
+                sus: susJson,
+                tam: tamJson,
+            });
+        } else if (isMethodSusFilled) {
+            return JSON.stringify({
+                sus: susJson,
+            });
+        } else if (isMethodTamFilled) {
+            return JSON.stringify({
+                tam: tamJson,
+            });
+        } else {
+            return null;
+        }
     };
 
     const updateSurvey = async (e) => {
@@ -116,13 +248,14 @@ export default function SurveyEdit() {
                 image: image,
                 theme: theme,
                 description: description,
+                url_website: url_website,
                 embed_design: embed_design,
                 embed_prototype: embed_prototype,
                 survey_categories: surveyCategoriesData,
                 survey_methods: surveyMethodsData,
+                survey_questions: combineSurveyData(),
                 user_id: user_id,
                 _method: "PUT",
-                console: console.log(image),
             },
             {
                 onSuccess: () => {
@@ -136,6 +269,25 @@ export default function SurveyEdit() {
                 },
             }
         );
+    };
+
+    const handleReset = () => {
+        setImage(null);
+        setTitle("");
+        setTheme("");
+        setDescription("");
+        setUrlWebsite("");
+        setEmbedDesign("");
+        setEmbedPrototype("");
+        setSurveyCategoriesData([]);
+    };
+
+    const resetSusQuestions = () => {
+        setSusQuestionsData(parsedSusQuestions);
+    };
+
+    const resetTamQuestions = () => {
+        setTamQuestionsData(parsedTamQuestions);
     };
 
     return (
@@ -186,6 +338,15 @@ export default function SurveyEdit() {
                                         label="Description"
                                         value={description}
                                         onChange={setDescription}
+                                    />
+                                    <InputField
+                                        label="Url Website"
+                                        type="text"
+                                        value={url_website}
+                                        onChange={(e) =>
+                                            setUrlWebsite(e.target.value)
+                                        }
+                                        error={errors.url_website}
                                     />
                                     <InputField
                                         label="Embed Design (Figma)"
@@ -256,73 +417,165 @@ export default function SurveyEdit() {
                     </div>
                 </div>
 
-                <AccordionLayout
-                    title="Preview Question - System Usability Scale"
-                    defaultOpen={true}
-                >
-                    <div className="card-body">
-                        {susQuestionsData.map((question) => (
-                            <InputField
-                                key={question.id}
-                                label={`Pertanyaan ${question.id.substring(6)}`}
-                                type="text"
-                                value={question.question}
-                                onChange={(e) =>
-                                    handleSusQuestionChange(
-                                        question.id,
-                                        e.target.value
-                                    )
-                                }
-                                error={
-                                    errors[
-                                        `question${question.id.substring(6)}`
-                                    ]
-                                }
-                            />
-                        ))}
-                    </div>
-                    <div>
-                        <ButtonCRUD
-                            type="reset"
-                            label="Reset"
-                            color="btn-warning"
-                            iconClass="fa fa-redo"
-                            onClick={resetSusQuestions}
-                        />
-                    </div>
-                </AccordionLayout>
+                {isMethodSusFilled && (
+                    <AccordionLayout
+                        title="Preview Question - System Usability Scale"
+                        defaultOpen={false}
+                    >
+                        <div className="card-body">
+                            {susQuestionsData.map((question, index) => (
+                                <InputField
+                                    key={question.id}
+                                    label={`Pertanyaan ${index + 1}`}
+                                    type="text"
+                                    value={question.question}
+                                    onChange={(e) =>
+                                        handleSusQuestionChange(
+                                            question.id,
+                                            e.target.value
+                                        )
+                                    }
+                                    error={errors[`question${index + 1}`]}
+                                />
+                            ))}
+                        </div>
 
-                {/* <AccordionLayout
-                    title="Preview Question - Technology Acceptence Model"
-                    defaultOpen={false}
-                >
-                    <div className="card-body">
-                        {susQuestionsData.map((question) => (
-                            <InputField
-                                key={question.id}
-                                label={`Pertanyaan ${question.id + 1}`}
-                                type="text"
-                                value={question.question}
-                                onChange={(e) =>
-                                    handleQuestionChange(
-                                        question.id,
-                                        e.target.value
-                                    )
-                                }
-                                error={errors[`question${question.id + 1}`]}
+                        <div>
+                            <ButtonCRUD
+                                type="reset"
+                                label="Reset to default"
+                                color="btn-warning"
+                                iconClass="fa fa-redo"
+                                onClick={resetSusQuestions}
                             />
+                        </div>
+                    </AccordionLayout>
+                )}
+
+                {isMethodTamFilled && (
+                    <AccordionLayout
+                        title="Preview Question - Technology Acceptence Model"
+                        defaultOpen={false}
+                    >
+                        <p>
+                            Pertanyaan dalam kuesioner akan diatur sesuai dengan
+                            urutan variabel TAM. Dimulai dari Pertanyaan{" "}
+                            <i> Perceived Ease of Use</i>, kemudian{" "}
+                            <i> Perceived Usefulness</i>,
+                            <i> Attitude Toward Using</i>,{" "}
+                            <i> Behavioral Intention to Use</i>, dan terakhir{" "}
+                            <i> Actual System Use</i>. Dengan demikian, pengguna
+                            akan menjawab pertanyaan sesuai dengan alur yang
+                            telah ditetapkan, memudahkan pengisian kuesioner.
+                        </p>
+                        {tamQuestionsData.map((question, index) => (
+                            <div key={index} className="mb-3">
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <strong>
+                                            {" "}
+                                            Variable Pertanyaan {index + 1}
+                                        </strong>
+
+                                        <select
+                                            className="form-select mt-2"
+                                            onChange={(e) => {
+                                                handleTamVariableChange(
+                                                    question.id,
+                                                    e.target.value
+                                                );
+                                            }}
+                                            value={question.variable}
+                                        >
+                                            <option
+                                                value=""
+                                                disabled
+                                                defaultValue
+                                            >
+                                                Pilih Variable
+                                            </option>
+                                            <option value="PEU">
+                                                Perceived Ease of Use
+                                            </option>
+                                            <option value="PU">
+                                                Perceived Usefulness
+                                            </option>
+                                            <option value="ATU">
+                                                Attitude Toward Using
+                                            </option>
+                                            <option value="BI">
+                                                Behavioral Intention to Use
+                                            </option>
+                                            <option value="ASU">
+                                                Actual System Use
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className="row">
+                                            <div className="col-md-3">
+                                                <InputField
+                                                    id={`indicator${index + 1}`}
+                                                    type="text"
+                                                    label={`Indikator Pertanyaan ${
+                                                        index + 1
+                                                    }`}
+                                                    value={question.indicator}
+                                                    onChange={(e) =>
+                                                        handleTamIndicatorChange(
+                                                            question.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    error={
+                                                        errors[
+                                                            `indicator${
+                                                                index + 1
+                                                            }`
+                                                        ]
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="col-md-9">
+                                                <InputField
+                                                    id={`question${index + 1}`}
+                                                    type="text"
+                                                    label={`Pertanyaan ${
+                                                        index + 1
+                                                    }`}
+                                                    value={question.question}
+                                                    onChange={(e) =>
+                                                        handleTamQuestionChange(
+                                                            question.id,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    error={
+                                                        errors[
+                                                            `question${
+                                                                index + 1
+                                                            }`
+                                                        ]
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         ))}
-                    </div>
-                    <div>
-                        <ButtonCRUD
-                            type="reset"
-                            label="Reset"
-                            color="btn-warning"
-                            iconClass="fa fa-redo"
-                            onClick={resetSusQuestions}
-                        />
-                    </div>
-                </AccordionLayout> */}
+
+                        <div>
+                            <ButtonCRUD
+                                type="reset"
+                                label="Reset to default"
+                                color="btn-warning"
+                                iconClass="fa fa-redo"
+                                onClick={resetTamQuestions}
+                            />
+                        </div>
+                    </AccordionLayout>
+                )}
             </LayoutAccount>
         </>
     );
