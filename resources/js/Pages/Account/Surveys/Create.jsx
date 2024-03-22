@@ -48,9 +48,9 @@ export default function CategoryCreate() {
         }
     }, [surveyMethodsData]);
 
-        const replaceTheme = (text) => {
-            return text.replace(/Website Rumah Sakit/g, theme);
-        };
+    const replaceTheme = (text) => {
+        return text.replace(/Website Rumah Sakit/g, theme);
+    };
 
     useEffect(() => {
         let idTamCounter = 0;
@@ -277,6 +277,34 @@ export default function CategoryCreate() {
         );
     };
 
+    const removeTamQuestion = (questionId) => {
+        const updatedQuestions = tamQuestionsData.filter(
+            (question) => question.id !== questionId
+        );
+
+        const reindexedQuestions = updatedQuestions.map((question, index) => ({
+            ...question,
+            id: `${index + 1}`,
+        }));
+
+        setTamQuestionsData(reindexedQuestions);
+    };
+
+    const addTamQuestion = () => {
+        const newQuestion = {
+            id: `${tamQuestionsData.length + 1}`,
+            variable: "",
+            indicator: "",
+            question: "",
+        };
+
+        setTamQuestionsData([...tamQuestionsData, newQuestion]);
+    };
+
+    const deleteAllTamQuestions = () => {
+        setTamQuestionsData([]);
+    };
+
     return (
         <>
             <Head>
@@ -467,6 +495,7 @@ export default function CategoryCreate() {
                             akan menjawab pertanyaan sesuai dengan alur yang
                             telah ditetapkan, memudahkan pengisian kuesioner.
                         </p>
+                        <hr />
                         {tamQuestionsData.map((question, index) => (
                             <div key={index} className="mb-3">
                                 <div className="row">
@@ -535,7 +564,7 @@ export default function CategoryCreate() {
                                                     }
                                                 />
                                             </div>
-                                            <div className="col-md-9">
+                                            <div className="col-md-8">
                                                 <InputField
                                                     id={`question${index + 1}`}
                                                     type="text"
@@ -558,11 +587,33 @@ export default function CategoryCreate() {
                                                     }
                                                 />
                                             </div>
+                                            <div className="col-md-1 col-12 text-center mt-md-3">
+                                                <ButtonCRUD
+                                                    type="delete question"
+                                                    color="btn btn-outline-danger"
+                                                    iconClass="fas fa-minus"
+                                                    onClick={() =>
+                                                        removeTamQuestion(
+                                                            question.id
+                                                        )
+                                                    }
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <hr />
                             </div>
                         ))}
+
+                        <div className="mb-3 text-center">
+                            <ButtonCRUD
+                                type="add question"
+                                color="btn btn-outline-success"
+                                iconClass="fa fa-plus"
+                                onClick={() => addTamQuestion()}
+                            />
+                        </div>
 
                         <div>
                             <ButtonCRUD
@@ -571,6 +622,13 @@ export default function CategoryCreate() {
                                 color="btn-warning"
                                 iconClass="fa fa-redo"
                                 onClick={resetTamQuestions}
+                            />
+                            <ButtonCRUD
+                                type="delete all tam questions"
+                                label="Delete all TAM questions"
+                                color="btn-danger"
+                                iconClass="fa fa-trash"
+                                onClick={deleteAllTamQuestions}
                             />
                         </div>
                     </AccordionLayout>

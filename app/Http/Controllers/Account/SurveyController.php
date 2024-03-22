@@ -54,6 +54,7 @@ class SurveyController extends Controller
 
     public function store(Request $request, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {
+        dd($request->survey_questions);
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
