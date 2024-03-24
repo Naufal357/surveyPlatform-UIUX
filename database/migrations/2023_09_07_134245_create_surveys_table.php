@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('image');
             $table->string('theme');
             $table->longText('description');
-            $table->text('url_website');
-            $table->text('embed_design');
-            $table->text('embed_prototype');
+            $table->text('url_website')->nullable();
+            $table->text('embed_design')->nullable();
+            $table->text('embed_prototype')->nullable();
             $table->timestamps();
         });
     }

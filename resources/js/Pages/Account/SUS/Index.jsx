@@ -20,20 +20,18 @@ export default function Dashboard() {
         currentSurveyTitle,
         getSUSChartData,
         susSurveyResults,
+        susQuestions,
     } = usePage().props;
 
-    const questionTexts = [
-        `1. Saya berpikir akan menggunakan sistem ${survey.theme} ini lagi.`,
-        `2. Saya merasa sistem ${survey.theme} ini rumit untuk digunakan.`,
-        `3. Saya merasa sistem ${survey.theme} ini mudah digunakan.`,
-        `4. Saya membutuhkan bantuan dari orang lain atau teknisi dalam menggunakan sistem ${survey.theme} ini.`,
-        `5. Saya merasa fitur-fitur sistem ${survey.theme} ini berjalan dengan semestinya.`,
-        `6. Saya merasa ada banyak hal yang tidak konsisten (tidak serasi pada sistem ${survey.theme} ini).`,
-        `7. Saya merasa orang lain akan memahami cara menggunakan sistem ${survey.theme} ini dengan cepat.`,
-        `8. Saya merasa sistem ${survey.theme} ini membingungkan.`,
-        `9. Saya merasa tidak ada hambatan dalam menggunakan sistem ${survey.theme} ini.`,
-        `10. Saya perlu membiasakan diri terlebih dahulu sebelum menggunakan sistem ${survey.theme} ini.`,
-    ];
+    let idSusCounter = 0;
+    const data = JSON.parse(susQuestions[0].questions_data);
+
+    const parsedSusQuestions = data.sus
+        ? Object.entries(data.sus).map(([key, value]) => ({
+              id: `${idSusCounter++}`,
+              question: value,
+          }))
+        : [];
 
     // Fungsi untuk menghitung data chart
     const getChartData = (data) => {
@@ -152,7 +150,7 @@ export default function Dashboard() {
                         >
                             {susData.length > 0 ? (
                                 <div className="row">
-                                    {susData.map((item, index) => (
+                                    {parsedSusQuestions.map((item, index) => (
                                         <div
                                             className="col-lg-4 col-md-6 mb-4 mx-auto"
                                             key={index}
@@ -160,10 +158,12 @@ export default function Dashboard() {
                                             <div className="card">
                                                 <div className="card-body">
                                                     <h6 className="card-title">
-                                                        {questionTexts[index]}
+                                                        {index + 1}. {item.question}
                                                     </h6>
                                                     <PieChart
-                                                        data={item.data}
+                                                        data={
+                                                            susData[index].data
+                                                        }
                                                     />
                                                 </div>
                                             </div>

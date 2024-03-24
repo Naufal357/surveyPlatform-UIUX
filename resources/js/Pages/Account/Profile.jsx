@@ -15,7 +15,7 @@ export default function UserCreate() {
     const [surname, setSurname] = useState(user.surname);
     const [email, setEmail] = useState(user.email);
     const [gender, setGender] = useState(user.gender);
-    const [birthDate, setBirthDate] = useState(null);
+    const [birthDate, setBirthDate] = useState(user.birth_date);
     const [profession, setProfession] = useState(user.profession);
     const [educationalBackground, setEducationalBackground] = useState(
         user.educational_background
@@ -94,7 +94,8 @@ export default function UserCreate() {
                         <div className="card border-0 rounded shadow-sm border-top-success">
                             <div className="card-header">
                                 <span className="font-weight-bold">
-                                    <i className="fa fa-users"></i> Add New User
+                                    <i className="fa fa-user"></i> Profile -{" "}
+                                    {firstName + " " + surname}
                                 </span>
                             </div>
                             <div className="card-body">
@@ -243,7 +244,6 @@ export default function UserCreate() {
                                         selectedDate={birthDate}
                                         onChange={(date) => setBirthDate(date)}
                                         error={errors.birthDate}
-                                        required
                                     />
 
                                     <div className="row">

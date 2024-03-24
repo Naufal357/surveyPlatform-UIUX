@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
+use App\Models\SurveyQuestions;
 use Inertia\Inertia;
 use PhpParser\Node\Stmt\Echo_;
 use Psy\Readline\Hoa\Console;
@@ -46,6 +47,8 @@ class TamController extends Controller
             ->where('response_data', 'LIKE', '%"tam"%')
             ->get();
 
+        $tamQustions = SurveyQuestions::where('survey_id', $id)->get();
+
         $respondents = $this->countRespondents($id, $responses);
 
         $respondentCount = $this->countRespondents($id, $responses);
@@ -63,6 +66,7 @@ class TamController extends Controller
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
             'calculateRegression' => $calculateRegression,
             'tamSurveyResults' => $tamSurveyResults,
+            'tamQustions' => $tamQustions
         ])->with('currentSurveyTitle', $survey->title);
     }
 

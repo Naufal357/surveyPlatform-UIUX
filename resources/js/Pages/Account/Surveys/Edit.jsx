@@ -45,21 +45,25 @@ export default function SurveyEdit() {
     
     const data = JSON.parse(surveyQuestions[0].questions_data);
 
-    const parsedSusQuestions = Object.entries(data.sus).map(([key, value]) => ({
-        id: `${idSusCounter++}`,
-        question: value,
-    }));
+    const parsedSusQuestions = data.sus
+        ? Object.entries(data.sus).map(([key, value]) => ({
+              id: `${idSusCounter++}`,
+              question: value,
+          }))
+        : [];
 
-    const parsedTamQuestions = data.tam.flatMap((variable) =>
-        variable.indicators.flatMap((indicator) =>
-            indicator.questions.map((question) => ({
-                id: `${idTamCounter++}`,
-                variable: variable.name,
-                indicator: indicator.name,
-                question: question,
-            }))
-        )
-    );
+    const parsedTamQuestions = data.tam
+        ? data.tam.flatMap((variable) =>
+              variable.indicators.flatMap((indicator) =>
+                  indicator.questions.map((question) => ({
+                      id: `${idTamCounter++}`,
+                      variable: variable.name,
+                      indicator: indicator.name,
+                      question: question,
+                  }))
+              )
+          )
+        : [];
 
     useEffect(() => {
         setTitle(survey.title);
@@ -366,9 +370,10 @@ export default function SurveyEdit() {
                                         label="Description"
                                         value={description}
                                         onChange={setDescription}
+                                        error={errors.description}
                                     />
                                     <InputField
-                                        label="Url Website"
+                                        label="URL Website"
                                         type="text"
                                         value={url_website}
                                         onChange={(e) =>
@@ -625,8 +630,8 @@ export default function SurveyEdit() {
                                 onClick={resetTamQuestions}
                             />
                             <ButtonCRUD
-                                type="delete all tam questions"
-                                label="Delete all TAM questions"
+                                type="delete all questions"
+                                label="Delete all questions"
                                 color="btn-danger"
                                 iconClass="fa fa-trash"
                                 onClick={deleteAllTamQuestions}

@@ -1,20 +1,20 @@
 import React from "react";
 
-function RadioQuestion({ name, onValueChange, selectedValue}) {
+function LikertScale({ name, onValueChange, selectedValue }) {
     const options = [
-              { value: 5, label: "Sangat setuju" },
-              { value: 4, label: "Setuju" },
-              { value: 3, label: "Netral" },
-              { value: 2, label: "Tidak setuju" },
-              { value: 1, label: "Sangat tidak setuju" },
-          ];
+        { value: 5, label: "Sangat setuju" },
+        { value: 4, label: "Setuju" },
+        { value: 3, label: "Netral" },
+        { value: 2, label: "Tidak setuju" },
+        { value: 1, label: "Sangat tidak setuju" },
+    ];
 
     return (
         <div className="">
             {options.map((option) => (
                 <div
                     key={`${name}-${option.value}`}
-                    className="form-check mb-1" 
+                    className="form-check mb-1"
                 >
                     <input
                         type="radio"
@@ -38,4 +38,4 @@ function RadioQuestion({ name, onValueChange, selectedValue}) {
     );
 }
 
-export default RadioQuestion;
+export default LikertScale;

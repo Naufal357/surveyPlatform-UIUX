@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import stylesheet Quill.js
 
-function QuillEditor({ value, onChange, label }) {
+function QuillEditor({ value, onChange, label, error }) {
     const modules = {
         toolbar: [
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -37,6 +37,7 @@ function QuillEditor({ value, onChange, label }) {
                 value={value}
                 onChange={onChange}
             />
+            {error && <div className="alert alert-danger">{error}</div>}
         </div>
     );
 }

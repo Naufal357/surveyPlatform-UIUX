@@ -140,10 +140,15 @@ export default function SurveyIndex() {
                                                                 {survey.theme}
                                                             </td>
                                                             <td>
-                                                                {limitWords(
-                                                                    survey.description,
-                                                                    70
-                                                                )}
+                                                                {survey.description
+                                                                    .replace(
+                                                                        /<[^>]*>/g,
+                                                                        ""
+                                                                    )
+                                                                    .substring(
+                                                                        0,
+                                                                        70
+                                                                    )}
                                                             </td>
                                                             <td>
                                                                 {
@@ -156,7 +161,9 @@ export default function SurveyIndex() {
                                                                         survey.image
                                                                     }
                                                                     className="rounded-3"
-                                                                    width={"100"}
+                                                                    width={
+                                                                        "100"
+                                                                    }
                                                                 />
                                                             </td>
                                                             <td className="text-center">

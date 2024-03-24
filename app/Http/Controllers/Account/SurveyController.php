@@ -54,19 +54,23 @@ class SurveyController extends Controller
 
     public function store(Request $request, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {
-        dd($request->survey_questions);
+
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
             'image'         => 'required|image|mimes:jpeg,jpg,png|max:80000',
             'theme'          => 'required',
             'description'    => 'required',
-            'url_website'    => 'required',
-            'embed_design'   => 'required',
-            'embed_prototype'   => 'required',
             'survey_categories' => 'required',
             'survey_methods' => 'required',
             'survey_questions' => 'required',
+            'url_website'    => 'required_without_all:embed_design,embed_prototype',
+            'embed_design'   => 'required_without_all:url_website,embed_prototype',
+            'embed_prototype'   => 'required_without_all:url_website,embed_design',
+        ], [
+            'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
         ]);
 
         $image = $request->file('image');
@@ -140,10 +144,14 @@ class SurveyController extends Controller
             'title'          => 'required',
             'theme'          => 'required',
             'description'    => 'required',
-            'url_website'    => 'required',
-            'embed_design'   => 'required',
-            'embed_prototype'   => 'required',
             'survey_questions' => 'required',
+            'url_website'    => 'required_without_all:embed_design,embed_prototype',
+            'embed_design'   => 'required_without_all:url_website,embed_prototype',
+            'embed_prototype'   => 'required_without_all:url_website,embed_design',
+        ], [
+            'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
         ]);
 
         if ($request->file('image')) {

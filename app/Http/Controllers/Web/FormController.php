@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use App\Models\SurveyResponses;
 use App\Models\SurveyHasMethods;
+use App\Models\SurveyQuestions;
 
 class FormController extends Controller
 {
@@ -26,6 +27,7 @@ class FormController extends Controller
         $userEmail = auth()->user()->email;
         $response = SurveyResponses::where('email', $userEmail)->where('survey_id', $survey->id)->first();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
+        $surveyQuestions = SurveyQuestions::where('survey_id', $survey->id)->get();
 
         if ($response) {
             abort(403, 'You have already submitted this survey and cannot participate again.');
@@ -35,6 +37,7 @@ class FormController extends Controller
             'surveys' => $survey,
             'auth' => auth()->user(),
             'surveyMethods' => $surveyMethods,
+            'surveyQuestions' => $surveyQuestions
         ]);
     }
 

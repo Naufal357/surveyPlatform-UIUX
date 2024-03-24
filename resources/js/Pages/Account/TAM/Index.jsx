@@ -19,25 +19,22 @@ export default function Dashboard() {
         calculateDescriptiveStatistics,
         calculateRegression,
         getTAMChartData,
+        tamQustions,
     } = usePage().props;
 
-    const questionTexts = [
-        `1. Saya tidak mengalami kesulitan menggunakan ${survey.theme}.`,
-        `2. Dengan adanya ${survey.theme} dapat mencapai tujuan pekerjaan saya.`,
-        `3. Secara keseluruhan Saya merasa ${survey.theme} mudah dipahami.`,
-        `4. ${survey.theme} ini menjadikan pekerjaan saya lebih mudah.`,
-        `5. Menggunakan ${survey.theme} dapat meningkatkan kemampuan saya.`,
-        `6. Secara keseluruhan saya merasa ${survey.theme} memiliki banyak manfaat.`,
-        `7. Saya menerima penerapan ${survey.theme} ini`,
-        `8. Saya menolak untuk menggunkan ${survey.theme} selain ini`,
-        `9. Secara keseluruhan saya menikmati penggunaan ${survey.theme} ini`,
-        `10. Saya berharap ${survey.theme} ini akan selalu digunakan di masa depan.`,
-        `11. Saya termotivasi untuk tetap menggunakan ${survey.theme} untuk dimasa yang akan datang.`,
-        `12. Saya selalu menggunakan ${survey.theme} ini dalam kondisi apapun.`,
-        `13. Saya menggunakan ${survey.theme} ini sesuai dengan prosedur yang telah diberikan.`,
-        `14. Saya menggunakan ${survey.theme} ini secara jujur sesuai ketentuan dan prosedur.`,
-        `15. Saya menggunakan ${survey.theme} ini sesuai dengan durasi waktu yang telah ditentukan secara real time.`,
-    ];
+    let idTamCounter = 0;
+    const data = JSON.parse(tamQustions[0].questions_data);
+
+    const parsedTamQuestions = data.tam
+        ? data.tam.flatMap((variable) =>
+              variable.indicators.flatMap((indicator) =>
+                  indicator.questions.map((question) => ({
+                      id: `${idTamCounter++}`,
+                      question: question,
+                  }))
+              )
+          )
+        : [];
 
     //Fungsi untuk menghitung data chart
     const getChartData = (data) => {
@@ -83,7 +80,7 @@ export default function Dashboard() {
     return (
         <>
             <Head>
-                <title>SUS Result - SurveyPlatform</title>
+                <title>TAM Result - SurveyPlatform</title>
             </Head>
             <LayoutAccount>
                 <div className="m-3">
@@ -156,7 +153,7 @@ export default function Dashboard() {
                         >
                             {tamData.length > 0 ? (
                                 <div className="row">
-                                    {tamData.map((item, index) => (
+                                    {parsedTamQuestions.map((item, index) => (
                                         <div
                                             className="col-lg-4 col-md-6 mb-4 mx-auto"
                                             key={index}
@@ -164,10 +161,10 @@ export default function Dashboard() {
                                             <div className="card">
                                                 <div className="card-body">
                                                     <h6 className="card-title">
-                                                        {questionTexts[index]}
+                                                        {index + 1}.{item.question}
                                                     </h6>
                                                     <PieChart
-                                                        data={item.data}
+                                                        data={tamData[index].data}
                                                     />
                                                 </div>
                                             </div>

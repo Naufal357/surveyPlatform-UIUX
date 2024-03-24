@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResponsesSUSExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
+use App\Models\SurveyQuestions;
 
 class SusController extends Controller
 {
@@ -49,6 +50,8 @@ class SusController extends Controller
             })
             ->get(['surveys.id', 'surveys.title']);
 
+        $susQuestions = SurveyQuestions::where('survey_id', $id)->get();
+
         $responses = SurveyResponses::where('survey_id', $id)
             ->where('response_data', 'LIKE', '%"sus"%')
             ->get();
@@ -69,6 +72,7 @@ class SusController extends Controller
             'classifySUSGrade' => $classifySUSGrade,
             'getSUSChartData' => $getSUSChartData,
             'susSurveyResults' => $susSurveyResults,
+            'susQuestions' => $susQuestions
         ])->with('currentSurveyTitle', $survey->title);
     }
 

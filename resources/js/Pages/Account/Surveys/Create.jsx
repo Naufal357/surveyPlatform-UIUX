@@ -356,10 +356,11 @@ export default function CategoryCreate() {
                                         label="Description"
                                         value={description}
                                         onChange={setDescription}
+                                        error={errors.description}
                                     />
 
                                     <InputField
-                                        label="Url Website"
+                                        label="URL Website"
                                         type="text"
                                         value={url_website}
                                         onChange={(e) =>
@@ -501,7 +502,6 @@ export default function CategoryCreate() {
                                 <div className="row">
                                     <div className="col-md-3">
                                         <strong>
-                                            {" "}
                                             Variable Pertanyaan {index + 1}
                                         </strong>
 
@@ -624,8 +624,8 @@ export default function CategoryCreate() {
                                 onClick={resetTamQuestions}
                             />
                             <ButtonCRUD
-                                type="delete all tam questions"
-                                label="Delete all TAM questions"
+                                type="delete all questions"
+                                label="Delete all questions"
                                 color="btn-danger"
                                 iconClass="fa fa-trash"
                                 onClick={deleteAllTamQuestions}

@@ -48,7 +48,15 @@ class responsesTableSeeder extends Seeder
                                     "tam12": 4,
                                     "tam13": 5,
                                     "tam14": 5,
-                                    "tam15": 5
+                                    "tam15": 5,
+                                    "tam16": 3,
+                                    "tam17": 4,
+                                    "tam18": 3,
+                                    "tam19": 4,
+                                    "tam20": 3,
+                                    "tam21": 5,
+                                    "tam22": 5,
+                                    "tam23": 4
                                 }
                             }',
             'survey_id' => 1
@@ -89,7 +97,15 @@ class responsesTableSeeder extends Seeder
                             "tam12": 2,
                             "tam13": 5,
                             "tam14": 5,
-                            "tam15": 5
+                            "tam15": 5,
+                            "tam16": 3,
+                            "tam17": 4,
+                            "tam18": 3,
+                            "tam19": 4,
+                            "tam20": 3,
+                            "tam21": 5,
+                            "tam22": 5,
+                            "tam23": 4
                         }
                     }',
             'survey_id' => 1
@@ -130,7 +146,15 @@ class responsesTableSeeder extends Seeder
                             "tam12": 2,
                             "tam13": 5,
                             "tam14": 5,
-                            "tam15": 5
+                            "tam15": 5,
+                            "tam16": 3,
+                            "tam17": 4,
+                            "tam18": 3,
+                            "tam19": 4,
+                            "tam20": 3,
+                            "tam21": 5,
+                            "tam22": 5,
+                            "tam23": 4
                         }
                     }',
             'survey_id' => 1
@@ -171,7 +195,15 @@ class responsesTableSeeder extends Seeder
                             "tam12": 1,
                             "tam13": 5,
                             "tam14": 5,
-                            "tam15": 5
+                            "tam15": 5,
+                            "tam16": 3,
+                            "tam17": 4,
+                            "tam18": 3,
+                            "tam19": 4,
+                            "tam20": 3,
+                            "tam21": 5,
+                            "tam22": 5,
+                            "tam23": 4
                         }
                     }',
             'survey_id' => 1
@@ -212,7 +244,15 @@ class responsesTableSeeder extends Seeder
                             "tam12": 3,
                             "tam13": 5,
                             "tam14": 5,
-                            "tam15": 5
+                            "tam15": 5,
+                            "tam16": 3,
+                            "tam17": 4,
+                            "tam18": 3,
+                            "tam19": 4,
+                            "tam20": 3,
+                            "tam21": 5,
+                            "tam22": 5,
+                            "tam23": 4
                         }
                     }',
             'survey_id' => 1
@@ -253,7 +293,15 @@ class responsesTableSeeder extends Seeder
                             "tam12": 5,
                             "tam13": 5,
                             "tam14": 5,
-                            "tam15": 5
+                            "tam15": 5,
+                            "tam16": 5,
+                            "tam17": 5,
+                            "tam18": 5,
+                            "tam19": 5,
+                            "tam20": 5,
+                            "tam21": 5,
+                            "tam22": 5,
+                            "tam23": 5
                         }
                     }',
             'survey_id' => 1
