@@ -183,13 +183,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Frekuensi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Website Rumah Sakit ini selama hari kerja maupun hari libur."
+                                    "Saya menggunakan Website Rumah Sakit ini selama hari kerja maupun hari libur."
                                 ]
                             },
                             {
                                 "name": "Durasi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Website Rumah Sakit ini rata-rata minimal 10 menit."
+                                    "Saya menggunakan Website Rumah Sakit ini rata-rata minimal 10 menit."
                                 ]
                             }
                         ]
@@ -355,13 +355,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Frekuensi penggunaan",
                                 "questions": [
-                                    "Saya mengakses E-Commerce Fashion Aplication ini selama hari kerja maupun hari libur."
+                                    "Saya menggunakan E-Commerce Fashion Aplication ini selama hari kerja maupun hari libur."
                                 ]
                             },
                             {
                                 "name": "Durasi penggunaan",
                                 "questions": [
-                                    "Saya mengakses E-Commerce Fashion Aplication ini rata-rata minimal 10 menit."
+                                    "Saya menggunakan E-Commerce Fashion Aplication ini rata-rata minimal 10 menit."
                                 ]
                             }
                         ]
@@ -558,13 +558,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Frekuensi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Travel Booking App ini selama hari kerja maupun hari libur."
+                                    "Saya menggunakan Travel Booking App ini selama hari kerja maupun hari libur."
                                 ]
                             },
                             {
                                 "name": "Durasi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Travel Booking App ini rata-rata minimal 10 menit."
+                                    "Saya menggunakan Travel Booking App ini rata-rata minimal 10 menit."
                                 ]
                             }
                         ]
@@ -755,13 +755,13 @@ class SurveyQuestionsSeeder extends Seeder
                         {
                             "name": "Frekuensi penggunaan",
                             "questions": [
-                                "Saya mengakses Restaurant Website ini selama hari kerja maupun hari libur."
+                                "Saya menggunakan Restaurant Website ini selama hari kerja maupun hari libur."
                             ]
                         },
                         {
                             "name": "Durasi penggunaan",
                             "questions": [
-                                "Saya mengakses Restaurant Website ini rata-rata minimal 10 menit."
+                                "Saya menggunakan Restaurant Website ini rata-rata minimal 10 menit."
                             ]
                         }
                     ]
@@ -965,13 +965,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Frekuensi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Aplikasi Kesehatan Mental ini selama hari kerja maupun hari libur."
+                                    "Saya menggunakan Aplikasi Kesehatan Mental ini selama hari kerja maupun hari libur."
                                 ]
                             },
                             {
                                 "name": "Durasi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Aplikasi Kesehatan Mental ini rata-rata minimal 10 menit."
+                                    "Saya menggunakan Aplikasi Kesehatan Mental ini rata-rata minimal 10 menit."
                                 ]
                             }
                         ]
@@ -1137,13 +1137,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Frekuensi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Aplikasi Kuliner ini selama hari kerja maupun hari libur."
+                                    "Saya menggunakan Aplikasi Kuliner ini selama hari kerja maupun hari libur."
                                 ]
                             },
                             {
                                 "name": "Durasi penggunaan",
                                 "questions": [
-                                    "Saya mengakses Aplikasi Kuliner ini rata-rata minimal 10 menit."
+                                    "Saya menggunakan Aplikasi Kuliner ini rata-rata minimal 10 menit."
                                 ]
                             }
                         ]

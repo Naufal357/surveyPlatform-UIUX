@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import InputField from "../../../Components/InputField";
 import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
@@ -42,7 +43,7 @@ export default function SurveyEdit() {
 
     let idTamCounter = 0;
     let idSusCounter = 0;
-    
+
     const data = JSON.parse(surveyQuestions[0].questions_data);
 
     const parsedSusQuestions = data.sus
@@ -328,127 +329,95 @@ export default function SurveyEdit() {
                 <title>Edit Survey - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <div className="row mt-4">
-                    <div className="col-12">
-                        <div className="card border-0 rounded shadow-sm border-top-success">
-                            <div className="card-header">
-                                <span className="font-weight-bold">
-                                    <i className="fa fa-folder"></i> Edit{" "}
-                                    {survey.title} Survey
-                                </span>
-                            </div>
-                            <div className="card-body">
-                                <form onSubmit={updateSurvey}>
-                                    <InputField
-                                        label="Image Thumbnail"
-                                        type="file"
-                                        value={survey.image}
-                                        onChange={(e) => [
-                                            setImage(e.target.files[0]),
-                                        ]}
-                                        error={errors.image}
-                                    />
-                                    <InputField
-                                        label="Title Design"
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) =>
-                                            setTitle(e.target.value)
-                                        }
-                                        error={errors.title}
-                                    />
-                                    <InputField
-                                        label="Theme Design"
-                                        type="text"
-                                        value={theme}
-                                        onChange={(e) =>
-                                            setTheme(e.target.value)
-                                        }
-                                        error={errors.theme}
-                                    />
-                                    <QuillEditor
-                                        label="Description"
-                                        value={description}
-                                        onChange={setDescription}
-                                        error={errors.description}
-                                    />
-                                    <InputField
-                                        label="URL Website"
-                                        type="text"
-                                        value={url_website}
-                                        onChange={(e) =>
-                                            setUrlWebsite(e.target.value)
-                                        }
-                                        error={errors.url_website}
-                                    />
-                                    <InputField
-                                        label="Embed Design (Figma)"
-                                        type="text"
-                                        value={embed_design}
-                                        onChange={(e) =>
-                                            setEmbedDesign(e.target.value)
-                                        }
-                                        error={errors.embed_design}
-                                    />
-                                    <InputField
-                                        label="Embed Prototype (Figma)"
-                                        type="text"
-                                        value={embed_prototype}
-                                        onChange={(e) =>
-                                            setEmbedPrototype(e.target.value)
-                                        }
-                                        error={errors.embed_prototype}
-                                    />
+                <CardContent title={"Edit Survey - " + survey.title} icon="fas fa-scroll">
+                    <form onSubmit={updateSurvey}>
+                        <InputField
+                            label="Image Thumbnail"
+                            type="file"
+                            value={survey.image}
+                            onChange={(e) => [setImage(e.target.files[0])]}
+                            error={errors.image}
+                        />
+                        <InputField
+                            label="Title Design"
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            error={errors.title}
+                        />
+                        <InputField
+                            label="Theme Design"
+                            type="text"
+                            value={theme}
+                            onChange={(e) => setTheme(e.target.value)}
+                            error={errors.theme}
+                        />
+                        <QuillEditor
+                            label="Description"
+                            value={description}
+                            onChange={setDescription}
+                            error={errors.description}
+                        />
+                        <InputField
+                            label="URL Website"
+                            type="text"
+                            value={url_website}
+                            onChange={(e) => setUrlWebsite(e.target.value)}
+                            error={errors.url_website}
+                        />
+                        <InputField
+                            label="Embed Design (Figma)"
+                            type="text"
+                            value={embed_design}
+                            onChange={(e) => setEmbedDesign(e.target.value)}
+                            error={errors.embed_design}
+                        />
+                        <InputField
+                            label="Embed Prototype (Figma)"
+                            type="text"
+                            value={embed_prototype}
+                            onChange={(e) => setEmbedPrototype(e.target.value)}
+                            error={errors.embed_prototype}
+                        />
 
-                                    <div className="mb-3">
-                                        <SelectCheckbox
-                                            label="Categories Survey"
-                                            options={categories}
-                                            valueKey="id"
-                                            labelKey="name"
-                                            onChange={
-                                                handleCheckboxCategoriesChange
-                                            }
-                                            selectedValues={
-                                                surveyCategoriesData
-                                            }
-                                        />
-                                    </div>
-                                    <div>
-                                        <SelectCheckbox
-                                            label="Methods Survey"
-                                            options={methods}
-                                            valueKey="id"
-                                            labelKey="name"
-                                            onChange={
-                                                handleCheckboxMethodsChange
-                                            }
-                                            selectedValues={surveyMethodsData}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <ButtonCRUD
-                                            type="submit"
-                                            label="Save"
-                                            color="btn-success"
-                                            iconClass="fa fa-save"
-                                        />
-                                        <ButtonCRUD
-                                            type="Cancel"
-                                            label="Cancel"
-                                            color="btn-secondary"
-                                            iconClass="fas fa-times"
-                                            onClick={() =>
-                                                window.history.back()
-                                            }
-                                        />
-                                    </div>
-                                </form>
-                            </div>
+                        <div className="mb-3">
+                            <SelectCheckbox
+                                label="Categories Survey"
+                                options={categories}
+                                valueKey="id"
+                                labelKey="name"
+                                onChange={handleCheckboxCategoriesChange}
+                                selectedValues={surveyCategoriesData}
+                            />
                         </div>
-                    </div>
-                </div>
+                        <div>
+                            <SelectCheckbox
+                                label="Methods Survey"
+                                options={methods}
+                                valueKey="id"
+                                labelKey="name"
+                                onChange={handleCheckboxMethodsChange}
+                                selectedValues={surveyMethodsData}
+                            />
+                        </div>
+
+                        <div>
+                            <ButtonCRUD
+                                type="submit"
+                                label="Save"
+                                color="btn-success"
+                                iconClass="fa fa-save"
+                            />
+                            <ButtonCRUD
+                                type="Cancel"
+                                label="Cancel"
+                                color="btn-secondary"
+                                iconClass="fas fa-times"
+                                onClick={() => window.history.back()}
+                            />
+                        </div>
+                    </form>
+                </CardContent>
 
                 {isMethodSusFilled && (
                     <AccordionLayout

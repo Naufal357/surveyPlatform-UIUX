@@ -50,6 +50,8 @@ class SusController extends Controller
             })
             ->get(['surveys.id', 'surveys.title']);
 
+        $surveyName = $survey->title;
+
         $susQuestions = SurveyQuestions::where('survey_id', $id)->get();
 
         $responses = SurveyResponses::where('survey_id', $id)
@@ -61,12 +63,14 @@ class SusController extends Controller
         $classifySUSGrade = $this->classifySUSGrade($averageSUS);
         $susSurveyResults = $this->getSUSResults($responses);
         $getSUSChartData = $this->getSUSChartData($id, $responses);
-
+        $getAverageAnswer = $this->getAverageAnswer($susSurveyResults);
+        $getResumeDescription = $this->getResumeDescription($getAverageAnswer, $surveyName);
 
         return inertia('Account/SUS/Index', [
             'surveyTitles' => $surveyTitles,
             'survey' => $survey,
-            'responses' => $responses,
+            'resumeDescription' => $getResumeDescription,
+            'averageAnswer' => $getAverageAnswer,
             'respondentCount' => $respondentCount,
             'averageSUS' => $averageSUS,
             'classifySUSGrade' => $classifySUSGrade,
@@ -181,6 +185,112 @@ class SusController extends Controller
         }
 
         return $susSurveyResults;
+    }
+
+    private function getAverageAnswer($susSurveyResults)
+    {
+        $normalizedSusResults = [];
+        foreach ($susSurveyResults as $result) {
+            $normalizedSus = [
+                $result['answerData']['sus1'],
+                6 - $result['answerData']['sus2'],
+                $result['answerData']['sus3'],
+                6 - $result['answerData']['sus4'],
+                $result['answerData']['sus5'],
+                6 - $result['answerData']['sus6'],
+                $result['answerData']['sus7'],
+                6 - $result['answerData']['sus8'],
+                $result['answerData']['sus9'],
+                6 - $result['answerData']['sus10']
+            ];
+
+            $normalizedSusResults[] = $normalizedSus;
+        }
+
+        $averageResults = array_fill(0, 10, 0); 
+
+        foreach ($normalizedSusResults as $normalizedSus) {
+            foreach ($normalizedSus as $key => $value) {
+                $averageResults[$key] += $value;
+            }
+        }
+
+        $totalResults = count($normalizedSusResults);
+
+        foreach ($averageResults as $key => $value) {
+            $averageResults[$key] = round($value / $totalResults, 2);
+        }
+
+        return $averageResults;
+    }
+
+    private function getResumeDescription(&$getAverageAnswer, $surveyName)
+    {
+        if (empty(array_filter($getAverageAnswer, function ($value) {
+            return $value !== null;
+        }))) {
+            return null;
+        }
+
+        $getAverageAnswer[1] = ($getAverageAnswer[1] + $getAverageAnswer[2]) / 2;
+        unset($getAverageAnswer[2]);
+        $getAverageAnswer = array_values($getAverageAnswer);
+
+        $getResumeDescription = [];
+
+        $kalimatPositif = [
+            "Sebagian besar pengguna $surveyName berniat untuk menggunakan kembali sistem ini(1).",
+            "Kebanyakan pengguna merasa sistem ini mudah digunakan(2)(3).",
+            "Tanpa membutuhkan bantuan dari orang lain atau teknisi pengguna dapat menggunakan sistem(4).",
+            "Selain itu, pengguna merasa fitur-fitur sistem berjalan dengan semestinya(5) ",
+            "dan merasa tidak ada banyak hal yang tidak konsisten dalam sistem ini(6).",
+            "Mereka merasa orang lain akan dengan cepat memahami cara menggunakan sistem ini(7) ",
+            "dan merasa sistem ini tidak membingungkan(8).",
+            "Mereka juga merasa tidak ada hambatan dalam menggunakan sistem(9) ",
+            "dan tidak perlu membiasakan diri terlebih dahulu sebelum menggunakannya(10)."
+        ];
+
+        $kalimatNegatif = [
+            "Sebagian besar pengguna $surveyName tidak berniat untuk menggunakan kembali sistem ini(1).",
+            "Kebanyakan pengguna mengalami kesulitan dalam menggunakan sistem ini(2)(3).",
+            "Banyak pengguna yang memerlukan bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",
+            "Selain itu, banyak pengguna merasa fitur sistem tidak berjalan dengan semestinya(5) ",
+            "dan merasa ada banyak hal yang tidak konsisten dalam sistem ini(6).",
+            "Mereka merasa orang lain mungkin akan kesulitan memahami cara menggunakan sistem ini(7) ",
+            "dan merasa sistem ini membingungkan(8).",
+            "Mereka mengalami hambatan dalam menggunakan sistem(9) ",
+            "dan merasa perlu membiasakan diri terlebih dahulu sebelum menggunakannya(10)."
+        ];
+
+
+        $kalimatNetral = [
+            "Sebagian besar pengguna $surveyName memiliki pandangan netral terhadap penggunaan kembali sistem ini(1).",
+            "Kebanyakan pengguna merasa cukup nyaman menggunakan sistem ini(2)(3).",
+            "Banyak pengguna merasa sistem ini perlu sedikit bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",
+            "Selain itu, banyak pengguna merasa fitur sistem ini dianggap berjalan dengan cukup baik sebagaimana mestinya(5) ",
+            "dan merasa ada sebagian kecil aspek yang dinilai tidak konsisten dalam sistem ini menurut pengguna(6).",
+            "Mereka merasa orang lain mungkin memerlukan sedikit waktu untuk memahami cara menggunakan sistem ini(7) ",
+            "dan merasa sistem ini sedikit membingungkan(8).",
+            "Mereka merasa ada beberapa hambatan kecil dalam menggunakan sistem(9) ",
+            "dan merasa perlu sedikit waktu untuk bisa terbiasa dengan sistem ini(10)."
+        ];
+
+
+        foreach ($getAverageAnswer as $key => $value) {
+            if ($value <= 2.5) {
+                $getResumeDescription[$key] = $kalimatNegatif[$key];
+            } else if ($value > 2.5 && $value < 3.5) {
+                $getResumeDescription[$key] = $kalimatNetral[$key];
+            } else if ($value >= 3.5) {
+                $getResumeDescription[$key] = $kalimatPositif[$key];
+            } else {
+                $getResumeDescription[$key] = "Nilai tidak valid";
+            }
+        }
+
+        $resumeParagraph = implode(" ", $getResumeDescription);
+
+        return $resumeParagraph;
     }
 
     public function export($survey_id)

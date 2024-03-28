@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import hasAnyPermission from "../../../Utils/Permissions";
@@ -64,75 +65,53 @@ export default function RoleCreate() {
                 <title>Create Roles - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <div className="row mt-4">
-                    <div className="col-12">
-                        <div className="card border-0 rounded shadow-sm border-top-success">
-                            <div className="card-header">
-                                <span className="font-weight-bold">
-                                    <i className="fa fa-shield-alt"></i> Add New
-                                    Role
-                                </span>
-                            </div>
-                            <div className="card-body">
-                                <form onSubmit={storeRole}>
-                                    <div className="mb-3">
-                                        <label className="form-label fw-bold">
-                                            Role Name
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={name}
-                                            onChange={(e) =>
-                                                setName(e.target.value)
-                                            }
-                                            placeholder="Enter Role Name"
-                                        />
-                                    </div>
-                                    {errors.name && (
-                                        <div className="alert alert-danger">
-                                            {errors.name}
-                                        </div>
-                                    )}
-                                    <hr />
-                                    <div className="mb-3">
-                                        <SelectCheckbox
-                                            label="Permissions"
-                                            options={filteredPermissions}
-                                            valueKey="name"
-                                            labelKey="name"
-                                            onChange={handleCheckboxChange}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <ButtonCRUD
-                                            type="submit"
-                                            label="Save"
-                                            color="btn-success"
-                                            iconClass="fa fa-save"
-                                        />
-                                        <button
-                                            type="reset"
-                                            className="btn btn-md btn-warning me-2"
-                                        >
-                                            <i className="fa fa-redo"></i> Reset
-                                        </button>
-                                        <ButtonCRUD
-                                            type="Cancel"
-                                            label="Cancel"
-                                            color="btn-secondary"
-                                            iconClass="fas fa-times"
-                                            onClick={() =>
-                                                window.history.back()
-                                            }
-                                        />
-                                    </div>
-                                </form>
-                            </div>
+                <CardContent title="Create Roles" icon="fa fa-shield-alt">
+                    <form onSubmit={storeRole}>
+                        <div className="mb-3">
+                            <label className="form-label fw-bold">
+                                Role Name
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Enter Role Name"
+                            />
                         </div>
-                    </div>
-                </div>
+                        {errors.name && (
+                            <div className="alert alert-danger">
+                                {errors.name}
+                            </div>
+                        )}
+                        <hr />
+                        <div className="mb-3">
+                            <SelectCheckbox
+                                label="Permissions"
+                                options={filteredPermissions}
+                                valueKey="name"
+                                labelKey="name"
+                                onChange={handleCheckboxChange}
+                            />
+                        </div>
+
+                        <div>
+                            <ButtonCRUD
+                                type="submit"
+                                label="Save"
+                                color="btn-success"
+                                iconClass="fa fa-save"
+                            />
+                            <ButtonCRUD
+                                type="Cancel"
+                                label="Cancel"
+                                color="btn-secondary"
+                                iconClass="fas fa-times"
+                                onClick={() => window.history.back()}
+                            />
+                        </div>
+                    </form>
+                </CardContent>
             </LayoutAccount>
         </>
     );

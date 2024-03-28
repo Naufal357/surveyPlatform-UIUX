@@ -18,7 +18,7 @@ const InfoCard = ({ icon, background, value, title }) => {
                                 : `#${background}`,
                         }}
                     >
-                    <i className={`fas ${icon} fa-2x text-white`}></i>
+                        <i className={`fas ${icon} fa-2x text-white`}></i>
                     </div>
                     <div>
                         <div>{value}</div>
@@ -26,8 +26,8 @@ const InfoCard = ({ icon, background, value, title }) => {
                             {title}
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
         </div>
     );
 };

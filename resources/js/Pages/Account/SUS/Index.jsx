@@ -3,6 +3,7 @@ import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import hasAnyPermission from "../../../Utils/Permissions";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import AccordionLayout from "../../../Layouts/Accordion";
 import PieChart from "../../../Components/PieChart";
 import InfoCard from "../../../Components/CardInfo";
@@ -21,7 +22,19 @@ export default function Dashboard() {
         getSUSChartData,
         susSurveyResults,
         susQuestions,
+        resumeDescription,
+        averageAnswer,
     } = usePage().props;
+
+    const formatAnswers = (averageAnswer) => {
+        return averageAnswer.map((answer, index) => {
+            if (index === 1) {   
+                return `Rata-rata (2)+(3): ${answer}`;
+            } else {
+                return `Rata-rata (${index + 2}) : ${answer}`;
+            }
+        });
+    };
 
     let idSusCounter = 0;
     const data = JSON.parse(susQuestions[0].questions_data);
@@ -33,7 +46,6 @@ export default function Dashboard() {
           }))
         : [];
 
-    // Fungsi untuk menghitung data chart
     const getChartData = (data) => {
         const labels = [
             "Sangat Tidak Setuju",
@@ -121,26 +133,77 @@ export default function Dashboard() {
                         </div>
                     </div>
                     {hasAnyPermission(["sus.statistics"]) && (
-                        <div className="row mt-2">
-                            <InfoCard
-                                icon="fa-users "
-                                background="success"
-                                value={respondentCount}
-                                title="Jumlah Responden"
-                            />
-                            <InfoCard
-                                icon="fa-chart-pie"
-                                background="primary"
-                                value={`${averageSUS} dari 100`}
-                                title="Skor SUS Total"
-                            />
-                            <InfoCard
-                                icon="fa-star"
-                                background="#FFD700"
-                                value={classifySUSGrade}
-                                title="Kategori Nilai SUS"
-                            />
-                        </div>
+                        <>
+                            <div className="row mt-2">
+                                <InfoCard
+                                    icon="fa-users "
+                                    background="success"
+                                    value={respondentCount}
+                                    title="Jumlah Responden"
+                                />
+                                <InfoCard
+                                    icon="fa-chart-pie"
+                                    background="primary"
+                                    value={`${averageSUS} dari 100`}
+                                    title="Skor SUS Total"
+                                />
+                                <InfoCard
+                                    icon="fa-star"
+                                    background="#FFD700"
+                                    value={classifySUSGrade}
+                                    title="Kategori Nilai SUS"
+                                />
+                            </div>
+                            {resumeDescription !== null ? (
+                                <CardContent>
+                                    <div className="text-center">
+                                        {resumeDescription}
+                                    </div>
+                                    <hr />
+                                    <div className="row justify-content-center">
+                                        {formatAnswers(averageAnswer).map(
+                                            (item, index) => (
+                                                <div
+                                                    className="text-center col-lg-4 col-md-6 mb-4 mx-auto"
+                                                    key={index}
+                                                >
+                                                    {item}
+                                                </div>
+                                            )
+                                        )}
+                                    </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-lg-4 col-md-12 mb-4">
+                                            <div className="text-center">
+                                                <p>
+                                                    Positif jika rata-rata{" "}
+                                                    {">= 3.5"}{" "}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-4 col-md-12 mb-4">
+                                            <div className="text-center">
+                                                <p>
+                                                    Netral jika rata-rata{" "}
+                                                    {"> 2.5 & < 3.5"}{" "}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-4 col-md-12 mb-4">
+                                            <div className="text-center">
+                                                <p>
+                                                    Negatif jika rata-rata{" "}
+                                                    {"<= 2.5"}{" "}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            ) : (
+                                ""
+                            )}
+                        </>
                     )}
 
                     {hasAnyPermission(["sus.charts"]) && (
@@ -158,7 +221,8 @@ export default function Dashboard() {
                                             <div className="card">
                                                 <div className="card-body">
                                                     <h6 className="card-title">
-                                                        {index + 1}. {item.question}
+                                                        {index + 1}.{" "}
+                                                        {item.question}
                                                     </h6>
                                                     <PieChart
                                                         data={

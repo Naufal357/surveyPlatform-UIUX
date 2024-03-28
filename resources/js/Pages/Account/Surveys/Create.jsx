@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import InputField from "../../../Components/InputField";
@@ -311,139 +312,109 @@ export default function CategoryCreate() {
                 <title>Create Survey - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <div className="row mt-4">
-                    <div className="col-12">
-                        <div className="card border-0 rounded shadow-sm border-top-success">
-                            <div className="card-header">
-                                <span className="font-weight-bold">
-                                    <i className="fa fa-folder"></i> Add New
-                                    Survey
-                                </span>
-                            </div>
-                            <div className="card-body">
-                                <form onSubmit={storeSurvey}>
-                                    <InputField
-                                        label="Image Thumbnail"
-                                        type="file"
-                                        value={image}
-                                        onChange={(e) => [
-                                            setImage(e.target.files[0]),
-                                        ]}
-                                        error={errors.image}
-                                    />
+                <CardContent title="Create Survey" icon="fas fa-scroll">
+                    <form onSubmit={storeSurvey}>
+                        <InputField
+                            label="Image Thumbnail"
+                            type="file"
+                            value={image}
+                            onChange={(e) => [setImage(e.target.files[0])]}
+                            error={errors.image}
+                        />
 
-                                    <InputField
-                                        label="Title Design"
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) =>
-                                            setTitle(e.target.value)
-                                        }
-                                        error={errors.title}
-                                    />
+                        <InputField
+                            label="Title Design"
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            error={errors.title}
+                        />
 
-                                    <InputField
-                                        label="Theme Design"
-                                        type="text"
-                                        value={theme}
-                                        onChange={(e) =>
-                                            setTheme(e.target.value)
-                                        }
-                                        error={errors.theme}
-                                    />
+                        <InputField
+                            label="Theme Design"
+                            type="text"
+                            value={theme}
+                            onChange={(e) => setTheme(e.target.value)}
+                            error={errors.theme}
+                        />
 
-                                    <QuillEditor
-                                        label="Description"
-                                        value={description}
-                                        onChange={setDescription}
-                                        error={errors.description}
-                                    />
+                        <QuillEditor
+                            label="Description"
+                            value={description}
+                            onChange={setDescription}
+                            error={errors.description}
+                        />
 
-                                    <InputField
-                                        label="URL Website"
-                                        type="text"
-                                        value={url_website}
-                                        onChange={(e) =>
-                                            setUrlWebsite(e.target.value)
-                                        }
-                                        error={errors.url_website}
-                                    />
+                        <InputField
+                            label="URL Website"
+                            type="text"
+                            value={url_website}
+                            onChange={(e) => setUrlWebsite(e.target.value)}
+                            error={errors.url_website}
+                        />
 
-                                    <InputField
-                                        label="Embed Design (Figma)"
-                                        type="text"
-                                        value={embed_design}
-                                        onChange={(e) =>
-                                            setEmbedDesign(e.target.value)
-                                        }
-                                        error={errors.embed_design}
-                                    />
+                        <InputField
+                            label="Embed Design (Figma)"
+                            type="text"
+                            value={embed_design}
+                            onChange={(e) => setEmbedDesign(e.target.value)}
+                            error={errors.embed_design}
+                        />
 
-                                    <InputField
-                                        label="Embed Prototype (Figma)"
-                                        type="text"
-                                        value={embed_prototype}
-                                        onChange={(e) =>
-                                            setEmbedPrototype(e.target.value)
-                                        }
-                                        error={errors.embed_prototype}
-                                    />
+                        <InputField
+                            label="Embed Prototype (Figma)"
+                            type="text"
+                            value={embed_prototype}
+                            onChange={(e) => setEmbedPrototype(e.target.value)}
+                            error={errors.embed_prototype}
+                        />
 
-                                    <div className="mb-3">
-                                        <SelectCheckbox
-                                            label="Categories Survey"
-                                            options={categories}
-                                            valueKey="id"
-                                            labelKey="name"
-                                            onChange={
-                                                handleCheckboxCategoriesChange
-                                            }
-                                            error={errors.survey_categories}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <SelectCheckbox
-                                            label="Methods Survey"
-                                            options={methods}
-                                            valueKey="id"
-                                            labelKey="name"
-                                            onChange={
-                                                handleCheckboxMethodsChange
-                                            }
-                                            error={errors.survey_methods}
-                                        ></SelectCheckbox>
-                                    </div>
-
-                                    <div>
-                                        <ButtonCRUD
-                                            type="submit"
-                                            label="Save"
-                                            color="btn-success"
-                                            iconClass="fa fa-save"
-                                        />
-                                        <ButtonCRUD
-                                            type="reset"
-                                            label="Reset"
-                                            color="btn-warning"
-                                            iconClass="fa fa-redo"
-                                            onClick={handleReset}
-                                        />
-                                        <ButtonCRUD
-                                            type="Cancel"
-                                            label="Cancel"
-                                            color="btn-secondary"
-                                            iconClass="fas fa-times"
-                                            onClick={() =>
-                                                window.history.back()
-                                            }
-                                        />
-                                    </div>
-                                </form>
-                            </div>
+                        <div className="mb-3">
+                            <SelectCheckbox
+                                label="Categories Survey"
+                                options={categories}
+                                valueKey="id"
+                                labelKey="name"
+                                onChange={handleCheckboxCategoriesChange}
+                                error={errors.survey_categories}
+                            />
                         </div>
-                    </div>
-                </div>
+
+                        <div>
+                            <SelectCheckbox
+                                label="Methods Survey"
+                                options={methods}
+                                valueKey="id"
+                                labelKey="name"
+                                onChange={handleCheckboxMethodsChange}
+                                error={errors.survey_methods}
+                            ></SelectCheckbox>
+                        </div>
+
+                        <div>
+                            <ButtonCRUD
+                                type="submit"
+                                label="Save"
+                                color="btn-success"
+                                iconClass="fa fa-save"
+                            />
+                            <ButtonCRUD
+                                type="reset"
+                                label="Reset"
+                                color="btn-warning"
+                                iconClass="fa fa-redo"
+                                onClick={handleReset}
+                            />
+                            <ButtonCRUD
+                                type="Cancel"
+                                label="Cancel"
+                                color="btn-secondary"
+                                iconClass="fas fa-times"
+                                onClick={() => window.history.back()}
+                            />
+                        </div>
+                    </form>
+                </CardContent>
 
                 {isMethodSusFilled && (
                     <AccordionLayout

@@ -1,5 +1,6 @@
 import React from "react";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import hasAnyPermission from "../../../Utils/Permissions";
 import Search from "../../../Components/Search";
@@ -12,7 +13,7 @@ export default function CategoryIndex() {
     return (
         <>
             <Head>
-                <title>Categories - Geek Store</title>
+                <title>Categories - Survey Platform</title>
             </Head>
             <LayoutAccount>
                 <div className="row mt-5">
@@ -34,89 +35,58 @@ export default function CategoryIndex() {
                         </div>
                     </div>
                 </div>
-                <div className="row mt-2 mb-4">
-                    <div className="col-12">
-                        <div className="card border-0 rounded shadow-sm border-top-success">
-                            <div className="card-header">
-                                <span className="font-weight-bold">
-                                    <i className="fa fa-folder"></i> Categories
-                                </span>
-                            </div>
-                            <div className="card-body">
-                                <div className="table-responsive">
-                                    <table className="table table-bordered table-striped table-hovered">
-                                        <thead>
-                                            <tr>
-                                                <th
-                                                    scope="col"
-                                                    style={{ width: "5%" }}
+                <CardContent title="Categories" icon="fa fa-folder">
+                    <div className="table-responsive">
+                        <table className="table table-bordered table-striped table-hovered">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style={{ width: "5%" }}>
+                                        No.
+                                    </th>
+                                    <th scope="col" style={{ width: "15%" }}>
+                                        Category Name
+                                    </th>
+                                    <th scope="col" style={{ width: "15%" }}>
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {categories.data.map((category, index) => (
+                                    <tr key={index}>
+                                        <td className="text-center">
+                                            {++index +
+                                                (categories.current_page - 1) *
+                                                    categories.per_page}
+                                        </td>
+                                        <td>{category.name}</td>
+                                        <td className="text-center">
+                                            {hasAnyPermission([
+                                                "categories.edit",
+                                            ]) && (
+                                                <Link
+                                                    href={`/account/categories/${category.id}/edit`}
+                                                    className="btn btn-primary btn-sm me-2"
                                                 >
-                                                    No.
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    style={{ width: "15%" }}
-                                                >
-                                                    Category Name
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    style={{ width: "15%" }}
-                                                >
-                                                    Actions
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {categories.data.map(
-                                                (category, index) => (
-                                                    <tr key={index}>
-                                                        <td className="text-center">
-                                                            {++index +
-                                                                (categories.current_page -
-                                                                    1) *
-                                                                    categories.per_page}
-                                                        </td>
-                                                        <td>{category.name}</td>
-                                                        <td className="text-center">
-                                                            {hasAnyPermission([
-                                                                "categories.edit",
-                                                            ]) && (
-                                                                <Link
-                                                                    href={`/account/categories/${category.id}/edit`}
-                                                                    className="btn btn-primary btn-sm me-2"
-                                                                >
-                                                                    <i className="fa fa-pencil-alt"></i>
-                                                                </Link>
-                                                            )}
-                                                            {hasAnyPermission([
-                                                                "categories.delete",
-                                                            ]) && (
-                                                                <Delete
-                                                                    URL={
-                                                                        "/account/categories"
-                                                                    }
-                                                                    id={
-                                                                        category.id
-                                                                    }
-                                                                />
-                                                            )}
-                                                        </td>
-                                                    </tr>
-                                                )
+                                                    <i className="fa fa-pencil-alt"></i>
+                                                </Link>
                                             )}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <Pagination
-                                    links={categories.links}
-                                    align={"end"}
-                                />
-                            </div>
-                        </div>
+                                            {hasAnyPermission([
+                                                "categories.delete",
+                                            ]) && (
+                                                <Delete
+                                                    URL={"/account/categories"}
+                                                    id={category.id}
+                                                />
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                    <Pagination links={categories.links} align={"end"} />
+                </CardContent>
             </LayoutAccount>
         </>
     );
