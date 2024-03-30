@@ -24,7 +24,7 @@ class CategoryController extends Controller
         $category = Category::where('slug', $slug)->firstOrFail();
         $categoryId = $category->id;
         $surveyIds = SurveyHasCategories::where('category_id', $categoryId)->pluck('survey_id');
-        $surveys = Survey::whereIn('id', $surveyIds)->get();
+        $surveys = Survey::whereIn('id', $surveyIds)->where('status', 'Public')->get();
 
         return inertia('Web/Categories/Show', [
             'category' => $category,

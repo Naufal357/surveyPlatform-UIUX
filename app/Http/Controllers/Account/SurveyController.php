@@ -63,6 +63,7 @@ class SurveyController extends Controller
             'description'    => 'required',
             'survey_categories' => 'required',
             'survey_methods' => 'required',
+            'general_access' => 'required',
             'survey_questions' => 'required',
             'url_website'    => 'required_without_all:embed_design,embed_prototype',
             'embed_design'   => 'required_without_all:url_website,embed_prototype',
@@ -86,7 +87,7 @@ class SurveyController extends Controller
             'url_website'    => $request->url_website,
             'embed_design'   => $request->embed_design,
             'embed_prototype'   => $request->embed_prototype,
-            'slug'          => Str::slug($request->title, '-'),
+            'status' => $request->general_access,
         ]);
 
         SurveyQuestions::create([
@@ -145,6 +146,7 @@ class SurveyController extends Controller
             'theme'          => 'required',
             'description'    => 'required',
             'survey_questions' => 'required',
+            'survey_visible' => 'required',
             'url_website'    => 'required_without_all:embed_design,embed_prototype',
             'embed_design'   => 'required_without_all:url_website,embed_prototype',
             'embed_prototype'   => 'required_without_all:url_website,embed_design',
@@ -175,7 +177,8 @@ class SurveyController extends Controller
             'url_website'    => $request->url_website,
             'embed_design'   => $request->embed_design,
             'embed_prototype' => $request->embed_prototype,
-            'slug'          => Str::slug($request->title, '-')
+            'slug'          => Str::slug($request->title, '-'),
+            'status' => $request->survey_visible
         ]);
 
         if ($request->has('survey_categories')) {

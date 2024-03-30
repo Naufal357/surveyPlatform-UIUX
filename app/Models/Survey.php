@@ -19,6 +19,7 @@ class Survey extends Model
         'url_website',
         'embed_design',
         'embed_prototype',
+        'status',
         'user_id',
     ];
 

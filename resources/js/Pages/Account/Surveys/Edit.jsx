@@ -5,6 +5,7 @@ import InputField from "../../../Components/InputField";
 import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
+import RadioSelect from "../../../Components/RadioSelect";
 import AccordionLayout from "../../../Layouts/Accordion";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
@@ -31,6 +32,7 @@ export default function SurveyEdit() {
     const [embed_prototype, setEmbedPrototype] = useState("");
     const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
     const [surveyMethodsData, setSurveyMethodsData] = useState([]);
+    const [surveyVisible, setSurveyVisible] = useState(null);
     const [susQuestionsData, setSusQuestionsData] = useState([]);
     const [tamQuestionsData, setTamQuestionsData] = useState([]);
     const [user_id] = useState(auth.user.id);
@@ -79,6 +81,7 @@ export default function SurveyEdit() {
         setSurveyMethodsData(
             surveyMethods.map((item) => parseInt(item.method_id, 10))
         );
+        setSurveyVisible(survey.status);
 
         setSusQuestionsData(parsedSusQuestions);
         setTamQuestionsData(parsedTamQuestions);
@@ -131,6 +134,10 @@ export default function SurveyEdit() {
         } else {
             setSurveyMethodsData([...surveyMethodsData, methodId]);
         }
+    };
+
+    const handleVisibleChange = (e) => {
+        setSurveyVisible(e);
     };
 
     const handleSusQuestionChange = (questionId, value) => {
@@ -258,6 +265,7 @@ export default function SurveyEdit() {
                 embed_prototype: embed_prototype,
                 survey_categories: surveyCategoriesData,
                 survey_methods: surveyMethodsData,
+                survey_visible: surveyVisible,
                 survey_questions: combineSurveyData(),
                 user_id: user_id,
                 _method: "PUT",
@@ -329,14 +337,17 @@ export default function SurveyEdit() {
                 <title>Edit Survey - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <CardContent title={"Edit Survey - " + survey.title} icon="fas fa-scroll">
+                <CardContent
+                    title={"Edit Survey - " + survey.title}
+                    icon="fas fa-scroll"
+                >
                     <form onSubmit={updateSurvey}>
+                        {console.log(errors.image)}
                         <InputField
                             label="Image Thumbnail"
                             type="file"
                             value={survey.image}
                             onChange={(e) => [setImage(e.target.files[0])]}
-                            error={errors.image}
                         />
                         <InputField
                             label="Title Design"
@@ -379,9 +390,9 @@ export default function SurveyEdit() {
                             onChange={(e) => setEmbedPrototype(e.target.value)}
                             error={errors.embed_prototype}
                         />
-
                         <div className="mb-3">
                             <SelectCheckbox
+                                id={"categories"}
                                 label="Categories Survey"
                                 options={categories}
                                 valueKey="id"
@@ -392,6 +403,7 @@ export default function SurveyEdit() {
                         </div>
                         <div>
                             <SelectCheckbox
+                                id={"methods"}
                                 label="Methods Survey"
                                 options={methods}
                                 valueKey="id"
@@ -400,7 +412,34 @@ export default function SurveyEdit() {
                                 selectedValues={surveyMethodsData}
                             />
                         </div>
-
+                        <div>
+                            <RadioSelect
+                                id={"survey_visible"}
+                                label="Visibility Survey"
+                                options={[
+                                    {
+                                        id: 1,
+                                        value: "Public",
+                                        label: "Public",
+                                    },
+                                    {
+                                        id: 2,
+                                        value: "Private",
+                                        label: "Private",
+                                    },
+                                    {
+                                        id: 3,
+                                        value: "Restricted",
+                                        label: "Only link holders can access",
+                                    },
+                                ]}
+                                valueKey="value"
+                                labelKey="label"
+                                selectedValue={surveyVisible}
+                                onChange={handleVisibleChange}
+                                error={errors.survey_visible}
+                            />
+                        </div>
                         <div>
                             <ButtonCRUD
                                 type="submit"

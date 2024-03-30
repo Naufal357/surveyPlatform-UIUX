@@ -33,6 +33,8 @@ export default function UserCreate() {
     const [rolesData, setRolesData] = useState([]);
     const [userPrefsData, setUserPrefsData] = useState([]);
 
+    const [isSaving, setIsSaving] = useState(false);
+
     const handleCheckboxRolesChange = (e) => {
         let data = rolesData;
         data.push(e.target.value);
@@ -51,10 +53,12 @@ export default function UserCreate() {
     };
 
     const storeUser = async (e) => {
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
+            setIsSaving(false);
             return;
         }
 
@@ -82,11 +86,22 @@ export default function UserCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    setIsSaving(false);
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Data failed to save!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    setIsSaving(false);
                 },
             }
         );
     };
-
+console.log(errors)
     return (
         <>
             <Head>
@@ -268,21 +283,25 @@ export default function UserCreate() {
 
                         <div className="mb-3">
                             <SelectCheckbox
+                                id={"roles"}
                                 label="Roles"
                                 options={filteredRoles}
                                 valueKey="name"
                                 labelKey="name"
                                 onChange={handleCheckboxRolesChange}
+                                error={errors.roles}
                             />
                         </div>
 
                         <div className="mb-3">
                             <SelectCheckbox
+                                id={"categories"}
                                 label="Preference Categories"
                                 options={categories}
                                 valueKey="id"
                                 labelKey="name"
                                 onChange={handleCheckboxUserPrefsChange}
+                                error={errors.user_prefs}
                             />
                         </div>
 
@@ -292,6 +311,7 @@ export default function UserCreate() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

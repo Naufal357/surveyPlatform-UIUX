@@ -7,6 +7,7 @@ import InputField from "../../../Components/InputField";
 import QuillEditor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
+import RadioSelect from "../../../Components/RadioSelect";
 import AccordionLayout from "../../../Layouts/Accordion";
 import Swal from "sweetalert2";
 
@@ -23,6 +24,7 @@ export default function CategoryCreate() {
     const [embed_prototype, setEmbedPrototype] = useState("");
     const [surveyCategoriesData, setSurveyCategoriesData] = useState([]);
     const [surveyMethodsData, setSurveyMethodsData] = useState([]);
+    const [surveyVisibility, setSurveyVisibility] = useState(null);
     const [susQuestionsData, setSusQuestionsData] = useState([]);
     const [tamQuestionsData, setTamQuestionsData] = useState([]);
     const [user_id] = useState(auth.user.id);
@@ -32,6 +34,8 @@ export default function CategoryCreate() {
 
     const tamJson = [];
     const susJson = {};
+
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (surveyMethodsData.includes(1) && surveyMethodsData.includes(2)) {
@@ -99,6 +103,10 @@ export default function CategoryCreate() {
             setSurveyMethodsData((prevData) => [...prevData, value]);
         }
     };
+
+    function handleVisibleChange(selectedValue) {
+        setSurveyVisibility(selectedValue);
+    }
 
     const handleSusQuestionChange = (questionId, value) => {
         console.log(questionId, value);
@@ -206,10 +214,12 @@ export default function CategoryCreate() {
     };
 
     const storeSurvey = async (e) => {
+        setIsSaving(true); 
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
+            setIsSaving(false); 
             return;
         }
 
@@ -225,6 +235,7 @@ export default function CategoryCreate() {
                 embed_prototype: embed_prototype,
                 survey_categories: surveyCategoriesData,
                 survey_methods: surveyMethodsData,
+                general_access: surveyVisibility,
                 survey_questions: combineSurveyData(),
                 user_id: user_id,
             },
@@ -237,10 +248,22 @@ export default function CategoryCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    setIsSaving(false); 
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Data failed to save!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    setIsSaving(false); 
                 },
             }
         );
     };
+
 
     const handleReset = () => {
         setImage(null);
@@ -251,6 +274,8 @@ export default function CategoryCreate() {
         setEmbedDesign("");
         setEmbedPrototype("");
         setSurveyCategoriesData([]);
+        setSurveyMethodsData([]);
+        setSurveyVisibility(null);
     };
 
     const resetSusQuestions = () => {
@@ -321,7 +346,6 @@ export default function CategoryCreate() {
                             onChange={(e) => [setImage(e.target.files[0])]}
                             error={errors.image}
                         />
-
                         <InputField
                             label="Title Design"
                             type="text"
@@ -329,7 +353,6 @@ export default function CategoryCreate() {
                             onChange={(e) => setTitle(e.target.value)}
                             error={errors.title}
                         />
-
                         <InputField
                             label="Theme Design"
                             type="text"
@@ -337,14 +360,12 @@ export default function CategoryCreate() {
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
                         />
-
                         <QuillEditor
                             label="Description"
                             value={description}
                             onChange={setDescription}
                             error={errors.description}
                         />
-
                         <InputField
                             label="URL Website"
                             type="text"
@@ -352,7 +373,6 @@ export default function CategoryCreate() {
                             onChange={(e) => setUrlWebsite(e.target.value)}
                             error={errors.url_website}
                         />
-
                         <InputField
                             label="Embed Design (Figma)"
                             type="text"
@@ -360,7 +380,6 @@ export default function CategoryCreate() {
                             onChange={(e) => setEmbedDesign(e.target.value)}
                             error={errors.embed_design}
                         />
-
                         <InputField
                             label="Embed Prototype (Figma)"
                             type="text"
@@ -368,35 +387,57 @@ export default function CategoryCreate() {
                             onChange={(e) => setEmbedPrototype(e.target.value)}
                             error={errors.embed_prototype}
                         />
-
-                        <div className="mb-3">
-                            <SelectCheckbox
-                                label="Categories Survey"
-                                options={categories}
-                                valueKey="id"
-                                labelKey="name"
-                                onChange={handleCheckboxCategoriesChange}
-                                error={errors.survey_categories}
-                            />
-                        </div>
-
-                        <div>
-                            <SelectCheckbox
-                                label="Methods Survey"
-                                options={methods}
-                                valueKey="id"
-                                labelKey="name"
-                                onChange={handleCheckboxMethodsChange}
-                                error={errors.survey_methods}
-                            ></SelectCheckbox>
-                        </div>
-
+                        <SelectCheckbox
+                            id={"categories"}
+                            label="Categories Survey"
+                            options={categories}
+                            valueKey="id"
+                            labelKey="name"
+                            onChange={handleCheckboxCategoriesChange}
+                            error={errors.survey_categories}
+                        />
+                        <SelectCheckbox
+                            id={"methods"}
+                            label="Methods Survey"
+                            options={methods}
+                            valueKey="id"
+                            labelKey="name"
+                            onChange={handleCheckboxMethodsChange}
+                            error={errors.survey_methods}
+                        />
+                        <RadioSelect
+                            id="survey_visibility"
+                            label="General Access Survey"
+                            options={[
+                                {
+                                    id: 1,
+                                    value: "Public",
+                                    label: "Public",
+                                },
+                                {
+                                    id: 2,
+                                    value: "Private",
+                                    label: "Private",
+                                },
+                                {
+                                    id: 3,
+                                    value: "Restricted",
+                                    label: "Only link holders can access",
+                                },
+                            ]}
+                            valueKey="value"
+                            labelKey="label"
+                            selectedValue={surveyVisibility}
+                            onChange={handleVisibleChange}
+                            error={errors.general_access}
+                        />
                         <div>
                             <ButtonCRUD
                                 type="submit"
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="reset"

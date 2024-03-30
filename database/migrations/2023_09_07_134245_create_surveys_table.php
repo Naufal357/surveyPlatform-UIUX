@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('url_website')->nullable();
             $table->text('embed_design')->nullable();
             $table->text('embed_prototype')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

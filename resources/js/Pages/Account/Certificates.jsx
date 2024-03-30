@@ -200,6 +200,7 @@ export default function Certificates() {
                     >
                         <form onSubmit={handleSubmit}>
                             <SelectCheckbox
+                                id="certCategories"
                                 options={categories}
                                 valueKey="id"
                                 labelKey="name"

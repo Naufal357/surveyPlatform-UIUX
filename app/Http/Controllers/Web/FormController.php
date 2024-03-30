@@ -23,9 +23,13 @@ class FormController extends Controller
 
     public function show($id, $slug)
     {
-        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail();        
-        $userEmail = auth()->user()->email;
-        $response = SurveyResponses::where('email', $userEmail)->where('survey_id', $survey->id)->first();
+        $user = auth()->user();
+        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail(); 
+        if ($survey->status == 'Private' && $survey->user_id !== $user->id) {
+            abort(403, 'This survey is not available.');
+        }
+        
+        $response = SurveyResponses::where('email', $user->email)->where('survey_id', $survey->id)->first();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
         $surveyQuestions = SurveyQuestions::where('survey_id', $survey->id)->get();
 

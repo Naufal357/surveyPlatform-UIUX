@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $categories = Category::latest()->take(4)->get();
 
-        $surveys = Survey::latest()->take(12)->get();
+        $surveys = Survey::latest()->where('status', 'Public')->take(12)->get();
 
         return inertia('Web/Home', [
             'categories'    => $categories,

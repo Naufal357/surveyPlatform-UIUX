@@ -87,6 +87,7 @@ export default function RoleCreate() {
                         <hr />
                         <div className="mb-3">
                             <SelectCheckbox
+                                id={"permissions"}
                                 label="Permissions"
                                 options={filteredPermissions}
                                 valueKey="name"

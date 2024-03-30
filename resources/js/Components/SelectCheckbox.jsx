@@ -1,6 +1,7 @@
 import React from "react";
 
 const SelectCheckbox = ({
+    id,
     label,
     options,
     valueKey,
@@ -13,7 +14,9 @@ const SelectCheckbox = ({
         <div className="mb-3">
             {selectedValues ? (
                 <>
-                    <label className="fw-bold">{label}</label>
+                    <label className="fw-bold" htmlFor={id}>
+                        {label}
+                    </label>
                     <br />
                     {options.map((option, index) => (
                         <div
@@ -25,15 +28,14 @@ const SelectCheckbox = ({
                                 type="checkbox"
                                 value={option[valueKey]}
                                 onChange={onChange}
-                                id={`check-${option[valueKey]}`}
+                                id={`check-${id}-${option[valueKey]}`}
                                 checked={selectedValues.includes(
                                     option[valueKey]
                                 )}
                             />
-
                             <label
                                 className="form-check-label"
-                                htmlFor={`check-${option[valueKey]}`}
+                                htmlFor={`check-${id}-${option[valueKey]}`}
                             >
                                 {option[labelKey]}
                             </label>
@@ -42,7 +44,9 @@ const SelectCheckbox = ({
                 </>
             ) : (
                 <>
-                    <label className="fw-bold">{label}</label>
+                    <label className="fw-bold" htmlFor={id}>
+                        {label}
+                    </label>
                     <br />
                     {options.map((option, index) => (
                         <div
@@ -54,11 +58,11 @@ const SelectCheckbox = ({
                                 type="checkbox"
                                 value={option[valueKey]}
                                 onChange={onChange}
-                                id={`check-${option[valueKey]}`}
+                                id={`check-${id}-${option[valueKey]}`}
                             />
                             <label
                                 className="form-check-label"
-                                htmlFor={`check-${option[valueKey]}`}
+                                htmlFor={`check-${id}-${option[valueKey]}`}
                             >
                                 {option[labelKey]}
                             </label>

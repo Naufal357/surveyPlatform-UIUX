@@ -286,6 +286,7 @@ export default function UserCreate() {
 
                                     <div className="mb-3">
                                         <SelectCheckbox
+                                            id={"user-prefs"}
                                             label="Preference Categories"
                                             options={categories}
                                             valueKey="id"

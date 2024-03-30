@@ -102,6 +102,7 @@ export default function RoleEdit() {
                         <hr />
                         <div className="mb-3">
                             <SelectCheckbox
+                                id={"permissions"}
                                 label="Permissions"
                                 options={filteredPermissions}
                                 valueKey="name"

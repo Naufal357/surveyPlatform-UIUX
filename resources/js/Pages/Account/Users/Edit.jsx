@@ -281,6 +281,7 @@ export default function UserEdit() {
 
                         <div className="mb-3">
                             <SelectCheckbox
+                                id="roles"
                                 label="Roles"
                                 options={filteredRoles}
                                 valueKey="name"
@@ -292,6 +293,7 @@ export default function UserEdit() {
 
                         <div className="mb-3">
                             <SelectCheckbox
+                                id="categories"
                                 label="Preference Categories"
                                 options={categories}
                                 valueKey="id"
