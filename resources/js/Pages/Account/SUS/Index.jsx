@@ -28,7 +28,7 @@ export default function Dashboard() {
 
     const formatAnswers = (averageAnswer) => {
         return averageAnswer.map((answer, index) => {
-            if (index === 1) {   
+            if (index === 1) {
                 return `Rata-rata (2)+(3): ${answer}`;
             } else {
                 return `Rata-rata (${index + 2}) : ${answer}`;

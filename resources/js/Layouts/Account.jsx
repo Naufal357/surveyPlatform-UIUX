@@ -5,12 +5,9 @@ import { Inertia } from "@inertiajs/inertia";
 import Sidebar from "../Layouts/Sidebar";
 
 export default function LayoutAccount({ children }) {
-    //get props auth
     const { auth } = usePage().props;
-    //state toggle
     const [sidebarToggle, setSidebarToggle] = useState(false);
 
-    //function toggle hanlder
     const sidebarToggleHandler = (e) => {
         e.preventDefault();
 
@@ -26,7 +23,6 @@ export default function LayoutAccount({ children }) {
         }
     };
 
-    //function logout
     const logoutHandler = async (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -62,7 +58,18 @@ export default function LayoutAccount({ children }) {
                             <div className="d-flex align-items-center">
                                 <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
                                     <NavDropdown
-                                        title={`${auth.user.first_name} ${auth.user.surname}`}
+                                        title={
+                                            <>
+                                                {auth.user.roles.some(
+                                                    (role) =>
+                                                        role.name ===
+                                                        "verified user"
+                                                ) && (
+                                                    <i className="fas fa-user-check me-2" />
+                                                )}
+                                                {`${auth.user.first_name} ${auth.user.surname}`}
+                                            </>
+                                        }
                                         className="fw-bold"
                                         id="basic-nav-dropdown"
                                     >

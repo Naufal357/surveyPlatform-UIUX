@@ -61,10 +61,6 @@ class Survey extends Model
 
     public function getTitleAndResponseCount()
     {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'response_count' => $this->surveyResponses()->count(),
-        ];
+        return $this->surveyResponses()->count();
     }
 }

@@ -37,7 +37,7 @@ class UserTableSeeder extends Seeder
         $user3 = User::create([
             'first_name' => 'Verified',
             'surname' => 'User',
-            'email' => 'verif@123',
+            'email' => 'rozan@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
             'profession' => 'Student',

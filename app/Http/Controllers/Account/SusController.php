@@ -189,6 +189,9 @@ class SusController extends Controller
 
     private function getAverageAnswer($susSurveyResults)
     {
+        if(count($susSurveyResults) == 0) {
+            return null;
+        }
         $normalizedSusResults = [];
         foreach ($susSurveyResults as $result) {
             $normalizedSus = [
@@ -207,7 +210,7 @@ class SusController extends Controller
             $normalizedSusResults[] = $normalizedSus;
         }
 
-        $averageResults = array_fill(0, 10, 0); 
+        $averageResults = array_fill(0, 10, 0);
 
         foreach ($normalizedSusResults as $normalizedSus) {
             foreach ($normalizedSus as $key => $value) {
@@ -226,9 +229,7 @@ class SusController extends Controller
 
     private function getResumeDescription(&$getAverageAnswer, $surveyName)
     {
-        if (empty(array_filter($getAverageAnswer, function ($value) {
-            return $value !== null;
-        }))) {
+        if ($getAverageAnswer == null) {
             return null;
         }
 
