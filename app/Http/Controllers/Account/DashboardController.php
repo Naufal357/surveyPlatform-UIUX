@@ -15,39 +15,32 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->hasPermissionTo('dashboard.index.full')) {
-            $surveys = Survey::all();
-            $surveyMethods = SurveyHasMethods::all();
+        $user = auth()->user();
 
-            foreach ($surveys as $survey) {
-                $methodIds = $surveyMethods->where('survey_id', $survey->id)->pluck('method_id')->toArray();
-
-                $surveyData[] = [
-                    'survey_id' => $survey->id,
-                    'title' => $survey->title,
-                    'response_count' => $survey->getTitleAndResponseCount(),
-                    'method_ids' => $methodIds,
-                ];
-            }
+        if ($user->hasPermissionTo('dashboard.index.full')) {
+            $surveys = Survey::latest()->paginate(15);
         } else {
-            $user = auth()->user();
-            $surveys = Survey::where('user_id', $user->id)->get();
+            $surveys = Survey::where('user_id', $user->id)->latest()->paginate(15);
+        }
 
-            foreach ($surveys as $survey) {
-                $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
-                $methodIds = $surveyMethods->pluck('method_id')->toArray();
+        $surveyData = [];
 
-                $surveyData[] = [
-                    'survey_id' => $survey->id,
-                    'title' => $survey->title,
-                    'response_count' => $survey->getTitleAndResponseCount(),
-                    'method_ids' => $methodIds,
-                ];
-            }
+        foreach ($surveys as $survey) {
+            $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
+
+            $methodIds = $surveyMethods->pluck('method_id')->toArray();
+
+            $surveyData[] = [
+                'survey_id' => $survey->id,
+                'title' => $survey->title,
+                'response_count' => $survey->getTitleAndResponseCount(),
+                'method_ids' => $methodIds,
+            ];
         }
 
         return inertia('Account/Dashboard', [
-            'surveys' => $surveyData,
+            'surveys' => $surveys,
+            'surveyData' => $surveyData,
         ])->with('currentSurveyTitle');
     }
 }

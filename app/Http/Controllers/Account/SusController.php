@@ -96,12 +96,11 @@ class SusController extends Controller
         $totalSUS = 0;
         $count = count($responses);
 
-        // Menghitung total skor SUS dari semua respons
         foreach ($responses as $response) {
             $responseData = json_decode($response->response_data, true)['sus'];
             $totalSUS += $this->calculateSUS($responseData);
         }
-        // Menghitung Skor SUS Rata-rata
+
         if ($count > 0) {
             $averageSUS = $totalSUS / $count;
             return $averageSUS = number_format($averageSUS, 2);
@@ -189,7 +188,7 @@ class SusController extends Controller
 
     private function getAverageAnswer($susSurveyResults)
     {
-        if(count($susSurveyResults) == 0) {
+        if (count($susSurveyResults) == 0) {
             return null;
         }
         $normalizedSusResults = [];
@@ -233,15 +232,14 @@ class SusController extends Controller
             return null;
         }
 
-        $getAverageAnswer[1] = ($getAverageAnswer[1] + $getAverageAnswer[2]) / 2;
-        unset($getAverageAnswer[2]);
         $getAverageAnswer = array_values($getAverageAnswer);
 
         $getResumeDescription = [];
 
         $kalimatPositif = [
             "Sebagian besar pengguna $surveyName berniat untuk menggunakan kembali sistem ini(1).",
-            "Kebanyakan pengguna merasa sistem ini mudah digunakan(2)(3).",
+            "Kebanyakan pengguna merasa sistem ini tidak rumit(2) ",
+            "dan banyak pengguna merasa sistem ini mudah digunakan(3).",
             "Tanpa membutuhkan bantuan dari orang lain atau teknisi pengguna dapat menggunakan sistem(4).",
             "Selain itu, pengguna merasa fitur-fitur sistem berjalan dengan semestinya(5) ",
             "dan merasa tidak ada banyak hal yang tidak konsisten dalam sistem ini(6).",
@@ -253,7 +251,8 @@ class SusController extends Controller
 
         $kalimatNegatif = [
             "Sebagian besar pengguna $surveyName tidak berniat untuk menggunakan kembali sistem ini(1).",
-            "Kebanyakan pengguna mengalami kesulitan dalam menggunakan sistem ini(2)(3).",
+            "Kebanyakan pengguna mengeluhkan kerumitan dalam menggunakan sistem ini(2) ",
+            "dan banyak pengguna merasa sistem ini sulit digunakan(3).",
             "Banyak pengguna yang memerlukan bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",
             "Selain itu, banyak pengguna merasa fitur sistem tidak berjalan dengan semestinya(5) ",
             "dan merasa ada banyak hal yang tidak konsisten dalam sistem ini(6).",
@@ -266,7 +265,8 @@ class SusController extends Controller
 
         $kalimatNetral = [
             "Sebagian besar pengguna $surveyName memiliki pandangan netral terhadap penggunaan kembali sistem ini(1).",
-            "Kebanyakan pengguna merasa cukup nyaman menggunakan sistem ini(2)(3).",
+            "Kebanyakan pengguna merasa cukup nyaman menggunakan sistem ini(2) ",
+            "dan banyak pengguna merasa sistem ini agak sulit digunakan(3).",
             "Banyak pengguna merasa sistem ini perlu sedikit bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",
             "Selain itu, banyak pengguna merasa fitur sistem ini dianggap berjalan dengan cukup baik sebagaimana mestinya(5) ",
             "dan merasa ada sebagian kecil aspek yang dinilai tidak konsisten dalam sistem ini menurut pengguna(6).",
