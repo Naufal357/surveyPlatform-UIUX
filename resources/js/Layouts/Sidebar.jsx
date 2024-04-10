@@ -122,6 +122,17 @@ export default function Sidebar() {
                         <i className="fa fa-users me-2"></i> Users
                     </Link>
                 )}
+
+                <Link
+                    href="/account/articles"
+                    className={`${
+                        url.startsWith("/account/articles")
+                            ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                            : "list-group-item list-group-item-action list-group-item-light p-3"
+                    }`}
+                >
+                    <i className="fa fa-newspaper me-2"></i> Articles
+                </Link>
             </div>
         </>
     );

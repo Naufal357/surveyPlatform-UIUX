@@ -58,7 +58,7 @@ class SurveyController extends Controller
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
-            'image'         => 'required|image|mimes:jpeg,jpg,png|max:80000',
+            'image'         => 'required|image|mimes:jpeg,jpg,png,svg|max:2048',
             'theme'          => 'required',
             'description'    => 'required',
             'survey_categories' => 'required',

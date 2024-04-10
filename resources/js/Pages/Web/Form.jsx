@@ -6,6 +6,7 @@ import SurveyDescription from "../../Components/SurveyDescription";
 import LikertScale from "../../Components/LikertScale";
 import EmbedDesign from "../../Components/EmbedDesign";
 import Swal from "sweetalert2";
+import { ChevronDoubleLeft } from "react-bootstrap-icons";
 
 function Form() {
     const { surveys, auth, surveyMethods, surveyQuestions } = usePage().props;
@@ -23,17 +24,17 @@ function Form() {
     let idTamCounter = 0;
     let idSusCounter = 0;
 
-    const data = JSON.parse(surveyQuestions[0].questions_data);
+    const questionData = JSON.parse(surveyQuestions[0].questions_data);
 
-    const parsedSusQuestions = data.sus
-        ? Object.entries(data.sus).map(([key, value]) => ({
+    const parsedSusQuestions = questionData.sus
+        ? Object.entries(questionData.sus).map(([key, value]) => ({
               id: `${idSusCounter++}`,
               question: value,
           }))
         : [];
 
-    const parsedTamQuestions = data.tam
-        ? data.tam.flatMap((variable) =>
+    const parsedTamQuestions = questionData.tam
+        ? questionData.tam.flatMap((variable) =>
               variable.indicators.flatMap((indicator) =>
                   indicator.questions.map((question) => ({
                       id: `${idTamCounter++}`,
@@ -56,16 +57,38 @@ function Form() {
               )
             : {}
     );
-    const [tamValues, setTamValues] = useState(
-        parsedTamQuestions.length
-            ? Object.fromEntries(
-                  parsedTamQuestions.map((question, index) => [
-                      `tam${index + 1}`,
-                      "",
-                  ])
-              )
-            : {}
-    );
+    const [tamValues, setTamValues] = useState(() => {
+        const transformedData = [];
+
+        parsedTamQuestions.forEach((question) => {
+            const existingVariable = transformedData.find(
+                (variable) => variable.name === question.variable
+            );
+            if (existingVariable) {
+                const existingIndicator = existingVariable.responses.find(
+                    (response) => response.name === question.indicator
+                );
+                if (!existingIndicator) {
+                    existingVariable.responses.push({
+                        name: question.indicator,
+                        value: [],
+                    });
+                }
+            } else {
+                transformedData.push({
+                    name: question.variable,
+                    responses: [
+                        {
+                            name: question.indicator,
+                            value: [],
+                        },
+                    ],
+                });
+            }
+        });
+
+        return transformedData;
+    });
 
     useEffect(() => {
         loadSurveyData();
@@ -100,20 +123,66 @@ function Form() {
         }
     };
 
-    function handleSUSChange(questionId, selectedValue) {
+    function handleSUSChange(dataAnswer, selectedValue) {
         setSusValues((prevState) => ({
             ...prevState,
-            [questionId]: selectedValue,
+            [dataAnswer]: selectedValue,
         }));
     }
 
-    const handleTAMChange = (questionId, selectedValue) => {
-        setTamValues((prevState) => ({
-            ...prevState,
-            [questionId]: selectedValue,
-        }));
-    };
+    const tamSelectedValue = (tamQuestion, index) => tamValues
+        .find((variable) => variable.name === tamQuestion.variable)
+        ?.responses.find(
+            (indicator) => indicator.name === tamQuestion.indicator
+        )
+        ?.value.find((item) => item[0] === `tam${index + 1}`)?.[1];
 
+    const handleTAMChange = (dataAnswer, selectedValue) => {
+        setTamValues((prevState) => {
+            const newState = [...prevState];
+            const parts = dataAnswer.split("-");
+            const questionId = parts[0];
+            const questionVariable = parts[1];
+            const questionIndicator = parts[2].replace(/_/g, " ");
+
+            const variableIndex = newState.findIndex(
+                (variable) => variable.name === questionVariable
+            );
+            if (variableIndex !== -1) {
+                const responseIndex = newState[
+                    variableIndex
+                ].responses.findIndex(
+                    (indicator) => indicator.name === questionIndicator
+                );
+                if (responseIndex !== -1) {
+                    const response =
+                        newState[variableIndex].responses[responseIndex];
+                    const existingQuestionIndex = response.value.findIndex(
+                        (item) => item[0] === questionId
+                    );
+                    if (existingQuestionIndex !== -1) {
+                        // Jika pertanyaan sudah ada, perbarui nilainya
+                        response.value[existingQuestionIndex][1] =
+                            selectedValue;
+                        // Urutkan berdasarkan ID TAM terkecil
+                        response.value.sort((a, b) => a[0] - b[0]);
+                    } else {
+                        // Jika pertanyaan belum ada, tambahkan baru
+                        response.value.push([questionId, selectedValue]);
+                        // Urutkan berdasarkan ID TAM terkecil
+                        response.value.sort((a, b) => a[0] - b[0]);
+                    }
+                } else {
+                    // Jika indikator belum ada, tambahkan baru
+                    newState[variableIndex].responses.push({
+                        name: questionIndicator,
+                        value: [[questionId, selectedValue]],
+                    });
+                }
+            }
+            return newState;
+        });
+    };
     const submitForm = (e) => {
         e.preventDefault();
 
@@ -162,7 +231,12 @@ function Form() {
                             <img
                                 src={surveys.image}
                                 alt="Gambar Survei"
-                                className="img-fluid"
+                                className="img-fluid rounded mb-4 mx-auto d-block"
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "350px",
+                                    objectFit: "cover",
+                                }}
                             />
                         </div>
                     </div>
@@ -256,14 +330,17 @@ function Form() {
                                                         <LikertScale
                                                             name={`tam${
                                                                 index + 1
-                                                            }`}
+                                                            }-${
+                                                                tamQuestion.variable
+                                                            }-${tamQuestion.indicator.replace(
+                                                                /\s+/g,
+                                                                "_"
+                                                            )}`}
                                                             selectedValue={
-                                                                tamValues[
-                                                                    `tam${
-                                                                        index +
-                                                                        1
-                                                                    }`
-                                                                ]
+                                                                tamSelectedValue(
+                                                                    tamQuestion,
+                                                                    index
+                                                                ) || ""
                                                             }
                                                             onValueChange={
                                                                 handleTAMChange

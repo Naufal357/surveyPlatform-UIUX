@@ -11,24 +11,14 @@ use App\Models\SurveyQuestions;
 
 class FormController extends Controller
 {
-    public function index()
-    {
-        $surveys = Survey::latest()->paginate(12);
-
-        return inertia('Web/Surveys', [
-            'auth' => auth()->user(),
-            'surveys' => $surveys
-        ]);
-    }
-
     public function show($id, $slug)
     {
         $user = auth()->user();
-        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail(); 
+        $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail();
         if ($survey->status == 'Private' && $survey->user_id !== $user->id) {
             abort(403, 'This survey is not available.');
         }
-        
+
         $response = SurveyResponses::where('email', $user->email)->where('survey_id', $survey->id)->first();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
         $surveyQuestions = SurveyQuestions::where('survey_id', $survey->id)->get();
@@ -49,6 +39,7 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $validatedData = $request->validate([
             'survey_id'             => 'required|exists:surveys,id',
             'first_name'             => 'required',

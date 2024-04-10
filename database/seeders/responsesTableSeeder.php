@@ -21,44 +21,249 @@ class responsesTableSeeder extends Seeder
             'gender' => 'Male',
             'profession' => 'Student',
             'educational_background' => "Bachelor's Degree",
-            'response_data' => '{"sus": {
-                                    "sus1": 5,
-                                    "sus2": 1,
-                                    "sus3": 5,
-                                    "sus4": 2,
-                                    "sus5": 4,
-                                    "sus6": 3,
-                                    "sus7": 2,
-                                    "sus8": 4,
-                                    "sus9": 2,
-                                    "sus10": 4
-                                },
-                                "tam": {
-                                    "tam1": 5,
-                                    "tam2": 2,
-                                    "tam3": 4,
-                                    "tam4": 3,
-                                    "tam5": 2,
-                                    "tam6": 4,
-                                    "tam7": 2,
-                                    "tam8": 4,
-                                    "tam9": 2,
-                                    "tam10": 4,
-                                    "tam11": 2,
-                                    "tam12": 4,
-                                    "tam13": 5,
-                                    "tam14": 5,
-                                    "tam15": 5,
-                                    "tam16": 3,
-                                    "tam17": 4,
-                                    "tam18": 3,
-                                    "tam19": 4,
-                                    "tam20": 3,
-                                    "tam21": 5,
-                                    "tam22": 5,
-                                    "tam23": 4
-                                }
-                            }',
+            'response_data' => '{
+                                    "sus": {
+                                        "sus1": 1,
+                                        "sus2": 3,
+                                        "sus3": 3,
+                                        "sus4": 1,
+                                        "sus5": 3,
+                                        "sus6": 2,
+                                        "sus7": 2,
+                                        "sus8": 5,
+                                        "sus9": 3,
+                                        "sus10": 4
+                                    },
+                                    "tam": [
+                                        {
+                                        "name": "PEU",
+                                        "responses": [
+                                            {
+                                            "name": "Kemudahan dipelajari",
+                                            "value": [
+                                                [
+                                                "tam1",
+                                                2
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dipahami/dimengerti",
+                                            "value": [
+                                                [
+                                                "tam2",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah sehingga mahir",
+                                            "value": [
+                                                [
+                                                "tam3",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah digunakan",
+                                            "value": [
+                                                [
+                                                "tam4",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dikendalikan",
+                                            "value": [
+                                                [
+                                                "tam5",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah diingat",
+                                            "value": [
+                                                [
+                                                "tam6",
+                                                3
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "PU",
+                                        "responses": [
+                                            {
+                                            "name": "Lebih cepat",
+                                            "value": [
+                                                [
+                                                "tam7",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan kinerja",
+                                            "value": [
+                                                [
+                                                "tam8",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan produktivitas",
+                                            "value": [
+                                                [
+                                                "tam9",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan efektivitas",
+                                            "value": [
+                                                [
+                                                "tam10",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Lebih mudah",
+                                            "value": [
+                                                [
+                                                "tam11",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Bermanfaat",
+                                            "value": [
+                                                [
+                                                "tam12",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ATU",
+                                        "responses": [
+                                            {
+                                            "name": "Rasa senang",
+                                            "value": [
+                                                [
+                                                "tam13",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menikmati",
+                                            "value": [
+                                                [
+                                                "tam14",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Rasa bosan",
+                                            "value": [
+                                                [
+                                                "tam15",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Tidak suka",
+                                            "value": [
+                                                [
+                                                "tam16",
+                                                2
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "BI",
+                                        "responses": [
+                                            {
+                                            "name": "Menggunakan kapan saja",
+                                            "value": [
+                                                [
+                                                "tam17",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menggunakan kondisi apapun",
+                                            "value": [
+                                                [
+                                                "tam18",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Niat menggunakan terus",
+                                            "value": [
+                                                [
+                                                "tam19",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Berharap menggunakan",
+                                            "value": [
+                                                [
+                                                "tam20",
+                                                5
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ASU",
+                                        "responses": [
+                                            {
+                                            "name": "Frekuensi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam21",
+                                                3
+                                                ],
+                                                [
+                                                "tam22",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Durasi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam23",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        }
+                                    ]
+                                }',
             'survey_id' => 1
         ]);
 
@@ -70,44 +275,249 @@ class responsesTableSeeder extends Seeder
             'gender' => 'Female',
             'profession' => 'other',
             'educational_background' => "Master's Degree",
-            'response_data' => '{"sus": {
-                            "sus1": 3,
-                            "sus2": 4,
-                            "sus3": 2,
-                            "sus4": 1,
-                            "sus5": 5,
-                            "sus6": 4,
-                            "sus7": 3,
-                            "sus8": 5,
-                            "sus9": 2,
-                            "sus10": 4
-                        },
-                        "tam": {
-                            "tam1": 4,
-                            "tam2": 3,
-                            "tam3": 5,
-                            "tam4": 2,
-                            "tam5": 4,
-                            "tam6": 3,
-                            "tam7": 5,
-                            "tam8": 2,
-                            "tam9": 4,
-                            "tam10": 3,
-                            "tam11": 5,
-                            "tam12": 2,
-                            "tam13": 5,
-                            "tam14": 5,
-                            "tam15": 5,
-                            "tam16": 3,
-                            "tam17": 4,
-                            "tam18": 3,
-                            "tam19": 4,
-                            "tam20": 3,
-                            "tam21": 5,
-                            "tam22": 5,
-                            "tam23": 4
-                        }
-                    }',
+            'response_data' => '{
+                                    "sus": {
+                                        "sus1": 1,
+                                        "sus2": 3,
+                                        "sus3": 3,
+                                        "sus4": 1,
+                                        "sus5": 3,
+                                        "sus6": 2,
+                                        "sus7": 2,
+                                        "sus8": 5,
+                                        "sus9": 3,
+                                        "sus10": 4
+                                    },
+                                    "tam": [
+                                        {
+                                        "name": "PEU",
+                                        "responses": [
+                                            {
+                                            "name": "Kemudahan dipelajari",
+                                            "value": [
+                                                [
+                                                "tam1",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dipahami/dimengerti",
+                                            "value": [
+                                                [
+                                                "tam2",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah sehingga mahir",
+                                            "value": [
+                                                [
+                                                "tam3",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah digunakan",
+                                            "value": [
+                                                [
+                                                "tam4",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dikendalikan",
+                                            "value": [
+                                                [
+                                                "tam5",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah diingat",
+                                            "value": [
+                                                [
+                                                "tam6",
+                                                5
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "PU",
+                                        "responses": [
+                                            {
+                                            "name": "Lebih cepat",
+                                            "value": [
+                                                [
+                                                "tam7",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan kinerja",
+                                            "value": [
+                                                [
+                                                "tam8",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan produktivitas",
+                                            "value": [
+                                                [
+                                                "tam9",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan efektivitas",
+                                            "value": [
+                                                [
+                                                "tam10",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Lebih mudah",
+                                            "value": [
+                                                [
+                                                "tam11",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Bermanfaat",
+                                            "value": [
+                                                [
+                                                "tam12",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ATU",
+                                        "responses": [
+                                            {
+                                            "name": "Rasa senang",
+                                            "value": [
+                                                [
+                                                "tam13",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menikmati",
+                                            "value": [
+                                                [
+                                                "tam14",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Rasa bosan",
+                                            "value": [
+                                                [
+                                                "tam15",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Tidak suka",
+                                            "value": [
+                                                [
+                                                "tam16",
+                                                3
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "BI",
+                                        "responses": [
+                                            {
+                                            "name": "Menggunakan kapan saja",
+                                            "value": [
+                                                [
+                                                "tam17",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menggunakan kondisi apapun",
+                                            "value": [
+                                                [
+                                                "tam18",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Niat menggunakan terus",
+                                            "value": [
+                                                [
+                                                "tam19",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Berharap menggunakan",
+                                            "value": [
+                                                [
+                                                "tam20",
+                                                5
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ASU",
+                                        "responses": [
+                                            {
+                                            "name": "Frekuensi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam21",
+                                                3
+                                                ],
+                                                [
+                                                "tam22",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Durasi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam23",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        }
+                                    ]
+                                }',
             'survey_id' => 1
         ]);
 
@@ -119,44 +529,249 @@ class responsesTableSeeder extends Seeder
             'gender' => 'Female',
             'profession' => 'Private Worker',
             'educational_background' => "High School",
-            'response_data' => '{"sus": {
-                            "sus1": 3,
-                            "sus2": 2,
-                            "sus3": 4,
-                            "sus4": 5,
-                            "sus5": 3,
-                            "sus6": 4,
-                            "sus7": 2,
-                            "sus8": 3,
-                            "sus9": 4,
-                            "sus10": 2
-                        },
-                        "tam": {
-                            "tam1": 4,
-                            "tam2": 3,
-                            "tam3": 5,
-                            "tam4": 2,
-                            "tam5": 4,
-                            "tam6": 3,
-                            "tam7": 5,
-                            "tam8": 2,
-                            "tam9": 4,
-                            "tam10": 3,
-                            "tam11": 5,
-                            "tam12": 2,
-                            "tam13": 5,
-                            "tam14": 5,
-                            "tam15": 5,
-                            "tam16": 3,
-                            "tam17": 4,
-                            "tam18": 3,
-                            "tam19": 4,
-                            "tam20": 3,
-                            "tam21": 5,
-                            "tam22": 5,
-                            "tam23": 4
-                        }
-                    }',
+            'response_data' => '{
+                                    "sus": {
+                                        "sus1": 1,
+                                        "sus2": 3,
+                                        "sus3": 3,
+                                        "sus4": 1,
+                                        "sus5": 3,
+                                        "sus6": 2,
+                                        "sus7": 2,
+                                        "sus8": 5,
+                                        "sus9": 3,
+                                        "sus10": 4
+                                    },
+                                    "tam": [
+                                        {
+                                        "name": "PEU",
+                                        "responses": [
+                                            {
+                                            "name": "Kemudahan dipelajari",
+                                            "value": [
+                                                [
+                                                "tam1",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dipahami/dimengerti",
+                                            "value": [
+                                                [
+                                                "tam2",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah sehingga mahir",
+                                            "value": [
+                                                [
+                                                "tam3",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah digunakan",
+                                            "value": [
+                                                [
+                                                "tam4",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dikendalikan",
+                                            "value": [
+                                                [
+                                                "tam5",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah diingat",
+                                            "value": [
+                                                [
+                                                "tam6",
+                                                5
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "PU",
+                                        "responses": [
+                                            {
+                                            "name": "Lebih cepat",
+                                            "value": [
+                                                [
+                                                "tam7",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan kinerja",
+                                            "value": [
+                                                [
+                                                "tam8",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan produktivitas",
+                                            "value": [
+                                                [
+                                                "tam9",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan efektivitas",
+                                            "value": [
+                                                [
+                                                "tam10",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Lebih mudah",
+                                            "value": [
+                                                [
+                                                "tam11",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Bermanfaat",
+                                            "value": [
+                                                [
+                                                "tam12",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ATU",
+                                        "responses": [
+                                            {
+                                            "name": "Rasa senang",
+                                            "value": [
+                                                [
+                                                "tam13",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menikmati",
+                                            "value": [
+                                                [
+                                                "tam14",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Rasa bosan",
+                                            "value": [
+                                                [
+                                                "tam15",
+                                                2
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Tidak suka",
+                                            "value": [
+                                                [
+                                                "tam16",
+                                                3
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "BI",
+                                        "responses": [
+                                            {
+                                            "name": "Menggunakan kapan saja",
+                                            "value": [
+                                                [
+                                                "tam17",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menggunakan kondisi apapun",
+                                            "value": [
+                                                [
+                                                "tam18",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Niat menggunakan terus",
+                                            "value": [
+                                                [
+                                                "tam19",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Berharap menggunakan",
+                                            "value": [
+                                                [
+                                                "tam20",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ASU",
+                                        "responses": [
+                                            {
+                                            "name": "Frekuensi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam21",
+                                                3
+                                                ],
+                                                [
+                                                "tam22",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Durasi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam23",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        }
+                                    ]
+                                    }',
             'survey_id' => 1
         ]);
 
@@ -168,44 +783,249 @@ class responsesTableSeeder extends Seeder
             'gender' => 'Male',
             'profession' => 'Professor',
             'educational_background' => "Doctorate Degree",
-            'response_data' => '{"sus": {
-                            "sus1": 5,
-                            "sus2": 4,
-                            "sus3": 3,
-                            "sus4": 2,
-                            "sus5": 1,
-                            "sus6": 5,
-                            "sus7": 4,
-                            "sus8": 3,
-                            "sus9": 2,
-                            "sus10": 1
-                        },
-                        "tam": {
-                            "tam1": 3,
-                            "tam2": 2,
-                            "tam3": 4,
-                            "tam4": 1,
-                            "tam5": 3,
-                            "tam6": 2,
-                            "tam7": 4,
-                            "tam8": 1,
-                            "tam9": 3,
-                            "tam10": 2,
-                            "tam11": 4,
-                            "tam12": 1,
-                            "tam13": 5,
-                            "tam14": 5,
-                            "tam15": 5,
-                            "tam16": 3,
-                            "tam17": 4,
-                            "tam18": 3,
-                            "tam19": 4,
-                            "tam20": 3,
-                            "tam21": 5,
-                            "tam22": 5,
-                            "tam23": 4
-                        }
-                    }',
+            'response_data' => '{
+                                    "sus": {
+                                        "sus1": 1,
+                                        "sus2": 3,
+                                        "sus3": 3,
+                                        "sus4": 1,
+                                        "sus5": 3,
+                                        "sus6": 2,
+                                        "sus7": 2,
+                                        "sus8": 5,
+                                        "sus9": 3,
+                                        "sus10": 4
+                                    },
+                                    "tam": [
+                                        {
+                                        "name": "PEU",
+                                        "responses": [
+                                            {
+                                            "name": "Kemudahan dipelajari",
+                                            "value": [
+                                                [
+                                                "tam1",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dipahami/dimengerti",
+                                            "value": [
+                                                [
+                                                "tam2",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah sehingga mahir",
+                                            "value": [
+                                                [
+                                                "tam3",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah digunakan",
+                                            "value": [
+                                                [
+                                                "tam4",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah dikendalikan",
+                                            "value": [
+                                                [
+                                                "tam5",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Mudah diingat",
+                                            "value": [
+                                                [
+                                                "tam6",
+                                                3
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "PU",
+                                        "responses": [
+                                            {
+                                            "name": "Lebih cepat",
+                                            "value": [
+                                                [
+                                                "tam7",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan kinerja",
+                                            "value": [
+                                                [
+                                                "tam8",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan produktivitas",
+                                            "value": [
+                                                [
+                                                "tam9",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Meningkatkan efektivitas",
+                                            "value": [
+                                                [
+                                                "tam10",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Lebih mudah",
+                                            "value": [
+                                                [
+                                                "tam11",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Bermanfaat",
+                                            "value": [
+                                                [
+                                                "tam12",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ATU",
+                                        "responses": [
+                                            {
+                                            "name": "Rasa senang",
+                                            "value": [
+                                                [
+                                                "tam13",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menikmati",
+                                            "value": [
+                                                [
+                                                "tam14",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Rasa bosan",
+                                            "value": [
+                                                [
+                                                "tam15",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Tidak suka",
+                                            "value": [
+                                                [
+                                                "tam16",
+                                                2
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "BI",
+                                        "responses": [
+                                            {
+                                            "name": "Menggunakan kapan saja",
+                                            "value": [
+                                                [
+                                                "tam17",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Menggunakan kondisi apapun",
+                                            "value": [
+                                                [
+                                                "tam18",
+                                                3
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Niat menggunakan terus",
+                                            "value": [
+                                                [
+                                                "tam19",
+                                                5
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Berharap menggunakan",
+                                            "value": [
+                                                [
+                                                "tam20",
+                                                5
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        },
+                                        {
+                                        "name": "ASU",
+                                        "responses": [
+                                            {
+                                            "name": "Frekuensi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam21",
+                                                3
+                                                ],
+                                                [
+                                                "tam22",
+                                                4
+                                                ]
+                                            ]
+                                            },
+                                            {
+                                            "name": "Durasi penggunaan",
+                                            "value": [
+                                                [
+                                                "tam23",
+                                                4
+                                                ]
+                                            ]
+                                            }
+                                        ]
+                                        }
+                                    ]
+                                }',
             'survey_id' => 1
         ]);
 
@@ -217,44 +1037,249 @@ class responsesTableSeeder extends Seeder
             'gender' => 'Male',
             'profession' => 'Armed Forces',
             'educational_background' => "Associate's Degree",
-            'response_data' => '{"sus": {
-                            "sus1": 4,
-                            "sus2": 3,
-                            "sus3": 5,
-                            "sus4": 2,
-                            "sus5": 4,
-                            "sus6": 3,
-                            "sus7": 4,
-                            "sus8": 5,
-                            "sus9": 3,
-                            "sus10": 4
-                        },
-                        "tam": {
-                            "tam1": 5,
-                            "tam2": 4,
-                            "tam3": 3,
-                            "tam4": 2,
-                            "tam5": 4,
-                            "tam6": 3,
-                            "tam7": 5,
-                            "tam8": 4,
-                            "tam9": 3,
-                            "tam10": 5,
-                            "tam11": 2,
-                            "tam12": 3,
-                            "tam13": 5,
-                            "tam14": 5,
-                            "tam15": 5,
-                            "tam16": 3,
-                            "tam17": 4,
-                            "tam18": 3,
-                            "tam19": 4,
-                            "tam20": 3,
-                            "tam21": 5,
-                            "tam22": 5,
-                            "tam23": 4
-                        }
-                    }',
+            'response_data' => '{
+                                "sus": {
+                                    "sus1": 1,
+                                    "sus2": 3,
+                                    "sus3": 3,
+                                    "sus4": 1,
+                                    "sus5": 3,
+                                    "sus6": 2,
+                                    "sus7": 2,
+                                    "sus8": 5,
+                                    "sus9": 3,
+                                    "sus10": 4
+                                },
+                                "tam": [
+                                    {
+                                    "name": "PEU",
+                                    "responses": [
+                                        {
+                                        "name": "Kemudahan dipelajari",
+                                        "value": [
+                                            [
+                                            "tam1",
+                                            5
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Mudah dipahami/dimengerti",
+                                        "value": [
+                                            [
+                                            "tam2",
+                                            5
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Mudah sehingga mahir",
+                                        "value": [
+                                            [
+                                            "tam3",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Mudah digunakan",
+                                        "value": [
+                                            [
+                                            "tam4",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Mudah dikendalikan",
+                                        "value": [
+                                            [
+                                            "tam5",
+                                            3
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Mudah diingat",
+                                        "value": [
+                                            [
+                                            "tam6",
+                                            3
+                                            ]
+                                        ]
+                                        }
+                                    ]
+                                    },
+                                    {
+                                    "name": "PU",
+                                    "responses": [
+                                        {
+                                        "name": "Lebih cepat",
+                                        "value": [
+                                            [
+                                            "tam7",
+                                            5
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Meningkatkan kinerja",
+                                        "value": [
+                                            [
+                                            "tam8",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Meningkatkan produktivitas",
+                                        "value": [
+                                            [
+                                            "tam9",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Meningkatkan efektivitas",
+                                        "value": [
+                                            [
+                                            "tam10",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Lebih mudah",
+                                        "value": [
+                                            [
+                                            "tam11",
+                                            3
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Bermanfaat",
+                                        "value": [
+                                            [
+                                            "tam12",
+                                            4
+                                            ]
+                                        ]
+                                        }
+                                    ]
+                                    },
+                                    {
+                                    "name": "ATU",
+                                    "responses": [
+                                        {
+                                        "name": "Rasa senang",
+                                        "value": [
+                                            [
+                                            "tam13",
+                                            3
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Menikmati",
+                                        "value": [
+                                            [
+                                            "tam14",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Rasa bosan",
+                                        "value": [
+                                            [
+                                            "tam15",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Tidak suka",
+                                        "value": [
+                                            [
+                                            "tam16",
+                                            2
+                                            ]
+                                        ]
+                                        }
+                                    ]
+                                    },
+                                    {
+                                    "name": "BI",
+                                    "responses": [
+                                        {
+                                        "name": "Menggunakan kapan saja",
+                                        "value": [
+                                            [
+                                            "tam17",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Menggunakan kondisi apapun",
+                                        "value": [
+                                            [
+                                            "tam18",
+                                            3
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Niat menggunakan terus",
+                                        "value": [
+                                            [
+                                            "tam19",
+                                            5
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Berharap menggunakan",
+                                        "value": [
+                                            [
+                                            "tam20",
+                                            5
+                                            ]
+                                        ]
+                                        }
+                                    ]
+                                    },
+                                    {
+                                    "name": "ASU",
+                                    "responses": [
+                                        {
+                                        "name": "Frekuensi penggunaan",
+                                        "value": [
+                                            [
+                                            "tam21",
+                                            3
+                                            ],
+                                            [
+                                            "tam22",
+                                            4
+                                            ]
+                                        ]
+                                        },
+                                        {
+                                        "name": "Durasi penggunaan",
+                                        "value": [
+                                            [
+                                            "tam23",
+                                            4
+                                            ]
+                                        ]
+                                        }
+                                    ]
+                                    }
+                                ]
+                            }',
             'survey_id' => 1
         ]);
 
@@ -266,44 +1291,249 @@ class responsesTableSeeder extends Seeder
             'gender' => 'Female',
             'profession' => 'Police',
             'educational_background' => "Junior High School",
-            'response_data' => '{"sus": {
-                            "sus1": 3,
-                            "sus2": 2,
-                            "sus3": 4,
-                            "sus4": 5,
-                            "sus5": 3,
-                            "sus6": 4,
-                            "sus7": 2,
-                            "sus8": 3,
-                            "sus9": 4,
-                            "sus10": 2
-                        },
-                        "tam": {
-                            "tam1": 5,
-                            "tam2": 5,
-                            "tam3": 5,
-                            "tam4": 5,
-                            "tam5": 5,
-                            "tam6": 5,
-                            "tam7": 5,
-                            "tam8": 5,
-                            "tam9": 5,
-                            "tam10": 5,
-                            "tam11": 5,
-                            "tam12": 5,
-                            "tam13": 5,
-                            "tam14": 5,
-                            "tam15": 5,
-                            "tam16": 5,
-                            "tam17": 5,
-                            "tam18": 5,
-                            "tam19": 5,
-                            "tam20": 5,
-                            "tam21": 5,
-                            "tam22": 5,
-                            "tam23": 5
-                        }
-                    }',
+            'response_data' => '{
+                                  "sus": {
+                                    "sus1": 1,
+                                    "sus2": 3,
+                                    "sus3": 3,
+                                    "sus4": 1,
+                                    "sus5": 3,
+                                    "sus6": 2,
+                                    "sus7": 2,
+                                    "sus8": 5,
+                                    "sus9": 3,
+                                    "sus10": 4
+                                  },
+                                  "tam": [
+                                    {
+                                      "name": "PEU",
+                                      "responses": [
+                                        {
+                                          "name": "Kemudahan dipelajari",
+                                          "value": [
+                                            [
+                                              "tam1",
+                                              5
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Mudah dipahami/dimengerti",
+                                          "value": [
+                                            [
+                                              "tam2",
+                                              5
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Mudah sehingga mahir",
+                                          "value": [
+                                            [
+                                              "tam3",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Mudah digunakan",
+                                          "value": [
+                                            [
+                                              "tam4",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Mudah dikendalikan",
+                                          "value": [
+                                            [
+                                              "tam5",
+                                              3
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Mudah diingat",
+                                          "value": [
+                                            [
+                                              "tam6",
+                                              3
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "PU",
+                                      "responses": [
+                                        {
+                                          "name": "Lebih cepat",
+                                          "value": [
+                                            [
+                                              "tam7",
+                                              5
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Meningkatkan kinerja",
+                                          "value": [
+                                            [
+                                              "tam8",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Meningkatkan produktivitas",
+                                          "value": [
+                                            [
+                                              "tam9",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Meningkatkan efektivitas",
+                                          "value": [
+                                            [
+                                              "tam10",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Lebih mudah",
+                                          "value": [
+                                            [
+                                              "tam11",
+                                              3
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Bermanfaat",
+                                          "value": [
+                                            [
+                                              "tam12",
+                                              4
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "ATU",
+                                      "responses": [
+                                        {
+                                          "name": "Rasa senang",
+                                          "value": [
+                                            [
+                                              "tam13",
+                                              3
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Menikmati",
+                                          "value": [
+                                            [
+                                              "tam14",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Rasa bosan",
+                                          "value": [
+                                            [
+                                              "tam15",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Tidak suka",
+                                          "value": [
+                                            [
+                                              "tam16",
+                                              2
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "BI",
+                                      "responses": [
+                                        {
+                                          "name": "Menggunakan kapan saja",
+                                          "value": [
+                                            [
+                                              "tam17",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Menggunakan kondisi apapun",
+                                          "value": [
+                                            [
+                                              "tam18",
+                                              3
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Niat menggunakan terus",
+                                          "value": [
+                                            [
+                                              "tam19",
+                                              5
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Berharap menggunakan",
+                                          "value": [
+                                            [
+                                              "tam20",
+                                              5
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "ASU",
+                                      "responses": [
+                                        {
+                                          "name": "Frekuensi penggunaan",
+                                          "value": [
+                                            [
+                                              "tam21",
+                                              3
+                                            ],
+                                            [
+                                              "tam22",
+                                              4
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "name": "Durasi penggunaan",
+                                          "value": [
+                                            [
+                                              "tam23",
+                                              4
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }',
             'survey_id' => 1
         ]);
     }

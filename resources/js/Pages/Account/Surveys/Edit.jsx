@@ -189,12 +189,10 @@ export default function SurveyEdit() {
     });
 
     tamQuestionsData.forEach((item) => {
-        // Check if the variable already exists in tamJson
         let variableIndex = tamJson.findIndex(
             (element) => element.name === item.variable
         );
 
-        // If the variable doesn't exist, create a new entry
         if (variableIndex === -1) {
             let variable = {
                 name: item.variable,
@@ -207,7 +205,6 @@ export default function SurveyEdit() {
             };
             tamJson.push(variable);
         } else {
-            // If the variable exists, add the question to its corresponding indicator
             let indicatorIndex = tamJson[variableIndex].indicators.findIndex(
                 (element) => element.name === item.indicator
             );

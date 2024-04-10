@@ -54,11 +54,11 @@ const renderDescriptiveStatisticsTable = (data) => {
             <tbody>
                 {data.map((result, index) => (
                     <tr key={index}>
-                        <td>{result.variable}</td>
-                        <td>{result.nI}</td>
-                        <td>{result.sum_SK}</td>
-                        <td>{result.sum_SH}</td>
-                        <td>{result.P}</td>
+                        <td>{result["variable"]}</td>
+                        <td>{result["nI"]}</td>
+                        <td>{result["sum_SK"]}</td>
+                        <td>{result["sum_SH"]}</td>
+                        <td>{result["P"]}</td>
                     </tr>
                 ))}
             </tbody>

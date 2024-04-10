@@ -19,7 +19,7 @@ const TableDashboard = ({ surveys }) => {
                 </thead>
                 <tbody>
                     {surveys.map((survey, index) => (
-                        <tr key={survey.id}>
+                        <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{survey.title}</td>
                             <td>{survey.response_count}</td>

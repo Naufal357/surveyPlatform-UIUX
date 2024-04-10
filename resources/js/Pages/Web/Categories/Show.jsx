@@ -1,7 +1,7 @@
 import React from "react";
 import LayoutWeb from "../../../Layouts/Header";
 import { Head, usePage } from "@inertiajs/inertia-react";
-import CardSurvey from "../../../Components/CardSurvey";
+import CardItem from "../../../Components/CardItem";
 
 export default function CategoryShow() {
     const { category, surveys, auth } = usePage().props;
@@ -29,9 +29,10 @@ export default function CategoryShow() {
                                             className="col-md-4 mb-4 col-6"
                                             key={index}
                                         >
-                                            <CardSurvey
-                                                survey={survey}
-                                                key={index}
+                                            <CardItem
+                                                type={"survey"}
+                                                data={survey}
+                                                link={`/form/${survey.id}/${survey.slug}`}
                                             />
                                         </div>
                                     ))}

@@ -201,7 +201,7 @@ export default function Dashboard() {
                                 )}
                             </AccordionLayout>
 
-                            <AccordionLayout
+                            {/* <AccordionLayout
                                 title="Hasil Statistik Inferensial"
                                 defaultOpen={true}
                             >
@@ -217,7 +217,7 @@ export default function Dashboard() {
                                         Tidak ada data
                                     </div>
                                 )}
-                            </AccordionLayout>
+                            </AccordionLayout> */}
 
                             <AccordionLayout
                                 title="Data Responses TAM"

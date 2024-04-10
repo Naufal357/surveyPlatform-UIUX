@@ -11,7 +11,7 @@ import RadioSelect from "../../../Components/RadioSelect";
 import AccordionLayout from "../../../Layouts/Accordion";
 import Swal from "sweetalert2";
 
-export default function CategoryCreate() {
+export default function SurveysCreate() {
     const { errors, auth, categories, methods, surveyQuestionsExample } =
         usePage().props;
 

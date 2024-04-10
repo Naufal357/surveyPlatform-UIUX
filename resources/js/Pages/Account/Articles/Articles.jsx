@@ -8,36 +8,34 @@ import CardContent from "../../../Layouts/CardContent";
 import Swal from "sweetalert2";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 
-export default function SurveyIndex() {
-    const { auth, surveys } = usePage().props;
+export default function articleIndex() {
+    const { articles } = usePage().props;
     return (
         <>
             <Head>
-                <title>Surveys - Survey Platform</title>
+                <title>articles - article Platform</title>
             </Head>
             <LayoutAccount>
                 <div className="row mt-5">
                     <div className="col-md-8">
                         <div className="row">
-                            {hasAnyPermission(["surveys.create"]) && (
-                                <div className="col-md-3 col-12 mb-2">
-                                    <Link
-                                        href="/account/surveys/create"
-                                        className="btn btn-md btn-success border-0 shadow w-100"
-                                        type="button"
-                                    >
-                                        <i className="fa fa-plus-circle me-2"></i>
-                                        Add
-                                    </Link>
-                                </div>
-                            )}
+                            <div className="col-md-3 col-12 mb-2">
+                                <Link
+                                    href="/account/articles/create"
+                                    className="btn btn-md btn-success border-0 shadow w-100"
+                                    type="button"
+                                >
+                                    <i className="fa fa-plus-circle me-2"></i>
+                                    Add
+                                </Link>
+                            </div>
                             <div className="col-md-9 col-12 mb-2">
-                                <Search URL={"/account/surveys/"} />
+                                <Search URL={"/account/articles/"} />
                             </div>
                         </div>
                     </div>
                 </div>
-                <CardContent title="Surveys Directory" icon="fa fa-folder">
+                <CardContent title="Articles Directory" icon="fa fa-newspaper">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped table-hovered">
                             <thead>
@@ -46,7 +44,7 @@ export default function SurveyIndex() {
                                         No.
                                     </th>
                                     <th scope="col" style={{ width: "10%" }}>
-                                        Survey Title
+                                        Article Title
                                     </th>
                                     {hasAnyPermission([
                                         "surveys.index.full",
@@ -58,9 +56,6 @@ export default function SurveyIndex() {
                                             Creator Name
                                         </th>
                                     )}
-                                    <th scope="col" style={{ width: "8%" }}>
-                                        Theme
-                                    </th>
                                     <th scope="col" style={{ width: "12%" }}>
                                         Updated At
                                     </th>
@@ -73,58 +68,50 @@ export default function SurveyIndex() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {surveys.data.map((survey, index) => {
-                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.id}/${survey.slug}`;
-
+                                {articles.data.map((article, index) => {
+                                    const articleUrl = `http://127.0.0.1:8000/articles/${article.id}/${article.slug}`;
                                     return (
                                         <tr key={index}>
                                             <td className="text-center">
                                                 {++index +
-                                                    (surveys.current_page - 1) *
-                                                        surveys.per_page}
+                                                    (articles.current_page -
+                                                        1) *
+                                                        articles.per_page}
                                             </td>
-                                            <td>{survey.title}</td>
+                                            <td>{article.title}</td>
                                             {hasAnyPermission([
                                                 "surveys.index.full",
                                             ]) && (
                                                 <td>
-                                                    {`${survey.user.first_name} ${survey.user.surname}`}
+                                                    {`${article.user.first_name} ${article.user.surname}`}
                                                 </td>
                                             )}
-                                            <td>{survey.theme}</td>
-                                            <td>{survey.updated_at}</td>
+                                            <td>{article.updated_at}</td>
                                             <td className="text-center">
                                                 <img
-                                                    src={survey.image}
+                                                    src={article.image}
                                                     className="rounded-3"
                                                     width={"100"}
                                                 />
                                             </td>
                                             <td className="text-center">
-                                                {hasAnyPermission([
-                                                    "surveys.edit",
-                                                ]) && (
-                                                    <Link
-                                                        href={`/account/surveys/${survey.id}/edit`}
-                                                        className="btn btn-primary btn-sm m-2"
-                                                    >
-                                                        <i className="fa fa-pencil-alt"></i>
-                                                    </Link>
-                                                )}
-                                                {hasAnyPermission([
-                                                    "surveys.delete",
-                                                ]) && (
-                                                    <Delete
-                                                        URL={"/account/surveys"}
-                                                        id={survey.id}
-                                                    />
-                                                )}
+                                                <Link
+                                                    href={`/account/articles/${article.id}/edit`}
+                                                    className="btn btn-primary btn-sm m-2"
+                                                >
+                                                    <i className="fa fa-pencil-alt"></i>
+                                                </Link>
+
+                                                <Delete
+                                                    URL={"/account/articles"}
+                                                    id={article.id}
+                                                />
                                                 <button
                                                     className="btn btn-success btn-sm m-2"
                                                     onClick={() => {
                                                         Swal.fire({
-                                                            title: "Bagikan Survey",
-                                                            html: `<p>Salin URL di bawah :</p><input id="urlInput" type="text" value="${surveyUrl}" readOnly>`,
+                                                            title: "Bagikan article",
+                                                            html: `<p>Salin URL di bawah :</p><input id="urlInput" type="text" value="${articleUrl}" readOnly>`,
                                                             showCancelButton: true,
                                                             showConfirmButton: false,
                                                         });
@@ -135,7 +122,7 @@ export default function SurveyIndex() {
                                                 <button
                                                     className="btn btn-primary btn-sm m-2"
                                                     onClick={() =>
-                                                        window.open(surveyUrl)
+                                                        window.open(articleUrl)
                                                     }
                                                 >
                                                     <i className="fa fa-external-link-alt"></i>
@@ -148,7 +135,7 @@ export default function SurveyIndex() {
                         </table>
                     </div>
 
-                    <Pagination links={surveys.links} align={"end"} />
+                    <Pagination links={articles.links} align={"end"} />
                 </CardContent>
             </LayoutAccount>
         </>

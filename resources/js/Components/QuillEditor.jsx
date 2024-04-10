@@ -1,30 +1,49 @@
 import React, { useState } from "react";
+import Quill from "quill";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import stylesheet Quill.js
+import BlotFormatter from "quill-blot-formatter";
+import "react-quill/dist/quill.snow.css";
+
+Quill.register("modules/blotFormatter", BlotFormatter);
 
 function QuillEditor({ value, onChange, label, error }) {
     const modules = {
+        blotFormatter: {},
         toolbar: [
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
             [{ font: [] }],
-            ["bold", "italic"],
-            ["link"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ script: "sub" }, { script: "super" }],
-            [{ color: [] }, { background: [] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [
+                { list: "ordered" },
+                { list: "bullet" },
+                { indent: "-1" },
+                { indent: "+1" },
+            ],
+            [{ script: "sub" }, { script: "super" }, "blockquote"],
+            [{ align: [] }, { color: [] }, { background: [] }],
+            ["link", "image"],
         ],
+        clipboard: {
+            matchVisual: false,
+        },
     };
-
     const formats = [
-        "header",
         "font",
+        "header",
         "bold",
         "italic",
-        "link",
-        "list",
+        "underline",
+        "strike",
+        "ordered",
+        "bullet",
+        "indent",
         "script",
+        "blockquote",
+        "align",
         "color",
         "background",
+        "link",
+        "image",
     ];
 
     return (

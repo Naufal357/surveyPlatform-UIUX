@@ -31,6 +31,7 @@ class TamController extends Controller
     public function show(Request $request, $id)
     {
         $userID = auth()->user()->id;
+        $responsesFormated = [];
 
         $survey = Survey::find($id);
         if ($survey->user_id !== $userID) {
@@ -47,24 +48,59 @@ class TamController extends Controller
             ->where('response_data', 'LIKE', '%"tam"%')
             ->get();
 
+        // Mulai - Format data TAM - responsesFormated
+        $responsesFormatedJson = [];
+
+        foreach ($responses as $response) {
+            $responseDataFormated = [];
+
+            $responseData = json_decode($response->response_data, true);
+
+            if (!isset($responseDataFormated['response_data'])) {
+                $responseDataFormated['response_data'] = [];
+            }
+
+            if (isset($responseData['sus'])) {
+                $responseDataFormated['response_data']['sus'] = $responseData['sus'];
+            }
+
+            $tamFormatted = [];
+            foreach ($responseData['tam'] as $category) {
+                foreach ($category['responses'] as $response) {
+                    foreach ($response['value'] as $value) {
+                        $tamFormatted[$value[0]] = $value[1];
+                    }
+                }
+            }
+            $responseDataFormated['response_data']['tam'] = $tamFormatted;
+            $responsesFormatedJson[] = json_encode($responseDataFormated);
+        }
+
+        foreach ($responses as $response) {
+            $responseCopy = clone $response;
+            $responseCopy->response_data = $responsesFormatedJson[$response->id - 1];
+            $responsesFormated[] = $responseCopy;
+        }
+        // Akhir - Format data TAM - responsesFormated
+
         $tamQustions = SurveyQuestions::where('survey_id', $id)->get();
 
         $respondents = $this->countRespondents($id, $responses);
 
-        $respondentCount = $this->countRespondents($id, $responses);
-        $getTAMChartData = $this->getTAMChartData($id, $responses);
-        $tamSurveyResults = $this->getTAMResults($responses);
-        $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses, $this->variables);
-        $calculateRegression = $this->getCalculateRegression($respondents, $this->variables, $responses);
+        $respondentCount = $this->countRespondents($id, $responsesFormated);
+        $getTAMChartData = $this->getTAMChartData($id, $responsesFormated);
+        $tamSurveyResults = $this->getTAMResults($responsesFormated);
+        $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses);
+        // $calculateRegression = $this->getCalculateRegression($respondents, $responses);
 
         return inertia('Account/TAM/Index', [
             'surveyTitles' => $surveyTitles,
             'survey' => $survey,
-            'responses' => $responses,
+            'responsesFormated' => $responsesFormated,
             'respondentCount' => $respondentCount,
             'getTAMChartData' => $getTAMChartData,
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
-            'calculateRegression' => $calculateRegression,
+            // 'calculateRegression' => $calculateRegression,
             'tamSurveyResults' => $tamSurveyResults,
             'tamQustions' => $tamQustions
         ])->with('currentSurveyTitle', $survey->title);
@@ -108,21 +144,20 @@ class TamController extends Controller
         ],
     ];
 
-    private function countRespondents($surveyId, $responses)
+    private function countRespondents($surveyId, $responsesFormated)
     {
-        $totalResponsesWithTAM = collect($responses)->filter(function ($response) {
+        $totalResponsesWithTAM = collect($responsesFormated)->filter(function ($response) {
             return isset(json_decode($response->response_data)->tam);
         })->count();
 
         return $totalResponsesWithTAM;
     }
 
-    private function getTAMChartData($survey_id, $responses)
+    private function getTAMChartData($survey_id, $responsesFormated)
     {
         $tam_data = [];
-
-        foreach ($responses as $response) {
-            $responseData = json_decode($response->response_data, true)['tam'];
+        foreach ($responsesFormated as $response) {
+            $responseData = json_decode($response->response_data, true)['response_data']['tam'];
 
             foreach ($responseData as $question => $answer) {
                 if (!isset($tam_data[$question])) {
@@ -136,51 +171,61 @@ class TamController extends Controller
         return response()->json($tam_data);
     }
 
-    private function getCalculateDescriptiveStatistics($respondents, $responses, $variables)
+    private function getCalculateDescriptiveStatistics($respondents, $responses)
     {
         $descriptiveStatistics = [];
 
-        foreach ($variables as $variable) {
-            $sum_sh = 0;
+        foreach ($responses as $response) {
+            $responseData = json_decode($response->response_data, true);
+            $maxValues = [];
+            $sumValues = [];
+            $formattedTamArray = [];
 
-            foreach ($responses as $response) {
-                $responseData = json_decode($response->response_data, true);
-                if (isset($responseData['tam'])) {
-                    for ($i = $variable['start_question']; $i <= $variable['end_question']; $i++) {
-                        $questionKey = 'tam' . $i;
-                        if (isset($responseData['tam'][$questionKey])) {
-                            $sum_sh += $responseData['tam'][$questionKey];
-                        }
-                    }
+            foreach ($responseData['tam'] as $category) {
+                $formattedResponses = [];
+                foreach ($category['responses'] as $response) {
+                    $formattedResponses[$response['value'][0][0]] = $response['value'][0][1];
                 }
+                $formattedTamArray[$category['name']] = $formattedResponses;
             }
 
-            $sum_sk = $variable['questions'] * $variable['max_score'] * $respondents;
-            $p = 0;
+            foreach ($formattedTamArray as $category => $responses) {
+                $maxValue = count($responses) * 5;
+                $sumValue = array_sum($responses);
 
-            if ($sum_sk != 0) {
-                $p = ($sum_sh / $sum_sk) * 100;
+                $maxValues[$category] = $maxValue;
+                $sumValues[$category] = $sumValue;
+            }
+        }
+
+        $descriptiveStatistics = [];
+        foreach ($maxValues as $category => $maxValue) {
+            $sumValue = $sumValues[$category];
+            $p = 0;
+            if ($sumValue != 0) {
+                $p = ($sumValue / $maxValue) * 100;
             }
 
             $descriptiveStatistics[] = [
-                'variable' => $variable['name'],
-                'nI' => $variable['questions'],
-                'sum_SK' => $sum_sk,
-                'sum_SH' => $sum_sh,
+                'variable' => $category,
+                'nI' => count($formattedTamArray[$category]),
+                'sum_SK' => $maxValue,
+                'sum_SH' => $sumValue,
                 'P' => number_format($p, 2) . '%',
             ];
         }
+
         return $descriptiveStatistics;
     }
 
-    private function getCalculateRegression($respondents, $variables, $responses)
+    private function getCalculateRegression($respondents, $responsesFormated)
     {
         $PU = [];
         $PEU = [];
         $ATU = [];
         $BI = [];
         $ASU = [];
-
+        // dd($respondents, $responsesFormated);
         $avg_PU = 0;
         $avg_PEU = 0;
         $avg_ATU = 0;
@@ -194,9 +239,9 @@ class TamController extends Controller
 
             $variableValues = [];
 
-            foreach ($responses as $response) {
+            foreach ($responsesFormated as $response) {
                 $responseData = json_decode($response->response_data, true);
-                $values = array_values(array_slice($responseData['tam'], $startQuestion - 1, $endQuestion - $startQuestion + 1));
+                $values = array_values(array_slice($responseData['response_data']['tam'], $startQuestion - 1, $endQuestion - $startQuestion + 1));
                 $variableValues[] = array_sum($values);
             }
 
@@ -268,12 +313,12 @@ class TamController extends Controller
 
 
 
-    private function getTamResults($responses)
+    private function getTamResults($responsesFormated)
     {
         $tamSurveyResults = [];
 
-        foreach ($responses as $response) {
-            $responseData = json_decode($response->response_data, true)['tam'];
+        foreach ($responsesFormated as $response) {
+            $responseData = json_decode($response->response_data, true)['response_data']['tam'];
 
             $tamSurveyResults[] = [
                 'id' => $response->id,
