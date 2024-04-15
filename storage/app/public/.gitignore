@@ -1,2 +1,10 @@
 *
 !.gitignore
+
+# Include specific files you want to upload in articles folder
+!articles/
+!articles/*
+
+# Include specific files you want to upload in surveys folder
+!surveys/
+!surveys/*
