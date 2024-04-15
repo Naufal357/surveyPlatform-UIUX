@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
 use App\Models\SurveyQuestions;
@@ -65,8 +66,8 @@ class TamController extends Controller
             }
 
             $tamFormatted = [];
-            foreach ($responseData['tam'] as $category) {
-                foreach ($category['responses'] as $response) {
+            foreach ($responseData['tam'] as $variable) {
+                foreach ($variable['responses'] as $response) {
                     foreach ($response['value'] as $value) {
                         $tamFormatted[$value[0]] = $value[1];
                     }
@@ -89,6 +90,7 @@ class TamController extends Controller
 
         $respondentCount = $this->countRespondents($id, $responsesFormated);
         $getTAMChartData = $this->getTAMChartData($id, $responsesFormated);
+        $demographicRespondents = $this->demographicRespondents($responses);
         $tamSurveyResults = $this->getTAMResults($responsesFormated);
         $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses);
         // $calculateRegression = $this->getCalculateRegression($respondents, $responses);
@@ -98,6 +100,7 @@ class TamController extends Controller
             'survey' => $survey,
             'responsesFormated' => $responsesFormated,
             'respondentCount' => $respondentCount,
+            'demographicRespondents' => $demographicRespondents,
             'getTAMChartData' => $getTAMChartData,
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
             // 'calculateRegression' => $calculateRegression,
@@ -146,11 +149,69 @@ class TamController extends Controller
 
     private function countRespondents($surveyId, $responsesFormated)
     {
-        $totalResponsesWithTAM = collect($responsesFormated)->filter(function ($response) {
-            return isset(json_decode($response->response_data)->tam);
-        })->count();
+        $totalResponsesWithTAM = SurveyResponses::where('survey_id', $surveyId)
+            ->where('response_data', 'LIKE', '%"sus"%')
+            ->count();
 
         return $totalResponsesWithTAM;
+    }
+
+    private function demographicRespondents($responses)
+    {
+        if ($responses->isEmpty()) {
+            return null;
+        }
+
+        $demographics = [
+            'gender' => [],
+            'profession' => [],
+            'educational_background' => [],
+            'age' => []
+        ];
+
+        foreach ($responses as $response) {
+            foreach ($demographics as $key => $value) {
+                if ($key === 'age') {
+                    $age_category = $this->categorizeAge($response['birth_date']);
+                    if (isset($demographics[$key][$age_category])) {
+                        $demographics[$key][$age_category]++;
+                    } else {
+                        $demographics[$key][$age_category] = 1;
+                    }
+                } else {
+                    if (isset($demographics[$key][$response[$key]])) {
+                        $demographics[$key][$response[$key]]++;
+                    } else {
+                        $demographics[$key][$response[$key]] = 1;
+                    }
+                }
+            }
+        }
+
+        return $demographics;
+    }
+
+
+    private function categorizeAge($birth_date)
+    {
+        $birth_date = Carbon::parse($birth_date);
+        $age = $birth_date->age;
+
+        if ($age < 18) {
+            return '0-17';
+        } elseif ($age >= 18 && $age < 25) {
+            return '18-24';
+        } elseif ($age >= 25 && $age < 35) {
+            return '25-34';
+        } elseif ($age >= 35 && $age < 45) {
+            return '35-44';
+        } elseif ($age >= 45 && $age < 55) {
+            return '45-54';
+        } elseif ($age >= 55 && $age < 65) {
+            return '55-64';
+        } else {
+            return '65+';
+        }
     }
 
     private function getTAMChartData($survey_id, $responsesFormated)
@@ -181,34 +242,42 @@ class TamController extends Controller
             $sumValues = [];
             $formattedTamArray = [];
 
-            foreach ($responseData['tam'] as $category) {
+            foreach ($responseData['tam'] as $variable) {
                 $formattedResponses = [];
-                foreach ($category['responses'] as $response) {
-                    $formattedResponses[$response['value'][0][0]] = $response['value'][0][1];
+
+                foreach ($variable['responses'] as $indicator) {
+                    if (isset($indicator['value']) && is_array($indicator['value'])) {
+                        foreach ($indicator['value'] as $value) {
+                            $indicatorName = $value[0];
+                            $indicatorValue = $value[1];
+                            $formattedResponses[$indicatorName] = $indicatorValue;
+                        }
+                    }
                 }
-                $formattedTamArray[$category['name']] = $formattedResponses;
+
+                $formattedTamArray[$variable['name']] = $formattedResponses;
             }
 
-            foreach ($formattedTamArray as $category => $responses) {
+            foreach ($formattedTamArray as $variable => $responses) {
                 $maxValue = count($responses) * 5;
                 $sumValue = array_sum($responses);
 
-                $maxValues[$category] = $maxValue;
-                $sumValues[$category] = $sumValue;
+                $maxValues[$variable] = $maxValue;
+                $sumValues[$variable] = $sumValue;
             }
         }
 
         $descriptiveStatistics = [];
-        foreach ($maxValues as $category => $maxValue) {
-            $sumValue = $sumValues[$category];
+        foreach ($maxValues as $variable => $maxValue) {
+            $sumValue = $sumValues[$variable];
             $p = 0;
             if ($sumValue != 0) {
                 $p = ($sumValue / $maxValue) * 100;
             }
 
             $descriptiveStatistics[] = [
-                'variable' => $category,
-                'nI' => count($formattedTamArray[$category]),
+                'variable' => $variable,
+                'nI' => count($formattedTamArray[$variable]),
                 'sum_SK' => $maxValue,
                 'sum_SH' => $sumValue,
                 'P' => number_format($p, 2) . '%',
@@ -220,50 +289,67 @@ class TamController extends Controller
 
     private function getCalculateRegression($respondents, $responsesFormated)
     {
-        $PU = [];
-        $PEU = [];
-        $ATU = [];
-        $BI = [];
-        $ASU = [];
-        // dd($respondents, $responsesFormated);
-        $avg_PU = 0;
-        $avg_PEU = 0;
-        $avg_ATU = 0;
-        $avg_BI = 0;
-        $avg_ASU = 0;
+        $responseData = json_decode($responsesFormated[0]->response_data, true);
+        $variablesAnswerCount = [];
+        $variableValues = [];
 
-        foreach ($variables as $variable) {
-            $variableName = $variable['name'];
-            $startQuestion = $variable['start_question'];
-            $endQuestion = $variable['end_question'];
+        foreach ($responseData['tam'] as $variable) {
+            $tamCount = 0;
 
-            $variableValues = [];
+            foreach ($variable['responses'] as $indicator) {
+                if (isset($indicator['value']) && is_array($indicator['value'])) {
+                    foreach ($indicator['value'] as $value) {
+                        $tamCount += 1;
+                    }
+                }
+            }
+            $variablesAnswerCount[$variable['name']] = $tamCount;
+        }
 
-            foreach ($responsesFormated as $response) {
-                $responseData = json_decode($response->response_data, true);
-                $values = array_values(array_slice($responseData['response_data']['tam'], $startQuestion - 1, $endQuestion - $startQuestion + 1));
-                $variableValues[] = array_sum($values);
+        foreach ($responsesFormated as $response) {
+            $responseData = json_decode($response->response_data, true);
+            $values = $responseData['tam'];
+
+            foreach ($values as $value) {
+                $variableName = $value['name'];
+                $responseCount = 0;
+
+                foreach ($value['responses'] as $response) {
+                    foreach ($response['value'] as $value) {
+                        $responseCount += $value[1];
+                    }
+                }
+
+                if (!isset($variableValues[$variableName])) {
+                    $variableValues[$variableName] = 0;
+                }
+                $variableValues[$variableName] += $responseCount;
             }
 
-            $variableCount = count($variableValues);
-            $avg = $variableCount ? array_sum($variableValues) / $variableCount : 0;
+        }
 
-            if ($variableName == 'Perceived Ease of Use') {
-                $PU = $variableValues;
-                $avg_PU = $avg;
-            } elseif ($variableName == 'Perceived Usefulness') {
-                $PEU = $variableValues;
-                $avg_PEU = $avg;
-            } elseif ($variableName == 'Attitude Toward Using') {
-                $ATU = $variableValues;
-                $avg_ATU = $avg;
-            } elseif ($variableName == 'Behavioral intention to use') {
-                $BI = $variableValues;
-                $avg_BI = $avg;
-            } elseif ($variableName == 'Actual System use') {
-                $ASU = $variableValues;
-                $avg_ASU = $avg;
-            }
+        foreach ($variableValues as $key => $value) {
+            $avg[$key]['valueTotal'] = $variableValues[$key];
+            $avg[$key]['count'] = $variablesAnswerCount[$key];
+            $avg[$key]['avg'] = $value / $variablesAnswerCount[$key];
+            $avg[$key]['maxValue'] = $variablesAnswerCount[$key] * 5 * $respondents;
+        }
+        // dd($avg);
+        if ($variableName == 'Perceived Ease of Use') {
+            $PU = $variableValues;
+            $avg_PU = $avg;
+        } elseif ($variableName == 'Perceived Usefulness') {
+            $PEU = $variableValues;
+            $avg_PEU = $avg;
+        } elseif ($variableName == 'Attitude Toward Using') {
+            $ATU = $variableValues;
+            $avg_ATU = $avg;
+        } elseif ($variableName == 'Behavioral intention to use') {
+            $BI = $variableValues;
+            $avg_BI = $avg;
+        } elseif ($variableName == 'Actual System use') {
+            $ASU = $variableValues;
+            $avg_ASU = $avg;
         }
 
         $PEU_PU = $this->calculateRegressionCoefficient($PEU, $PU, $avg_PEU, $avg_PU);

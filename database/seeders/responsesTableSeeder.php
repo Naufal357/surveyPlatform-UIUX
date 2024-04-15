@@ -202,7 +202,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -211,7 +211,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -273,7 +273,7 @@ class responsesTableSeeder extends Seeder
             'email' => 'jane.doe@example.com',
             'birth_date' => '1990-12-31',
             'gender' => 'Female',
-            'profession' => 'other',
+            'profession' => 'Other',
             'educational_background' => "Master's Degree",
             'response_data' => '{
                                     "sus": {
@@ -456,7 +456,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -465,7 +465,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -710,7 +710,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -728,7 +728,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -737,7 +737,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam20",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             }
@@ -964,7 +964,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -973,7 +973,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -1212,44 +1212,44 @@ class responsesTableSeeder extends Seeder
                                     },
                                     {
                                     "name": "BI",
-                                    "responses": [
-                                        {
-                                        "name": "Menggunakan kapan saja",
-                                        "value": [
-                                            [
-                                            "tam17",
-                                            4
+                                        "responses": [
+                                            {
+                                            "name": "Menggunakan kapan saja",
+                                            "value": [
+                                                [
+                                                "tam17",
+                                                5
+                                                ]
                                             ]
-                                        ]
-                                        },
-                                        {
-                                        "name": "Menggunakan kondisi apapun",
-                                        "value": [
-                                            [
-                                            "tam18",
-                                            3
+                                            },
+                                            {
+                                            "name": "Menggunakan kondisi apapun",
+                                            "value": [
+                                                [
+                                                "tam18",
+                                                5
+                                                ]
                                             ]
-                                        ]
-                                        },
-                                        {
-                                        "name": "Niat menggunakan terus",
-                                        "value": [
-                                            [
-                                            "tam19",
-                                            5
+                                            },
+                                            {
+                                            "name": "Niat menggunakan terus",
+                                            "value": [
+                                                [
+                                                "tam19",
+                                                5
+                                                ]
                                             ]
-                                        ]
-                                        },
-                                        {
-                                        "name": "Berharap menggunakan",
-                                        "value": [
-                                            [
-                                            "tam20",
-                                            5
+                                            },
+                                            {
+                                            "name": "Berharap menggunakan",
+                                            "value": [
+                                                [
+                                                "tam20",
+                                                5
+                                                ]
                                             ]
+                                            }
                                         ]
-                                        }
-                                    ]
                                     },
                                     {
                                     "name": "ASU",
@@ -1466,44 +1466,44 @@ class responsesTableSeeder extends Seeder
                                     },
                                     {
                                       "name": "BI",
-                                      "responses": [
-                                        {
-                                          "name": "Menggunakan kapan saja",
-                                          "value": [
-                                            [
-                                              "tam17",
-                                              4
+                                        "responses": [
+                                            {
+                                            "name": "Menggunakan kapan saja",
+                                            "value": [
+                                                [
+                                                "tam17",
+                                                5
+                                                ]
                                             ]
-                                          ]
-                                        },
-                                        {
-                                          "name": "Menggunakan kondisi apapun",
-                                          "value": [
-                                            [
-                                              "tam18",
-                                              3
+                                            },
+                                            {
+                                            "name": "Menggunakan kondisi apapun",
+                                            "value": [
+                                                [
+                                                "tam18",
+                                                5
+                                                ]
                                             ]
-                                          ]
-                                        },
-                                        {
-                                          "name": "Niat menggunakan terus",
-                                          "value": [
-                                            [
-                                              "tam19",
-                                              5
+                                            },
+                                            {
+                                            "name": "Niat menggunakan terus",
+                                            "value": [
+                                                [
+                                                "tam19",
+                                                5
+                                                ]
                                             ]
-                                          ]
-                                        },
-                                        {
-                                          "name": "Berharap menggunakan",
-                                          "value": [
-                                            [
-                                              "tam20",
-                                              5
+                                            },
+                                            {
+                                            "name": "Berharap menggunakan",
+                                            "value": [
+                                                [
+                                                "tam20",
+                                                5
+                                                ]
                                             ]
-                                          ]
-                                        }
-                                      ]
+                                            }
+                                        ]
                                     },
                                     {
                                       "name": "ASU",

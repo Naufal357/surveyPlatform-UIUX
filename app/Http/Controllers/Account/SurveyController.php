@@ -36,6 +36,7 @@ class SurveyController extends Controller
 
         return inertia('Account/Surveys/Survey', [
             'surveys' => $surveys,
+            'app_url' => config('app.url')
         ]);
     }
 

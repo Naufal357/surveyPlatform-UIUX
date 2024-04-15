@@ -11,10 +11,10 @@ import TAMTable from "../../../Components/TAMTable";
 export default function Dashboard() {
     const {
         auth,
-        survey,
         surveyTitles,
         respondentCount,
         currentSurveyTitle,
+        demographicRespondents,
         tamSurveyResults,
         calculateDescriptiveStatistics,
         calculateRegression,
@@ -36,7 +36,21 @@ export default function Dashboard() {
           )
         : [];
 
-    //Fungsi untuk menghitung data chart
+    const getDemographicData = (data, category) => {
+        const labels = Object.keys(data);
+        const counts = Object.values(data);
+
+        return {
+            labels,
+            datasets: [
+                {
+                    label: category,
+                    data: counts,
+                },
+            ],
+        };
+    };
+
     const getChartData = (data) => {
         const labels = [
             "Sangat Tidak Setuju",
@@ -67,6 +81,16 @@ export default function Dashboard() {
             ],
         };
     };
+
+    const demographicsData = demographicRespondents
+        ? Object.keys(demographicRespondents).map((category) => ({
+              category,
+              data: getDemographicData(
+                  demographicRespondents[category],
+                  category
+              ),
+          }))
+        : [];
 
     const tamData = Object.keys(getTAMChartData.original).map((question) => ({
         question,
@@ -146,6 +170,41 @@ export default function Dashboard() {
                         </div>
                     )}
 
+                    <AccordionLayout
+                        title="Demografi Responden"
+                        defaultOpen={true}
+                    >
+                        {demographicsData.length > 0 ? (
+                            <div className="row justify-content-center">
+                                {demographicsData.map((item, index) => (
+                                    <div
+                                        className="col-lg-4 col-md-6 mb-4 mx-auto"
+                                        key={index}
+                                    >
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h6 className="card-title text-center">
+                                                    {item.category
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        item.category
+                                                            .slice(1)
+                                                            .replace(
+                                                                /_/g,
+                                                                " "
+                                                            )}{" "}
+                                                </h6>
+                                                <PieChart data={item.data} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center">Tidak ada data</div>
+                        )}
+                    </AccordionLayout>
+
                     {hasAnyPermission(["sus.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
@@ -161,10 +220,13 @@ export default function Dashboard() {
                                             <div className="card">
                                                 <div className="card-body">
                                                     <h6 className="card-title">
-                                                        {index + 1}.{item.question}
+                                                        {index + 1}.
+                                                        {item.question}
                                                     </h6>
                                                     <PieChart
-                                                        data={tamData[index].data}
+                                                        data={
+                                                            tamData[index].data
+                                                        }
                                                     />
                                                 </div>
                                             </div>

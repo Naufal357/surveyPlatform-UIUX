@@ -31,7 +31,8 @@ class ArticleController extends Controller
         $articles->appends(['q' => request()->q]);  
 
         return inertia('Account/Articles/Articles', [
-            'articles' => $articles
+            'articles' => $articles,
+            'app_url' => config('app.url')
         ]);
     }
 

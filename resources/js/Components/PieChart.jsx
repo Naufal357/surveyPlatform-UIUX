@@ -8,12 +8,59 @@ const PieChart = ({ data }) => {
         return ((value / total) * 100).toFixed(2) + "%";
     };
 
+    const generateBackgroundColor = () => {
+        const defaultColors = [
+            "#FFA600",
+            "#FF6361",
+            "#BC5090",
+            "#58508D",
+            "#003F5C",
+            "#FF7D00",
+            "#FF8E83",
+            "#D74177",
+            "#7A5B95",
+            "#3F2B5B",
+            "#FFC300",
+            "#FFD166",
+            "#FF851B",
+            "#F012BE",
+            "#B10DC9",
+            "#4D4D4D",
+            "#AAAAAA",
+            "#2ECC40",
+            "#01FF70",
+            "#2E3192",
+            "#FFDC00",
+            "#FF4136",
+            "#0074D9",
+            "#7FDBFF",
+            "#85144B",
+            "#111111",
+        ];
+
+
+        if (!data.datasets || data.datasets.length === 0) {
+            return defaultColors;
+        }
+
+        const backgroundColors = data.datasets[0].backgroundColor;
+        if (!backgroundColors || backgroundColors.length === 0) {
+            return defaultColors;
+        }
+
+        return backgroundColors;
+    };
+
+    const backgroundColors = generateBackgroundColor();
+
     const chartData = {
         labels: data.labels,
-        datasets: data.datasets.map((dataset) => ({
-            ...dataset,
-            hoverBackgroundColor: dataset.backgroundColor,
-        })),
+        datasets: [
+            {
+                ...data.datasets[0],
+                backgroundColor: backgroundColors, 
+            },
+        ],
     };
 
     const options = {
