@@ -139,7 +139,7 @@ export default function Register() {
                                                 "Homemaker",
                                                 "Professor",
                                                 "Student",
-                                                "other",
+                                                "Other",
                                             ]}
                                             error={errors.profession}
                                             fieldselect="true"

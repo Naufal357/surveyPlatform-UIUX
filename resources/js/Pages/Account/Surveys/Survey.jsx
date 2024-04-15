@@ -9,7 +9,8 @@ import Swal from "sweetalert2";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 
 export default function SurveyIndex() {
-    const { auth, surveys } = usePage().props;
+    const { app_url, surveys } = usePage().props;
+    console.log(app_url);
     return (
         <>
             <Head>
@@ -74,7 +75,8 @@ export default function SurveyIndex() {
                             </thead>
                             <tbody>
                                 {surveys.data.map((survey, index) => {
-                                    const surveyUrl = `http://127.0.0.1:8000/form/${survey.id}/${survey.slug}`;
+                                    // rubah url
+                                    const surveyUrl = `${app_url}:8000/form/${survey.id}/${survey.slug}`;
 
                                     return (
                                         <tr key={index}>

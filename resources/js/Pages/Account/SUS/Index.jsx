@@ -8,17 +8,18 @@ import AccordionLayout from "../../../Layouts/Accordion";
 import PieChart from "../../../Components/PieChart";
 import InfoCard from "../../../Components/CardInfo";
 import SUSTableResponses from "../../../Components/SUSTableResponses";
+import { LockFill } from "react-bootstrap-icons";
 
 export default function Dashboard() {
     const {
         auth,
         survey,
         surveyTitles,
-        responses,
         respondentCount,
         averageSUS,
         classifySUSGrade,
         currentSurveyTitle,
+        demographicRespondents,
         getSUSChartData,
         susSurveyResults,
         susQuestions,
@@ -41,6 +42,21 @@ export default function Dashboard() {
               question: value,
           }))
         : [];
+
+    const getDemographicData = (data, category) => {
+        const labels = Object.keys(data);
+        const counts = Object.values(data);
+
+        return {
+            labels,
+            datasets: [
+                {
+                    label: category,
+                    data: counts,
+                },
+            ],
+        };
+    };
 
     const getChartData = (data) => {
         const labels = [
@@ -78,7 +94,18 @@ export default function Dashboard() {
         data: getChartData(getSUSChartData.original[question]),
     }));
 
-    const handleExport = () => {
+   const demographicsData = demographicRespondents
+       ? Object.keys(demographicRespondents).map((category) => ({
+             category,
+             data: getDemographicData(
+                 demographicRespondents[category],
+                 category
+             ),
+         }))
+       : [];
+
+
+   const handleExport = () => {
         window.location.href = `/account/responses/sus/${survey.id}/export`;
     };
 
@@ -151,8 +178,7 @@ export default function Dashboard() {
                                 />
                             </div>
                             {resumeDescription !== null ? (
-                                <CardContent
-                                    title="Kesimpulan">
+                                <CardContent title="Kesimpulan">
                                     <div className="text-center">
                                         {resumeDescription}
                                     </div>
@@ -202,6 +228,41 @@ export default function Dashboard() {
                             )}
                         </>
                     )}
+
+                    <AccordionLayout
+                        title="Demografi Responden"
+                        defaultOpen={true}
+                    >
+                        {demographicsData.length > 0 ? (
+                            <div className="row justify-content-center">
+                                {demographicsData.map((item, index) => (
+                                    <div
+                                        className="col-lg-4 col-md-6 mb-4 mx-auto"
+                                        key={index}
+                                    >
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h6 className="card-title text-center">
+                                                    {item.category
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        item.category
+                                                            .slice(1)
+                                                            .replace(
+                                                                /_/g,
+                                                                " "
+                                                            )}{" "}
+                                                </h6>
+                                                <PieChart data={item.data} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center">Tidak ada data</div>
+                        )}
+                    </AccordionLayout>
 
                     {hasAnyPermission(["sus.charts"]) && (
                         <AccordionLayout

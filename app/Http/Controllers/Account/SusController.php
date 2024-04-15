@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Account;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResponsesSUSExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
 use App\Models\SurveyQuestions;
+use Psy\Readline\Hoa\Console;
 
 class SusController extends Controller
 {
@@ -59,6 +61,7 @@ class SusController extends Controller
             ->get();
 
         $respondentCount = $this->countRespondents($id);
+        $demographicRespondents = $this->demographicRespondents($responses);
         $averageSUS = $this->calculateAverageSUS($responses);
         $classifySUSGrade = $this->classifySUSGrade($averageSUS);
         $susSurveyResults = $this->getSUSResults($responses);
@@ -72,12 +75,71 @@ class SusController extends Controller
             'resumeDescription' => $getResumeDescription,
             'averageAnswer' => $getAverageAnswer,
             'respondentCount' => $respondentCount,
+            'demographicRespondents' => $demographicRespondents,
             'averageSUS' => $averageSUS,
             'classifySUSGrade' => $classifySUSGrade,
             'getSUSChartData' => $getSUSChartData,
             'susSurveyResults' => $susSurveyResults,
             'susQuestions' => $susQuestions
         ])->with('currentSurveyTitle', $survey->title);
+    }
+
+    private function demographicRespondents($responses)
+    {
+        if ($responses->isEmpty()) {
+            return null;
+        }
+
+        $demographics = [
+            'gender' => [],
+            'profession' => [],
+            'educational_background' => [],
+            'age' => []
+        ];
+
+        foreach ($responses as $response) {
+            foreach ($demographics as $key => $value) {
+                if ($key === 'age') {
+                    $age_category = $this->categorizeAge($response['birth_date']);
+                    if (isset($demographics[$key][$age_category])) {
+                        $demographics[$key][$age_category]++;
+                    } else {
+                        $demographics[$key][$age_category] = 1;
+                    }
+                } else {
+                    if (isset($demographics[$key][$response[$key]])) {
+                        $demographics[$key][$response[$key]]++;
+                    } else {
+                        $demographics[$key][$response[$key]] = 1;
+                    }
+                }
+            }
+        }
+
+        return $demographics;
+    }
+
+
+    private function categorizeAge($birth_date)
+    {
+        $birth_date = Carbon::parse($birth_date);
+        $age = $birth_date->age;
+
+        if ($age < 18) {
+            return '0-17';
+        } elseif ($age >= 18 && $age < 25) {
+            return '18-24';
+        } elseif ($age >= 25 && $age < 35) {
+            return '25-34';
+        } elseif ($age >= 35 && $age < 45) {
+            return '35-44';
+        } elseif ($age >= 45 && $age < 55) {
+            return '45-54';
+        } elseif ($age >= 55 && $age < 65) {
+            return '55-64';
+        } else {
+            return '65+';
+        }
     }
 
     private function countRespondents($surveyId)

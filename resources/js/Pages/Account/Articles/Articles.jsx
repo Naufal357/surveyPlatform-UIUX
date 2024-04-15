@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 
 export default function articleIndex() {
-    const { articles } = usePage().props;
+    const { app_url, articles } = usePage().props;
     return (
         <>
             <Head>
@@ -69,7 +69,8 @@ export default function articleIndex() {
                             </thead>
                             <tbody>
                                 {articles.data.map((article, index) => {
-                                    const articleUrl = `http://127.0.0.1:8000/articles/${article.id}/${article.slug}`;
+                                    // rubah url
+                                    const articleUrl = `${app_url}:8000/articles/${article.id}/${article.slug}`;
                                     return (
                                         <tr key={index}>
                                             <td className="text-center">
