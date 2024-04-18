@@ -38,6 +38,11 @@ class Survey extends Model
         return $this->belongsToMany(Method::class, 'survey_has_methods', 'survey_id', 'method_id');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'survey_has_categories', 'survey_id', 'category_id');
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(

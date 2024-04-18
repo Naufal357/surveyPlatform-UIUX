@@ -68,6 +68,9 @@ export default function SurveyIndex() {
                                     <th scope="col" style={{ width: "10%" }}>
                                         Image
                                     </th>
+                                    <th scope="col" style={{ width: "10%" }}>
+                                        Status
+                                    </th>
                                     <th scope="col" style={{ width: "15%" }}>
                                         Actions
                                     </th>
@@ -102,6 +105,7 @@ export default function SurveyIndex() {
                                                     width={"100"}
                                                 />
                                             </td>
+                                            <td>{survey.status}</td>
                                             <td className="text-center">
                                                 {hasAnyPermission([
                                                     "surveys.edit",

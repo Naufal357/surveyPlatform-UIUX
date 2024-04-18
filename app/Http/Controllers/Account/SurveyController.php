@@ -20,7 +20,7 @@ class SurveyController extends Controller
         if (auth()->user()->hasPermissionTo('surveys.index.full')) {
             $surveys = Survey::when(request()->q, function ($surveys) {
                 $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
-            })->orderBy('id')->paginate(15);
+            })->orderBy('id')->paginate(8);
 
             $surveys->load('user');
         } else {
@@ -29,7 +29,7 @@ class SurveyController extends Controller
             })
                 ->where('user_id', auth()->user()->id)
                 ->latest()
-                ->paginate(10);
+                ->paginate(8);
         }
 
         $surveys->appends(['q' => request()->q]);

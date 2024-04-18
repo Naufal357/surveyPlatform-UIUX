@@ -46,6 +46,9 @@ export default function SurveyEdit() {
     let idTamCounter = 0;
     let idSusCounter = 0;
 
+    const [isSaving, setIsSaving] = useState(false);
+
+
     const data = JSON.parse(surveyQuestions[0].questions_data);
 
     const parsedSusQuestions = data.sus
@@ -243,12 +246,14 @@ export default function SurveyEdit() {
     };
 
     const updateSurvey = async (e) => {
-        e.preventDefault();
+       setIsSaving(true);
+       e.preventDefault();
 
-        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
-            handleReset();
-            return;
-        }
+       if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+           handleReset();
+           setIsSaving(false);
+           return;
+       }
 
         Inertia.post(
             `/account/surveys/${survey.id}`,
@@ -276,6 +281,17 @@ export default function SurveyEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    setIsSaving(false);
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Data failed to save!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    setIsSaving(false);
                 },
             }
         );
@@ -339,7 +355,6 @@ export default function SurveyEdit() {
                     icon="fas fa-scroll"
                 >
                     <form onSubmit={updateSurvey}>
-                        {console.log(errors.image)}
                         <InputField
                             label="Image Thumbnail"
                             type="file"
@@ -443,6 +458,7 @@ export default function SurveyEdit() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

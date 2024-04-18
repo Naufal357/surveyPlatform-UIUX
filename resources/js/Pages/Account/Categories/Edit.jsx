@@ -11,19 +11,25 @@ export default function CategoryEdit() {
     const { errors, category } = usePage().props;
 
     const [name, setName] = useState(category.name);
+    const [image, setImage] = useState(category.image);
+
+    const [isSaving, setIsSaving] = useState(false);
 
     const updateCategory = async (e) => {
-        e.preventDefault();
+       setIsSaving(true);
+       e.preventDefault();
 
-        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
-            handleReset();
-            return;
-        }
+       if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+           handleReset();
+           setIsSaving(false);
+           return;
+       }
 
         Inertia.post(
             `/account/categories/${category.id}`,
             {
                 name: name,
+                image: image,
                 _method: "PUT",
             },
             {
@@ -36,6 +42,17 @@ export default function CategoryEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    setIsSaving(false);
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Data failed to save!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    setIsSaving(false); 
                 },
             }
         );
@@ -59,12 +76,22 @@ export default function CategoryEdit() {
                             />
                         </div>
 
+                        <div className="mb-3">
+                            <InputField
+                                label="Image"
+                                type="file"
+                                value={category.image}
+                                onChange={(e) => [setImage(e.target.files[0])]}
+                            />
+                        </div>
+
                         <div>
                             <ButtonCRUD
                                 type="submit"
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

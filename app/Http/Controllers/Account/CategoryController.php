@@ -14,7 +14,7 @@ class CategoryController extends Controller
     {
         $categories = Category::when(request()->q, function ($categories) {
             $categories = $categories->where('name', 'like', '%' . request()->q . '%');
-        })->latest()->paginate(15);
+        })->latest()->paginate(9);
 
         $categories->appends(['q' => request()->q]);
 
@@ -32,12 +32,24 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name'          => 'required|unique:categories',
+            'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
-        Category::create([
-            'name'          => $request->name,
-            'slug'          => Str::slug($request->name, '-')
-        ]);
+        if ($request->hasFile('image')) {
+            $request->file('image')->storeAs('public/image/categories', $request->file('image')->hashName());
+
+            Category::create([
+                'name'          => $request->name,
+                'image'         => $request->file('image')->hashName(),
+                'slug'          => Str::slug($request->name, '-')
+            ]);
+        } else {
+            Category::create([
+                'name'          => $request->name,
+                'image'         => 'image.png',
+                'slug'          => Str::slug($request->name, '-')
+            ]);
+        }
 
         return redirect()->route('account.categories.index');
     }
@@ -53,13 +65,25 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name'          => 'required|unique:categories,name,' . $category->id,
+            'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
-        $category->update([
-            'name'          => $request->name,
-            'slug'          => Str::slug($request->name, '-')
-        ]);
+        if ($request->hasFile('image')) {
+            Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
 
+            $request->file('image')->storeAs('public/image/categories', $request->file('image')->hashName());
+
+            $category->update([
+                'name'          => $request->name,
+                'image'         => $request->file('image')->hashName(),
+                'slug'          => Str::slug($request->name, '-')
+            ]);
+        } else {
+            $category->update([
+                'name'          => $request->name,
+                'slug'          => Str::slug($request->name, '-')
+            ]);
+        }
         return redirect()->route('account.categories.index');
     }
 

@@ -10,7 +10,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Articles::latest()->where('status', 'Public')->paginate(12);
+        $articles = Articles::latest()->where('status', 'Public')->paginate(8);
 
         return inertia('Web/Articles/Index', [
             'articles' => $articles

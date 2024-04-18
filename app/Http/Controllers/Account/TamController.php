@@ -234,6 +234,10 @@ class TamController extends Controller
 
     private function getCalculateDescriptiveStatistics($respondents, $responses)
     {
+        if ($responses->isEmpty()) {
+            return null;
+        }
+
         $descriptiveStatistics = [];
 
         foreach ($responses as $response) {

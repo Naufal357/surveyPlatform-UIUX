@@ -16,7 +16,7 @@ class ArticleController extends Controller
         if (auth()->user()->hasPermissionTo('surveys.index.full')) {
             $articles = Articles::when(request()->q, function ($articles) {
                 $articles = $articles->where('title', 'like', '%' . request()->q . '%');
-            })->orderBy('id')->paginate(15);
+            })->orderBy('id')->paginate(8);
 
             $articles->load('user');
         } else {
@@ -25,7 +25,7 @@ class ArticleController extends Controller
             })
                 ->where('user_id', auth()->user()->id)
                 ->latest()
-                ->paginate(10);
+                ->paginate(8);
         }
 
         $articles->appends(['q' => request()->q]);  

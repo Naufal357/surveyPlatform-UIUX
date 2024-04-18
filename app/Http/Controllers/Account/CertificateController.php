@@ -18,7 +18,7 @@ class CertificateController extends Controller
             $query->where('name', 'like', '%' . request()->q . '%');
         })
             ->latest()
-            ->paginate(15);
+            ->paginate(8);
 
         $certificates->appends(['q' => request()->q]);
 

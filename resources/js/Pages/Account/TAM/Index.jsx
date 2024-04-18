@@ -208,7 +208,7 @@ export default function Dashboard() {
                     {hasAnyPermission(["sus.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
-                            defaultOpen={false}
+                            defaultOpen={true}
                         >
                             {tamData.length > 0 ? (
                                 <div className="row">

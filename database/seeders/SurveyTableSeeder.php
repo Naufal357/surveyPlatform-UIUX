@@ -35,7 +35,7 @@ class SurveyTableSeeder extends Seeder
             'embed_design' => 'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FZBrJoFQclkOJHt8c13WjO0%2FMobile-E-Commerce---Porto-Naufal%3Ftype%3Ddesign%26node-id%3D6%253A5%26mode%3Ddesign%26t%3DMS0FsghvdchwVDS1-1',
             'embed_prototype' => 'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FZBrJoFQclkOJHt8c13WjO0%2FMobile-E-Commerce---Porto-Naufal%3Fnode-id%3D6-5%26starting-point-node-id%3D6%253A5%26mode%3Ddesign%26t%3DqRgJWypwu4mOdUCX-1',
             'user_id' => 2,
-            'status' => 'Private',
+            'status' => 'Public',
         ]);
 
         Survey::create([
@@ -48,7 +48,7 @@ class SurveyTableSeeder extends Seeder
             'embed_design' => 'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FZBrJoFQclkOJHt8c13WjO0%2FMobile-E-Commerce---Porto-Naufal%3Ftype%3Ddesign%26node-id%3D6%253A5%26mode%3Ddesign%26t%3DMS0FsghvdchwVDS1-1',
             'embed_prototype' => 'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FZBrJoFQclkOJHt8c13WjO0%2FMobile-E-Commerce---Porto-Naufal%3Fnode-id%3D6-5%26starting-point-node-id%3D6%253A5%26mode%3Ddesign%26t%3DqRgJWypwu4mOdUCX-1',
             'user_id' => 3,
-            'status' => 'Restricted',
+            'status' => 'Public',
         ]);
 
         Survey::create([
@@ -61,7 +61,7 @@ class SurveyTableSeeder extends Seeder
             'embed_design' => 'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FZBrJoFQclkOJHt8c13WjO0%2FMobile-E-Commerce---Porto-Naufal%3Ftype%3Ddesign%26node-id%3D6%253A5%26mode%3Ddesign%26t%3DMS0FsghvdchwVDS1-1',
             'embed_prototype' => 'https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FZBrJoFQclkOJHt8c13WjO0%2FMobile-E-Commerce---Porto-Naufal%3Fnode-id%3D6-5%26starting-point-node-id%3D6%253A5%26mode%3Ddesign%26t%3DqRgJWypwu4mOdUCX-1',
             'user_id' => 4,
-            'status' => 'Restricted',
+            'status' => 'Public',
         ]);
 
         Survey::create([

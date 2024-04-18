@@ -47,6 +47,9 @@ export default function CategoryIndex() {
                                         Category Name
                                     </th>
                                     <th scope="col" style={{ width: "15%" }}>
+                                        Image
+                                    </th>
+                                    <th scope="col" style={{ width: "15%" }}>
                                         Actions
                                     </th>
                                 </tr>
@@ -60,6 +63,13 @@ export default function CategoryIndex() {
                                                     categories.per_page}
                                         </td>
                                         <td>{category.name}</td>
+                                        <td className="text-center">
+                                            <img
+                                                src={category.image}
+                                                className="rounded-3"
+                                                height={"45"}
+                                            />
+                                        </td>
                                         <td className="text-center">
                                             {hasAnyPermission([
                                                 "categories.edit",

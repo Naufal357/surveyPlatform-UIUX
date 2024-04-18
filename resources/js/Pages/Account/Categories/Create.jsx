@@ -11,19 +11,25 @@ export default function CategoryCreate() {
     const { errors } = usePage().props;
 
     const [name, setName] = useState("");
+    const [image, setImage] = useState(null);
+
+    const [isSaving, setIsSaving] = useState(false);
+
 
     const storeCategory = async (e) => {
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
+            setIsSaving(false);
             return;
         }
-
         Inertia.post(
             "/account/categories",
             {
                 name: name,
+                image: image,
             },
             {
                 onSuccess: () => {
@@ -34,6 +40,17 @@ export default function CategoryCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    setIsSaving(false);
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Data failed to save!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    setIsSaving(false); 
                 },
             }
         );
@@ -56,6 +73,15 @@ export default function CategoryCreate() {
                                 error={errors.name}
                             />
                         </div>
+                        <div className="mb-3">
+                            <InputField
+                                label="Image"
+                                type="file"
+                                value={image}
+                                onChange={(e) => [setImage(e.target.files[0])]}
+                                error={errors.image}
+                            />
+                        </div>
 
                         <div>
                             <ButtonCRUD
@@ -63,6 +89,7 @@ export default function CategoryCreate() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"
