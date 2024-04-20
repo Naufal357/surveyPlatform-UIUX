@@ -68,15 +68,19 @@ export default function UserIndex() {
                                                     users.per_page}
                                         </td>
                                         <td>
-                                            {user.roles.map((role) => (
-                                                <div key={role.id}>
-                                                    {(role.name ===
-                                                        "verified user") && (
-                                                        <i className="fas fa-user-check" />
-                                                    )}
-                                                    {" " + user.fullname}
-                                                </div>
-                                            ))}
+                                            {user.roles[0].name ===
+                                            "verified user" ? (
+                                                <>
+                                                    <i className="fas fa-user-check" />{" "}
+                                                    {user.first_name}{" "}
+                                                    {user.surname}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {user.first_name}{" "}
+                                                    {user.surname}
+                                                </>
+                                            )}
                                         </td>
                                         <td>{user.email}</td>
                                         <td>

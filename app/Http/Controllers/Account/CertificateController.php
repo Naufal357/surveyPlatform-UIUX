@@ -8,55 +8,76 @@ use App\Models\Certificate;
 use App\Models\CertificateHasCategorys;
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateController extends Controller
 {
     public function index()
     {
-        $certificates = Certificate::with('user')
-        ->when(request()->q, function ($query) {
-            $query->where('name', 'like', '%' . request()->q . '%');
-        })
-            ->latest()
-            ->paginate(8);
-
-        $certificates->appends(['q' => request()->q]);
-
         $categories = Category::all();
 
-        $pendingCertificates = $certificates->where('status', 'pending');
-        $approvedCertificates = $certificates->where('status', 'approved');
+        $pendingCertificates = Certificate::where('status', 'pending')->with('user')->latest()->paginate(8);
+
+        $certificateHistory = Certificate::when(request()->q, function ($query) {
+            $query->where(function ($query) {
+                $query->whereHas('user', function ($query) {
+                    $query->where('first_name', 'like', '%' . request()->q . '%')
+                        ->orWhere('surname', 'like', '%' . request()->q . '%');
+                })->orWhere('status', 'like', '%' . request()->q . '%');
+            });
+        })->where(function ($query) {
+            $query->where('status', 'approved')->orWhere('status', 'rejected');
+        })->with('user')->latest()->paginate(15);
+
+        $certificateHistory->appends(['q' => request()->q]);
 
         return inertia('Account/Certificates', [
             'pendingCertificates' => $pendingCertificates,
-            'approvedCertificates' => $approvedCertificates,
             'categories' => $categories,
+            'certificateHistory' => $certificateHistory
         ]);
     }
+
 
     public function store(Request $request, CertificateHasCategorys $certificateHasCategorys, Certificate $certificate)
     {
         $this->validate($request, [
             'certificateId' => 'required',
-            'certCategories' => 'required',
+            'status' => 'required',
         ]);
 
-        foreach ($request->certCategories as $certCategory) {
-            $certificateHasCategorys->create([
-                'certificate_id' => $request->certificateId,
-                'category_id' => $certCategory
+        if ($request->status == 'approved') {
+            $this->validate($request, [
+                'certificate_categories' => 'required',
             ]);
-        };
 
-        $certificate->where('id', $request->certificateId)->update([
-            'status' => 'approved'
-        ]);
-    }
+            foreach ($request->certificate_categories as $certCategory) {
+                $certificateHasCategorys->create([
+                    'certificate_id' => $request->certificateId,
+                    'category_id' => $certCategory
+                ]);
+            };
 
-    public function destroy($id)
-    {
-        $certificate = Certificate::findOrFail($id);
-        $certificate->delete();
+            $certificate->where('id', $request->certificateId)->update([
+                'status' => 'approved',
+                'description' => $request->massage ?? '',
+            ]);
+        } else if ($request->status == 'rejected') {
+            $this->validate($request, [
+                'massage' => 'required',
+            ]);
+
+            $path = parse_url($request->selectedCertificate, PHP_URL_PATH);
+            $storagePath = str_replace('/storage', 'public', $path);
+
+            $certificate->where('id', $request->certificateId)->update([
+                'status' => 'rejected',
+                'description' => $request->massage
+            ]);
+
+            Storage::disk('local')->delete($storagePath);
+        }
+
         return redirect()->route('account.certificates.index');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Certificate;
-use App\Models\CertificateHasCategory;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\Category;
@@ -65,7 +64,7 @@ class RegisterController extends Controller
         return redirect()->route('register1');
     }
 
-    public function storePreferenceData(Request $request, UserSelectCategory $userPref, Certificate $certificate, CertificateHasCategory $certificateHasCategory)
+    public function storePreferenceData(Request $request, UserSelectCategory $userPref, Certificate $certificate)
     {
         $this->validate($request, [
             'userPrefsData' => 'required',

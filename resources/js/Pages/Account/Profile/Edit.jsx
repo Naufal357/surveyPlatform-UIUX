@@ -1,50 +1,38 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
-import CardContent from "../../../Layouts/CardContent";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import AuthField from "../../../Components/AuthField";
+import CardContent from "../../../Layouts/CardContent";
 import CustomDatePicker from "../../../Components/DatePicker";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
-import hasAnyPermission from "../../../Utils/Permissions";
+import PDFDropzone from "../../../Components/FileUpload";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
-export default function UserCreate() {
-    const { errors, roles, categories } = usePage().props;
+export default function ProfileEdit() {
+    const { errors, user, userPrefs, categories } = usePage().props;
 
-    let filteredRoles = roles;
-
-    if (!hasAnyPermission(["users.index.full"])) {
-        filteredRoles = filteredRoles.filter(
-            (role) => role.name !== "super admin"
-        );
-    }
-
-    const [firstName, setFirstName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [email, setEmail] = useState("");
-    const [gender, setGender] = useState("");
-    const [birthDate, setBirthDate] = useState(null);
-    const [profession, setProfession] = useState("");
-    const [educationalBackground, setEducationalBackground] = useState("");
+    const [firstName, setFirstName] = useState(user.first_name);
+    const [surname, setSurname] = useState(user.surname);
+    const [email, setEmail] = useState(user.email);
+    const [gender, setGender] = useState(user.gender);
+    const [birthDate, setBirthDate] = useState(user.birth_date);
+    const [profession, setProfession] = useState(user.profession);
+    const [educationalBackground, setEducationalBackground] = useState(
+        user.educational_background
+    );
     const [password, setPassword] = useState("");
-    const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [rolesData, setRolesData] = useState([]);
-    const [userPrefsData, setUserPrefsData] = useState([]);
+    const [userPrefsData, setUserPrefsData] = useState(
+        userPrefs.map((item) => parseInt(item.category_id, 10))
+    );
+
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const [isSaving, setIsSaving] = useState(false);
 
-    const handleCheckboxRolesChange = (e) => {
-        let data = rolesData;
-        data.push(e.target.value);
-
-        setRolesData(data);
-    };
-
     const handleCheckboxUserPrefsChange = (e) => {
         const categoryId = parseInt(e.target.value, 10);
-
         if (userPrefsData.includes(categoryId)) {
             setUserPrefsData(userPrefsData.filter((id) => id !== categoryId));
         } else {
@@ -52,8 +40,7 @@ export default function UserCreate() {
         }
     };
 
-    const storeUser = async (e) => {
-        setIsSaving(true);
+    const updateUser = async (e) => {
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
@@ -62,44 +49,55 @@ export default function UserCreate() {
             return;
         }
 
-        Inertia.post(
-            "/account/users",
-            {
-                first_name: firstName,
-                surname: surname,
-                email: email,
-                gender: gender,
-                birth_date: birthDate,
-                profession: profession,
-                educational_background: educationalBackground,
-                password: password,
-                password_confirmation: passwordConfirmation,
-                roles: rolesData,
-                user_prefs: userPrefsData,
-            },
-            {
-                onSuccess: () => {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Data saved successfully!",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    setIsSaving(false);
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to edit your data?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, edit it!",
+        });
+
+        if (result.isConfirmed) {
+            setIsSaving(true);
+            Inertia.put(
+                `/account/profile/${user.id}`,
+                {
+                    first_name: firstName,
+                    surname: surname,
+                    email: email,
+                    gender: gender,
+                    birth_date: birthDate,
+                    profession: profession,
+                    educational_background: educationalBackground,
+                    password: password,
+                    userPrefsData: userPrefsData,
                 },
-                onError: () => {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "Data failed to save!",
-                        icon: "error",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    setIsSaving(false);
-                },
-            }
-        );
+                {
+                    onSuccess: () => {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Data update successfully!",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        setIsSaving(false);
+                    },
+                    onError: () => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Something went wrong!",
+                            icon: "error",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        setIsSaving(false);
+                    },
+                }
+            );
+        }
     };
 
     return (
@@ -108,8 +106,8 @@ export default function UserCreate() {
                 <title>Create Users - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <CardContent title="Create Users" icon="fa fa-user-plus">
-                    <form onSubmit={storeUser}>
+                <CardContent title="Profile">
+                    <form onSubmit={updateUser}>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="mb-3">
@@ -242,7 +240,6 @@ export default function UserCreate() {
                             selectedDate={birthDate}
                             onChange={(date) => setBirthDate(date)}
                             error={errors.birthDate}
-                            required
                         />
 
                         <div className="row">
@@ -258,24 +255,6 @@ export default function UserCreate() {
                                         }
                                         placeholder="Password"
                                         error={errors.password}
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="mb-3">
-                                    <AuthField
-                                        icon="fa fa-lock"
-                                        label="Password Confirmation"
-                                        type="password"
-                                        value={passwordConfirmation}
-                                        onChange={(e) =>
-                                            setPasswordConfirmation(
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder="Password Confirmation"
-                                        required
                                     />
                                 </div>
                             </div>
@@ -283,44 +262,31 @@ export default function UserCreate() {
 
                         <div className="mb-3">
                             <SelectCheckbox
-                                id={"roles"}
-                                label="Roles"
-                                options={filteredRoles}
-                                valueKey="name"
-                                labelKey="name"
-                                onChange={handleCheckboxRolesChange}
-                                error={errors.roles}
-                            />
-                        </div>
-
-                        <div className="mb-3">
-                            <SelectCheckbox
-                                id={"categories"}
+                                id={"user-prefs"}
                                 label="Preference Categories"
                                 options={categories}
                                 valueKey="id"
                                 labelKey="name"
+                                selectedValues={userPrefsData}
+                                error={errors.userPrefs}
                                 onChange={handleCheckboxUserPrefsChange}
-                                error={errors.user_prefs}
                             />
                         </div>
 
-                        <div>
-                            <ButtonCRUD
-                                type="submit"
-                                label="Save"
-                                color="btn-success"
-                                iconClass="fa fa-save"
-                                disabled={isSaving}
-                            />
-                            <ButtonCRUD
-                                type="Cancel"
-                                label="Cancel"
-                                color="btn-secondary"
-                                iconClass="fas fa-times"
-                                onClick={() => window.history.back()}
-                            />
-                        </div>
+                        <ButtonCRUD
+                            type="submit"
+                            label="Save"
+                            color="btn-success"
+                            iconClass="fa fa-save"
+                        />
+
+                        <ButtonCRUD
+                            type="Cancel"
+                            label="Cancel"
+                            color="btn-secondary"
+                            iconClass="fas fa-times"
+                            onClick={() => window.history.back()}
+                        />
                     </form>
                 </CardContent>
             </LayoutAccount>

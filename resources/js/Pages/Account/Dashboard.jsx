@@ -1,11 +1,9 @@
 import React from "react";
 import { Head, Inertia, usePage, Link } from "@inertiajs/inertia-react";
-import hasAnyPermission from "../../Utils/Permissions";
 import Pagination from "../../Components/Pagination";
 import LayoutAccount from "../../Layouts/Account";
 import AccordionLayout from "../../Layouts/Accordion";
-import InfoCard from "../../Components/CardInfo";
-import TableDashboard from "../../Components/SUSTableDashboard";
+import TableDashboard from "../../Components/TableDashboard";
 
 export default function Dashboard() {
     const { auth, surveys, surveyData } = usePage().props;

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Account;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\UserSelectCategory;
-use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -25,10 +25,6 @@ class UserController extends Controller
 
         $users = $query->paginate(5);
         $users->appends(['q' => $searchTerm]);
-
-        $users->each(function ($user) {
-            $user->fullname = $user->first_name . ' ' . $user->surname;
-        });
 
         return inertia('Account/Users/Users', [
             'users' => $users,
@@ -107,6 +103,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user, UserSelectCategory $userPref)
     {
+        
         if ($request->email == "admin@123") {
             abort(403, "The user is not allowed to be edited.");
         }
@@ -122,14 +119,16 @@ class UserController extends Controller
             'password' => 'nullable|confirmed'
         ]);
 
-        if ($request->password == '' && $request->birth_date == '') {
+        if ($request->password != '') {
             $user->update([
                 'first_name'      => $request->first_name,
                 'surname'         => $request->surname,
                 'email'     => $request->email,
+                'birth_date'     => $request->birth_date,
                 'gender'     => $request->gender,
                 'profession'     => $request->profession,
                 'educational_background'     => $request->educational_background,
+                'password'  => bcrypt($request->password)
             ]);
         } else if ($request->password == '') {
             $user->update([
@@ -141,18 +140,8 @@ class UserController extends Controller
                 'profession'     => $request->profession,
                 'educational_background'     => $request->educational_background,
             ]);
-        } else if ($request->birth_date == '') {
-            $user->update([
-                'first_name'      => $request->first_name,
-                'surname'         => $request->surname,
-                'email'     => $request->email,
-                'gender'     => $request->gender,
-                'profession'     => $request->profession,
-                'educational_background'     => $request->educational_background,
-                'password'  => bcrypt($request->password)
-            ]);
         }
-
+       
         $user->syncRoles($request->roles);
 
         if ($request->has('user_prefs')) {

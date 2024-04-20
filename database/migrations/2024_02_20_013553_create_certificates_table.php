@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('certificate');
             $table->string('status')->default('pending');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

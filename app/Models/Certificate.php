@@ -15,6 +15,7 @@ class Certificate extends Model
         'user_id',
         'certificate',
         'status',
+        'description',
     ];
 
     public function user()

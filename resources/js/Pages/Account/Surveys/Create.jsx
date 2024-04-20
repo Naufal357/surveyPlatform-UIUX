@@ -109,7 +109,6 @@ export default function SurveysCreate() {
     }
 
     const handleSusQuestionChange = (questionId, value) => {
-        console.log(questionId, value);
         setSusQuestionsData(
             susQuestionsData.map((question) => {
                 if (question.id === questionId) {

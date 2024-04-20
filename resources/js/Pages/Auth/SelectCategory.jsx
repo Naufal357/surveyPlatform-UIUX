@@ -3,7 +3,7 @@ import Layout from "../../Layouts/Header";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import SelectButton from "../../Components/SelectButton";
-import PDFDropzone from "../../Components/FileUpload"; // Mengubah import dari FileUpload ke PDFDropzone
+import PDFDropzone from "../../Components/FileUpload"; 
 import Swal from "sweetalert2";
 
 export default function SelectCategory() {

@@ -10,7 +10,6 @@ import { Head, usePage, Link } from "@inertiajs/inertia-react";
 
 export default function SurveyIndex() {
     const { app_url, surveys } = usePage().props;
-    console.log(app_url);
     return (
         <>
             <Head>

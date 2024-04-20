@@ -42,9 +42,13 @@ Route::group(['middleware' => 'cors'], function () {
         Route::group(['middleware' => ['auth']], function () {
             Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
 
-            Route::get('/profile', [App\Http\Controllers\Account\ProfileController::class, 'index'])->name('account.profile');
+            Route::resource('profile', \App\Http\Controllers\Account\ProfileController::class, ['as' => 'account'])->only(['index', 'edit', 'update']);
+            Route::get('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'certificate'])->name('account.profile.certificate');
+            Route::post('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'uploadCertificate'])->name('account.profile.uploadCertificate');
+            Route::get('profile/password', [\App\Http\Controllers\Account\ProfileController::class, 'password'])->name('account.profile.password');
+            Route::put('profile/password/update', [\App\Http\Controllers\Account\ProfileController::class, 'updatePassword'])->name('account.profile.updatePassword');
 
-            Route::resource('/surveys', App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
+            Route::resource('/surveys', \App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
                 ->middleware('permission:surveys.index|surveys.create|surveys.edit|surveys.delete');
 
             Route::resource('/categories', \App\Http\Controllers\Account\CategoryController::class, ['as' => 'account'])
@@ -64,7 +68,7 @@ Route::group(['middleware' => 'cors'], function () {
                 ->middleware('permission:users.index|users.create|users.edit|users.delete');
 
             Route::resource('articles', \App\Http\Controllers\Account\ArticleController::class, ['as' => 'account']);
-                
+
             Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
             Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])->name('account.sus.id');
 
