@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../Layouts/Header";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import Pagination from "../../Components/Pagination";
@@ -7,6 +7,24 @@ import CardCategory from "../../Components/CardCategory";
 
 export default function Home() {
     const { surveys, categories, articles, auth } = usePage().props;
+
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            document.title = document.hidden
+                ? "Survey Platform 👋😊"
+                : "Survey Platform";
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+        };
+    }, []);
+
 
     return (
         <>

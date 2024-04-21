@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // C:\Users\naufa\AppData\Local\ngrok
         // Setting ngrok hanya untuk lingkungan lokal
         // if ($this->app->environment('local')) {
         //     URL::forceScheme('https');

@@ -40,6 +40,7 @@ const renderResponseTable = (data) => {
 };
 
 const renderDescriptiveStatisticsTable = (data) => {
+
     return (
         <table className="table table-striped table-bordered">
             <thead className="thead-dark">
@@ -67,6 +68,7 @@ const renderDescriptiveStatisticsTable = (data) => {
 };
 
 const renderRegressionTable = (data) => {
+
     return (
         <table className="table table-striped table-bordered">
             <thead className="thead-dark">

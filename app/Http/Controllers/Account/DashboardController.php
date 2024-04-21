@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use App\Models\SurveyHasMethods;
-use Database\Seeders\SurveyHasMethodsSeeder;
-use Psy\Readline\Hoa\Console;
+
 
 class DashboardController extends Controller
 {

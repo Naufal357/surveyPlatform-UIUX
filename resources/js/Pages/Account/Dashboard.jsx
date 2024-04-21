@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Head, Inertia, usePage, Link } from "@inertiajs/inertia-react";
 import Pagination from "../../Components/Pagination";
 import LayoutAccount from "../../Layouts/Account";
@@ -7,6 +7,23 @@ import TableDashboard from "../../Components/TableDashboard";
 
 export default function Dashboard() {
     const { auth, surveys, surveyData } = usePage().props;
+console.log(surveys);
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            document.title = document.hidden
+                ? "Come back 😔"
+                : "Survey Platform";
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
+        return () => {
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+        };
+    }, []);
 
     return (
         <>
@@ -30,8 +47,9 @@ export default function Dashboard() {
                     >
                         {surveyData.length > 0 ? (
                             <TableDashboard
-                                surveys={surveyData}
-                            ></TableDashboard>
+                                surveyData={surveyData}
+                                surveys={surveys}
+                            />
                         ) : (
                             <div className="text-center">Tidak ada data</div>
                         )}

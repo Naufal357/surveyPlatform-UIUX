@@ -40,7 +40,6 @@ class HomeController extends Controller
             $surveys = Survey::where('status', 'Public')->latest()->take(9)->get();
         }
         
-
         return inertia('Web/Home', [
             'categories' => $categories,
             'surveys' => $surveys,

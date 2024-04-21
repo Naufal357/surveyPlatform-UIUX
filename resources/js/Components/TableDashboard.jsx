@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
 
-const TableDashboard = ({ surveys }) => {
-    if (!surveys || surveys.length === 0) {
+const TableDashboard = ({ surveyData, surveys }) => {
+    if (!surveyData || surveyData.length === 0) {
         return <div>Tidak Ada Data Survei</div>;
     }
-
+    
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
@@ -18,9 +18,13 @@ const TableDashboard = ({ surveys }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {surveys.map((survey, index) => (
+                    {surveyData.map((survey, index) => (
                         <tr key={index}>
-                            <td>{index + 1}</td>
+                            <td>
+                                {++index +
+                                    (surveys.current_page - 1) *
+                                        surveys.per_page}
+                            </td>
                             <td>{survey.title}</td>
                             <td>{survey.response_count}</td>
                             <td>
