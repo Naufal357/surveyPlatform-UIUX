@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 
 class LogoutController extends Controller
@@ -15,17 +16,16 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-
-        //logout user
         auth()->logout();
 
-        //invalidate session
         $request->session()->invalidate();
 
-        //session regenerate
         $request->session()->regenerateToken();
 
-        //redirect login page
+        if ($request->hasCookie('remember_token')) {
+            return redirect('/login')->withCookie(Cookie::forget('remember_token'));
+        }
+
         return redirect('/login');
     }
 }

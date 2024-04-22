@@ -5,21 +5,19 @@ import { Inertia } from "@inertiajs/inertia";
 import AuthField from "../../Components/AuthField";
 
 export default function Login() {
-    //destruct props "errors"
     const { errors} = usePage().props;
 
-    //state user
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
 
-    //function "loginHandler"
     const loginHandler = async (e) => {
         e.preventDefault();
 
-        //login
         Inertia.post("/login", {
             email: email,
             password: password,
+            remember: rememberMe,
         });
     };
 
@@ -73,6 +71,26 @@ export default function Login() {
                                             placeholder="Password"
                                             error={errors.password}
                                         />
+                                        <div className="form-group form-check mb-3">
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                id="rememberMe"
+                                                checked={rememberMe}
+                                                onChange={(e) =>
+                                                    setRememberMe(
+                                                        e.target.checked
+                                                    )
+                                                }
+                                            />
+                                            <label
+                                                className="form-check-label"
+                                                htmlFor="rememberMe"
+                                            >
+                                                Remember Me
+                                            </label>
+                                        </div>
+
                                         <button
                                             className="btn btn-success shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
