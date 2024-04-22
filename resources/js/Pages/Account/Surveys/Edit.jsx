@@ -22,7 +22,7 @@ export default function SurveyEdit() {
         surveyMethods,
         surveyQuestions,
     } = usePage().props;
-
+console.log(errors);
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
     const [theme, setTheme] = useState("");
@@ -293,7 +293,8 @@ export default function SurveyEdit() {
                     });
                     setIsSaving(false);
                 },
-            }
+            },
+            setIsSaving(false)
         );
     };
 
@@ -356,10 +357,11 @@ export default function SurveyEdit() {
                 >
                     <form onSubmit={updateSurvey}>
                         <InputField
-                            label="Image Thumbnail"
+                            label="Image Thumbnail (max 2MB)"
                             type="file"
                             value={survey.image}
                             onChange={(e) => [setImage(e.target.files[0])]}
+                            error={errors.image}
                         />
                         <InputField
                             label="Title Design"

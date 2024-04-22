@@ -28,7 +28,7 @@ class ArticleController extends Controller
                 ->paginate(8);
         }
 
-        $articles->appends(['q' => request()->q]);  
+        $articles->appends(['q' => request()->q]);
 
         return inertia('Account/Articles/Articles', [
             'articles' => $articles,
@@ -46,25 +46,42 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'user_id' => 'required',
-            'title' => 'required',
-            'content' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status' => 'required'
-        ]);
+        if ($request->image != null) {
+            $this->validate($request, [
+                'user_id' => 'required',
+                'title' => 'required',
+                'content' => 'required',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'status' => 'required'
+            ]);
 
-        $image = $request->file('image');
-        $image->storeAs('public/image/articles/', $image->hashName());
+            $image = $request->file('image');
+            $image->storeAs('public/image/articles/', $image->hashName());
 
-        Articles::create([
-            'user_id' => $request->user_id,
-            'title' => $request->title,
-            'slug' => Str::slug($request->title, '-'),
-            'content' => $request->content,
-            'image' => $image->hashName(),
-            'status' => $request->status
-        ]);
+            Articles::create([
+                'user_id' => $request->user_id,
+                'title' => $request->title,
+                'slug' => Str::slug($request->title, '-'),
+                'content' => $request->content,
+                'image' => $image->hashName(),
+                'status' => $request->status
+            ]);
+        } else {
+            $this->validate($request, [
+                'user_id' => 'required',
+                'title' => 'required',
+                'content' => 'required',
+                'status' => 'required'
+            ]);
+            Articles::create([
+                'user_id' => $request->user_id,
+                'title' => $request->title,
+                'slug' => Str::slug($request->title, '-'),
+                'content' => $request->content,
+                'image' => 'articleFactory.png',
+                'status' => $request->status
+            ]);
+        }
 
         return redirect()->route('account.articles.index');
     }
@@ -81,11 +98,20 @@ class ArticleController extends Controller
 
     public function update(Request $request, Articles $article)
     {
-        $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'status' => 'required'
-        ]);
+        if ($request->image == null) {
+            $request->validate([
+                'title' => 'required',
+                'content' => 'required',
+                'status' => 'required'
+            ]);
+        } else {
+            $request->validate([
+                'title' => 'required',
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'content' => 'required',
+                'status' => 'required'
+            ]);
+        }
 
         if ($request->file('image')) {
 
@@ -95,16 +121,21 @@ class ArticleController extends Controller
             $image->storeAs('public/image/articles/', $image->hashName());
 
             $article->update([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title, '-'),
+                'content' => $request->content,
+                'status' => $request->status,
                 'image' => $image->hashName(),
             ]);
+        } else {
+            $article->update([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title, '-'),
+                'content' => $request->content,
+                'status' => $request->status,
+                'image' => 'articleFactory.png',
+            ]);
         }
-
-        $article->update([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title, '-'),
-            'content' => $request->content,
-            'status' => $request->status
-        ]);
 
         return redirect()->route('account.articles.index');
     }

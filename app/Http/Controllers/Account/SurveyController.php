@@ -55,41 +55,78 @@ class SurveyController extends Controller
 
     public function store(Request $request, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {
+        if($request->image != null) {
+            $this->validate($request, [
+                'user_id'        => 'required',
+                'title'          => 'required',
+                'image'         => 'image|mimes:jpeg,jpg,png,svg|max:2048',
+                'theme'          => 'required',
+                'description'    => 'required',
+                'survey_categories' => 'required',
+                'survey_methods' => 'required',
+                'general_access' => 'required',
+                'survey_questions' => 'required',
+                'url_website'    => 'required_without_all:embed_design,embed_prototype',
+                'embed_design'   => 'required_without_all:url_website,embed_prototype',
+                'embed_prototype'   => 'required_without_all:url_website,embed_design',
+            ], [
+                'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            ]);
+        } else {
+            $this->validate($request, [
+                'user_id'        => 'required',
+                'title'          => 'required',
+                'theme'          => 'required',
+                'description'    => 'required',
+                'survey_categories' => 'required',
+                'survey_methods' => 'required',
+                'general_access' => 'required',
+                'survey_questions' => 'required',
+                'url_website'    => 'required_without_all:embed_design,embed_prototype',
+                'embed_design'   => 'required_without_all:url_website,embed_prototype',
+                'embed_prototype'   => 'required_without_all:url_website,embed_design',
+            ], [
+                'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            ]);
+        }
+        
 
-        $this->validate($request, [
-            'user_id'        => 'required',
-            'title'          => 'required',
-            'image'         => 'required|image|mimes:jpeg,jpg,png,svg|max:2048',
-            'theme'          => 'required',
-            'description'    => 'required',
-            'survey_categories' => 'required',
-            'survey_methods' => 'required',
-            'general_access' => 'required',
-            'survey_questions' => 'required',
-            'url_website'    => 'required_without_all:embed_design,embed_prototype',
-            'embed_design'   => 'required_without_all:url_website,embed_prototype',
-            'embed_prototype'   => 'required_without_all:url_website,embed_design',
-        ], [
-            'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
-            'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
-            'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
-        ]);
+        if ($request->file('image')) {
+            $image = $request->file('image');
+            $image->storeAs('public/image/surveys/', $image->hashName());
 
-        $image = $request->file('image');
-        $image->storeAs('public/image/surveys/', $image->hashName());
+            $survey = Survey::create([
+                'user_id'        => $request->user_id,
+                'title'          => $request->title,
+                'slug'          => Str::slug($request->title, '-'),
+                'image'         => $image->hashName(),
+                'theme'          => $request->theme,
+                'description'    => $request->description,
+                'url_website'    => $request->url_website,
+                'embed_design'   => $request->embed_design,
+                'embed_prototype'   => $request->embed_prototype,
+                'status' => $request->general_access,
+            ]);
+        } else {
+            $image = "surveyFactory.jpg";
 
-        $survey = Survey::create([
-            'user_id'        => $request->user_id,
-            'title'          => $request->title,
-            'slug'          => Str::slug($request->title, '-'),
-            'image'         => $image->hashName(),
-            'theme'          => $request->theme,
-            'description'    => $request->description,
-            'url_website'    => $request->url_website,
-            'embed_design'   => $request->embed_design,
-            'embed_prototype'   => $request->embed_prototype,
-            'status' => $request->general_access,
-        ]);
+            $survey = Survey::create([
+                'user_id'        => $request->user_id,
+                'title'          => $request->title,
+                'slug'          => Str::slug($request->title, '-'),
+                'image'         => $image,
+                'theme'          => $request->theme,
+                'description'    => $request->description,
+                'url_website'    => $request->url_website,
+                'embed_design'   => $request->embed_design,
+                'embed_prototype'   => $request->embed_prototype,
+                'status' => $request->general_access,
+            ]);
+        }
 
         SurveyQuestions::create([
             'survey_id' => $survey->id,
@@ -144,6 +181,7 @@ class SurveyController extends Controller
         $this->validate($request, [
             'user_id'        => 'required',
             'title'          => 'required',
+            'image'         => 'image|mimes:jpeg,jpg,png,svg|max:2048',
             'theme'          => 'required',
             'description'    => 'required',
             'survey_questions' => 'required',
@@ -152,13 +190,13 @@ class SurveyController extends Controller
             'embed_design'   => 'required_without_all:url_website,embed_prototype',
             'embed_prototype'   => 'required_without_all:url_website,embed_design',
         ], [
+            'image.max' => 'The image may not be greater than 2 MB.',
             'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
             'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
             'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
         ]);
 
         if ($request->file('image')) {
-
             Storage::disk('local')->delete('public/image/surveys/' . basename($survey->image));
 
             $image = $request->file('image');

@@ -30,17 +30,24 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name'          => 'required|unique:categories',
-            'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
-        ]);
-
+        if($request->image != null){
+            $this->validate($request, [
+                'name'          => 'required|unique:categories',
+                'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+        } else {
+            $this->validate($request, [
+                'name'          => 'required|unique:categories',
+            ]);
+        }
+       
         if ($request->hasFile('image')) {
-            $request->file('image')->storeAs('public/image/categories', $request->file('image')->hashName());
+            $image = $request->file('image');
+            $image->storeAs('public/image/categories/', $image->hashName());
 
             Category::create([
                 'name'          => $request->name,
-                'image'         => $request->file('image')->hashName(),
+                'image'         => $image->hashName(),
                 'slug'          => Str::slug($request->name, '-')
             ]);
         } else {
@@ -63,19 +70,27 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $this->validate($request, [
-            'name'          => 'required|unique:categories,name,' . $category->id,
-            'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
-        ]);
+        if($request->image != null){
+            $this->validate($request, [
+                'name'          => 'required|unique:categories,name,' . $category->id,
+                'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+        } else {
+            $this->validate($request, [
+                'name'          => 'required|unique:categories,name,' . $category->id,
+            ]);
+        }
+        
 
         if ($request->hasFile('image')) {
             Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
 
-            $request->file('image')->storeAs('public/image/categories', $request->file('image')->hashName());
+            $image = $request->file('image');
+            $image->storeAs('public/image/categories/', $image->hashName());
 
             $category->update([
                 'name'          => $request->name,
-                'image'         => $request->file('image')->hashName(),
+                'image'         => $image->hashName(),
                 'slug'          => Str::slug($request->name, '-')
             ]);
         } else {

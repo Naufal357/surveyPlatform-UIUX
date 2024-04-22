@@ -15,7 +15,6 @@ export default function CategoryCreate() {
 
     const [isSaving, setIsSaving] = useState(false);
 
-
     const storeCategory = async (e) => {
         setIsSaving(true);
         e.preventDefault();
@@ -52,7 +51,8 @@ export default function CategoryCreate() {
                     });
                     setIsSaving(false); 
                 },
-            }
+            },
+            setIsSaving(false)
         );
     };
 
@@ -75,7 +75,7 @@ export default function CategoryCreate() {
                         </div>
                         <div className="mb-3">
                             <InputField
-                                label="Image"
+                                label="Image (max 2 MB)"
                                 type="file"
                                 value={image}
                                 onChange={(e) => [setImage(e.target.files[0])]}

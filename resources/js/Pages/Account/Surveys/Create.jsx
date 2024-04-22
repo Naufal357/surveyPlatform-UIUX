@@ -266,7 +266,8 @@ export default function SurveysCreate() {
                     });
                     setIsSaving(false);
                 },
-            }
+            },
+            setIsSaving(false)
         );
     };
 
@@ -345,7 +346,7 @@ export default function SurveysCreate() {
                 <CardContent title="Create Survey" icon="fas fa-scroll">
                     <form onSubmit={storeSurvey}>
                         <InputField
-                            label="Image Thumbnail"
+                            label="Image Thumbnail (max 2MB)"
                             type="file"
                             value={image}
                             onChange={(e) => [setImage(e.target.files[0])]}

@@ -34,7 +34,6 @@ export default function CategoryEdit() {
             },
             {
                 onSuccess: () => {
-                    //show alert
                     Swal.fire({
                         title: "Success!",
                         text: "Data updated successfully!",
@@ -54,7 +53,8 @@ export default function CategoryEdit() {
                     });
                     setIsSaving(false); 
                 },
-            }
+            },
+            setIsSaving(false)
         );
     };
 
@@ -78,10 +78,11 @@ export default function CategoryEdit() {
 
                         <div className="mb-3">
                             <InputField
-                                label="Image"
+                                label="Image (max 2MB)"
                                 type="file"
                                 value={category.image}
                                 onChange={(e) => [setImage(e.target.files[0])]}
+                                error={errors.image}
                             />
                         </div>
 

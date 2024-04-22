@@ -72,7 +72,8 @@ export default function ArticleCreate() {
                     });
                     setIsSaving(false);
                 },
-            }
+            },
+            setIsSaving(false)
         );
     };
 
