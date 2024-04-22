@@ -269,6 +269,7 @@ export default function Dashboard() {
                             title="Grafik Hasil Dari Setiap Pertanyaan"
                             defaultOpen={true}
                         >
+                            
                             {susData.length > 0 ? (
                                 <div className="row">
                                     {parsedSusQuestions.map((item, index) => (

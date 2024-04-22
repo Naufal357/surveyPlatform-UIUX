@@ -24,14 +24,14 @@ class responsesTableSeeder extends Seeder
             'response_data' => '{
                                     "sus": {
                                         "sus1": 1,
-                                        "sus2": 3,
-                                        "sus3": 3,
-                                        "sus4": 1,
-                                        "sus5": 3,
-                                        "sus6": 2,
-                                        "sus7": 2,
+                                        "sus2": 4,
+                                        "sus3": 2,
+                                        "sus4": 4,
+                                        "sus5": 1,
+                                        "sus6": 5,
+                                        "sus7": 1,
                                         "sus8": 5,
-                                        "sus9": 3,
+                                        "sus9": 2,
                                         "sus10": 4
                                     },
                                     "tam": [
@@ -43,7 +43,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam1",
-                                                2
+                                                5
                                                 ]
                                             ]
                                             },
@@ -52,7 +52,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam2",
-                                                3
+                                                2
                                                 ]
                                             ]
                                             },
@@ -79,7 +79,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam5",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -88,7 +88,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam6",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             }
@@ -111,7 +111,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam8",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -138,7 +138,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam11",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             },
@@ -147,7 +147,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam12",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             }
@@ -211,7 +211,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -220,7 +220,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -247,7 +247,7 @@ class responsesTableSeeder extends Seeder
                                                 ],
                                                 [
                                                 "tam22",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -277,16 +277,16 @@ class responsesTableSeeder extends Seeder
             'educational_background' => "Master's Degree",
             'response_data' => '{
                                     "sus": {
-                                        "sus1": 1,
-                                        "sus2": 3,
-                                        "sus3": 3,
+                                        "sus1": 5,
+                                        "sus2": 1,
+                                        "sus3": 5,
                                         "sus4": 1,
-                                        "sus5": 3,
-                                        "sus6": 2,
-                                        "sus7": 2,
-                                        "sus8": 5,
-                                        "sus9": 3,
-                                        "sus10": 4
+                                        "sus5": 5,
+                                        "sus6": 1,
+                                        "sus7": 5,
+                                        "sus8": 1,
+                                        "sus9": 5,
+                                        "sus10": 1
                                     },
                                     "tam": [
                                         {
@@ -297,7 +297,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam1",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -306,7 +306,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam2",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             },
@@ -333,7 +333,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam5",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -342,7 +342,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam6",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             }
@@ -356,7 +356,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam7",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -392,7 +392,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam11",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             },
@@ -415,7 +415,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam13",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -456,7 +456,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -465,7 +465,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -474,7 +474,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -483,7 +483,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam20",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             }
@@ -497,7 +497,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam21",
-                                                3
+                                                5
                                                 ],
                                                 [
                                                 "tam22",
@@ -510,7 +510,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam23",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             }
@@ -531,16 +531,16 @@ class responsesTableSeeder extends Seeder
             'educational_background' => "High School",
             'response_data' => '{
                                     "sus": {
-                                        "sus1": 1,
+                                        "sus1": 4,
                                         "sus2": 3,
                                         "sus3": 3,
-                                        "sus4": 1,
+                                        "sus4": 4,
                                         "sus5": 3,
                                         "sus6": 2,
-                                        "sus7": 2,
+                                        "sus7": 3,
                                         "sus8": 5,
-                                        "sus9": 3,
-                                        "sus10": 4
+                                        "sus9": 2,
+                                        "sus10": 1
                                     },
                                     "tam": [
                                         {
@@ -560,7 +560,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam2",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -569,7 +569,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam3",
-                                                4
+                                                3
                                                 ]
                                             ]
                                             },
@@ -578,7 +578,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam4",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -587,7 +587,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam5",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             },
@@ -596,7 +596,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam6",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             }
@@ -619,7 +619,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam8",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -628,7 +628,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam9",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -637,7 +637,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam10",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -646,7 +646,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam11",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -655,7 +655,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam12",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             }
@@ -669,7 +669,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam13",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             },
@@ -678,7 +678,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam14",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -687,7 +687,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam15",
-                                                2
+                                                4
                                                 ]
                                             ]
                                             },
@@ -696,7 +696,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam16",
-                                                3
+                                                5
                                                 ]
                                             ]
                                             }
@@ -710,7 +710,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -719,7 +719,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -728,7 +728,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -737,7 +737,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam20",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             }
@@ -751,11 +751,11 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam21",
-                                                3
+                                                4
                                                 ],
                                                 [
                                                 "tam22",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -764,7 +764,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam23",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             }
@@ -785,16 +785,16 @@ class responsesTableSeeder extends Seeder
             'educational_background' => "Doctorate Degree",
             'response_data' => '{
                                     "sus": {
-                                        "sus1": 1,
-                                        "sus2": 3,
-                                        "sus3": 3,
+                                        "sus1": 5,
+                                        "sus2": 1,
+                                        "sus3": 5,
                                         "sus4": 1,
-                                        "sus5": 3,
-                                        "sus6": 2,
-                                        "sus7": 2,
-                                        "sus8": 5,
-                                        "sus9": 3,
-                                        "sus10": 4
+                                        "sus5": 5,
+                                        "sus6": 1,
+                                        "sus7": 5,
+                                        "sus8": 1,
+                                        "sus9": 5,
+                                        "sus10": 1
                                     },
                                     "tam": [
                                         {
@@ -805,7 +805,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam1",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -814,7 +814,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam2",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -832,7 +832,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam4",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -841,7 +841,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam5",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             },
@@ -850,7 +850,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam6",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             }
@@ -891,7 +891,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam10",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -909,7 +909,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam12",
-                                                4
+                                                3
                                                 ]
                                             ]
                                             }
@@ -923,7 +923,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam13",
-                                                3
+                                                4
                                                 ]
                                             ]
                                             },
@@ -932,7 +932,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam14",
-                                                4
+                                                5
                                                 ]
                                             ]
                                             },
@@ -941,7 +941,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam15",
-                                                4
+                                                3
                                                 ]
                                             ]
                                             },
@@ -950,7 +950,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam16",
-                                                2
+                                                4
                                                 ]
                                             ]
                                             }
@@ -973,7 +973,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -982,7 +982,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -991,7 +991,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam20",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             }
@@ -1005,7 +1005,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam21",
-                                                3
+                                                5
                                                 ],
                                                 [
                                                 "tam22",
@@ -1018,7 +1018,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam23",
-                                                4
+                                                3
                                                 ]
                                             ]
                                             }
@@ -1039,16 +1039,16 @@ class responsesTableSeeder extends Seeder
             'educational_background' => "Associate's Degree",
             'response_data' => '{
                                 "sus": {
-                                    "sus1": 1,
-                                    "sus2": 3,
-                                    "sus3": 3,
-                                    "sus4": 1,
-                                    "sus5": 3,
-                                    "sus6": 2,
+                                    "sus1": 3,
+                                    "sus2": 1,
+                                    "sus3": 4,
+                                    "sus4": 2,
+                                    "sus5": 5,
+                                    "sus6": 1,
                                     "sus7": 2,
-                                    "sus8": 5,
-                                    "sus9": 3,
-                                    "sus10": 4
+                                    "sus8": 4,
+                                    "sus9": 2,
+                                    "sus10": 5
                                 },
                                 "tam": [
                                     {
@@ -1059,7 +1059,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam1",
-                                            5
+                                            4
                                             ]
                                         ]
                                         },
@@ -1068,7 +1068,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam2",
-                                            5
+                                            3
                                             ]
                                         ]
                                         },
@@ -1077,7 +1077,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam3",
-                                            4
+                                            5
                                             ]
                                         ]
                                         },
@@ -1086,7 +1086,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam4",
-                                            4
+                                            5
                                             ]
                                         ]
                                         },
@@ -1095,7 +1095,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam5",
-                                            3
+                                            2
                                             ]
                                         ]
                                         },
@@ -1104,7 +1104,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam6",
-                                            3
+                                            5
                                             ]
                                         ]
                                         }
@@ -1118,7 +1118,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam7",
-                                            5
+                                            4
                                             ]
                                         ]
                                         },
@@ -1127,7 +1127,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam8",
-                                            4
+                                            5
                                             ]
                                         ]
                                         },
@@ -1136,7 +1136,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam9",
-                                            4
+                                            3
                                             ]
                                         ]
                                         },
@@ -1145,7 +1145,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam10",
-                                            4
+                                            5
                                             ]
                                         ]
                                         },
@@ -1154,7 +1154,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam11",
-                                            3
+                                            4
                                             ]
                                         ]
                                         },
@@ -1177,7 +1177,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam13",
-                                            3
+                                            4
                                             ]
                                         ]
                                         },
@@ -1186,7 +1186,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam14",
-                                            4
+                                            5
                                             ]
                                         ]
                                         },
@@ -1204,7 +1204,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam16",
-                                            2
+                                            1
                                             ]
                                         ]
                                         }
@@ -1218,7 +1218,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -1227,7 +1227,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -1236,7 +1236,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                5
+                                                4
                                                 ]
                                             ]
                                             },
@@ -1245,7 +1245,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam20",
-                                                5
+                                                2
                                                 ]
                                             ]
                                             }
@@ -1259,11 +1259,11 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam21",
-                                            3
+                                            5
                                             ],
                                             [
                                             "tam22",
-                                            4
+                                            3
                                             ]
                                         ]
                                         },
@@ -1272,7 +1272,7 @@ class responsesTableSeeder extends Seeder
                                         "value": [
                                             [
                                             "tam23",
-                                            4
+                                            5
                                             ]
                                         ]
                                         }
@@ -1293,16 +1293,16 @@ class responsesTableSeeder extends Seeder
             'educational_background' => "Junior High School",
             'response_data' => '{
                                   "sus": {
-                                    "sus1": 1,
+                                    "sus1": 3,
                                     "sus2": 3,
                                     "sus3": 3,
-                                    "sus4": 1,
+                                    "sus4": 3,
                                     "sus5": 3,
-                                    "sus6": 2,
-                                    "sus7": 2,
-                                    "sus8": 5,
+                                    "sus6": 3,
+                                    "sus7": 3,
+                                    "sus8": 3,
                                     "sus9": 3,
-                                    "sus10": 4
+                                    "sus10": 3
                                   },
                                   "tam": [
                                     {
@@ -1313,7 +1313,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam1",
-                                              5
+                                              3
                                             ]
                                           ]
                                         },
@@ -1331,7 +1331,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam3",
-                                              4
+                                              3
                                             ]
                                           ]
                                         },
@@ -1340,7 +1340,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam4",
-                                              4
+                                              5
                                             ]
                                           ]
                                         },
@@ -1349,7 +1349,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam5",
-                                              3
+                                              5
                                             ]
                                           ]
                                         },
@@ -1358,7 +1358,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam6",
-                                              3
+                                              4
                                             ]
                                           ]
                                         }
@@ -1381,7 +1381,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam8",
-                                              4
+                                              3
                                             ]
                                           ]
                                         },
@@ -1390,7 +1390,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam9",
-                                              4
+                                              5
                                             ]
                                           ]
                                         },
@@ -1408,7 +1408,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam11",
-                                              3
+                                              4
                                             ]
                                           ]
                                         },
@@ -1417,7 +1417,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam12",
-                                              4
+                                              5
                                             ]
                                           ]
                                         }
@@ -1431,7 +1431,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam13",
-                                              3
+                                              4
                                             ]
                                           ]
                                         },
@@ -1440,7 +1440,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam14",
-                                              4
+                                              5
                                             ]
                                           ]
                                         },
@@ -1449,7 +1449,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam15",
-                                              4
+                                              5
                                             ]
                                           ]
                                         },
@@ -1458,7 +1458,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam16",
-                                              2
+                                              3
                                             ]
                                           ]
                                         }
@@ -1472,7 +1472,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam17",
-                                                5
+                                                2
                                                 ]
                                             ]
                                             },
@@ -1481,7 +1481,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam18",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             },
@@ -1490,7 +1490,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam19",
-                                                5
+                                                2
                                                 ]
                                             ]
                                             },
@@ -1499,7 +1499,7 @@ class responsesTableSeeder extends Seeder
                                             "value": [
                                                 [
                                                 "tam20",
-                                                5
+                                                3
                                                 ]
                                             ]
                                             }
@@ -1513,11 +1513,11 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam21",
-                                              3
+                                              4
                                             ],
                                             [
                                               "tam22",
-                                              4
+                                              3
                                             ]
                                           ]
                                         },
@@ -1526,7 +1526,7 @@ class responsesTableSeeder extends Seeder
                                           "value": [
                                             [
                                               "tam23",
-                                              4
+                                              2
                                             ]
                                           ]
                                         }

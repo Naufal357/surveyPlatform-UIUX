@@ -7,6 +7,7 @@ export default function InputField({
     onChange,
     placeholder,
     error,
+    disabled,
 }) {
     const [previewImage, setPreviewImage] = useState(value);
 
@@ -17,7 +18,7 @@ export default function InputField({
     const sanitizedValue = value || "";
 
     const handleFileChange = (e) => {
-        onChange(e); 
+        onChange(e);
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -68,6 +69,7 @@ export default function InputField({
                     value={sanitizedValue}
                     onChange={onChange}
                     placeholder={placeholder}
+                    disabled={disabled}
                 />
             )}
             {error && <div className="alert alert-danger">{error}</div>}

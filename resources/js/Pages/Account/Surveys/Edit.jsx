@@ -47,7 +47,7 @@ export default function SurveyEdit() {
     let idSusCounter = 0;
 
     const [isSaving, setIsSaving] = useState(false);
-
+    const [isCantEdited, setIsCantEdited] = useState(true);
 
     const data = JSON.parse(surveyQuestions[0].questions_data);
 
@@ -246,14 +246,14 @@ export default function SurveyEdit() {
     };
 
     const updateSurvey = async (e) => {
-       setIsSaving(true);
-       e.preventDefault();
+        setIsSaving(true);
+        e.preventDefault();
 
-       if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
-           handleReset();
-           setIsSaving(false);
-           return;
-       }
+        if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
+            handleReset();
+            setIsSaving(false);
+            return;
+        }
 
         Inertia.post(
             `/account/surveys/${survey.id}`,
@@ -411,6 +411,7 @@ export default function SurveyEdit() {
                                 labelKey="name"
                                 onChange={handleCheckboxCategoriesChange}
                                 selectedValues={surveyCategoriesData}
+                                error={errors.survey_categories}
                             />
                         </div>
                         <div>
@@ -422,6 +423,8 @@ export default function SurveyEdit() {
                                 labelKey="name"
                                 onChange={handleCheckboxMethodsChange}
                                 selectedValues={surveyMethodsData}
+                                disabled={isCantEdited}
+                                error={errors.survey_methods}
                             />
                         </div>
                         <div>
@@ -477,6 +480,37 @@ export default function SurveyEdit() {
                         defaultOpen={false}
                     >
                         <div className="card-body">
+                            <div className="alert alert-danger">
+                                <div className="d-flex align-items-center">
+                                    <i className="fas fa-exclamation-triangle mb-3"></i>
+                                    <h5 className="mb-3 ms-2">
+                                        Aturan pertanyaan SUS (System Usability
+                                        Scale)
+                                    </h5>
+                                </div>
+
+                                <p>
+                                    1. Pertanyaan yang sudah disimpan tidak bisa
+                                    diubah.
+                                    <br />
+                                    2. Pastikan mengisi semua pertanyaan.
+                                    <br />
+                                    3. Untuk setiap pertanyaan bernomor ganjil,
+                                    nilai tertinggi adalah 5 (menyatakan sangat
+                                    setuju). Sehingga, isi pertanyaan bersifat
+                                    positif untuk pertanyaan ganjil.
+                                    <br />
+                                    4. Untuk setiap pertanyaan bernomor genap,
+                                    nilai terendah adalah 1 (menyatakan sangat
+                                    tidak setuju). Sehingga, isi pertanyaan
+                                    bersifat negatif untuk pertanyaan genap.
+                                    <br />
+                                    5. Bila masih tidak memahami aturan 3 dan 4,
+                                    silahkan perhatikan pertanyaan bawaan yang
+                                    sudah disediakan.
+                                </p>
+                            </div>
+                            <hr />
                             {susQuestionsData.map((question, index) => (
                                 <InputField
                                     key={question.id}
@@ -489,20 +523,23 @@ export default function SurveyEdit() {
                                             e.target.value
                                         )
                                     }
+                                    disabled={isCantEdited}
                                     error={errors[`question${index + 1}`]}
                                 />
                             ))}
                         </div>
 
-                        <div>
-                            <ButtonCRUD
-                                type="reset"
-                                label="Reset to default"
-                                color="btn-warning"
-                                iconClass="fa fa-redo"
-                                onClick={resetSusQuestions}
-                            />
-                        </div>
+                        {!isCantEdited && (
+                            <div>
+                                <ButtonCRUD
+                                    type="reset"
+                                    label="Reset to default"
+                                    color="btn-warning"
+                                    iconClass="fa fa-redo"
+                                    onClick={resetSusQuestions}
+                                />
+                            </div>
+                        )}
                     </AccordionLayout>
                 )}
 
@@ -511,17 +548,41 @@ export default function SurveyEdit() {
                         title="Preview Question - Technology Acceptence Model"
                         defaultOpen={false}
                     >
-                        <p>
-                            Pertanyaan dalam kuesioner akan diatur sesuai dengan
-                            urutan variabel TAM. Dimulai dari Pertanyaan{" "}
-                            <i> Perceived Ease of Use</i>, kemudian{" "}
-                            <i> Perceived Usefulness</i>,
-                            <i> Attitude Toward Using</i>,{" "}
-                            <i> Behavioral Intention to Use</i>, dan terakhir{" "}
-                            <i> Actual System Use</i>. Dengan demikian, pengguna
-                            akan menjawab pertanyaan sesuai dengan alur yang
-                            telah ditetapkan, memudahkan pengisian kuesioner.
-                        </p>
+                        <div className="alert alert-danger">
+                            <div className="d-flex align-items-center">
+                                <i className="fas fa-exclamation-triangle mb-3"></i>
+                                <h5 className="mb-3 ms-2">
+                                    Aturan pertanyaan TAM (Technology Acceptence
+                                    Model)
+                                </h5>
+                            </div>
+
+                            <p>
+                                1. Pertanyaan yang sudah disimpan tidak bisa
+                                diubah.
+                                <br />
+                                2. Variable, indikator, dan pertanyaan dapat
+                                dirubah sesuai kebutuhan.
+                                <br />
+                                3. Diharapkan menggunakan semua variable yang
+                                disedikan agar mendapat hasil yang maksimal.
+                                <br />
+                                4. Saat mengisi indikator, boleh saja
+                                menggunakan input yang sama.
+                                <br />
+                                5. Urutan pertanyaan dalam kuesioner akan diatur
+                                sesuai dengan urutan variabel TAM. Dimulai dari
+                                Pertanyaan <i> Perceived Ease of Use</i>,
+                                kemudian <i> Perceived Usefulness</i>,
+                                <i> Attitude Toward Using</i>,
+                                <i> Behavioral Intention to Use</i>, dan
+                                terakhir <i> Actual System Use</i>. Dengan
+                                demikian, pengguna akan menjawab pertanyaan
+                                sesuai dengan alur yang telah ditetapkan, agar
+                                memudahkan pengisian kuesioner.
+                            </p>
+                        </div>
+                        <hr />
                         <hr />
                         {tamQuestionsData.map((question, index) => (
                             <div key={index} className="mb-3">
@@ -541,6 +602,7 @@ export default function SurveyEdit() {
                                                 );
                                             }}
                                             value={question.variable}
+                                            disabled={isCantEdited}
                                         >
                                             <option
                                                 value=""
@@ -582,6 +644,7 @@ export default function SurveyEdit() {
                                                             e.target.value
                                                         )
                                                     }
+                                                    disabled={isCantEdited}
                                                     error={
                                                         errors[
                                                             `indicator${
@@ -605,6 +668,7 @@ export default function SurveyEdit() {
                                                             e.target.value
                                                         )
                                                     }
+                                                    disabled={isCantEdited}
                                                     error={
                                                         errors[
                                                             `question${
@@ -614,18 +678,20 @@ export default function SurveyEdit() {
                                                     }
                                                 />
                                             </div>
-                                            <div className="col-md-1 col-12 text-center mt-md-3">
-                                                <ButtonCRUD
-                                                    type="delete question"
-                                                    color="btn btn-outline-danger"
-                                                    iconClass="fas fa-minus"
-                                                    onClick={() =>
-                                                        removeTamQuestion(
-                                                            question.id
-                                                        )
-                                                    }
-                                                />
-                                            </div>
+                                            {!isCantEdited && (
+                                                <div className="col-md-1 col-12 text-center mt-md-3">
+                                                    <ButtonCRUD
+                                                        type="delete question"
+                                                        color="btn btn-outline-danger"
+                                                        iconClass="fas fa-minus"
+                                                        onClick={() =>
+                                                            removeTamQuestion(
+                                                                question.id
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -633,31 +699,35 @@ export default function SurveyEdit() {
                             </div>
                         ))}
 
-                        <div className="mb-3 text-center">
-                            <ButtonCRUD
-                                type="add question"
-                                color="btn btn-outline-success"
-                                iconClass="fa fa-plus"
-                                onClick={() => addTamQuestion()}
-                            />
-                        </div>
+                        {!isCantEdited && (
+                            <>
+                                <div className="mb-3 text-center">
+                                    <ButtonCRUD
+                                        type="add question"
+                                        color="btn btn-outline-success"
+                                        iconClass="fa fa-plus"
+                                        onClick={() => addTamQuestion()}
+                                    />
+                                </div>
 
-                        <div>
-                            <ButtonCRUD
-                                type="reset"
-                                label="Reset to default"
-                                color="btn-warning"
-                                iconClass="fa fa-redo"
-                                onClick={resetTamQuestions}
-                            />
-                            <ButtonCRUD
-                                type="delete all questions"
-                                label="Delete all questions"
-                                color="btn-danger"
-                                iconClass="fa fa-trash"
-                                onClick={deleteAllTamQuestions}
-                            />
-                        </div>
+                                <div>
+                                    <ButtonCRUD
+                                        type="reset"
+                                        label="Reset to default"
+                                        color="btn-warning"
+                                        iconClass="fa fa-redo"
+                                        onClick={resetTamQuestions}
+                                    />
+                                    <ButtonCRUD
+                                        type="delete all questions"
+                                        label="Delete all questions"
+                                        color="btn-danger"
+                                        iconClass="fa fa-trash"
+                                        onClick={deleteAllTamQuestions}
+                                    />
+                                </div>
+                            </>
+                        )}
                     </AccordionLayout>
                 )}
             </LayoutAccount>

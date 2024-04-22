@@ -36,6 +36,7 @@ export default function SurveysCreate() {
     const susJson = {};
 
     const [isSaving, setIsSaving] = useState(false);
+    const [isResetQuestions, setIsResetQuestions] = useState(true);
 
     useEffect(() => {
         if (surveyMethodsData.includes(1) && surveyMethodsData.includes(2)) {
@@ -58,28 +59,30 @@ export default function SurveysCreate() {
     };
 
     useEffect(() => {
-        let idTamCounter = 0;
-        let idSusCounter = 0;
+        if (isResetQuestions) {
+            let idTamCounter = 0;
+            let idSusCounter = 0;
 
-        const data = JSON.parse(surveyQuestionsExample[0].questions_data);
-        const parsedSusQuestions = Object.entries(data.sus).map(
-            ([key, value]) => ({
-                id: `${idSusCounter++}`,
-                question: replaceTheme(value),
-            })
-        );
-        const parsedTamQuestions = data.tam.flatMap((variable) =>
-            variable.indicators.flatMap((indicator) =>
-                indicator.questions.map((question) => ({
-                    id: `${idTamCounter++}`,
-                    variable: variable.name,
-                    indicator: indicator.name,
-                    question: replaceTheme(question),
-                }))
-            )
-        );
-        setSusQuestionsData(parsedSusQuestions);
-        setTamQuestionsData(parsedTamQuestions);
+            const data = JSON.parse(surveyQuestionsExample[0].questions_data);
+            const parsedSusQuestions = Object.entries(data.sus).map(
+                ([key, value]) => ({
+                    id: `${idSusCounter++}`,
+                    question: replaceTheme(value),
+                })
+            );
+            const parsedTamQuestions = data.tam.flatMap((variable) =>
+                variable.indicators.flatMap((indicator) =>
+                    indicator.questions.map((question) => ({
+                        id: `${idTamCounter++}`,
+                        variable: variable.name,
+                        indicator: indicator.name,
+                        question: replaceTheme(question),
+                    }))
+                )
+            );
+            setSusQuestionsData(parsedSusQuestions);
+            setTamQuestionsData(parsedTamQuestions);
+        }
     }, [surveyQuestionsExample, theme]);
 
     const handleCheckboxCategoriesChange = (e) => {
@@ -117,6 +120,7 @@ export default function SurveysCreate() {
                 return question;
             })
         );
+        setIsResetQuestions(false);
     };
 
     const handleTamVariableChange = (questionId, value) => {
@@ -128,6 +132,7 @@ export default function SurveysCreate() {
                 return question;
             })
         );
+        setIsResetQuestions(false);
     };
 
     const handleTamIndicatorChange = (questionId, value) => {
@@ -139,6 +144,7 @@ export default function SurveysCreate() {
                 return question;
             })
         );
+        setIsResetQuestions(false);
     };
 
     const handleTamQuestionChange = (questionId, value) => {
@@ -150,6 +156,7 @@ export default function SurveysCreate() {
                 return question;
             })
         );
+        setIsResetQuestions(false);
     };
 
     susQuestionsData.forEach((item, index) => {
@@ -213,12 +220,12 @@ export default function SurveysCreate() {
     };
 
     const storeSurvey = async (e) => {
-        setIsSaving(true); 
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
-            setIsSaving(false); 
+            setIsSaving(false);
             return;
         }
 
@@ -247,7 +254,7 @@ export default function SurveysCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false); 
+                    setIsSaving(false);
                 },
                 onError: () => {
                     Swal.fire({
@@ -257,12 +264,11 @@ export default function SurveysCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false); 
+                    setIsSaving(false);
                 },
             }
         );
     };
-
 
     const handleReset = () => {
         setImage(null);
@@ -462,6 +468,37 @@ export default function SurveysCreate() {
                         defaultOpen={false}
                     >
                         <div className="card-body">
+                            <div className="alert alert-danger">
+                                <div className="d-flex align-items-center">
+                                    <i className="fas fa-exclamation-triangle mb-3"></i>
+                                    <h5 className="mb-3 ms-2">
+                                        Aturan pertanyaan SUS (System Usability
+                                        Scale)
+                                    </h5>
+                                </div>
+
+                                <p>
+                                    1. Pertanyaan yang sudah disimpan tidak bisa
+                                    diubah.
+                                    <br />
+                                    2. Pastikan mengisi semua pertanyaan.
+                                    <br />
+                                    3. Untuk setiap pertanyaan bernomor ganjil,
+                                    nilai tertinggi adalah 5 (menyatakan sangat
+                                    setuju). Sehingga, isi pertanyaan bersifat
+                                    positif untuk pertanyaan ganjil.
+                                    <br />
+                                    4. Untuk setiap pertanyaan bernomor genap,
+                                    nilai terendah adalah 1 (menyatakan sangat
+                                    tidak setuju). Sehingga, isi pertanyaan
+                                    bersifat negatif untuk pertanyaan genap.
+                                    <br />
+                                    5. Bila masih tidak memahami aturan 3 dan 4,
+                                    silahkan perhatikan pertanyaan bawaan yang
+                                    sudah disediakan.
+                                </p>
+                            </div>
+                            <hr />
                             {susQuestionsData.map((question, index) => (
                                 <InputField
                                     key={question.id}
@@ -496,17 +533,40 @@ export default function SurveysCreate() {
                         title="Preview Question - Technology Acceptence Model"
                         defaultOpen={false}
                     >
-                        <p>
-                            Pertanyaan dalam kuesioner akan diatur sesuai dengan
-                            urutan variabel TAM. Dimulai dari Pertanyaan{" "}
-                            <i> Perceived Ease of Use</i>, kemudian{" "}
-                            <i> Perceived Usefulness</i>,
-                            <i> Attitude Toward Using</i>,{" "}
-                            <i> Behavioral Intention to Use</i>, dan terakhir{" "}
-                            <i> Actual System Use</i>. Dengan demikian, pengguna
-                            akan menjawab pertanyaan sesuai dengan alur yang
-                            telah ditetapkan, memudahkan pengisian kuesioner.
-                        </p>
+                        <div className="alert alert-danger">
+                            <div className="d-flex align-items-center">
+                                <i className="fas fa-exclamation-triangle mb-3"></i>
+                                <h5 className="mb-3 ms-2">
+                                    Aturan pertanyaan TAM (Technology Acceptence
+                                    Model)
+                                </h5>
+                            </div>
+
+                            <p>
+                                1. Pertanyaan yang sudah disimpan tidak bisa
+                                diubah.
+                                <br />
+                                2. Variable, indikator, dan pertanyaan dapat
+                                dirubah sesuai kebutuhan.
+                                <br />
+                                3. Diharapkan menggunakan semua variable yang
+                                disedikan agar mendapat hasil yang maksimal.
+                                <br />
+                                4. Saat mengisi indikator, boleh saja
+                                menggunakan input yang sama.
+                                <br />
+                                5. Urutan pertanyaan dalam kuesioner akan diatur
+                                sesuai dengan urutan variabel TAM. Dimulai dari
+                                Pertanyaan <i> Perceived Ease of Use</i>,
+                                kemudian <i> Perceived Usefulness</i>,
+                                <i> Attitude Toward Using</i>,
+                                <i> Behavioral Intention to Use</i>, dan
+                                terakhir <i> Actual System Use</i>. Dengan
+                                demikian, pengguna akan menjawab pertanyaan
+                                sesuai dengan alur yang telah ditetapkan, agar
+                                memudahkan pengisian kuesioner.
+                            </p>
+                        </div>
                         <hr />
                         {tamQuestionsData.map((question, index) => (
                             <div key={index} className="mb-3">

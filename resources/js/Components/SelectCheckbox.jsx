@@ -9,6 +9,7 @@ const SelectCheckbox = ({
     selectedValues,
     onChange,
     error,
+    disabled,
 }) => {
     return (
         <div className="mb-3">
@@ -32,6 +33,7 @@ const SelectCheckbox = ({
                                 checked={selectedValues.includes(
                                     option[valueKey]
                                 )}
+                                disabled={disabled}
                             />
                             <label
                                 className="form-check-label"
@@ -59,6 +61,7 @@ const SelectCheckbox = ({
                                 value={option[valueKey]}
                                 onChange={onChange}
                                 id={`check-${id}-${option[valueKey]}`}
+                                disabled={disabled}
                             />
                             <label
                                 className="form-check-label"
