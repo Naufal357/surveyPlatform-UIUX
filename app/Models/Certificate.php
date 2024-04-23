@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Certificate extends Model
@@ -13,6 +12,7 @@ class Certificate extends Model
 
     protected $fillable = [
         'user_id',
+        'original_certificate',
         'certificate',
         'status',
         'description',
@@ -25,7 +25,7 @@ class Certificate extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(CertificateHasCategory::class, 'certificate_has_category');
+        return $this->belongsToMany(CertificateHasCategorys::class, 'certificate_has_category');
     }
 
     protected function certificate(): Attribute

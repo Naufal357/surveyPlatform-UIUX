@@ -14,16 +14,19 @@ import Pagination from "../../Components/Pagination";
 export default function Certificates() {
     const { pendingCertificates, categories, certificateHistory, errors } =
         usePage().props;
+
     const [selectedCertificateId, setSelectedCertificateId] = useState();
+    const [selectedCertificateName, setSelectedCertificateName] = useState();
 
     const [certCategoriesData, setCertCategoriesData] = useState([]);
     const [selectedCertificate, setSelectedCertificate] = useState("");
 
     const [isSaving, setIsSaving] = useState(false);
 
-    const handleCardClick = (id, certificate) => {
+    const handleCardClick = (id, certificate, fileName) => {
         setSelectedCertificateId(id);
         setSelectedCertificate(certificate);
+        setSelectedCertificateName(fileName);
     };
 
     const handleCheckboxCetfCategory = (e) => {
@@ -206,7 +209,8 @@ export default function Certificates() {
                                                     onClick={() =>
                                                         handleCardClick(
                                                             certificate.id,
-                                                            certificate.certificate
+                                                            certificate.certificate,
+                                                            certificate.original_certificate
                                                         )
                                                     }
                                                 >
@@ -221,9 +225,16 @@ export default function Certificates() {
                                                             color: "white",
                                                         }}
                                                     >
+                                                        <p className="card-text text-center">
+                                                            <strong>
+                                                                {
+                                                                    certificate.original_certificate
+                                                                }
+                                                            </strong>
+                                                        </p>
                                                         <p className="card-text">
                                                             <strong>
-                                                                Nama:
+                                                                User:
                                                             </strong>{" "}
                                                             {
                                                                 certificate.user
@@ -261,8 +272,8 @@ export default function Certificates() {
                         defaultOpen={true}
                     >
                         <div className="alert alert-info">
-                            <strong>Selected Certificate Id :</strong>{" "}
-                            {selectedCertificateId ?? "null"}
+                            <strong>Selected Certificate :</strong>{" "}
+                            {selectedCertificateName ?? "null"}
                         </div>
                         {Object.keys(errors).length > 0 && (
                             <div className="alert alert-danger">
@@ -285,6 +296,7 @@ export default function Certificates() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fas fa-check-circle"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="reset"
@@ -299,6 +311,7 @@ export default function Certificates() {
                                 color="btn-danger"
                                 iconClass="fas fa-times-circle"
                                 onClick={handleReject}
+                                disabled={isSaving}
                             />
                         </form>
                     </AccordionLayout>

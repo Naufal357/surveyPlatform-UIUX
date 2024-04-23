@@ -86,27 +86,31 @@ class ProfileController extends Controller
 
     public function certificate()
     {
+        $certificates = Certificate::where('user_id', auth()->user()->id)->latest()->paginate(8);
+
         return inertia('Account/Profile/Certificate', [
             'user' => auth()->user(),
+            'certificates' => $certificates
         ]);
     }
 
     public function uploadCertificate(Request $request)
     {
-
         $this->validate($request, [
             'user_id' => 'required',
             'files.*' => 'required|file|mimes:pdf|max:2048',
             'files' => 'required|array|min:1'
         ], [
-            'files' => 'Please select at least one PDF certificate to upload.'
+            'files' => 'Please select at least one valid PDF certificate to upload.'
         ]);
 
         foreach ($request->file('files') as $file) {
+            $originalName = $file->getClientOriginalName();
             $certificate = $file->hashName();
             $file->storeAs('public/file/certificates', $certificate);
             Certificate::create([
                 'user_id' => $request->user_id,
+                'original_certificate' => $originalName,
                 'certificate' => $certificate,
                 'status' => 'pending',
             ]);

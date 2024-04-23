@@ -83,6 +83,7 @@ export default function SelectCategory() {
                                             onChange={
                                                 handleCheckboxUserPrefsChange
                                             }
+                                            error={errors.userPrefsData}
                                         />
 
                                         <hr />

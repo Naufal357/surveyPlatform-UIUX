@@ -6,14 +6,15 @@ const TableCertificates = ({ certificates }) => {
     if (!certificates || certificates.length === 0) {
         return <div>Tidak Ada Data Survei</div>;
     }
-
+console.log(certificates);
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
                 <thead className="thead-dark">
                     <tr>
                         <th>No</th>
-                        <th>Name</th>
+                        <th>File Name</th>
+                        {certificates.data[0].user && <th>User Name</th>}
                         <th>Status</th>
                         <th>Description</th>
                         <th>Last Updated</th>
@@ -23,11 +24,14 @@ const TableCertificates = ({ certificates }) => {
                     {certificates.data.map((certificate, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>
-                                {certificate.user.first_name +
-                                    " " +
-                                    certificate.user.surname}
-                            </td>
+                            <td>{certificate.original_certificate}</td>
+                            {certificates.data[0].user && (
+                                <td>
+                                    {certificate.user.first_name +
+                                        " " +
+                                        certificate.user.surname}
+                                </td>
+                            )}
                             <td>{certificate.status}</td>
                             <td>{certificate.description}</td>
                             <td>{certificate.updated_at}</td>

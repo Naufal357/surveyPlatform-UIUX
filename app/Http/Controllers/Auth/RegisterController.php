@@ -89,10 +89,12 @@ class RegisterController extends Controller
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
+                $originalName = $file->getClientOriginalName();
                 $certificate = $file->hashName();
                 $file->storeAs('public/file/certificates', $certificate); 
                 Certificate::create([
-                    'user_id' => $user->id, 
+                    'user_id' => $user->id,
+                    'original_certificate' => $originalName,
                     'certificate' => $certificate, 
                     'status' => 'pending',
                 ]);

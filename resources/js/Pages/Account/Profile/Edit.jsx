@@ -5,7 +5,6 @@ import AuthField from "../../../Components/AuthField";
 import CardContent from "../../../Layouts/CardContent";
 import CustomDatePicker from "../../../Components/DatePicker";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
-import PDFDropzone from "../../../Components/FileUpload";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
@@ -95,7 +94,8 @@ export default function ProfileEdit() {
                         });
                         setIsSaving(false);
                     },
-                }
+                },
+                setIsSaving(false)
             );
         }
     };
