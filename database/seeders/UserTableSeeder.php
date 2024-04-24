@@ -56,6 +56,39 @@ class UserTableSeeder extends Seeder
             'password' => bcrypt('123'),
         ]);
 
+        $user5 = User::create([
+            'first_name' => 'Joe',
+            'surname' => 'Doe',
+            'email' => 'joe@123',
+            'birth_date' => '2002-05-17',
+            'gender' => 'Male',
+            'profession' => 'Student',
+            'educational_background' => "Bachelor's Degree",
+            'password' => bcrypt('123'),
+        ]);
+
+        $user6 = User::create([
+            'first_name' => 'Jane',
+            'surname' => 'Doe',
+            'email' => 'jane@123',
+            'birth_date' => '2002-05-17',
+            'gender' => 'Male',
+            'profession' => 'Student',
+            'educational_background' => "Bachelor's Degree",
+            'password' => bcrypt('123'),
+        ]);
+
+        $user7 = User::create([
+            'first_name' => 'John',
+            'surname' => 'Doe',
+            'email' => 'john@123',
+            'birth_date' => '2002-05-17',
+            'gender' => 'Male',
+            'profession' => 'Student',
+            'educational_background' => "Bachelor's Degree",
+            'password' => bcrypt('123'),
+        ]);
+
         $permissions1 = Permission::all();
         $permissions2 = Permission::whereNotIn('name', [
             'roles.index', 'roles.edit', 'roles.create', 'roles.delete', 'roles.index.full', 'permissions.index',
@@ -85,5 +118,8 @@ class UserTableSeeder extends Seeder
         $user2->assignRole($role2);
         $user3->assignRole($role3);
         $user4->assignRole($role4);
+        $user5->assignRole($role4);
+        $user6->assignRole($role4);
+        $user7->assignRole($role3);
     }
 }

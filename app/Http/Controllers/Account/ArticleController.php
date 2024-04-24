@@ -143,7 +143,10 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Articles::find($id);
-        Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
+
+        if ($article->image != 'articleFactory.png') {
+            Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
+        }
         $article->delete();
         return redirect()->route('account.articles.index');
     }

@@ -8,9 +8,8 @@ use Illuminate\Support\Carbon;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
 use App\Models\SurveyQuestions;
-use Inertia\Inertia;
-use PhpParser\Node\Stmt\Echo_;
-use Psy\Readline\Hoa\Console;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ResponsesTAMExport;
 
 class TamController extends Controller
 {
@@ -32,6 +31,7 @@ class TamController extends Controller
     public function show(Request $request, $id)
     {
         $userID = auth()->user()->id;
+        $survey = Survey::find($id);
         $responsesFormated = [];
 
         $survey = Survey::find($id);
@@ -418,5 +418,16 @@ class TamController extends Controller
         }
 
         return $tamSurveyResults;
+    }
+
+    public function export($survey_id)
+    {
+        $survey = Survey::find($survey_id);
+        $surveyName = $survey->title;
+        $dateTime = now()->format('Y-m-d H.i');
+        $dateTimeFormatted = str_replace(' ', '-', $dateTime);
+        $fileName = $surveyName . '_' . $dateTimeFormatted . '_TAM_export.xlsx';
+
+        return Excel::download(new ResponsesTAMExport($survey_id), $fileName);
     }
 }

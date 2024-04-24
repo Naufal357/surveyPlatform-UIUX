@@ -94,18 +94,17 @@ export default function Dashboard() {
         data: getChartData(getSUSChartData.original[question]),
     }));
 
-   const demographicsData = demographicRespondents
-       ? Object.keys(demographicRespondents).map((category) => ({
-             category,
-             data: getDemographicData(
-                 demographicRespondents[category],
-                 category
-             ),
-         }))
-       : [];
+    const demographicsData = demographicRespondents
+        ? Object.keys(demographicRespondents).map((category) => ({
+              category,
+              data: getDemographicData(
+                  demographicRespondents[category],
+                  category
+              ),
+          }))
+        : [];
 
-
-   const handleExport = () => {
+    const handleExport = () => {
         window.location.href = `/account/responses/sus/${survey.id}/export`;
     };
 
@@ -269,7 +268,6 @@ export default function Dashboard() {
                             title="Grafik Hasil Dari Setiap Pertanyaan"
                             defaultOpen={true}
                         >
-                            
                             {susData.length > 0 ? (
                                 <div className="row">
                                     {parsedSusQuestions.map((item, index) => (

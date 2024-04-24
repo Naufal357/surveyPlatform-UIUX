@@ -11,6 +11,7 @@ import TAMTable from "../../../Components/TAMTable";
 export default function Dashboard() {
     const {
         auth,
+        survey,
         surveyTitles,
         respondentCount,
         currentSurveyTitle,
@@ -98,7 +99,8 @@ export default function Dashboard() {
     }));
 
     const handleExport = () => {
-        Inertia.get("/account/responses/tam/${survey.id}/export");
+        console.log(survey.id);
+        window.location.href = `/account/responses/tam/${survey.id}/export`;
     };
 
     return (
@@ -155,18 +157,6 @@ export default function Dashboard() {
                                 value={respondentCount}
                                 title="Jumlah Responden"
                             />
-                            {/* <InfoCard
-                                icon="fa-chart-pie"
-                                background="primary"
-                                value={`${averageSUS} dari 100`}
-                                title="Skor SUS Total"
-                            />
-                            <InfoCard
-                                icon="fa-star"
-                                background="#FFD700"
-                                value={classifySUSGrade}
-                                title="Kategori Nilai SUS"
-                            /> */}
                         </div>
                     )}
 
@@ -263,30 +253,25 @@ export default function Dashboard() {
                                 )}
                             </AccordionLayout>
 
-                            {/* <AccordionLayout
-                                title="Hasil Statistik Inferensial"
-                                defaultOpen={true}
-                            >
-                                {tamSurveyResults.length > 0 ? (
-                                    <div>
-                                        <TAMTable
-                                            data={calculateRegression}
-                                            type={"regressionTable"}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="text-center">
-                                        Tidak ada data
-                                    </div>
-                                )}
-                            </AccordionLayout> */}
-
                             <AccordionLayout
                                 title="Data Responses TAM"
                                 defaultOpen={false}
                             >
                                 {tamSurveyResults.length > 0 ? (
                                     <div>
+                                        <div className="d-flex justify-content-between align-items-center mb-4">
+                                            <h4>Hasil TAM</h4>
+                                            {hasAnyPermission([
+                                                "sus.export",
+                                            ]) && (
+                                                <button
+                                                    className="btn btn-success"
+                                                    onClick={handleExport}
+                                                >
+                                                    Export to Excel
+                                                </button>
+                                            )}
+                                        </div>
                                         <TAMTable
                                             data={tamSurveyResults}
                                             type={"responsesTable"}

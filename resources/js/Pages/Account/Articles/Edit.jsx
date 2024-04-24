@@ -15,6 +15,7 @@ export default function ArticleCreate() {
     const [user_id, setUser_id] = useState(user.id);
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
+    const [imagePreview, setImagePreview] = useState("");
     const [content, setContent] = useState("");
     const [status, setStatus] = useState("");
 
@@ -22,7 +23,7 @@ export default function ArticleCreate() {
 
     useEffect(() => {
         setTitle(article.title);
-        setImage(article.image);
+        setImagePreview(article.image);
         setContent(article.content);
         setStatus(article.status);
     }, [article]);
@@ -87,15 +88,15 @@ export default function ArticleCreate() {
     return (
         <>
             <Head>
-                <title>Create Articles - Survey Platform</title>
+                <title>Edit Articles - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <CardContent title="Create Articles" icon="fa fa-newspaper">
+                <CardContent title="Edit Articles" icon="fa fa-newspaper">
                     <form onSubmit={updateArticle}>
                         <InputField
                             label="Image Thumbnail"
                             type="file"
-                            value={article.image}
+                            value={imagePreview}
                             onChange={(e) => [setImage(e.target.files[0])]}
                             error={errors.image}
                         />

@@ -106,6 +106,9 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
+        if ($category->image != 'image.png') {
+            Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
+        }
         $category->delete();
 
         return redirect()->route('account.categories.index');

@@ -23,7 +23,7 @@ class UserController extends Controller
             });
         }
 
-        $users = $query->paginate(5);
+        $users = $query->paginate(8);
         $users->appends(['q' => $searchTerm]);
 
         return inertia('Account/Users/Users', [

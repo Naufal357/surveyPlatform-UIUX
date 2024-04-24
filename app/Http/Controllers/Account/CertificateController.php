@@ -49,6 +49,8 @@ class CertificateController extends Controller
         if ($request->status == 'approved') {
             $this->validate($request, [
                 'certificate_categories' => 'required',
+            ], [
+                'certificate_categories.required' => 'Please select at least one category'
             ]);
 
             foreach ($request->certificate_categories as $certCategory) {

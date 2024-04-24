@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 use App\Exports\ResponsesSUSExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
@@ -358,6 +359,12 @@ class SusController extends Controller
 
     public function export($survey_id)
     {
-        return Excel::download(new ResponsesSUSExport($survey_id), 'SurveyResponses.xlsx');
+        $survey = Survey::find($survey_id);
+        $surveyName = $survey->title;
+        $dateTime = now()->format('Y-m-d H.i'); 
+        $dateTimeFormatted = str_replace(' ', '-', $dateTime); 
+        $fileName = $surveyName . '_' . $dateTimeFormatted . '_SUS_export.xlsx';
+
+        return Excel::download(new ResponsesSUSExport($survey_id), $fileName);
     }
 }

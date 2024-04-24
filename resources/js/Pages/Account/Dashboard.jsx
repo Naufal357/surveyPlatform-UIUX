@@ -7,7 +7,7 @@ import TableDashboard from "../../Components/TableDashboard";
 
 export default function Dashboard() {
     const { auth, surveys, surveyData } = usePage().props;
-console.log(surveys);
+
     useEffect(() => {
         const handleVisibilityChange = () => {
             document.title = document.hidden

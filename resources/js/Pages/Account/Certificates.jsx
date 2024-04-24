@@ -9,14 +9,13 @@ import SelectCheckbox from "../../Components/SelectCheckbox";
 import ButtonCRUD from "../../Components/ButtonCRUD";
 import TableCertificates from "../../Components/CertificatesTable";
 import Search from "../../Components/Search";
-import Pagination from "../../Components/Pagination";
 
 export default function Certificates() {
     const { pendingCertificates, categories, certificateHistory, errors } =
         usePage().props;
 
     const [selectedCertificateId, setSelectedCertificateId] = useState();
-    const [selectedCertificateName, setSelectedCertificateName] = useState();
+    const [selectedCertificateName, setSelectedCertificateName] = useState("");
 
     const [certCategoriesData, setCertCategoriesData] = useState([]);
     const [selectedCertificate, setSelectedCertificate] = useState("");
@@ -91,13 +90,23 @@ export default function Certificates() {
                             setCertCategoriesData([]);
                             setSelectedCertificate("");
                             setSelectedCertificateId(null);
+                            setSelectedCertificateName("");
                         },
                         onError: () => {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Data failed to save!",
+                                icon: "error",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
                             setIsSaving(false);
                         },
-                    }
+                    },
+                    setIsSaving(false)
                 );
             }
+            is
         }
     };
 
@@ -145,6 +154,7 @@ export default function Certificates() {
                         setCertCategoriesData([]);
                         setSelectedCertificate("");
                         setSelectedCertificateId(null);
+                        setSelectedCertificateName("");
                     },
                 }
             );

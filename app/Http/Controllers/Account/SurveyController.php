@@ -255,8 +255,9 @@ class SurveyController extends Controller
     {
         $Survey = Survey::findOrFail($id);
 
-        Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
-
+        if ($Survey->image != 'surveyFactory.png') {
+            Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
+        }
         $Survey->delete();
 
         return redirect()->route('account.surveys.index');
