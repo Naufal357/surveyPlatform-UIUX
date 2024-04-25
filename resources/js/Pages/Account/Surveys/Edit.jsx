@@ -548,7 +548,7 @@ console.log(errors);
                 {isMethodTamFilled && (
                     <AccordionLayout
                         title="Preview Question - Technology Acceptence Model"
-                        defaultOpen={false}
+                        defaultOpen={false}a
                     >
                         <div className="alert alert-danger">
                             <div className="d-flex align-items-center">

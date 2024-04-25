@@ -55,7 +55,7 @@ class SurveyController extends Controller
 
     public function store(Request $request, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods)
     {
-        if($request->image != null) {
+        if ($request->image != null) {
             $this->validate($request, [
                 'user_id'        => 'required',
                 'title'          => 'required',
@@ -93,7 +93,7 @@ class SurveyController extends Controller
                 'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
             ]);
         }
-        
+
 
         if ($request->file('image')) {
             $image = $request->file('image');
@@ -177,24 +177,49 @@ class SurveyController extends Controller
 
     public function update(Request $request, Survey $survey, SurveyHasCategories $surveyHasCategories, SurveyHasMethods $surveyHasMethods, SurveyQuestions $surveyQuestion)
     {
+        if ($survey->id == 1 && $survey->user_id !== auth()->user()->id) {
+            return abort(403, 'You do not have permission to update this survey.');
+        }
 
-        $this->validate($request, [
-            'user_id'        => 'required',
-            'title'          => 'required',
-            'image'         => 'image|mimes:jpeg,jpg,png,svg|max:2048',
-            'theme'          => 'required',
-            'description'    => 'required',
-            'survey_questions' => 'required',
-            'survey_visible' => 'required',
-            'url_website'    => 'required_without_all:embed_design,embed_prototype',
-            'embed_design'   => 'required_without_all:url_website,embed_prototype',
-            'embed_prototype'   => 'required_without_all:url_website,embed_design',
-        ], [
-            'image.max' => 'The image may not be greater than 2 MB.',
-            'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
-            'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
-            'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
-        ]);
+        if ($request->file('image')) {
+            $this->validate($request, [
+                'user_id'        => 'required',
+                'title'          => 'required',
+                'image'         => 'image|mimes:jpeg,jpg,png,svg|max:2048',
+                'theme'          => 'required',
+                'description'    => 'required',
+                'survey_questions' => 'required',
+                'survey_visible' => 'required',
+                'url_website'    => 'required_without_all:embed_design,embed_prototype',
+                'embed_design'   => 'required_without_all:url_website,embed_prototype',
+                'embed_prototype'   => 'required_without_all:url_website,embed_design',
+            ], [
+                'image.max' => 'The image may not be greater than 2 MB.',
+                'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+            ]);
+        } else {
+            $this->validate(
+                $request,
+                [
+                    'user_id'        => 'required',
+                    'title'          => 'required',
+                    'theme'          => 'required',
+                    'description'    => 'required',
+                    'survey_questions' => 'required',
+                    'survey_visible' => 'required',
+                    'url_website'    => 'required_without_all:embed_design,embed_prototype',
+                    'embed_design'   => 'required_without_all:url_website,embed_prototype',
+                    'embed_prototype'   => 'required_without_all:url_website,embed_design',
+                ],
+                [
+                    'url_website.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                    'embed_design.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                    'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
+                ]
+            );
+        }
 
         if ($request->file('image')) {
             Storage::disk('local')->delete('public/image/surveys/' . basename($survey->image));
@@ -254,6 +279,10 @@ class SurveyController extends Controller
     public function destroy($id)
     {
         $Survey = Survey::findOrFail($id);
+
+        if ($Survey->id == 1 && $Survey->user_id !== auth()->user()->id) {
+            return abort(403, 'You do not have permission to delete this survey.');
+        }
 
         if ($Survey->image != 'surveyFactory.png') {
             Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));

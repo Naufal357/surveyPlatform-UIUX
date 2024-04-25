@@ -19,16 +19,18 @@ export default function articleIndex() {
                 <div className="row mt-5">
                     <div className="col-md-8">
                         <div className="row">
-                            <div className="col-md-3 col-12 mb-2">
-                                <Link
-                                    href="/account/articles/create"
-                                    className="btn btn-md btn-success border-0 shadow w-100"
-                                    type="button"
-                                >
-                                    <i className="fa fa-plus-circle me-2"></i>
-                                    Add
-                                </Link>
-                            </div>
+                            {hasAnyPermission(["articles.create"]) && (
+                                <div className="col-md-3 col-12 mb-2">
+                                    <Link
+                                        href="/account/articles/create"
+                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        type="button"
+                                    >
+                                        <i className="fa fa-plus-circle me-2"></i>
+                                        Add
+                                    </Link>
+                                </div>
+                            )}
                             <div className="col-md-9 col-12 mb-2">
                                 <Search URL={"/account/articles/"} />
                             </div>
@@ -47,7 +49,7 @@ export default function articleIndex() {
                                         Article Title
                                     </th>
                                     {hasAnyPermission([
-                                        "surveys.index.full",
+                                        "articles.index.full",
                                     ]) && (
                                         <th
                                             scope="col"
@@ -81,7 +83,7 @@ export default function articleIndex() {
                                             </td>
                                             <td>{article.title}</td>
                                             {hasAnyPermission([
-                                                "surveys.index.full",
+                                                "articles.index.full",
                                             ]) && (
                                                 <td>
                                                     {`${article.user.first_name} ${article.user.surname}`}
@@ -96,17 +98,28 @@ export default function articleIndex() {
                                                 />
                                             </td>
                                             <td className="text-center">
-                                                <Link
-                                                    href={`/account/articles/${article.id}/edit`}
-                                                    className="btn btn-primary btn-sm m-2"
-                                                >
-                                                    <i className="fa fa-pencil-alt"></i>
-                                                </Link>
+                                                {hasAnyPermission([
+                                                    "articles.edit",
+                                                ]) && (
+                                                    <Link
+                                                        href={`/account/articles/${article.id}/edit`}
+                                                        className="btn btn-primary btn-sm m-2"
+                                                    >
+                                                        <i className="fa fa-pencil-alt"></i>
+                                                    </Link>
+                                                )}
 
-                                                <Delete
-                                                    URL={"/account/articles"}
-                                                    id={article.id}
-                                                />
+                                                {hasAnyPermission([
+                                                    "articles.delete",
+                                                ]) && (
+                                                    <Delete
+                                                        URL={
+                                                            "/account/articles"
+                                                        }
+                                                        id={article.id}
+                                                    />
+                                                )}
+
                                                 <button
                                                     className="btn btn-success btn-sm m-2"
                                                     onClick={() => {

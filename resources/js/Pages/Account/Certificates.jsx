@@ -3,6 +3,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import Swal from "sweetalert2";
 import LayoutAccount from "../../Layouts/Account";
+import hasAnyPermission from "../../Utils/Permissions";
 import AccordionLayout from "../../Layouts/Accordion";
 import CardContent from "../../Layouts/CardContent";
 import SelectCheckbox from "../../Components/SelectCheckbox";
@@ -277,54 +278,64 @@ export default function Certificates() {
                             </AccordionLayout>
                         </div>
                     </div>
-                    <AccordionLayout
-                        title="Kategori Sertifikat"
-                        defaultOpen={true}
-                    >
-                        <div className="alert alert-info">
-                            <strong>Selected Certificate :</strong>{" "}
-                            {selectedCertificateName ?? "null"}
-                        </div>
-                        {Object.keys(errors).length > 0 && (
-                            <div className="alert alert-danger">
-                                {Object.values(errors).map((error, index) => (
-                                    <div key={index}>{error}</div>
-                                ))}
+                    {hasAnyPermission([
+                        "certificates.index.full","certificates.approve","certificates.reject"
+                    ]) && (
+                        <AccordionLayout
+                            title="Kategori Sertifikat"
+                            defaultOpen={true}
+                        >
+                            <div className="alert alert-info">
+                                <strong>Selected Certificate :</strong>{" "}
+                                {selectedCertificateName ?? "null"}
                             </div>
-                        )}
-                        <form onSubmit={handleSubmit}>
-                            <SelectCheckbox
-                                id="certCategories"
-                                options={categories}
-                                selectedValues={certCategoriesData}
-                                valueKey="id"
-                                labelKey="name"
-                                onChange={handleCheckboxCetfCategory}
-                            />
-                            <ButtonCRUD
-                                type="submit"
-                                label="Save"
-                                color="btn-success"
-                                iconClass="fas fa-check-circle"
-                                disabled={isSaving}
-                            />
-                            <ButtonCRUD
-                                type="reset"
-                                label="Reset"
-                                color="btn-warning"
-                                iconClass="fa fa-redo"
-                                onClick={handleReset}
-                            />
-                            <ButtonCRUD
-                                type="Reject"
-                                label="Reject"
-                                color="btn-danger"
-                                iconClass="fas fa-times-circle"
-                                onClick={handleReject}
-                                disabled={isSaving}
-                            />
-                        </form>
-                    </AccordionLayout>
+                            {Object.keys(errors).length > 0 && (
+                                <div className="alert alert-danger">
+                                    {Object.values(errors).map(
+                                        (error, index) => (
+                                            <div key={index}>{error}</div>
+                                        )
+                                    )}
+                                </div>
+                            )}
+                            <form onSubmit={handleSubmit}>
+                                <SelectCheckbox
+                                    id="certCategories"
+                                    options={categories}
+                                    selectedValues={certCategoriesData}
+                                    valueKey="id"
+                                    labelKey="name"
+                                    onChange={handleCheckboxCetfCategory}
+                                />
+                                {hasAnyPermission(["certificates.approve"]) && (
+                                    <ButtonCRUD
+                                        type="submit"
+                                        label="Save"
+                                        color="btn-success"
+                                        iconClass="fas fa-check-circle"
+                                        disabled={isSaving}
+                                    />
+                                )}
+                                <ButtonCRUD
+                                    type="reset"
+                                    label="Reset"
+                                    color="btn-warning"
+                                    iconClass="fa fa-redo"
+                                    onClick={handleReset}
+                                />
+                                {hasAnyPermission(["certificates.reject"]) && (
+                                    <ButtonCRUD
+                                        type="Reject"
+                                        label="Reject"
+                                        color="btn-danger"
+                                        iconClass="fas fa-times-circle"
+                                        onClick={handleReject}
+                                        disabled={isSaving}
+                                    />
+                                )}
+                            </form>
+                        </AccordionLayout>
+                    )}
                 </AccordionLayout>
 
                 <CardContent title="Sertifikat Terdaftar" icon="fa fa-folder">

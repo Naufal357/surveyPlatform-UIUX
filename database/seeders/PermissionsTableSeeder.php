@@ -19,12 +19,27 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'dashboard.index', 'guard_name' => 'web']);
         Permission::create(['name' => 'dashboard.index.full', 'guard_name' => 'web']);
 
+        //permission profile
+        Permission::create(['name' => 'profile.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'profile.edit', 'guard_name' => 'web']);
+        Permission::create(['name' => 'profile.upload.certificate', 'guard_name' => 'web']);
+        Permission::create(['name' => 'profile.change.password', 'guard_name' => 'web']);
+
         //permission sus result
         Permission::create(['name' => 'sus.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'sus.index.full', 'guard_name' => 'web']);
         Permission::create(['name' => 'sus.statistics', 'guard_name' => 'web']);
         Permission::create(['name' => 'sus.charts', 'guard_name' => 'web']);
         Permission::create(['name' => 'sus.responses', 'guard_name' => 'web']);
         Permission::create(['name' => 'sus.export', 'guard_name' => 'web']);
+
+        //permission tam result
+        Permission::create(['name' => 'tam.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'tam.index.full', 'guard_name' => 'web']);
+        Permission::create(['name' => 'tam.statistics', 'guard_name' => 'web']);
+        Permission::create(['name' => 'tam.charts', 'guard_name' => 'web']);
+        Permission::create(['name' => 'tam.responses', 'guard_name' => 'web']);
+        Permission::create(['name' => 'tam.export', 'guard_name' => 'web']);
 
         //permission surveys
         Permission::create(['name' => 'surveys.index', 'guard_name' => 'web']);
@@ -32,6 +47,13 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['name' => 'surveys.create', 'guard_name' => 'web']);
         Permission::create(['name' => 'surveys.edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'surveys.delete', 'guard_name' => 'web']);
+
+        //permission articles
+        Permission::create(['name' => 'articles.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'articles.index.full', 'guard_name' => 'web']);
+        Permission::create(['name' => 'articles.create', 'guard_name' => 'web']);
+        Permission::create(['name' => 'articles.edit', 'guard_name' => 'web']);
+        Permission::create(['name' => 'articles.delete', 'guard_name' => 'web']);
 
         //permission categories
         Permission::create(['name' => 'categories.index', 'guard_name' => 'web']);
@@ -47,6 +69,12 @@ class PermissionsTableSeeder extends Seeder
 
         //permission permissions
         Permission::create(['name' => 'permissions.index', 'guard_name' => 'web']);
+
+        //permission certificates
+        Permission::create(['name' => 'certificates.index', 'guard_name' => 'web']);
+        Permission::create(['name' => 'certificates.index.full', 'guard_name' => 'web']);
+        Permission::create(['name' => 'certificates.approve', 'guard_name' => 'web']);
+        Permission::create(['name' => 'certificates.reject', 'guard_name' => 'web']);
 
         //permission users
         Permission::create(['name' => 'users.index', 'guard_name' => 'web']);

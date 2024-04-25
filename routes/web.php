@@ -42,14 +42,17 @@ Route::group(['middleware' => 'cors'], function () {
         Route::group(['middleware' => ['auth']], function () {
             Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
 
-            Route::resource('profile', \App\Http\Controllers\Account\ProfileController::class, ['as' => 'account'])->only(['index', 'edit', 'update']);
-            Route::get('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'certificate'])->name('account.profile.certificate');
+            Route::resource('profile', \App\Http\Controllers\Account\ProfileController::class, ['as' => 'account'])->only(['index', 'edit', 'update'])
+                ->middleware('permission:profile.index|profile.edit');
+            Route::get('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'certificate'])
+                ->middleware('permission:profile.upload.certificate')->name('account.profile.certificate');
             Route::post('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'uploadCertificate'])->name('account.profile.uploadCertificate');
-            Route::get('profile/password', [\App\Http\Controllers\Account\ProfileController::class, 'password'])->name('account.profile.password');
+            Route::get('profile/password', [\App\Http\Controllers\Account\ProfileController::class, 'password'])
+                ->middleware('permission:profile.change.password')->name('account.profile.password');
             Route::put('profile/password/update', [\App\Http\Controllers\Account\ProfileController::class, 'updatePassword'])->name('account.profile.updatePassword');
 
             Route::resource('/surveys', \App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
-                ->middleware('permission:surveys.index|surveys.create|surveys.edit|surveys.delete');
+                ->middleware('permission:surveys.index|surveys.index.full|surveys.create|surveys.edit|surveys.delete');
 
             Route::resource('/categories', \App\Http\Controllers\Account\CategoryController::class, ['as' => 'account'])
                 ->middleware('permission:categories.index|categories.create|categories.edit|categories.delete');
@@ -63,18 +66,24 @@ Route::group(['middleware' => 'cors'], function () {
             Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index')
                 ->middleware('permission:permissions.index');
 
-            Route::resource('/certificates', \App\HTTP\Controllers\Account\CertificateController::class, ['as' => 'account']);
+            Route::resource('/certificates', \App\HTTP\Controllers\Account\CertificateController::class, ['as' => 'account'])
+                ->middleware('permission:certificates.index|certificates.index.full|certificates.approve|certificates.reject');
 
             Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account'])
                 ->middleware('permission:users.index|users.create|users.edit|users.delete');
 
-            Route::resource('articles', \App\Http\Controllers\Account\ArticleController::class, ['as' => 'account']);
+            Route::resource('articles', \App\Http\Controllers\Account\ArticleController::class, ['as' => 'account'])
+                ->middleware('permission:articles.index|articles.index.full|articles.create|articles.edit|articles.delete');
 
-            Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index'])->name('account.sus');
-            Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])->name('account.sus.id');
+            Route::get('/sus', [\App\Http\Controllers\Account\SusController::class, 'index'])
+                ->middleware('permission:sus.index|sus.index.full')->name('account.sus');
+            Route::get('/sus/{id}', [App\Http\Controllers\Account\SusController::class, 'show'])
+                ->middleware('permission:sus.index|sus.index.full|sus.statistics|sus.charts|sus.responses|sus.export')->name('account.sus.id');
 
-            Route::get('/tam', [\App\Http\Controllers\Account\TamController::class, 'index'])->name('account.tam');
-            Route::get('/tam/{id}', [App\Http\Controllers\Account\TamController::class, 'show'])->name('account.tam.id');
+            Route::get('/tam', [\App\Http\Controllers\Account\TamController::class, 'index'])
+                ->middleware('permission:tam.index|tam.index.full')->name('account.tam');
+            Route::get('/tam/{id}', [App\Http\Controllers\Account\TamController::class, 'show'])
+                ->middleware('permission:tam.index|tam.index.full|tam.statistics|tam.charts|tam.responses|tam.export')->name('account.tam.id');
         });
     });
 });

@@ -8,7 +8,10 @@ export default function Sidebar() {
     return (
         <>
             <div className="list-group list-group-flush">
-                {hasAnyPermission(["dashboard.index"]) && (
+                {hasAnyPermission([
+                    "dashboard.index",
+                    "dashboard.index.full",
+                ]) && (
                     <Link
                         href="/account/dashboard"
                         className={`${
@@ -21,7 +24,7 @@ export default function Sidebar() {
                     </Link>
                 )}
 
-                {hasAnyPermission(["sus.index"]) && (
+                {hasAnyPermission(["sus.index", "sus.index.full"]) && (
                     <Link
                         href="/account/sus"
                         className={`${
@@ -34,7 +37,7 @@ export default function Sidebar() {
                     </Link>
                 )}
 
-                {hasAnyPermission(["sus.index"]) && (
+                {hasAnyPermission(["tam.index", "tam.index.full"]) && (
                     <Link
                         href="/account/tam"
                         className={`${
@@ -47,7 +50,7 @@ export default function Sidebar() {
                     </Link>
                 )}
 
-                {hasAnyPermission(["surveys.index"]) && (
+                {hasAnyPermission(["surveys.index", "surveys.index.full"]) && (
                     <Link
                         href="/account/surveys"
                         className={`${
@@ -99,16 +102,21 @@ export default function Sidebar() {
                     </Link>
                 )}
 
-                <Link
-                    href="/account/certificates"
-                    className={`${
-                        url.startsWith("/account/certificates")
-                            ? "active list-group-item list-group-item-action list-group-item-light p-3"
-                            : "list-group-item list-group-item-action list-group-item-light p-3"
-                    }`}
-                >
-                    <i className="fas fa-certificate me-2"></i> Certificates
-                </Link>
+                {hasAnyPermission([
+                    "certificates.index",
+                    "certificates.index.full",
+                ]) && (
+                    <Link
+                        href="/account/certificates"
+                        className={`${
+                            url.startsWith("/account/certificates")
+                                ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                                : "list-group-item list-group-item-action list-group-item-light p-3"
+                        }`}
+                    >
+                        <i className="fas fa-certificate me-2"></i> Certificates
+                    </Link>
+                )}
 
                 {hasAnyPermission(["users.index"]) && (
                     <Link
@@ -123,16 +131,21 @@ export default function Sidebar() {
                     </Link>
                 )}
 
-                <Link
-                    href="/account/articles"
-                    className={`${
-                        url.startsWith("/account/articles")
-                            ? "active list-group-item list-group-item-action list-group-item-light p-3"
-                            : "list-group-item list-group-item-action list-group-item-light p-3"
-                    }`}
-                >
-                    <i className="fa fa-newspaper me-2"></i> Articles
-                </Link>
+                {hasAnyPermission([
+                    "articles.index",
+                    "articles.index.full",
+                ]) && (
+                    <Link
+                        href="/account/articles"
+                        className={`${
+                            url.startsWith("/account/articles")
+                                ? "active list-group-item list-group-item-action list-group-item-light p-3"
+                                : "list-group-item list-group-item-action list-group-item-light p-3"
+                        }`}
+                    >
+                        <i className="fa fa-newspaper me-2"></i> Articles
+                    </Link>
+                )}
             </div>
         </>
     );

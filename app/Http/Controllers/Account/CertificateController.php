@@ -16,20 +16,32 @@ class CertificateController extends Controller
     {
         $categories = Category::all();
 
-        $pendingCertificates = Certificate::where('status', 'pending')->with('user')->latest()->paginate(8);
+        if (auth()->user()->hasPermissionTo('certificates.index.full')) {
+            $pendingCertificates = Certificate::where('status', 'pending')->with('user')->latest()->paginate(8);
 
-        $certificateHistory = Certificate::when(request()->q, function ($query) {
-            $query->where(function ($query) {
-                $query->whereHas('user', function ($query) {
-                    $query->where('first_name', 'like', '%' . request()->q . '%')
-                        ->orWhere('surname', 'like', '%' . request()->q . '%');
-                })->orWhere('status', 'like', '%' . request()->q . '%');
-            });
-        })->where(function ($query) {
-            $query->where('status', 'approved')->orWhere('status', 'rejected');
-        })->with('user')->latest()->paginate(15);
+            $certificateHistory = Certificate::when(request()->q, function ($query) {
+                $query->where(function ($query) {
+                    $query->whereHas('user', function ($query) {
+                        $query->where('first_name', 'like', '%' . request()->q . '%')
+                            ->orWhere('surname', 'like', '%' . request()->q . '%');
+                    })->orWhere('status', 'like', '%' . request()->q . '%');
+                });
+            })->where(function ($query) {
+                $query->where('status', 'approved')->orWhere('status', 'rejected');
+            })->with('user')->latest()->paginate(15);
 
-        $certificateHistory->appends(['q' => request()->q]);
+            $certificateHistory->appends(['q' => request()->q]);
+        } else {
+            $pendingCertificates = Certificate::where('user_id', auth()->user()->id)
+                ->with('user')
+                ->latest()
+                ->paginate(8);
+
+            $certificateHistory = Certificate::where('user_id', auth()->user()->id)
+                ->with('user')
+                ->latest()
+                ->paginate(15);
+        }
 
         return inertia('Account/Certificates', [
             'pendingCertificates' => $pendingCertificates,

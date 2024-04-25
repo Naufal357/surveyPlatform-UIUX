@@ -17,9 +17,21 @@ class TamController extends Controller
     {
         $user = auth()->user();
 
-        $surveyTitles = Survey::where('user_id', $user->id)->get(['id', 'title']);
-        if ($surveyTitles->isEmpty()) {
-            return redirect()->route('account.surveys.create');
+        if (auth()->user()->hasPermissionTo('tam.index.full')) {
+            $surveyTitles = Survey::whereHas('methods', function ($query) {
+                $query->where('method_id', 2);
+            })
+                ->get(['surveys.id', 'surveys.title']);
+        } else {
+            $surveyTitles = Survey::where('user_id', $user->id)
+                ->whereHas('methods', function ($query) {
+                    $query->where('method_id', 2);
+                })
+                ->get(['surveys.id', 'surveys.title']);
+
+            if ($surveyTitles->isEmpty()) {
+                return redirect()->route('account.surveys.create');
+            }
         }
 
         $sortedSurveyTitles = $surveyTitles->sortBy('id');
@@ -35,15 +47,22 @@ class TamController extends Controller
         $responsesFormated = [];
 
         $survey = Survey::find($id);
-        if ($survey->user_id !== $userID) {
+        if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id !== $userID) {
             return abort(403, 'Unauthorized');
         }
 
-        $surveyTitles = Survey::where('user_id', $userID)
-            ->whereHas('methods', function ($query) {
+        if (auth()->user()->hasPermissionTo('tam.index.full')) {
+            $surveyTitles = Survey::whereHas('methods', function ($query) {
                 $query->where('method_id', 2);
             })
-            ->get(['surveys.id', 'surveys.title']);
+                ->get(['surveys.id', 'surveys.title']);
+        } else {
+            $surveyTitles = Survey::where('user_id', $userID)
+                ->whereHas('methods', function ($query) {
+                    $query->where('method_id', 2);
+                })
+                ->get(['surveys.id', 'surveys.title']);
+        }
 
         $responses = SurveyResponses::where('survey_id', $id)
             ->where('response_data', 'LIKE', '%"tam"%')

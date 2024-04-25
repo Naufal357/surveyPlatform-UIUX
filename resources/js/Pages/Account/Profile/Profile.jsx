@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
+import hasAnyPermission from "../../../Utils/Permissions";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -60,30 +61,40 @@ export default function UserCreate() {
                                 >
                                     Home
                                 </Link>
-                                <Link
-                                    href={`/account/profile/${user.id}/edit`}
-                                    className="btn btn-outline-success btn-block mb-3"
-                                    style={{ width: "100%" }}
-                                    type="button"
-                                >
-                                    Edit Profile
-                                </Link>
-                                <Link
-                                    href="/account/profile/certificate"
-                                    className="btn btn-outline-secondary btn-block mb-3"
-                                    style={{ width: "100%" }}
-                                    type="button"
-                                >
-                                    Upload Certificates
-                                </Link>
-                                <Link
-                                    href="/account/profile/password"
-                                    className="btn btn-outline-warning btn-block mb-3"
-                                    style={{ width: "100%" }}
-                                    type="button"
-                                >
-                                    Change Password
-                                </Link>
+                                {hasAnyPermission(["profile.edit"]) && (
+                                    <Link
+                                        href={`/account/profile/${user.id}/edit`}
+                                        className="btn btn-outline-success btn-block mb-3"
+                                        style={{ width: "100%" }}
+                                        type="button"
+                                    >
+                                        Edit Profile
+                                    </Link>
+                                )}
+                                {hasAnyPermission([
+                                    "profile.upload.certificate",
+                                ]) && (
+                                    <Link
+                                        href="/account/profile/certificate"
+                                        className="btn btn-outline-secondary btn-block mb-3"
+                                        style={{ width: "100%" }}
+                                        type="button"
+                                    >
+                                        Upload Certificates
+                                    </Link>
+                                )}
+                                {hasAnyPermission([
+                                    "profile.change.password",
+                                ]) && (
+                                    <Link
+                                        href="/account/profile/password"
+                                        className="btn btn-outline-warning btn-block mb-3"
+                                        style={{ width: "100%" }}
+                                        type="button"
+                                    >
+                                        Change Password
+                                    </Link>
+                                )}
                                 <Link
                                     onClick={logoutHandler}
                                     className="btn btn-outline-danger btn-block mb-3"

@@ -91,16 +91,16 @@ class UserTableSeeder extends Seeder
 
         $permissions1 = Permission::all();
         $permissions2 = Permission::whereNotIn('name', [
-            'roles.index', 'roles.edit', 'roles.create', 'roles.delete', 'roles.index.full', 'permissions.index',
+            'dashboard.index.full', 'articles.index.full', 'sus.index.full', 'tam.index.full', 'roles.index', 'roles.edit', 'roles.create', 'roles.delete', 'roles.index.full', 'permissions.index',
             'users.index', 'users.delete', 'users.edit', 'users.create',
         ])->get();
         $permissions3 = Permission::whereIn('name', [
-            'dashboard.index', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
-            'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete'
+            'dashboard.index', 'profile.index', 'profile.edit', 'profile.upload.certificate', 'profile.change.password', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
+            'tam.index', 'tam.statistics', 'tam.charts', 'tam.responses', 'tam.export', 'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete'
         ])->get();
         $permissions4 = Permission::whereIn('name', [
-            'dashboard.index', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
-            'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete'
+            'dashboard.index', 'profile.index', 'profile.edit', 'profile.upload.certificate', 'profile.change.password', 'sus.index', 'surveys.index', 'sus.statistics', 'sus.charts', 'sus.responses', 'sus.export',
+            'tam.index', 'tam.statistics', 'tam.charts', 'tam.responses', 'tam.export', 'surveys.index', 'surveys.create', 'surveys.edit', 'surveys.delete'
         ])->get();
 
 

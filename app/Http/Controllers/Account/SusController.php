@@ -21,14 +21,21 @@ class SusController extends Controller
     {
         $user = auth()->user();
 
-        $surveyTitles = Survey::where('user_id', $user->id)
-            ->whereHas('methods', function ($query) {
+        if (auth()->user()->hasPermissionTo('sus.index.full')) {
+            $surveyTitles = Survey::whereHas('methods', function ($query) {
                 $query->where('method_id', 1);
             })
-            ->get(['surveys.id', 'surveys.title']);
+                ->get(['surveys.id', 'surveys.title']);
+        } else {
+            $surveyTitles = Survey::where('user_id', $user->id)
+                ->whereHas('methods', function ($query) {
+                    $query->where('method_id', 1);
+                })
+                ->get(['surveys.id', 'surveys.title']);
 
-        if ($surveyTitles->isEmpty()) {
-            return redirect()->route('account.surveys.create');
+            if ($surveyTitles->isEmpty()) {
+                return redirect()->route('account.surveys.create');
+            }
         }
 
         $sortedSurveyTitles = $surveyTitles->sortBy('id');
@@ -43,15 +50,23 @@ class SusController extends Controller
         $userID = auth()->user()->id;
 
         $survey = Survey::find($id);
-        if ($survey->user_id !== $userID) {
+
+        if (!auth()->user()->hasPermissionTo('sus.index.full') && $survey->user_id !== $userID) {
             return abort(403, 'Unauthorized');
         }
 
-        $surveyTitles = Survey::where('user_id', $userID)
-            ->whereHas('methods', function ($query) {
-                $query->where('method_id', 1);
-            })
-            ->get(['surveys.id', 'surveys.title']);
+        if (auth()->user()->hasPermissionTo('sus.index.full')) {
+            $surveyTitles = Survey::whereHas('methods', function ($query) {
+                    $query->where('method_id', 1);
+                })
+                ->get(['surveys.id', 'surveys.title']);
+        } else {
+            $surveyTitles = Survey::where('user_id', $userID)
+                ->whereHas('methods', function ($query) {
+                    $query->where('method_id', 1);
+                })
+                ->get(['surveys.id', 'surveys.title']);
+        }
 
         $surveyName = $survey->title;
 
@@ -361,8 +376,8 @@ class SusController extends Controller
     {
         $survey = Survey::find($survey_id);
         $surveyName = $survey->title;
-        $dateTime = now()->format('Y-m-d H.i'); 
-        $dateTimeFormatted = str_replace(' ', '-', $dateTime); 
+        $dateTime = now()->format('Y-m-d H.i');
+        $dateTimeFormatted = str_replace(' ', '-', $dateTime);
         $fileName = $surveyName . '_' . $dateTimeFormatted . '_SUS_export.xlsx';
 
         return Excel::download(new ResponsesSUSExport($survey_id), $fileName);

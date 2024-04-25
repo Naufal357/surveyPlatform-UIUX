@@ -128,29 +128,46 @@ export default function Dashboard() {
                                 <strong>Pilih survei terlebih dahulu.</strong>
                             )}
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 text-end">
                             <div className="mb-2">
-                                <select
-                                    className="form-select"
-                                    onChange={(event) => {
-                                        const selectedId = event.target.value;
-                                        if (selectedId) {
-                                            Inertia.get(
-                                                `/account/sus/${selectedId}`
-                                            );
-                                        }
-                                    }}
-                                >
-                                    <option value="">Pilih Survey</option>
-                                    {surveyTitles.map((survey) => (
-                                        <option
-                                            key={survey.id}
-                                            value={survey.id}
-                                        >
-                                            {survey.title}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className="dropdown">
+                                    <button
+                                        className="btn btn-secondary dropdown-toggle"
+                                        type="button"
+                                        id="dropdownMenuButton"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        style={{ width: "100%" }}
+                                    >
+                                        Pilih Survey
+                                    </button>
+                                    <ul
+                                        className="dropdown-menu dropdown-menu-end"
+                                        aria-labelledby="dropdownMenuButton"
+                                        style={{
+                                            maxHeight: "200px",
+                                            width: "100%",
+                                            overflowY: "scroll",
+                                        }}
+                                    >
+                                        {surveyTitles.map((survey) => (
+                                            <li key={survey.id}>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        Inertia.get(
+                                                            `/account/sus/${survey.id}`
+                                                        );
+                                                    }}
+                                                >
+                                                    {survey.title}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

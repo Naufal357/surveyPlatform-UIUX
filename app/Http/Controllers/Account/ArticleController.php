@@ -13,7 +13,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->hasPermissionTo('surveys.index.full')) {
+        if (auth()->user()->hasPermissionTo('articles.index.full')) {
             $articles = Articles::when(request()->q, function ($articles) {
                 $articles = $articles->where('title', 'like', '%' . request()->q . '%');
             })->orderBy('id')->paginate(8);
@@ -147,6 +147,7 @@ class ArticleController extends Controller
         if ($article->image != 'articleFactory.png') {
             Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
         }
+        
         $article->delete();
         return redirect()->route('account.articles.index');
     }

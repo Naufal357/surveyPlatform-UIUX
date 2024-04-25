@@ -123,33 +123,50 @@ export default function Dashboard() {
                                 <strong>Pilih survei terlebih dahulu.</strong>
                             )}
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 text-end">
                             <div className="mb-2">
-                                <select
-                                    className="form-select"
-                                    onChange={(e) => {
-                                        const selectedId = e.target.value;
-                                        if (selectedId) {
-                                            Inertia.get(
-                                                `/account/tam/${selectedId}`
-                                            );
-                                        }
-                                    }}
-                                >
-                                    <option value="">Pilih Survey</option>
-                                    {surveyTitles.map((survey) => (
-                                        <option
-                                            key={survey.id}
-                                            value={survey.id}
-                                        >
-                                            {survey.title}
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className="dropdown">
+                                    <button
+                                        className="btn btn-secondary dropdown-toggle"
+                                        type="button"
+                                        id="dropdownMenuButton"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        style={{ width: "100%" }}
+                                    >
+                                        Pilih Survey
+                                    </button>
+                                    <ul
+                                        className="dropdown-menu dropdown-menu-end"
+                                        aria-labelledby="dropdownMenuButton"
+                                        style={{
+                                            maxHeight: "200px",
+                                            width: "100%",
+                                            overflowY: "scroll",
+                                        }}
+                                    >
+                                        {surveyTitles.map((survey) => (
+                                            <li key={survey.id}>
+                                                <a
+                                                    className="dropdown-item"
+                                                    href="#"
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        Inertia.get(
+                                                            `/account/sus/${survey.id}`
+                                                        );
+                                                    }}
+                                                >
+                                                    {survey.title}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {hasAnyPermission(["sus.statistics"]) && (
+                    {hasAnyPermission(["tam.statistics"]) && (
                         <div className="row mt-2">
                             <InfoCard
                                 icon="fa-users "
@@ -195,7 +212,7 @@ export default function Dashboard() {
                         )}
                     </AccordionLayout>
 
-                    {hasAnyPermission(["sus.charts"]) && (
+                    {hasAnyPermission(["tam.charts"]) && (
                         <AccordionLayout
                             title="Grafik Hasil Dari Setiap Pertanyaan"
                             defaultOpen={true}
@@ -231,7 +248,7 @@ export default function Dashboard() {
                         </AccordionLayout>
                     )}
 
-                    {hasAnyPermission(["sus.responses"]) && (
+                    {hasAnyPermission(["tam.responses"]) && (
                         <>
                             <AccordionLayout
                                 title="Hasil Statistik Deskriptif"
@@ -262,7 +279,7 @@ export default function Dashboard() {
                                         <div className="d-flex justify-content-between align-items-center mb-4">
                                             <h4>Hasil TAM</h4>
                                             {hasAnyPermission([
-                                                "sus.export",
+                                                "tam.export",
                                             ]) && (
                                                 <button
                                                     className="btn btn-success"
