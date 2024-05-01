@@ -1,40 +1,81 @@
 import React from "react";
 
-const RadioSelect = ({
+const SelectCheckbox = ({
     id,
     label,
     options,
-    selectedValue,
+    valueKey,
+    labelKey,
+    selectedValues,
     onChange,
     error,
+    disabled,
 }) => {
     return (
         <div className="mb-3">
-            <label className="fw-bold" htmlFor={id}>
-                {label}
-            </label>
-            <br />
-            {options.map((option) => (
-                <div className="form-check form-check-inline" key={option.id}>
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        value={option.value}
-                        onChange={() => onChange(option.value)}
-                        id={`radio-${id}-${option.id}`}
-                        checked={selectedValue === option.value}
-                    />
-                    <label
-                        className="form-check-label"
-                        htmlFor={`radio-${id}-${option.id}`}
-                    >
-                        {option.label}
+            {selectedValues ? (
+                <>
+                    <label className="fw-bold" htmlFor={id}>
+                        {label}
                     </label>
-                </div>
-            ))}
+                    <br />
+                    {options.map((option, index) => (
+                        <div
+                            className="form-check form-check-inline"
+                            key={index}
+                        >
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value={option[valueKey]}
+                                onChange={onChange}
+                                id={`check-${id}-${option[valueKey]}`}
+                                checked={selectedValues.includes(
+                                    option[valueKey]
+                                )}
+                                disabled={disabled}
+                            />
+                            <label
+                                className="form-check-label"
+                                htmlFor={`check-${id}-${option[valueKey]}`}
+                            >
+                                {option[labelKey]}
+                            </label>
+                        </div>
+                    ))}
+                </>
+            ) : (
+                <>
+                    <label className="fw-bold" htmlFor={id}>
+                        {label}
+                    </label>
+                    <br />
+                    {options.map((option, index) => (
+                        <div
+                            className="form-check form-check-inline"
+                            key={index}
+                        >
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value={option[valueKey]}
+                                onChange={onChange}
+                                id={`check-${id}-${option[valueKey]}`}
+                                disabled={disabled}
+                            />
+                            <label
+                                className="form-check-label"
+                                htmlFor={`check-${id}-${option[valueKey]}`}
+                            >
+                                {option[labelKey]}
+                            </label>
+                        </div>
+                    ))}
+                </>
+            )}
             {error && <div className="alert alert-danger">{error}</div>}
         </div>
     );
 };
 
-export default RadioSelect;
+export default SelectCheckbox;
