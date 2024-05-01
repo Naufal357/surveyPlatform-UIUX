@@ -78,7 +78,7 @@ export default function SurveyIndex() {
                             <tbody>
                                 {surveys.data.map((survey, index) => {
                                     // rubah url
-                                    const surveyUrl = `${app_url}:8000/form/${survey.id}/${survey.slug}`;
+                                    const surveyUrl = `${app_url}/form/${survey.id}/${survey.slug}`;
 
                                     return (
                                         <tr key={index}>

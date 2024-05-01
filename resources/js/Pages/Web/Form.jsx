@@ -6,7 +6,6 @@ import SurveyDescription from "../../Components/SurveyDescription";
 import LikertScale from "../../Components/LikertScale";
 import EmbedDesign from "../../Components/EmbedDesign";
 import Swal from "sweetalert2";
-import { ChevronDoubleLeft } from "react-bootstrap-icons";
 
 function Form() {
     const { surveys, auth, surveyMethods, surveyQuestions } = usePage().props;

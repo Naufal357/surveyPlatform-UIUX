@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Quill from "quill";
-import ReactQuill from "react-quill";
-import BlotFormatter from "quill-blot-formatter";
+import QuillEditor from "react-quill";
+// import BlotFormatter from "quill-blot-formatter";
 import "react-quill/dist/quill.snow.css";
 
-Quill.register("modules/blotFormatter", BlotFormatter);
+// Quill.register("modules/blotFormatter", BlotFormatter);
 
-function QuillEditor({ value, onChange, label, error }) {
+function Editor({ value, onChange, label, error }) {
     const modules = {
-        blotFormatter: {},
+        // blotFormatter: {
+        //     embed: true,
+        // },
         toolbar: [
             [{ font: [] }],
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -49,7 +51,7 @@ function QuillEditor({ value, onChange, label, error }) {
     return (
         <div className="mb-3">
             <label className="form-label fw-bold">{label}</label>
-            <ReactQuill
+            <QuillEditor
                 theme="snow"
                 modules={modules}
                 formats={formats}
@@ -61,4 +63,4 @@ function QuillEditor({ value, onChange, label, error }) {
     );
 }
 
-export default QuillEditor;
+export default Editor;

@@ -72,7 +72,7 @@ export default function articleIndex() {
                             <tbody>
                                 {articles.data.map((article, index) => {
                                     // rubah url
-                                    const articleUrl = `${app_url}:8000/articles/${article.id}/${article.slug}`;
+                                    const articleUrl = `${app_url}/articles/${article.id}/${article.slug}`;
                                     return (
                                         <tr key={index}>
                                             <td className="text-center">

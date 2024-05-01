@@ -3,7 +3,7 @@ import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import InputField from "../../../Components/InputField";
-import QuillEditor from "../../../Components/QuillEditor";
+import Editor from "../../../Components/QuillEditor";
 import RadioSelect from "../../../Components/RadioSelect";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
@@ -19,6 +19,10 @@ export default function ArticleCreate() {
     const [status, setStatus] = useState("");
 
     const [isSaving, setIsSaving] = useState(false);
+
+    function handleContentChange(value) {
+        setContent(value);
+    }
 
     function handleVisibleChange(selectedValue) {
         setStatus(selectedValue);
@@ -100,10 +104,10 @@ export default function ArticleCreate() {
                             error={errors.title}
                         />
 
-                        <QuillEditor
+                        <Editor
                             label="Content Articles"
                             value={content}
-                            onChange={setContent}
+                            onChange={(e) => setContent(e)}
                             error={errors.content}
                         />
 

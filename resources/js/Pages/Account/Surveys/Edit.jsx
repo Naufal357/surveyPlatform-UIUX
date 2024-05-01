@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
 import InputField from "../../../Components/InputField";
-import QuillEditor from "../../../Components/QuillEditor";
+import Editor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import RadioSelect from "../../../Components/RadioSelect";
@@ -22,7 +22,7 @@ export default function SurveyEdit() {
         surveyMethods,
         surveyQuestions,
     } = usePage().props;
-console.log(errors);
+
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
     const [theme, setTheme] = useState("");
@@ -71,7 +71,7 @@ console.log(errors);
           )
         : [];
 
-    useEffect(() => {
+        useEffect(() => {
         setTitle(survey.title);
         setTheme(survey.theme);
         setDescription(survey.description);
@@ -377,7 +377,7 @@ console.log(errors);
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
                         />
-                        <QuillEditor
+                        <Editor
                             label="Description"
                             value={description}
                             onChange={setDescription}
@@ -548,7 +548,8 @@ console.log(errors);
                 {isMethodTamFilled && (
                     <AccordionLayout
                         title="Preview Question - Technology Acceptence Model"
-                        defaultOpen={false}a
+                        defaultOpen={false}
+                        a
                     >
                         <div className="alert alert-danger">
                             <div className="d-flex align-items-center">

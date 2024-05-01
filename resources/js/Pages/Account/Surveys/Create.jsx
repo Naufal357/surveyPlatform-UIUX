@@ -4,7 +4,7 @@ import CardContent from "../../../Layouts/CardContent";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import InputField from "../../../Components/InputField";
-import QuillEditor from "../../../Components/QuillEditor";
+import Editor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import RadioSelect from "../../../Components/RadioSelect";
@@ -366,7 +366,7 @@ export default function SurveysCreate() {
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
                         />
-                        <QuillEditor
+                        <Editor
                             label="Description"
                             value={description}
                             onChange={setDescription}

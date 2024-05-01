@@ -3,7 +3,7 @@ import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import InputField from "../../../Components/InputField";
-import QuillEditor from "../../../Components/QuillEditor";
+import Editor from "../../../Components/QuillEditor";
 import RadioSelect from "../../../Components/RadioSelect";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
@@ -18,7 +18,7 @@ export default function ArticleCreate() {
     const [imagePreview, setImagePreview] = useState("");
     const [content, setContent] = useState("");
     const [status, setStatus] = useState("");
-
+console.log(status);
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -109,7 +109,7 @@ export default function ArticleCreate() {
                             error={errors.title}
                         />
 
-                        <QuillEditor
+                        <Editor
                             label="Content Articles"
                             value={content}
                             onChange={setContent}
