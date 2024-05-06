@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use App\Models\SurveyHasMethods;
+use App\Models\SurveyResponses;
 
 
 class DashboardController extends Controller
@@ -22,6 +23,7 @@ class DashboardController extends Controller
             $surveys = Survey::where('user_id', $user->id)->latest()->paginate(8);
         }
 
+        $filledOutSurvey = SurveyResponses::with(['survey', 'user'])->where('user_id', $user->id)->latest()->paginate(8);
         $surveyData = [];
 
         foreach ($surveys as $survey) {
@@ -40,6 +42,7 @@ class DashboardController extends Controller
         return inertia('Account/Dashboard', [
             'surveys' => $surveys,
             'surveyData' => $surveyData,
+            'filledOutSurvey' => $filledOutSurvey,
         ])->with('currentSurveyTitle');
     }
 }

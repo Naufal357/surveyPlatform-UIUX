@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
 
-const TableDashboard = ({ surveyData, surveys }) => {
+const TableDashboardSurvey = ({ surveyData, surveys }) => {
     if (!surveyData || surveyData.length === 0) {
         return <div>Tidak Ada Data Survei</div>;
     }
@@ -72,4 +72,4 @@ const TableDashboard = ({ surveyData, surveys }) => {
     );
 };
 
-export default TableDashboard;
+export default TableDashboardSurvey;

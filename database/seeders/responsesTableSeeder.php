@@ -14,6 +14,7 @@ class responsesTableSeeder extends Seeder
     public function run(): void
     {
         SurveyResponses::create([
+            'user_id' => 7,
             'first_name' => 'Rizki',
             'surname' => 'Hidayat',
             'email' => 'k9qFP@example.com',
@@ -268,6 +269,7 @@ class responsesTableSeeder extends Seeder
         ]);
 
         SurveyResponses::create([
+            'user_id' => 2,
             'first_name' => 'Jane',
             'surname' => 'Doe',
             'email' => 'jane.doe@example.com',
@@ -522,6 +524,7 @@ class responsesTableSeeder extends Seeder
         ]);
 
         SurveyResponses::create([
+            'user_id' => 3,
             'first_name' => 'Emily',
             'surname' => 'Johnson',
             'email' => 'emily.johnson@example.com',
@@ -776,6 +779,7 @@ class responsesTableSeeder extends Seeder
         ]);
 
         SurveyResponses::create([
+            'user_id' => 4,
             'first_name' => 'Michael',
             'surname' => 'Brown',
             'email' => 'michael.brown@example.com',
@@ -1030,6 +1034,7 @@ class responsesTableSeeder extends Seeder
         ]);
 
         SurveyResponses::create([
+            'user_id' => 5,
             'first_name' => 'David',
             'surname' => 'Lee',
             'email' => 'david.lee@example.com',
@@ -1284,13 +1289,14 @@ class responsesTableSeeder extends Seeder
         ]);
 
         SurveyResponses::create([
+            'user_id' => 6,
             'first_name' => 'Amanda',
             'surname' => 'Clark',
             'email' => 'amanda.clark@example.com',
             'birth_date' => '1992-09-18',
             'gender' => 'Female',
             'profession' => 'Police',
-            'educational_background' => "Junior High School",
+            'educational_background' => "High School",
             'response_data' => '{
                                   "sus": {
                                     "sus1": 3,

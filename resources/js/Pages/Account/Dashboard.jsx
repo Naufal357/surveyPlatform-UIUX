@@ -3,10 +3,12 @@ import { Head, Inertia, usePage, Link } from "@inertiajs/inertia-react";
 import Pagination from "../../Components/Pagination";
 import LayoutAccount from "../../Layouts/Account";
 import AccordionLayout from "../../Layouts/Accordion";
-import TableDashboard from "../../Components/TableDashboard";
+import CardContent from "../../Layouts/CardContent";
+import TableDashboardSurvey from "../../Components/TableDashboardSurvey";
+import TableDashboardFilledSurvey from "../../Components/TableDashboardfilledSurvey";
 
 export default function Dashboard() {
-    const { auth, surveys, surveyData } = usePage().props;
+    const { auth, surveys, surveyData, filledOutSurvey } = usePage().props;
 
     useEffect(() => {
         const handleVisibilityChange = () => {
@@ -46,7 +48,7 @@ export default function Dashboard() {
                         defaultOpen={true}
                     >
                         {surveyData.length > 0 ? (
-                            <TableDashboard
+                            <TableDashboardSurvey
                                 surveyData={surveyData}
                                 surveys={surveys}
                             />
@@ -55,6 +57,25 @@ export default function Dashboard() {
                         )}
 
                         <Pagination links={surveys.links} align={"end"} />
+                    </AccordionLayout>
+                    <AccordionLayout
+                        title="Survey Yang Telah Diisi"
+                        defaultOpen={false}
+                    >
+                        {filledOutSurvey.length > 0 ? (
+                            <>
+                                <TableDashboardFilledSurvey
+                                    surveyFilled={filledOutSurvey}
+                                />
+
+                                <Pagination
+                                    links={filledOutSurvey.links}
+                                    align={"end"}
+                                />
+                            </>
+                        ) : (
+                            <div className="text-center">Tidak ada data</div>
+                        )}
                     </AccordionLayout>
                 </div>
             </LayoutAccount>

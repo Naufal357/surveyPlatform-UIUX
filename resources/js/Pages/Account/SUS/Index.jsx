@@ -213,7 +213,7 @@ export default function Dashboard() {
                                     </div>
                                     <hr />
                                     <div className="row">
-                                        <div className="col-lg-4 col-md-12 mb-4">
+                                        <div className="col-lg-3 col-md-12 mb-4">
                                             <div className="text-center">
                                                 <p>
                                                     Positif jika rata-rata{" "}
@@ -294,7 +294,12 @@ export default function Dashboard() {
                                         >
                                             <div className="card">
                                                 <div className="card-body">
-                                                    <h6 className="card-title">
+                                                    <h6
+                                                        className="card-title"
+                                                        style={{
+                                                            minHeight: "50px",
+                                                        }}
+                                                    >
                                                         {index + 1}.{" "}
                                                         {item.question}
                                                     </h6>

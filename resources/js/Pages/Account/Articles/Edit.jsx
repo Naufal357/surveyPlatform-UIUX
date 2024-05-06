@@ -18,7 +18,7 @@ export default function ArticleCreate() {
     const [imagePreview, setImagePreview] = useState("");
     const [content, setContent] = useState("");
     const [status, setStatus] = useState("");
-console.log(status);
+
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {

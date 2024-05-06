@@ -46,10 +46,12 @@ Route::group(['middleware' => 'cors'], function () {
                 ->middleware('permission:profile.index|profile.edit');
             Route::get('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'certificate'])
                 ->middleware('permission:profile.upload.certificate')->name('account.profile.certificate');
-            Route::post('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'uploadCertificate'])->name('account.profile.uploadCertificate');
+            Route::post('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'uploadCertificate'])
+                ->middleware('permission:profile.upload.certificate')->name('account.profile.uploadCertificate');
             Route::get('profile/password', [\App\Http\Controllers\Account\ProfileController::class, 'password'])
                 ->middleware('permission:profile.change.password')->name('account.profile.password');
-            Route::put('profile/password/update', [\App\Http\Controllers\Account\ProfileController::class, 'updatePassword'])->name('account.profile.updatePassword');
+            Route::put('profile/password/update', [\App\Http\Controllers\Account\ProfileController::class, 'updatePassword'])
+                ->middleware('permission:profile.change.password')->name('account.profile.updatePassword');
 
             Route::resource('/surveys', \App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
                 ->middleware('permission:surveys.index|surveys.index.full|surveys.create|surveys.edit|surveys.delete');

@@ -99,7 +99,6 @@ export default function Dashboard() {
     }));
 
     const handleExport = () => {
-        console.log(survey.id);
         window.location.href = `/account/responses/tam/${survey.id}/export`;
     };
 
@@ -153,7 +152,7 @@ export default function Dashboard() {
                                                     onClick={(event) => {
                                                         event.preventDefault();
                                                         Inertia.get(
-                                                            `/account/sus/${survey.id}`
+                                                            `/account/tam/${survey.id}`
                                                         );
                                                     }}
                                                 >
@@ -185,7 +184,7 @@ export default function Dashboard() {
                             <div className="row justify-content-center">
                                 {demographicsData.map((item, index) => (
                                     <div
-                                        className="col-lg-4 col-md-6 mb-4 mx-auto"
+                                        className="col-lg-3 col-md-6 mb-4 mx-auto"
                                         key={index}
                                     >
                                         <div className="card">
@@ -226,7 +225,12 @@ export default function Dashboard() {
                                         >
                                             <div className="card">
                                                 <div className="card-body">
-                                                    <h6 className="card-title">
+                                                    <h6
+                                                        className="card-title"
+                                                        style={{
+                                                            minHeight: "50px",
+                                                        }}
+                                                    >
                                                         {index + 1}.
                                                         {item.question}
                                                     </h6>

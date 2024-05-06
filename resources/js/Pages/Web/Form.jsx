@@ -11,6 +11,7 @@ function Form() {
     const { surveys, auth, surveyMethods, surveyQuestions } = usePage().props;
 
     const initialFormData = {
+        user_id: auth.id,
         first_name: auth.first_name,
         surname: auth.surname,
         email: auth.email,
@@ -210,6 +211,15 @@ function Form() {
                 }).then(() => {
                     removeSurveyData();
                     Inertia.visit("/");
+                });
+            },
+            onError: () => {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Data failed to save!",
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 1500,
                 });
             },
         });

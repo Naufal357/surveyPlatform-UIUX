@@ -90,6 +90,7 @@ export default function ProfilePassword() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Email Address"
                                 error={errors.email}
+                                disabled
                                 required
                             />
                         </div>

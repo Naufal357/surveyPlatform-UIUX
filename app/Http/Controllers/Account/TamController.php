@@ -96,9 +96,9 @@ class TamController extends Controller
             $responsesFormatedJson[] = json_encode($responseDataFormated);
         }
 
-        foreach ($responses as $response) {
+        foreach ($responses as $index => $response) {
             $responseCopy = clone $response;
-            $responseCopy->response_data = $responsesFormatedJson[$response->id - 1];
+            $responseCopy->response_data = $responsesFormatedJson[$index];
             $responsesFormated[] = $responseCopy;
         }
         // Akhir - Format data TAM - responsesFormated
@@ -128,48 +128,10 @@ class TamController extends Controller
         ])->with('currentSurveyTitle', $survey->title);
     }
 
-    private $variables = [
-        [
-            'name' => 'Perceived Ease of Use',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 1,
-            'end_question' => 3,
-        ],
-        [
-            'name' => 'Perceived Usefulness',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 4,
-            'end_question' => 6,
-        ],
-        [
-            'name' => 'Attitude Toward Using',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 7,
-            'end_question' => 9,
-        ],
-        [
-            'name' => 'Behavioral intention to use',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 10,
-            'end_question' => 12,
-        ],
-        [
-            'name' => 'Actual System use',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 13,
-            'end_question' => 15,
-        ],
-    ];
-
     private function countRespondents($surveyId, $responsesFormated)
     {
         $totalResponsesWithTAM = SurveyResponses::where('survey_id', $surveyId)
-            ->where('response_data', 'LIKE', '%"sus"%')
+            ->where('response_data', 'LIKE', '%"tam"%')
             ->count();
 
         return $totalResponsesWithTAM;

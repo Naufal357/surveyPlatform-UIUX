@@ -60,7 +60,7 @@ export default function ProfileEdit() {
 
         if (result.isConfirmed) {
             setIsSaving(true);
-            Inertia.put(
+            Inertia.post(
                 `/account/profile/${user.id}`,
                 {
                     first_name: firstName,
@@ -72,6 +72,7 @@ export default function ProfileEdit() {
                     educational_background: educationalBackground,
                     password: password,
                     userPrefsData: userPrefsData,
+                    _method: "PUT",
                 },
                 {
                     onSuccess: () => {

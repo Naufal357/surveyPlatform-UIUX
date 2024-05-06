@@ -51,6 +51,7 @@ class ProfileController extends Controller
             'gender'     => 'required',
             'profession'     => 'required',
             'educational_background'     => 'required',
+            'userPrefsData'     => 'required',
             'password' =>
             [
                 'required',
@@ -72,8 +73,8 @@ class ProfileController extends Controller
             'educational_background'     => $request->educational_background,
         ]);
 
-        if ($request->has('user_prefs')) {
-            $userPrefsData = $request->user_prefs;
+        if ($request->has('userPrefsData')) {
+            $userPrefsData = $request->userPrefsData;
             $userPref->where('user_id', $user->id)->delete();
 
             foreach ($userPrefsData as $category_id) {

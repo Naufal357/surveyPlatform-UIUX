@@ -39,8 +39,8 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         $validatedData = $request->validate([
+            'user_id'               => 'required',
             'survey_id'             => 'required|exists:surveys,id',
             'first_name'             => 'required',
             'surname'              => 'required',
@@ -51,7 +51,6 @@ class FormController extends Controller
             'educational_background' => 'required',
             'response_data'        => 'required|json',
         ]);
-
         $userId = auth()->user()->id;
 
         $survey = Survey::find($validatedData['survey_id']);
