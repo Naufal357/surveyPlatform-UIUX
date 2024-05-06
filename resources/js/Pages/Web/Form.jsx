@@ -8,7 +8,7 @@ import EmbedDesign from "../../Components/EmbedDesign";
 import Swal from "sweetalert2";
 
 function Form() {
-    const { surveys, auth, surveyMethods, surveyQuestions } = usePage().props;
+    const { surveys, auth, surveyMethods, surveyMethodIds, surveyQuestions } = usePage().props;
 
     const initialFormData = {
         user_id: auth.id,
@@ -277,12 +277,8 @@ function Form() {
                                 </div>
 
                                 <form onSubmit={submitForm}>
-                                    {surveyMethods
-                                        .sort(
-                                            (a, b) => a.method_id - b.method_id
-                                        )
-                                        .map((method, index) => {
-                                            if (method.method_id === 1) {
+                                    {surveyMethodIds.map((methodId, index) => {
+                                            if (methodId == 1) {
                                                 return (
                                                     <div
                                                         className="Questionnaire-SUS"
@@ -335,7 +331,7 @@ function Form() {
                                                         </div>
                                                     </div>
                                                 );
-                                            } else if (method.method_id === 2) {
+                                            } else if (methodId == 2) {
                                                 return (
                                                     <div
                                                         className="Questionnaire-TAM"

@@ -21,6 +21,7 @@ class FormController extends Controller
 
         $response = SurveyResponses::where('email', $user->email)->where('survey_id', $survey->id)->first();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
+        $surveyMethodIds = $surveyMethods->pluck('method_id')->toArray();
         $surveyQuestions = SurveyQuestions::where('survey_id', $survey->id)->get();
 
         if ($response) {
@@ -31,6 +32,7 @@ class FormController extends Controller
             'surveys' => $survey,
             'auth' => auth()->user(),
             'surveyMethods' => $surveyMethods,
+            'surveyMethodIds' => $surveyMethodIds,
             'surveyQuestions' => $surveyQuestions
         ]);
     }
