@@ -47,7 +47,7 @@ class TamController extends Controller
         $responsesFormated = [];
 
         $survey = Survey::find($id);
-        if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id !== $userID) {
+        if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id != $userID) {
             return abort(403, 'Unauthorized');
         }
 

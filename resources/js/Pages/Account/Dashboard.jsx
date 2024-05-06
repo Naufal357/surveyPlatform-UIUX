@@ -13,7 +13,7 @@ export default function Dashboard() {
     useEffect(() => {
         const handleVisibilityChange = () => {
             document.title = document.hidden
-                ? "Come back 😔"
+                ? "Survey Platform 👋😊"
                 : "Survey Platform";
         };
 

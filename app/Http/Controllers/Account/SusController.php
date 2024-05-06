@@ -51,7 +51,7 @@ class SusController extends Controller
 
         $survey = Survey::find($id);
 
-        if (!auth()->user()->hasPermissionTo('sus.index.full') && $survey->user_id !== $userID) {
+        if (!auth()->user()->hasPermissionTo('sus.index.full') && $survey->user_id != $userID) {
             return abort(403, 'Unauthorized');
         }
 

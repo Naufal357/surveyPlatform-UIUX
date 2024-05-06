@@ -5,7 +5,7 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
     if (!surveyData || surveyData.length === 0) {
         return <div>Tidak Ada Data Survei</div>;
     }
-    
+
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
@@ -28,41 +28,33 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                             <td>{survey.title}</td>
                             <td>{survey.response_count}</td>
                             <td>
-                                {survey.method_ids.includes(1) &&
-                                survey.method_ids.includes(2) ? (
-                                    <div className="d-flex gap-2">
-                                        <Link
-                                            href={`sus/${survey.survey_id}`}
-                                            className="btn btn-sm btn-success border-0 shadow"
-                                            type="button"
-                                        >
-                                            SUS
-                                        </Link>
-                                        <Link
-                                            href={`tam/${survey.survey_id}`}
-                                            className="btn btn-sm btn-success border-0 shadow"
-                                            type="button"
-                                        >
-                                            TAM
-                                        </Link>
-                                    </div>
-                                ) : survey.method_ids.includes(1) ? (
-                                    <Link
-                                        href={`sus/${survey.survey_id}`}
-                                        className="btn btn-sm btn-success border-0 shadow"
-                                        type="button"
-                                    >
-                                        SUS
-                                    </Link>
-                                ) : survey.method_ids.includes(2) ? (
-                                    <Link
-                                        href={`tam/${survey.survey_id}`}
-                                        className="btn btn-sm btn-success border-0 shadow"
-                                        type="button"
-                                    >
-                                        TAM
-                                    </Link>
-                                ) : null}
+                                <div className="d-flex gap-2">
+                                    {survey.method_ids.map(
+                                        (methodId, index) => {
+                                            if (methodId == 1) {
+                                                return (
+                                                    <Link
+                                                        href={`sus/${survey.survey_id}`}
+                                                        className="btn btn-sm btn-success border-0 shadow"
+                                                        type="button"
+                                                    >
+                                                        SUS
+                                                    </Link>
+                                                );
+                                            } else if (methodId == 2) {
+                                                return (
+                                                    <Link
+                                                        href={`tam/${survey.survey_id}`}
+                                                        className="btn btn-sm btn-success border-0 shadow"
+                                                        type="button"
+                                                    >
+                                                        TAM
+                                                    </Link>
+                                                );
+                                            }
+                                        }
+                                    )}
+                                </div>
                             </td>
                         </tr>
                     ))}
