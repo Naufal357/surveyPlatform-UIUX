@@ -319,7 +319,7 @@ class TamController extends Controller
             $avg[$key]['avg'] = $value / $variablesAnswerCount[$key];
             $avg[$key]['maxValue'] = $variablesAnswerCount[$key] * 5 * $respondents;
         }
-        // dd($avg);
+
         if ($variableName == 'Perceived Ease of Use') {
             $PU = $variableValues;
             $avg_PU = $avg;

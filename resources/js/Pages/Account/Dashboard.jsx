@@ -26,7 +26,7 @@ export default function Dashboard() {
             );
         };
     }, []);
-
+console.log(filledOutSurvey)
     return (
         <>
             <Head>
@@ -62,7 +62,7 @@ export default function Dashboard() {
                         title="Survey Yang Telah Diisi"
                         defaultOpen={false}
                     >
-                        {filledOutSurvey.length > 0 ? (
+                        {filledOutSurvey.data.length > 0 ? (
                             <>
                                 <TableDashboardFilledSurvey
                                     surveyFilled={filledOutSurvey}
@@ -74,7 +74,11 @@ export default function Dashboard() {
                                 />
                             </>
                         ) : (
-                            <div className="text-center">Tidak ada data</div>
+                            <>
+                                <div className="text-center">
+                                    Tidak ada data
+                                </div>
+                            </>
                         )}
                     </AccordionLayout>
                 </div>
