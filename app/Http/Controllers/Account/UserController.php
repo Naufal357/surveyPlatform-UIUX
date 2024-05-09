@@ -20,10 +20,12 @@ class UserController extends Controller
             $query->where(function ($query) use ($searchTerm) {
                 $query->where('first_name', 'like', '%' . $searchTerm . '%')
                     ->orWhere('surname', 'like', '%' . $searchTerm . '%');
+            })->orWhereHas('roles', function ($query) use ($searchTerm) {
+                $query->where('name', 'like', '%' . $searchTerm . '%');
             });
         }
 
-        $users = $query->paginate(8);
+        $users = $query->paginate(20);
         $users->appends(['q' => $searchTerm]);
 
         return inertia('Account/Users/Users', [
@@ -72,7 +74,7 @@ class UserController extends Controller
 
         if ($request->has('user_prefs')) {
             $userPrefsData = $request->user_prefs;
-            
+
             $userPref->where('user_id', $user->id)->delete();
 
             foreach ($userPrefsData as $category_id) {
@@ -85,7 +87,7 @@ class UserController extends Controller
     public function edit($id)
     {
         if ($id == 1) {
-            abort(403, "The user is not allowed to be edited.");
+            abort(403, "Editing the user is not allowed.");
         }
 
         $user = User::with('roles')->findOrFail($id);
@@ -103,9 +105,8 @@ class UserController extends Controller
 
     public function update(Request $request, User $user, UserSelectCategory $userPref)
     {
-        
-        if ($request->email == "admin@123") {
-            abort(403, "The user is not allowed to be edited.");
+        if (auth()->user()->id == 1) {
+            abort(403, "Editing the user is not allowed.");
         }
 
         $this->validate($request, [
@@ -141,7 +142,7 @@ class UserController extends Controller
                 'educational_background'     => $request->educational_background,
             ]);
         }
-       
+
         $user->syncRoles($request->roles);
 
         if ($request->has('user_prefs')) {
@@ -152,7 +153,7 @@ class UserController extends Controller
                 $userPref->create(['category_id' => $category_id, 'user_id' => $user->id]);
             }
         }
-        
+
         return redirect()->route('account.users.index');
     }
 

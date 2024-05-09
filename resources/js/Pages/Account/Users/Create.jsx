@@ -17,7 +17,7 @@ export default function UserCreate() {
 
     if (!hasAnyPermission(["users.index.full"])) {
         filteredRoles = filteredRoles.filter(
-            (role) => role.name !== "super admin"
+            (role) => role.name != "super admin"
         );
     }
 

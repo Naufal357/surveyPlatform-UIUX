@@ -34,7 +34,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'          => 'required',
+            'name'          => 'required|unique:roles',
             'permissions'   => 'required',
         ]);
 
@@ -48,7 +48,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         if ($id == 1) {
-            abort(403, "The user is not allowed to be edited.");
+            abort(403, "Editing the role is not allowed.");
         }
 
         $role = Role::with('permissions')->findOrFail($id);
@@ -64,11 +64,11 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         if ($request->name == "super admin") {
-            abort(403, "The user is not allowed to be edited.");
+            abort(403, "Editing the role is not allowed.");
         }
 
         $this->validate($request, [
-            'name'          => 'required',
+            'name'          => 'required|unique:roles',
             'permissions'   => 'required',
         ]);
 
