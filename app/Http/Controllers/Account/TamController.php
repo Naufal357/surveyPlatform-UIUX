@@ -10,6 +10,7 @@ use App\Models\Survey;
 use App\Models\SurveyQuestions;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResponsesTAMExport;
+use Illuminate\Support\Facades\Cache;
 
 class TamController extends Controller
 {
@@ -46,6 +47,8 @@ class TamController extends Controller
         $survey = Survey::find($id);
         $responsesFormated = [];
 
+        $cacheExpiredMinutes = 2 * 60; 
+
         $survey = Survey::find($id);
         if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id != $userID) {
             return abort(403, 'Unauthorized');
@@ -64,9 +67,11 @@ class TamController extends Controller
                 ->get(['surveys.id', 'surveys.title']);
         }
 
-        $responses = SurveyResponses::where('survey_id', $id)
-            ->where('response_data', 'LIKE', '%"tam"%')
-            ->get();
+        $responses = Cache::remember('responses-tam-' . $id, $cacheExpiredMinutes, function () use ($id) {
+            return SurveyResponses::where('survey_id', $id)
+                ->where('response_data', 'LIKE', '%"tam"%')
+                ->get();
+        });
 
         // Mulai - Format data TAM - responsesFormated
         $responsesFormatedJson = [];

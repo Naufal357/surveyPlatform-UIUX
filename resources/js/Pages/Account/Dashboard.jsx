@@ -26,7 +26,7 @@ export default function Dashboard() {
             );
         };
     }, []);
-console.log(filledOutSurvey)
+
     return (
         <>
             <Head>

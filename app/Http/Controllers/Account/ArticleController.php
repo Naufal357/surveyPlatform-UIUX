@@ -25,7 +25,7 @@ class ArticleController extends Controller
             })
                 ->where('user_id', auth()->user()->id)
                 ->latest()
-                ->paginate(8);
+                ->paginate(10);
         }
 
         $articles->appends(['q' => request()->q]);

@@ -14,7 +14,7 @@ class CategoryController extends Controller
     {
         $categories = Category::when(request()->q, function ($categories) {
             $categories = $categories->where('name', 'like', '%' . request()->q . '%');
-        })->latest()->paginate(9);
+        })->latest()->paginate(10);
 
         $categories->appends(['q' => request()->q]);
 

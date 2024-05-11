@@ -11,6 +11,7 @@ use App\Models\SurveyQuestions;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class SurveyController extends Controller
@@ -20,7 +21,7 @@ class SurveyController extends Controller
         if (auth()->user()->hasPermissionTo('surveys.index.full')) {
             $surveys = Survey::when(request()->q, function ($surveys) {
                 $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
-            })->orderBy('id')->paginate(8);
+            })->orderBy('id')->paginate(10);
 
             $surveys->load('user');
         } else {
@@ -29,7 +30,7 @@ class SurveyController extends Controller
             })
                 ->where('user_id', auth()->user()->id)
                 ->latest()
-                ->paginate(8);
+                ->paginate(10);
         }
 
         $surveys->appends(['q' => request()->q]);
@@ -287,6 +288,10 @@ class SurveyController extends Controller
         if ($Survey->image != 'surveyFactory.png') {
             Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
         }
+
+        Cache::forget('responses-tam-' . $id); 
+        Cache::forget('responses-sus-' . $id);
+
         $Survey->delete();
 
         return redirect()->route('account.surveys.index');

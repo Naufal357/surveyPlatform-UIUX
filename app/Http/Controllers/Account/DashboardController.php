@@ -20,7 +20,7 @@ class DashboardController extends Controller
         if ($user->hasPermissionTo('dashboard.index.full')) {
             $surveys = Survey::latest()->paginate(10);
         } else {
-            $surveys = Survey::where('user_id', $user->id)->latest()->paginate(8);
+            $surveys = Survey::where('user_id', $user->id)->latest()->paginate(10);
         }
 
         $filledOutSurvey = SurveyResponses::with(['survey', 'user'])->where('user_id', $user->id)->latest()->paginate(8);

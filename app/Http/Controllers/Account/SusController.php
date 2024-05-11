@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use App\Exports\ResponsesSUSExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
@@ -48,8 +49,9 @@ class SusController extends Controller
     public function show(Request $request, $id)
     {
         $userID = auth()->user()->id;
-
         $survey = Survey::find($id);
+
+        $cacheExpiredMinutes = 2 * 60;
 
         if (!auth()->user()->hasPermissionTo('sus.index.full') && $survey->user_id != $userID) {
             return abort(403, 'Unauthorized');
@@ -72,9 +74,11 @@ class SusController extends Controller
 
         $susQuestions = SurveyQuestions::where('survey_id', $id)->get();
 
-        $responses = SurveyResponses::where('survey_id', $id)
-            ->where('response_data', 'LIKE', '%"sus"%')
-            ->get();
+        $responses = Cache::remember('responses-sus-' . $id, $cacheExpiredMinutes, function () use ($id) {
+            return SurveyResponses::where('survey_id', $id)
+                ->where('response_data', 'LIKE', '%"sus"%')
+                ->get();
+        });
 
         $respondentCount = $this->countRespondents($id);
         $demographicRespondents = $this->demographicRespondents($responses);

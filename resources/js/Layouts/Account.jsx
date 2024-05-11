@@ -62,7 +62,7 @@ export default function LayoutAccount({ children }) {
                                             <>
                                                 {auth.user.roles.some(
                                                     (role) =>
-                                                        role.name ===
+                                                        role.name ==
                                                         "verified user"
                                                 ) && (
                                                     <i className="fas fa-user-check me-2" />
