@@ -81,11 +81,13 @@ body.modal-open footer {
 
 #sidebar-wrapper .list-group {
     width: 15rem;
+    max-height: 100vh; 
+    overflow-y: auto; 
 }
 
 #page-content-wrapper {
-    width: calc(100% - 15rem); /* Sesuaikan lebar konten */
-    margin-left: 15rem; /* Sesuaikan margin kiri untuk konten */
+    width: calc(100% - 15rem); 
+    margin-left: 15rem; 
     transition: margin 0.25s ease-out, width 0.25s ease-out;
 }
 

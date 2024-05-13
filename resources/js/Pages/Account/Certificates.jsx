@@ -231,19 +231,24 @@ export default function Certificates() {
                                                             backgroundColor:
                                                                 selectedCertificateId ===
                                                                 certificate.id
-                                                                    ? "#ffcc00"
-                                                                    : "#a2a80f",
+                                                                    ? "#8F4030"
+                                                                    : "#b77466",
                                                             color: "white",
+                                                            boxShadow:
+                                                                selectedCertificateId ===
+                                                                certificate.id
+                                                                    ? "5px 5px 10px rgba(0, 0, 0, 0.5)" 
+                                                                    : "none", 
                                                         }}
                                                     >
-                                                        <p className="card-text text-center">
+                                                        <p className="card-text text-center text-dark">
                                                             <strong>
                                                                 {
                                                                     certificate.original_certificate
                                                                 }
                                                             </strong>
                                                         </p>
-                                                        <p className="card-text">
+                                                        <p className="card-text text-dark">
                                                             <strong>
                                                                 User:
                                                             </strong>{" "}
@@ -255,8 +260,7 @@ export default function Certificates() {
                                                                 certificate.user
                                                                     .surname
                                                             }
-                                                        </p>
-                                                        <p className="card-text">
+                                                            <br />
                                                             <strong>
                                                                 Tanggal:
                                                             </strong>{" "}
@@ -279,7 +283,9 @@ export default function Certificates() {
                         </div>
                     </div>
                     {hasAnyPermission([
-                        "certificates.index.full","certificates.approve","certificates.reject"
+                        "certificates.index.full",
+                        "certificates.approve",
+                        "certificates.reject",
                     ]) && (
                         <AccordionLayout
                             title="Kategori Sertifikat"
