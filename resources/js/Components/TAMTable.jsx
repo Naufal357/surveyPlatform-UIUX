@@ -4,8 +4,10 @@ const TAMTable = ({ data, type }) => {
     return (
         <div className="table-responsive">
             {type === "responsesTable" && renderResponseTable(data)}
-            {type === "descriptiveStatisticsTable" && renderDescriptiveStatisticsTable(data)}
-            {type === "regressionTable" && renderRegressionTable(data)}
+            {type === "descriptiveStatisticsTable" &&
+                renderDescriptiveStatisticsTable(data)}
+            {type === "regressionStatisticsTable" &&
+                renderRegressionTable(data)}
         </div>
     );
 };
@@ -14,42 +16,49 @@ const renderResponseTable = (data) => {
     const keys = Object.keys(data[0]?.answerData);
 
     return (
-        <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Respondent Name</th>
-                    {keys.map((key) => (
-                        <th key={key}>Question {key.replace("tam", "")}</th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {data.map((result, index) => (
-                    <tr key={result.id}>
-                        <td>{index + 1}</td>
-                        <td>{result.respondentName}</td>
+        <div
+            className="table-responsive"
+            style={{ maxHeight: "60vh", overflowY: "auto" }}
+        >
+            <table className="table table-striped table-bordered">
+                <thead className="thead-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Respondent Name</th>
                         {keys.map((key) => (
-                            <td key={key}>{result.answerData[key]}</td>
+                            <th key={key}>Question {key.replace("tam", "")}</th>
                         ))}
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {data.map((result, index) => (
+                        <tr key={result.id}>
+                            <td>{index + 1}</td>
+                            <td>{result.respondentName}</td>
+                            {keys.map((key) => (
+                                <td key={key}>{result.answerData[key]}</td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
 const renderDescriptiveStatisticsTable = (data) => {
-
     return (
         <table className="table table-striped table-bordered">
             <thead className="thead-dark">
                 <tr>
-                    <th>Variable</th>
-                    <th>nI</th>
-                    <th>Sum SK</th>
-                    <th>Sum SH</th>
-                    <th>P</th>
+                    <th>Variabel</th>
+                    <th>nI (Jumlah Pertanyaan)</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Avg</th>
+                    <th>Jumlah SK (Nilai Maksimum)</th>
+                    <th>Jumlah SH (Nilai Yang Didapat)</th>
+                    <th>P (Jumlah SH / Jumlah SK)</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,6 +66,9 @@ const renderDescriptiveStatisticsTable = (data) => {
                     <tr key={index}>
                         <td>{result["variable"]}</td>
                         <td>{result["nI"]}</td>
+                        <td>{result["min"]}</td>
+                        <td>{result["max"]}</td>
+                        <td>{result["avg"]}</td>
                         <td>{result["sum_SK"]}</td>
                         <td>{result["sum_SH"]}</td>
                         <td>{result["P"]}</td>
@@ -68,24 +80,39 @@ const renderDescriptiveStatisticsTable = (data) => {
 };
 
 const renderRegressionTable = (data) => {
-
     return (
-        <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
-                <tr>
-                    <th>Variable</th>
-                    <th>Regression</th>
-                </tr>
-            </thead>
-            <tbody>
-                {Object.entries(data).map(([key, value], index) => (
-                    <tr key={index}>
-                        <td>{key.replace("_", " - ")}</td>
-                        <td>{value}</td>
+        <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+                <thead className="thead-dark">
+                    <tr>
+                        <th>Variable Regresi</th>
+                        <th>n</th>
+                        <th>𝛴x</th>
+                        <th>𝛴y</th>
+                        <th>𝛴xy</th>
+                        <th>𝛴x^2</th>
+                        <th>(𝛴x)^2</th>
+                        {/* <th>Konstanta</th> */}
+                        <th>Koefisien Regresi (Slope)</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {data.map((result, index) => (
+                        <tr key={index}>
+                            <td>{result["path"]}</td>
+                            <td>{result["n"]}</td>
+                            <td>{result["x_sum"]}</td>
+                            <td>{result["y_sum"]}</td>
+                            <td>{result["xy_sum"]}</td>
+                            <td>{result["x_squared_sum"]}</td>
+                            <td>{result["x_sum_squared"]}</td>
+                            {/* <td>{result["a"]}</td> */}
+                            <td>{result["b"]}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 

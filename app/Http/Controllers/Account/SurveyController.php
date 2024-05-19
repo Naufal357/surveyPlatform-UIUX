@@ -95,7 +95,6 @@ class SurveyController extends Controller
             ]);
         }
 
-
         if ($request->file('image')) {
             $image = $request->file('image');
             $image->storeAs('public/image/surveys/', $image->hashName());
@@ -289,7 +288,7 @@ class SurveyController extends Controller
             Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
         }
 
-        Cache::forget('responses-tam-' . $id); 
+        Cache::forget('responses-tam-' . $id);
         Cache::forget('responses-sus-' . $id);
 
         $Survey->delete();

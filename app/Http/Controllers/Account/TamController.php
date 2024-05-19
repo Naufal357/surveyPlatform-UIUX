@@ -47,7 +47,7 @@ class TamController extends Controller
         $survey = Survey::find($id);
         $responsesFormated = [];
 
-        $cacheExpiredMinutes = 2 * 60; 
+        $cacheExpiredMinutes = 2 * 60;
 
         $survey = Survey::find($id);
         if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id != $userID) {
@@ -117,7 +117,7 @@ class TamController extends Controller
         $demographicRespondents = $this->demographicRespondents($responses);
         $tamSurveyResults = $this->getTAMResults($responsesFormated);
         $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses);
-        // $calculateRegression = $this->getCalculateRegression($respondents, $responses);
+        $calculateRegression = $this->getCalculateRegression($respondents, $responses);
 
         return inertia('Account/TAM/Index', [
             'surveyTitles' => $surveyTitles,
@@ -127,7 +127,7 @@ class TamController extends Controller
             'demographicRespondents' => $demographicRespondents,
             'getTAMChartData' => $getTAMChartData,
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
-            // 'calculateRegression' => $calculateRegression,
+            'calculateRegression' => $calculateRegression,
             'tamSurveyResults' => $tamSurveyResults,
             'tamQustions' => $tamQustions
         ])->with('currentSurveyTitle', $survey->title);
@@ -258,17 +258,23 @@ class TamController extends Controller
         }
 
         $descriptiveStatistics = [];
-        foreach ($maxValues as $variable => $maxValue) {
+        foreach ($maxValues as $variable => $sumMaxValue) {
             $sumValue = $sumValues[$variable];
-            $p = 0;
             if ($sumValue != 0) {
-                $p = ($sumValue / $maxValue) * 100;
+                $avg = $sumValue / count($formattedTamArray[$variable]);
+                $p = ($sumValue / $sumMaxValue) * 100;
+
+                $minValue = min($formattedTamArray[$variable]);
+                $maxValue = max($formattedTamArray[$variable]);
             }
 
             $descriptiveStatistics[] = [
                 'variable' => $variable,
                 'nI' => count($formattedTamArray[$variable]),
-                'sum_SK' => $maxValue,
+                'avg' => number_format($avg, 2),
+                'min' => number_format($minValue, 2),
+                'max' => number_format($maxValue, 2),
+                'sum_SK' => $sumMaxValue,
                 'sum_SH' => $sumValue,
                 'P' => number_format($p, 2) . '%',
             ];
@@ -279,9 +285,14 @@ class TamController extends Controller
 
     private function getCalculateRegression($respondents, $responsesFormated)
     {
+        if ($responsesFormated->isEmpty()) {
+            return null;
+        }
         $responseData = json_decode($responsesFormated[0]->response_data, true);
         $variablesAnswerCount = [];
-        $variableValues = [];
+        $respondentsValues = [];
+        $respondentsSum = [];
+        $respondentsAvg = [];
 
         foreach ($responseData['tam'] as $variable) {
             $tamCount = 0;
@@ -296,98 +307,100 @@ class TamController extends Controller
             $variablesAnswerCount[$variable['name']] = $tamCount;
         }
 
-        foreach ($responsesFormated as $response) {
-            $responseData = json_decode($response->response_data, true);
-            $values = $responseData['tam'];
+        // Awal menghitung rata-rata dan jumlah nilai variable setiap responden
+        foreach ($responsesFormated as $responseFormated) {
+            $responseData = json_decode($responseFormated->response_data, true);
+            $response = $responseData['tam'];
 
-            foreach ($values as $value) {
-                $variableName = $value['name'];
-                $responseCount = 0;
+            foreach ($response as $variable) {
+                $variableName = $variable['name'];
+                $varValue = [];
+                $sum = 0;
+                $avg = 0;
 
-                foreach ($value['responses'] as $response) {
-                    foreach ($response['value'] as $value) {
-                        $responseCount += $value[1];
+                foreach ($variable['responses'] as $indicator) {
+                    foreach ($indicator['value'] as $value) {
+                        $varValue[] = $value[1];
+                        $sum += $value[1];
                     }
-                }
 
-                if (!isset($variableValues[$variableName])) {
-                    $variableValues[$variableName] = 0;
                 }
-                $variableValues[$variableName] += $responseCount;
+                $avg = $sum / $variablesAnswerCount[$variableName];
+
+                $variablesValues[$variableName] = $varValue;
+
+                if(!isset($respondentsSum[$variableName])) {
+                    $respondentsSum[$variableName] = [];
+                }
+                if(!isset($respondentsAvg[$variableName])) {
+                    $respondentsAvg[$variableName] = [];
+                }
+                $respondentsSum[$variableName][] = $sum;
+                $respondentsAvg[$variableName][] = $avg;
+            }
+            $respondentsValues[] = $variablesValues;
+        }
+        // Akhir menghitung rata-rata dan jumlah nilai variable setiap responden
+
+        $regressionResults = [];
+        $regressionPathDefault = [
+            ['PEU', 'PU'],
+            ['PEU', 'ATU'],
+            ['PU', 'ATU'],
+            ['PU', 'BI'],
+            ['ATU', 'BI'],
+            ['BI', 'ASU']
+        ];
+        $regressionPath = $regressionPath ?? $regressionPathDefault;
+
+        $filteredRegressionPath = array_filter($regressionPath, function ($path) use ($respondentsAvg) {
+            return isset($respondentsAvg[$path[0]]) && isset($respondentsAvg[$path[1]]);
+        });
+
+        if (empty($filteredRegressionPath)) {
+            return $regressionResults = null;
+        }
+
+        foreach ($filteredRegressionPath as $path) {
+            $n = count($responsesFormated);
+            $x = $respondentsAvg[$path[0]];
+            $y = $respondentsAvg[$path[1]];
+            $xSquared = [];
+            $xy = [];
+
+            foreach($x as $value) {
+                $xSquared[] = $value * $value;
+            }
+            foreach ($x as $index => $value) {
+                $xy[] = $value * $y[$index];
             }
 
+            $x_sum = array_sum($x);
+            $y_sum = array_sum($y);
+            $x_squared_sum = array_sum($xSquared);
+            $xy_sum = array_sum($xy);
+            $x_sum_squared = $x_sum * $x_sum;
+
+            $a=(($y_sum * $x_squared_sum) - ($x_sum * $xy_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
+            $b=(($n * $xy_sum) - ($x_sum * $y_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
+
+            $path_formatted = $path[0] . " ➔ " . $path[1];
+
+            $regressionResults[] = [
+                'path' => $path_formatted,
+                'n' => $n,
+                'x_sum' => number_format($x_sum, 2, '.', ''),
+                'y_sum' => number_format($y_sum, 2, '.', ''),
+                'x_squared_sum' => number_format($x_squared_sum, 2, '.', ''),
+                'xy_sum' => number_format($xy_sum, 2, '.', ''),
+                'x_sum_squared' => number_format($x_sum_squared, 2, '.', ''),
+                'a' => number_format($a, 2, '.', ''),
+                'b' => number_format($b, 2, '.', ''),
+            ];
         }
-
-        foreach ($variableValues as $key => $value) {
-            $avg[$key]['valueTotal'] = $variableValues[$key];
-            $avg[$key]['count'] = $variablesAnswerCount[$key];
-            $avg[$key]['avg'] = $value / $variablesAnswerCount[$key];
-            $avg[$key]['maxValue'] = $variablesAnswerCount[$key] * 5 * $respondents;
-        }
-
-        if ($variableName == 'Perceived Ease of Use') {
-            $PU = $variableValues;
-            $avg_PU = $avg;
-        } elseif ($variableName == 'Perceived Usefulness') {
-            $PEU = $variableValues;
-            $avg_PEU = $avg;
-        } elseif ($variableName == 'Attitude Toward Using') {
-            $ATU = $variableValues;
-            $avg_ATU = $avg;
-        } elseif ($variableName == 'Behavioral intention to use') {
-            $BI = $variableValues;
-            $avg_BI = $avg;
-        } elseif ($variableName == 'Actual System use') {
-            $ASU = $variableValues;
-            $avg_ASU = $avg;
-        }
-
-        $PEU_PU = $this->calculateRegressionCoefficient($PEU, $PU, $avg_PEU, $avg_PU);
-        $PEU_ATU = $this->calculateRegressionCoefficient($PEU, $ATU, $avg_PEU, $avg_ATU);
-        $PU_ATU = $this->calculateRegressionCoefficient($PU, $ATU, $avg_PU, $avg_ATU);
-        $PU_BI = $this->calculateRegressionCoefficient($PU, $BI, $avg_PU, $avg_BI);
-        $ATU_BI = $this->calculateRegressionCoefficient($ATU, $BI, $avg_ATU, $avg_BI);
-        $BI_ASU = $this->calculateRegressionCoefficient($BI, $ASU, $avg_BI, $avg_ASU);
-
-        $regressionResults = [
-            'PEU_PU' => $this->calculateRegressionResult($avg_PEU, $PEU_PU['intercept'], $PEU_PU['slope']),
-            'PEU_ATU' => $this->calculateRegressionResult($avg_PEU, $PEU_ATU['intercept'], $PEU_ATU['slope']),
-            'PU_ATU' => $this->calculateRegressionResult($avg_PU, $PU_ATU['intercept'], $PU_ATU['slope']),
-            'PU_BI' => $this->calculateRegressionResult($avg_PU, $PU_BI['intercept'], $PU_BI['slope']),
-            'ATU_BI' => $this->calculateRegressionResult($avg_ATU, $ATU_BI['intercept'], $ATU_BI['slope']),
-            'BI_ASU' => $this->calculateRegressionResult($avg_BI, $BI_ASU['intercept'], $BI_ASU['slope']),
-        ];
 
         return $regressionResults;
     }
-
-    private function calculateRegressionCoefficient($valueX, $valueY, $avgX, $avgY)
-    {
-        $numerator = 0;
-        $denominator = 0;
-
-        foreach ($valueX as $key => $x) {
-            $numerator += ($x - $avgX) * ($valueY[$key] - $avgY);
-            $denominator += pow($x - $avgX, 2);
-        }
-
-        $slope = ($denominator != 0) ? $numerator / $denominator : 0;
-
-        $intercept = $avgY - $slope * $avgX;
-        return [
-            'slope' => $slope,
-            'intercept' => $intercept,
-        ];
-    }
-
-    private function calculateRegressionResult($x, $intercept, $slope)
-    {
-        $predictedValues = $intercept + $slope * $x;
-
-        return $predictedValues;
-    }
-
-
 
     private function getTamResults($responsesFormated)
     {

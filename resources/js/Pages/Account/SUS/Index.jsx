@@ -8,7 +8,6 @@ import AccordionLayout from "../../../Layouts/Accordion";
 import PieChart from "../../../Components/PieChart";
 import InfoCard from "../../../Components/CardInfo";
 import SUSTableResponses from "../../../Components/SUSTableResponses";
-import { LockFill } from "react-bootstrap-icons";
 
 export default function Dashboard() {
     const {
@@ -26,6 +25,8 @@ export default function Dashboard() {
         resumeDescription,
         averageAnswer,
     } = usePage().props;
+
+    const name = `${auth.user.first_name} ${auth.user.surname}`;
 
     const formatAnswers = (averageAnswer) => {
         return averageAnswer.map((answer, index) => {
@@ -107,7 +108,6 @@ export default function Dashboard() {
     const handleExport = () => {
         window.location.href = `/account/responses/sus/${survey.id}/export`;
     };
-
     return (
         <>
             <Head>
@@ -117,7 +117,7 @@ export default function Dashboard() {
                 <div className="m-3">
                     <div className="row alert alert-success border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{auth.user.name}</strong>{" "}
+                            Selamat Datang, <strong>{name}</strong>{" "}
                             <br />
                             {currentSurveyTitle ? (
                                 <span>
@@ -329,7 +329,7 @@ export default function Dashboard() {
                             {susSurveyResults.length > 0 ? (
                                 <div>
                                     <div className="d-flex justify-content-between align-items-center mb-4">
-                                        <h4>Hasil SUS</h4>
+                                        <h4>Hasil Respon SUS</h4>
                                         {hasAnyPermission(["sus.export"]) && (
                                             <button
                                                 className="btn btn-success"

@@ -6,14 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\Survey;
 use App\Models\Category;
 use App\Models\Articles;
-use App\Models\SurveyHasCategories;
-use App\Models\UserSelectCategory;
+use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\Controller;
+use App\Models\UserSelectCategory;
+use App\Models\User;
 
 class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
+        if (Cookie::has('remember_token')) {
+            $user = User::where('remember_token', Cookie::get('remember_token'))->first();
+            if ($user) {
+                auth()->login($user);
+            }
+        }
+
         $user = auth()->user();
         $categories = Category::latest()->take(4)->get();
         $articles = Articles::latest()->where('status', 'Public')->take(9)->get();

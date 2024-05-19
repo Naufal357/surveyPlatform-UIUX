@@ -42,7 +42,7 @@ function NonAuthMenu() {
     );
 }
 
-function Layout({ children }) {
+function Layout({ children, footerVisible = true }) {
     const { auth } = usePage().props;
     const [menuVisible, setMenuVisible] = useState(false);
 
@@ -93,8 +93,82 @@ function Layout({ children }) {
                     </div>
                 </div>
             </nav>
+            <div style={{ minHeight: "86vh" }}>{children}</div>
+            {footerVisible ? (
+                <div>
+                    <footer
+                        className="text-center text-lg-start text-white py-3 mt-auto"
+                        style={{ backgroundColor: "#1c2331" }}
+                    >
+                        <div className="container">
+                            <div className="row justify-content-between">
+                                <div className="col-4 d-flex align-items-center">
+                                    @{new Date().getFullYear()}
+                                    &nbsp;
+                                    <abbr title="Jurusan Teknologi Informasi">
+                                        JTI
+                                    </abbr>
+                                    -
+                                    <abbr title="Politeknik Negeri Malang">
+                                        POLINEMA
+                                    </abbr>
+                                </div>
 
-            {children}
+                                <div className="col-4 d-flex align-items-center">
+                                    <div className="d-flex align-items-center flex-column flex-md-row ">
+                                        <p className="mb-0 me-2">
+                                            Developed with dedication by
+                                        </p>
+                                        <a
+                                            href="https://www.linkedin.com/in/naufal357/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-decoration-none text-white"
+                                        >
+                                            Naufal Rozan
+                                        </a>
+                                    </div>
+                                </div>
+
+                                {/* <div className="col-4 d-flex align-items-center">
+                                    <img
+                                        src="/assets/images/logo.png"
+                                        alt="Logo"
+                                        width="50"
+                                        className="mr-2 mt-1"
+                                    />
+                                    <h5 className="mb-0 mt-2">
+                                        <strong>Survey </strong> Platform UI/UX
+                                    </h5>
+                                </div> */}
+
+                                <div className="col-4 d-flex flex-column align-items-center">
+                                    <div className="d-flex">
+                                        <a
+                                            href="/"
+                                            className="text-decoration-none text-white me-3"
+                                        >
+                                            Home
+                                        </a>
+                                        <a
+                                            href="/articles"
+                                            className="text-decoration-none text-white me-3"
+                                        >
+                                            Blog
+                                        </a>
+                                        <a
+                                            href="/about"
+                                            className="text-decoration-none text-white"
+                                        >
+                                            About
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            ) : null}
         </>
     );
 }

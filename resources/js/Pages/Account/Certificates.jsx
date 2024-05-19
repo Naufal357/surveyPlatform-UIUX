@@ -9,6 +9,7 @@ import CardContent from "../../Layouts/CardContent";
 import SelectCheckbox from "../../Components/SelectCheckbox";
 import ButtonCRUD from "../../Components/ButtonCRUD";
 import TableCertificates from "../../Components/CertificatesTable";
+import CertificateCard from "../../Components/CertificateCard";
 import Search from "../../Components/Search";
 
 export default function Certificates() {
@@ -107,7 +108,7 @@ export default function Certificates() {
                     setIsSaving(false)
                 );
             }
-            is
+            is;
         }
     };
 
@@ -209,68 +210,17 @@ export default function Certificates() {
                                     >
                                         {pendingCertificates.data.map(
                                             (certificate) => (
-                                                <div
+                                                <CertificateCard
                                                     key={certificate.id}
-                                                    className={`mb-3 ${
-                                                        selectedCertificateId ===
-                                                        certificate.id
-                                                            ? "selected"
-                                                            : ""
-                                                    }`}
-                                                    onClick={() =>
-                                                        handleCardClick(
-                                                            certificate.id,
-                                                            certificate.certificate,
-                                                            certificate.original_certificate
-                                                        )
+                                                    background="#EE7E34"
+                                                    certificate={certificate}
+                                                    selectedCertificateId={
+                                                        selectedCertificateId
                                                     }
-                                                >
-                                                    <div
-                                                        className="card p-1"
-                                                        style={{
-                                                            backgroundColor:
-                                                                selectedCertificateId ===
-                                                                certificate.id
-                                                                    ? "#8F4030"
-                                                                    : "#b77466",
-                                                            color: "white",
-                                                            boxShadow:
-                                                                selectedCertificateId ===
-                                                                certificate.id
-                                                                    ? "5px 5px 10px rgba(0, 0, 0, 0.5)" 
-                                                                    : "none", 
-                                                        }}
-                                                    >
-                                                        <p className="card-text text-center text-dark">
-                                                            <strong>
-                                                                {
-                                                                    certificate.original_certificate
-                                                                }
-                                                            </strong>
-                                                        </p>
-                                                        <p className="card-text text-dark">
-                                                            <strong>
-                                                                User:
-                                                            </strong>{" "}
-                                                            {
-                                                                certificate.user
-                                                                    .first_name
-                                                            }{" "}
-                                                            {
-                                                                certificate.user
-                                                                    .surname
-                                                            }
-                                                            <br />
-                                                            <strong>
-                                                                Tanggal:
-                                                            </strong>{" "}
-                                                            {
-                                                                certificate.created_at
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                    <hr />
-                                                </div>
+                                                    handleCardClick={
+                                                        handleCardClick
+                                                    }
+                                                />
                                             )
                                         )}
                                     </div>

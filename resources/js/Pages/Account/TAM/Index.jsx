@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import hasAnyPermission from "../../../Utils/Permissions";
@@ -25,6 +25,7 @@ export default function Dashboard() {
 
     let idTamCounter = 0;
     const data = JSON.parse(tamQustions[0].questions_data);
+    const name = `${auth.user.first_name} ${auth.user.surname}`;
 
     const parsedTamQuestions = data.tam
         ? data.tam.flatMap((variable) =>
@@ -111,7 +112,7 @@ export default function Dashboard() {
                 <div className="m-3">
                     <div className="row alert alert-success border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{auth.user.name}</strong>{" "}
+                            Selamat Datang, <strong>{name}</strong>{" "}
                             <br />
                             {currentSurveyTitle ? (
                                 <span>
@@ -259,14 +260,18 @@ export default function Dashboard() {
                                 defaultOpen={false}
                             >
                                 {tamSurveyResults.length > 0 ? (
-                                    <div>
-                                        <TAMTable
-                                            data={
-                                                calculateDescriptiveStatistics
-                                            }
-                                            type={"descriptiveStatisticsTable"}
-                                        />
-                                    </div>
+                                    <>
+                                        <div>
+                                            <TAMTable
+                                                data={
+                                                    calculateDescriptiveStatistics
+                                                }
+                                                type={
+                                                    "descriptiveStatisticsTable"
+                                                }
+                                            />
+                                        </div>
+                                    </>
                                 ) : (
                                     <div className="text-center">
                                         Tidak ada data
@@ -275,13 +280,35 @@ export default function Dashboard() {
                             </AccordionLayout>
 
                             <AccordionLayout
-                                title="Data Responses TAM"
+                                title="Hasil Statistik Regresi"
+                                defaultOpen={false}
+                            >
+                                {tamSurveyResults.length > 0 ? (
+                                    <>
+                                        <div>
+                                            <TAMTable
+                                                data={calculateRegression}
+                                                type={
+                                                    "regressionStatisticsTable"
+                                                }
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-center">
+                                        Tidak ada data
+                                    </div>
+                                )}
+                            </AccordionLayout>
+
+                            <AccordionLayout
+                                title="Tabel Hasil"
                                 defaultOpen={false}
                             >
                                 {tamSurveyResults.length > 0 ? (
                                     <div>
                                         <div className="d-flex justify-content-between align-items-center mb-4">
-                                            <h4>Hasil TAM</h4>
+                                            <h4>Hasil Respon TAM</h4>
                                             {hasAnyPermission([
                                                 "tam.export",
                                             ]) && (

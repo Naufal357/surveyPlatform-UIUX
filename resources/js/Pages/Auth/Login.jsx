@@ -26,7 +26,7 @@ export default function Login() {
             <Head>
                 <title>Login Account - Survey Platform</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-md-4 mt-80">

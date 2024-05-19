@@ -53,7 +53,7 @@ export default function SelectCategory() {
             <Head>
                 <title>Preference Categories - Survey Platform</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-md-6 mt-80">

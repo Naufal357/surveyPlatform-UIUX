@@ -479,24 +479,18 @@ export default function SurveysCreate() {
                                 </div>
 
                                 <p>
-                                    1. Pertanyaan yang sudah disimpan tidak bisa
-                                    diubah.
+                                    1. Pertanyaan SUS (System Usability Scale)
+                                    tidak bisa diubah.
                                     <br />
-                                    2. Pastikan mengisi semua pertanyaan.
-                                    <br />
-                                    3. Untuk setiap pertanyaan bernomor ganjil,
+                                    2. Untuk setiap pertanyaan bernomor ganjil,
                                     nilai tertinggi adalah 5 (menyatakan sangat
                                     setuju). Sehingga, isi pertanyaan bersifat
                                     positif untuk pertanyaan ganjil.
                                     <br />
-                                    4. Untuk setiap pertanyaan bernomor genap,
+                                    3. Untuk setiap pertanyaan bernomor genap,
                                     nilai terendah adalah 1 (menyatakan sangat
                                     tidak setuju). Sehingga, isi pertanyaan
                                     bersifat negatif untuk pertanyaan genap.
-                                    <br />
-                                    5. Bila masih tidak memahami aturan 3 dan 4,
-                                    silahkan perhatikan pertanyaan bawaan yang
-                                    sudah disediakan.
                                 </p>
                             </div>
                             <hr />
@@ -513,6 +507,7 @@ export default function SurveysCreate() {
                                         )
                                     }
                                     error={errors[`question${index + 1}`]}
+                                    disabled
                                 />
                             ))}
                         </div>
@@ -542,7 +537,6 @@ export default function SurveysCreate() {
                                     Model)
                                 </h5>
                             </div>
-
                             <p>
                                 1. Pertanyaan yang sudah disimpan tidak bisa
                                 diubah.
@@ -569,6 +563,7 @@ export default function SurveysCreate() {
                             </p>
                         </div>
                         <hr />
+                        
                         {tamQuestionsData.map((question, index) => (
                             <div key={index} className="mb-3">
                                 <div className="row">

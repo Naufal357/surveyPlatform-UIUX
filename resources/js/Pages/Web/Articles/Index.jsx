@@ -4,7 +4,7 @@ import { Head, usePage } from "@inertiajs/inertia-react";
 import CardItem from "../../../Components/CardItem";
 import Pagination from "../../../Components/Pagination";
 
-export default function ProductIndex() {
+export default function Articles() {
     const { articles } = usePage().props;
 
     return (

@@ -47,15 +47,17 @@ export default function LayoutAccount({ children }) {
                     <Sidebar />
                 </div>
                 <div id="page-content-wrapper" style={{ width: "100%" }}>
-                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                    <nav className="navbar navbar-wrapper navbar-expand-lg navbar-light bg-light fixed-top">
                         <div className="container-fluid">
-                            <button
-                                className="btn btn-success-dark me-3"
-                                onClick={sidebarToggleHandler}
-                            >
-                                <i className="fa fa-list-ul"></i>
-                            </button>
-                            <div className="d-flex align-items-center">
+                            <div className="toggled-sidebar">
+                                <button
+                                    className="btn btn-success-dark me-3"
+                                    onClick={sidebarToggleHandler}
+                                >
+                                    <i className="fa fa-list-ul"></i>
+                                </button>
+                            </div>
+                            <div className="navbar-header d-flex align-items-center">
                                 <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
                                     <NavDropdown
                                         title={
@@ -93,7 +95,12 @@ export default function LayoutAccount({ children }) {
                             </div>
                         </div>
                     </nav>
-                    <div className="container-fluid">{children}</div>
+                    <div
+                        className="container-fluid"
+                        style={{ marginTop: "80px" }}
+                    >
+                        {children}
+                    </div>
                 </div>
             </div>
         </>

@@ -26,6 +26,16 @@ function Form() {
 
     const questionData = JSON.parse(surveyQuestions[0].questions_data);
 
+    if (surveys.user_id == auth.id) {
+        Swal.fire({
+            title: "Warning!",
+            text: "You are not allowed to fill out your own survey. Please choose another survey to participate in.",
+            icon: "warning",
+            showConfirmButton: true,
+            confirmButtonText: "Got it!",
+        });
+    }
+
     const parsedSusQuestions = questionData.sus
         ? Object.entries(questionData.sus).map(([key, value]) => ({
               id: `${idSusCounter++}`,
@@ -184,6 +194,7 @@ function Form() {
             return newState;
         });
     };
+
     const submitForm = (e) => {
         e.preventDefault();
 
@@ -230,7 +241,7 @@ function Form() {
             <Head>
                 <title>Form Survey</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container" style={{ marginTop: "80px" }}>
                     <div className="fade-in">
                         <div className="row justify-content-center">
@@ -278,72 +289,20 @@ function Form() {
 
                                 <form onSubmit={submitForm}>
                                     {surveyMethodIds.map((methodId, index) => {
-                                            if (methodId == 1) {
-                                                return (
-                                                    <div
-                                                        className="Questionnaire-SUS"
-                                                        key={index}
-                                                    >
-                                                        <hr />
-                                                        <h3 className="text-center text-2xl font-bold mb-4">
-                                                            Questionnaire SUS
-                                                        </h3>
-                                                        <div className="mb-3">
-                                                            {parsedSusQuestions.map(
-                                                                (
-                                                                    susQuestion,
-                                                                    index
-                                                                ) => (
-                                                                    <div
-                                                                        className="mb-3"
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                    >
-                                                                        <h5>
-                                                                            {index +
-                                                                                1}
-                                                                            .{" "}
-                                                                            {
-                                                                                susQuestion.question
-                                                                            }
-                                                                        </h5>
-                                                                        <LikertScale
-                                                                            name={`sus${
-                                                                                index +
-                                                                                1
-                                                                            }`}
-                                                                            selectedValue={
-                                                                                susValues[
-                                                                                    `sus${
-                                                                                        index +
-                                                                                        1
-                                                                                    }`
-                                                                                ]
-                                                                            }
-                                                                            onValueChange={
-                                                                                handleSUSChange
-                                                                            }
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            } else if (methodId == 2) {
-                                                return (
-                                                    <div
-                                                        className="Questionnaire-TAM"
-                                                        key={index}
-                                                    >
-                                                        <hr />
-                                                        <h3 className="text-center text-2xl font-bold mb-4">
-                                                            Questionnaire TAM
-                                                        </h3>
-                                                        {parsedTamQuestions.map(
+                                        if (methodId == 1) {
+                                            return (
+                                                <div
+                                                    className="Questionnaire-SUS"
+                                                    key={index}
+                                                >
+                                                    <hr />
+                                                    <h3 className="text-center text-2xl font-bold mb-4">
+                                                        Questionnaire SUS
+                                                    </h3>
+                                                    <div className="mb-3">
+                                                        {parsedSusQuestions.map(
                                                             (
-                                                                tamQuestion,
+                                                                susQuestion,
                                                                 index
                                                             ) => (
                                                                 <div
@@ -355,43 +314,90 @@ function Form() {
                                                                             1}
                                                                         .{" "}
                                                                         {
-                                                                            tamQuestion.question
+                                                                            susQuestion.question
                                                                         }
                                                                     </h5>
                                                                     <LikertScale
-                                                                        name={`tam${
+                                                                        name={`sus${
                                                                             index +
                                                                             1
-                                                                        }-${
-                                                                            tamQuestion.variable
-                                                                        }-${tamQuestion.indicator.replace(
-                                                                            /\s+/g,
-                                                                            "_"
-                                                                        )}`}
+                                                                        }`}
                                                                         selectedValue={
-                                                                            tamSelectedValue(
-                                                                                tamQuestion,
-                                                                                index
-                                                                            ) ||
-                                                                            ""
+                                                                            susValues[
+                                                                                `sus${
+                                                                                    index +
+                                                                                    1
+                                                                                }`
+                                                                            ]
                                                                         }
                                                                         onValueChange={
-                                                                            handleTAMChange
+                                                                            handleSUSChange
                                                                         }
                                                                     />
                                                                 </div>
                                                             )
                                                         )}
                                                     </div>
-                                                );
-                                            } else {
-                                                return (
-                                                    <div key={index}>
-                                                        Error Method
-                                                    </div>
-                                                );
-                                            }
-                                        })}
+                                                </div>
+                                            );
+                                        } else if (methodId == 2) {
+                                            return (
+                                                <div
+                                                    className="Questionnaire-TAM"
+                                                    key={index}
+                                                >
+                                                    <hr />
+                                                    <h3 className="text-center text-2xl font-bold mb-4">
+                                                        Questionnaire TAM
+                                                    </h3>
+                                                    {parsedTamQuestions.map(
+                                                        (
+                                                            tamQuestion,
+                                                            index
+                                                        ) => (
+                                                            <div
+                                                                className="mb-3"
+                                                                key={index}
+                                                            >
+                                                                <h5>
+                                                                    {index + 1}.{" "}
+                                                                    {
+                                                                        tamQuestion.question
+                                                                    }
+                                                                </h5>
+                                                                <LikertScale
+                                                                    name={`tam${
+                                                                        index +
+                                                                        1
+                                                                    }-${
+                                                                        tamQuestion.variable
+                                                                    }-${tamQuestion.indicator.replace(
+                                                                        /\s+/g,
+                                                                        "_"
+                                                                    )}`}
+                                                                    selectedValue={
+                                                                        tamSelectedValue(
+                                                                            tamQuestion,
+                                                                            index
+                                                                        ) || ""
+                                                                    }
+                                                                    onValueChange={
+                                                                        handleTAMChange
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div key={index}>
+                                                    Error Method
+                                                </div>
+                                            );
+                                        }
+                                    })}
 
                                     <div className="d-grid gap-2">
                                         <button

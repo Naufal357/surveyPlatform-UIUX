@@ -38,6 +38,8 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('/form/{id}/{slug}', [\App\Http\Controllers\Web\FormController::class, 'show'])->name('form.show')->middleware('auth');
     Route::post('/form', [\App\Http\Controllers\Web\FormController::class, 'store'])->middleware('auth');
 
+    Route::get('/about', [\App\Http\Controllers\Web\AboutController::class, 'index'])->name('web.about.index');
+
     Route::prefix('account')->group(function () {
         Route::group(['middleware' => ['auth']], function () {
             Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');

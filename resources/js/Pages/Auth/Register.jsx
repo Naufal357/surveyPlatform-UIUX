@@ -38,7 +38,7 @@ export default function Register() {
             <Head>
                 <title>Register Account - Survey Platform</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-md-6 mt-80">

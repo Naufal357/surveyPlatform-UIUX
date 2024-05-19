@@ -23,30 +23,67 @@ export default function UserCreate() {
                 <div className="row mb-5">
                     <div className="col-8">
                         <CardContent title="Profile">
-                            <div className="mb-3">
-                                <strong>Nama Lengkap:</strong> {user.first_name}{" "}
-                                {user.surname}
-                            </div>
-                            <div className="mb-3">
-                                <strong>Email:</strong> {user.email}
-                            </div>
-                            <div className="mb-3">
-                                <strong>Gender:</strong> {user.gender}
-                            </div>
-                            <div className="mb-3">
-                                <strong>Tanggal Lahir:</strong>{" "}
-                                {user.birth_date}
-                            </div>
-                            <div className="mb-3">
-                                <strong>Profesi:</strong> {user.profession}
-                            </div>
-                            <div className="mb-3">
-                                <strong>Latar Belakang Pendidikan:</strong>{" "}
-                                {user.educational_background}
-                            </div>
-                            <div className="mb-3">
-                                <strong>Bergabung sejak:</strong>{" "}
-                                {user.created_at}
+                            <div className="row">
+                                <div className="col-12">
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>Nama Lengkap</strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.first_name} {user.surname}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>Email</strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.email}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>Gender</strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.gender}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>Tanggal Lahir</strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.birth_date}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>Profesi</strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.profession}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>
+                                                Latar Belakang Pendidikan
+                                            </strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.educational_background}
+                                        </div>
+                                    </div>
+                                    <div className="d-flex mb-3">
+                                        <div className="col-7 col-lg-3">
+                                            <strong>Bergabung sejak</strong>
+                                        </div>
+                                        <div className="col-7 col-lg-9">
+                                            : {user.created_at}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </CardContent>
                     </div>
