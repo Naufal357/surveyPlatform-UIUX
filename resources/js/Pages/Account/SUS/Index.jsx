@@ -117,8 +117,7 @@ export default function Dashboard() {
                 <div className="m-3">
                     <div className="row alert alert-success border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{name}</strong>{" "}
-                            <br />
+                            Selamat Datang, <strong>{name}</strong> <br />
                             {currentSurveyTitle ? (
                                 <span>
                                     Hasil :{" "}
@@ -214,34 +213,32 @@ export default function Dashboard() {
                                     <hr />
                                     <div className="row">
                                         <div className="col-lg-3 col-md-12 mb-4">
-                                            <div className="text-center">
+                                            <div className="d-flex align-items-center justify-content-center">
                                                 <p>
                                                     Positif jika rata-rata{" "}
-                                                    {">= 3.5"}{" "}
+                                                    {">= 3.5"}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-12 mb-4">
-                                            <div className="text-center">
+                                            <div className="d-flex align-items-center justify-content-center">
                                                 <p>
                                                     Netral jika rata-rata{" "}
-                                                    {"> 2.5 & < 3.5"}{" "}
+                                                    {"> 2.5 & < 3.5"}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-12 mb-4">
-                                            <div className="text-center">
+                                            <div className="d-flex align-items-center justify-content-center">
                                                 <p>
                                                     Negatif jika rata-rata{" "}
-                                                    {"<= 2.5"}{" "}
+                                                    {"<= 2.5"}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </CardContent>
-                            ) : (
-                                ""
-                            )}
+                            ) : null}
                         </>
                     )}
 

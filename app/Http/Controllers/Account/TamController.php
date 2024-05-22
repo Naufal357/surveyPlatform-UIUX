@@ -45,6 +45,7 @@ class TamController extends Controller
     {
         $userID = auth()->user()->id;
         $survey = Survey::find($id);
+        $surveyName = $survey->title;
         $responsesFormated = [];
 
         $cacheExpiredMinutes = 2 * 60;
@@ -118,6 +119,7 @@ class TamController extends Controller
         $tamSurveyResults = $this->getTAMResults($responsesFormated);
         $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses);
         $calculateRegression = $this->getCalculateRegression($respondents, $responses);
+        $getResumeDescription = $this->getResumeDescription($calculateRegression, $surveyName);
 
         return inertia('Account/TAM/Index', [
             'surveyTitles' => $surveyTitles,
@@ -129,7 +131,8 @@ class TamController extends Controller
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
             'calculateRegression' => $calculateRegression,
             'tamSurveyResults' => $tamSurveyResults,
-            'tamQustions' => $tamQustions
+            'tamQustions' => $tamQustions,
+            'resumeDescription' => $getResumeDescription
         ])->with('currentSurveyTitle', $survey->title);
     }
 
@@ -323,16 +326,15 @@ class TamController extends Controller
                         $varValue[] = $value[1];
                         $sum += $value[1];
                     }
-
                 }
                 $avg = $sum / $variablesAnswerCount[$variableName];
 
                 $variablesValues[$variableName] = $varValue;
 
-                if(!isset($respondentsSum[$variableName])) {
+                if (!isset($respondentsSum[$variableName])) {
                     $respondentsSum[$variableName] = [];
                 }
-                if(!isset($respondentsAvg[$variableName])) {
+                if (!isset($respondentsAvg[$variableName])) {
                     $respondentsAvg[$variableName] = [];
                 }
                 $respondentsSum[$variableName][] = $sum;
@@ -368,7 +370,7 @@ class TamController extends Controller
             $xSquared = [];
             $xy = [];
 
-            foreach($x as $value) {
+            foreach ($x as $value) {
                 $xSquared[] = $value * $value;
             }
             foreach ($x as $index => $value) {
@@ -381,8 +383,8 @@ class TamController extends Controller
             $xy_sum = array_sum($xy);
             $x_sum_squared = $x_sum * $x_sum;
 
-            $a=(($y_sum * $x_squared_sum) - ($x_sum * $xy_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
-            $b=(($n * $xy_sum) - ($x_sum * $y_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
+            $a = (($y_sum * $x_squared_sum) - ($x_sum * $xy_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
+            $b = (($n * $xy_sum) - ($x_sum * $y_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
 
             $path_formatted = $path[0] . " ➔ " . $path[1];
 
@@ -400,6 +402,78 @@ class TamController extends Controller
         }
 
         return $regressionResults;
+    }
+
+    private function getResumeDescription($regressionResults, $surveyName)
+    {
+        if ($regressionResults == null) {
+            return null;
+        }
+
+        $description = [];
+
+        $getResumeDescription = [];
+
+        foreach ($regressionResults as $index => $regressionResult) {
+            $path = $regressionResult['path'];
+            $variables = explode(' ➔ ', $path);
+
+            foreach ($variables as $key => $value) {
+                $descriptionVariables = [
+                    "PEU" => "Kemudahan Penggunaan (PEU)",
+                    "PU" => "Kegunaan yang Dipersepsikan (PU)",
+                    "ATU" => "Sikap Terhadap Penggunaan (ATU)",
+                    "BI" => "Niat Perilaku (BI)",
+                    "ASU" => "Penggunaan Perilaku (ASU)"
+                ];
+                if (array_key_exists($value, $descriptionVariables)) {
+                    $variables[$key] = $descriptionVariables[$value];
+                }
+            }
+
+            $variableIndependent = $variables[0];
+            $variableDependent = $variables[1];
+
+            $kalimatPositif = [
+                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyName, terlihat bahwa terdapat hubungan positif $variableIndependent terhadap $variableDependent(1). ",
+                "$variableIndependent memberikan kontribusi positif terhadap $variableDependent(2). ",
+                "Pengaruh $variableIndependent terhadap $variableDependent juga terlihat positif(3). ",
+                "Sikap $variableIndependent dalam analisis regresi juga berdampak positif terhadap $variableDependent(4). ",
+                "Selain itu, terdapat hubungan positif antara $variableIndependent dan $variableDependent(5). ",
+                "Hasil regresi juga menunjukkan bahwa $variableIndependent berhubungan positif dengan $variableDependent(6). "
+            ];
+
+            $kalimatNetral = [
+                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyName, terlihat bahwa tidak ada hubungan yang signifikan $variableIndependent terhadap $variableDependent(1). ",
+                "$variableIndependent tidak menunjukkan pengaruh yang kuat terhadap $variableDependent(2). ",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat cukup lemah(3). ",
+                "Sikap $variableIndependent dalam analisis regresi tidak menunjukkan dampak terhadap $variableDependent(4). ",
+                "Tidak terdapat hubungan yang kuat antara $variableIndependent dan $variableDependent(5). ",
+                "Hasil regresi menunjukkan bahwa tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(6). "
+            ];
+
+            $kalimatNegatif = [
+                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyName, terlihat bahwa terdapat hubungan negatif $variableIndependent terhadap $variableDependent(1). ",
+                "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent(2). ",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif(3). ",
+                "Sikap $variableIndependent dalam analisis regresi berdampak negatif terhadap $variableDependent(4). ",
+                "Hubungan antara $variableIndependent dan $variableDependent terlihat negatif(5). ",
+                "Hasil regresi menunjukkan bahwa $variableIndependent berhubungan negatif dengan $variableDependent(6). "
+            ];
+
+            if ($regressionResult['a'] > 0) {
+                $getResumeDescription[] = $kalimatPositif[$index];
+            } else if ($regressionResult['a'] == 0) {
+                $getResumeDescription[] = $kalimatNetral[$index];
+            } else if ($regressionResult['a'] < 0) {
+                $getResumeDescription[] = $kalimatNegatif[$index];
+            } else {
+                $getResumeDescription[] = "Nilai tidak valid";
+            }
+                
+        }
+
+        return $getResumeDescription;
     }
 
     private function getTamResults($responsesFormated)

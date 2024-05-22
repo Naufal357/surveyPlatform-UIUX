@@ -3,6 +3,7 @@ import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import hasAnyPermission from "../../../Utils/Permissions";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import AccordionLayout from "../../../Layouts/Accordion";
 import InfoCard from "../../../Components/CardInfo";
 import PieChart from "../../../Components/PieChart";
@@ -21,11 +22,20 @@ export default function Dashboard() {
         calculateRegression,
         getTAMChartData,
         tamQustions,
+        resumeDescription,
     } = usePage().props;
 
     let idTamCounter = 0;
     const data = JSON.parse(tamQustions[0].questions_data);
     const name = `${auth.user.first_name} ${auth.user.surname}`;
+
+    const formatAnswers = (calculateRegression) => {
+        return calculateRegression.map((regression, index) => {
+            const regresion = regression.path;
+            const bValue = regression.b;
+            return `Koefisien regresi (${regresion}) : ${bValue}`;
+        });
+    };
 
     const parsedTamQuestions = data.tam
         ? data.tam.flatMap((variable) =>
@@ -112,8 +122,7 @@ export default function Dashboard() {
                 <div className="m-3">
                     <div className="row alert alert-success border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{name}</strong>{" "}
-                            <br />
+                            Selamat Datang, <strong>{name}</strong> <br />
                             {currentSurveyTitle ? (
                                 <span>
                                     Hasil :{" "}
@@ -176,6 +185,54 @@ export default function Dashboard() {
                             />
                         </div>
                     )}
+
+                    {resumeDescription !== null ? (
+                        <CardContent title="Kesimpulan">
+                            <div className="text-center">
+                                {resumeDescription}
+                            </div>
+                            <hr />
+                            <div className="row justify-content-center">
+                                {formatAnswers(calculateRegression).map(
+                                    (item, index) => (
+                                        <div
+                                            className="text-center col-lg-4 col-md-6 mb-4 mx-auto"
+                                            key={index}
+                                        >
+                                            {item}
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-lg-3 col-md-12 mb-4">
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <p>
+                                            Positif jika koefisien regresi{" "}
+                                            {"> 0"}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="col-lg-4 col-md-12 mb-4">
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <p>
+                                            Netral jika koefisien regresi{" "}
+                                            {"= 0"}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="col-lg-4 col-md-12 mb-4">
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <p>
+                                            Negatif jika koefisien regresi{" "}
+                                            {"< 0"}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    ) : null}
 
                     <AccordionLayout
                         title="Demografi Responden"

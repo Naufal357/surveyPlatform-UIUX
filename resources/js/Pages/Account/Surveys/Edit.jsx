@@ -7,6 +7,7 @@ import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import RadioSelect from "../../../Components/RadioSelect";
 import AccordionLayout from "../../../Layouts/Accordion";
+import ImageView from "../../../Utils/ImageView";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
@@ -71,7 +72,7 @@ export default function SurveyEdit() {
           )
         : [];
 
-        useEffect(() => {
+    useEffect(() => {
         setTitle(survey.title);
         setTheme(survey.theme);
         setDescription(survey.description);
@@ -561,10 +562,24 @@ export default function SurveyEdit() {
                                 2. Variable, indikator, dan pertanyaan dapat
                                 dirubah sesuai kebutuhan.
                                 <br />
-                                3. Diharapkan menggunakan semua variable yang
-                                disedikan agar mendapat hasil yang maksimal.
+                                3. Diharapkan menggunakan semua variabel yang
+                                tersedia agar analisis regresi dapat memberikan
+                                hasil yang optimal.
+                            </p>
+                            <div className="text-center">
+                                <ImageView
+                                    src="/assets/images/technologyAcceptanceModel.png"
+                                    alt="Technology Acceptance Model"
+                                    className="img-fluid rounded shadow-sm"
+                                    style={{
+                                        maxWidth: "70%",
+                                        height: "auto",
+                                    }}
+                                />
+                            </div>
+                            <p>
                                 <br />
-                                4. Saat mengisi indikator, boleh saja
+                                4. Saat mengisi indikator, boleh mengisi
                                 menggunakan input yang sama.
                                 <br />
                                 5. Urutan pertanyaan dalam kuesioner akan diatur
