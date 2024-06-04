@@ -50,6 +50,8 @@ class SusController extends Controller
     {
         $userID = auth()->user()->id;
         $survey = Survey::find($id);
+        $surveyName = $survey->title;
+        $surveyTheme = $survey->theme;
 
         $cacheExpiredMinutes = 2 * 60;
 
@@ -70,8 +72,6 @@ class SusController extends Controller
                 ->get(['surveys.id', 'surveys.title']);
         }
 
-        $surveyName = $survey->title;
-
         $susQuestions = SurveyQuestions::where('survey_id', $id)->get();
 
         $responses = Cache::remember('responses-sus-' . $id, $cacheExpiredMinutes, function () use ($id) {
@@ -87,7 +87,7 @@ class SusController extends Controller
         $susSurveyResults = $this->getSUSResults($responses);
         $getSUSChartData = $this->getSUSChartData($id, $responses);
         $getAverageAnswer = $this->getAverageAnswer($susSurveyResults);
-        $getResumeDescription = $this->getResumeDescription($getAverageAnswer, $surveyName);
+        $getResumeDescription = $this->getResumeDescription($getAverageAnswer, $surveyTheme);
 
         return inertia('Account/SUS/Index', [
             'surveyTitles' => $surveyTitles,
@@ -308,7 +308,7 @@ class SusController extends Controller
         return $averageResults;
     }
 
-    private function getResumeDescription(&$getAverageAnswer, $surveyName)
+    private function getResumeDescription(&$getAverageAnswer, $surveyTheme)
     {
         if ($getAverageAnswer == null) {
             return null;
@@ -319,7 +319,7 @@ class SusController extends Controller
         $getResumeDescription = [];
 
         $kalimatPositif = [
-            "Sebagian besar pengguna $surveyName berniat untuk menggunakan kembali sistem ini(1).",
+            "Sebagian besar pengguna $surveyTheme berniat untuk menggunakan kembali sistem ini(1).",
             "Kebanyakan pengguna merasa sistem ini tidak rumit(2) ",
             "dan banyak pengguna merasa sistem ini mudah digunakan(3).",
             "Tanpa membutuhkan bantuan dari orang lain atau teknisi pengguna dapat menggunakan sistem(4).",
@@ -332,7 +332,7 @@ class SusController extends Controller
         ];
 
         $kalimatNegatif = [
-            "Sebagian besar pengguna $surveyName tidak berniat untuk menggunakan kembali sistem ini(1).",
+            "Sebagian besar pengguna $surveyTheme tidak berniat untuk menggunakan kembali sistem ini(1).",
             "Kebanyakan pengguna mengeluhkan kerumitan dalam menggunakan sistem ini(2) ",
             "dan banyak pengguna merasa sistem ini sulit digunakan(3).",
             "Banyak pengguna yang memerlukan bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",
@@ -346,7 +346,7 @@ class SusController extends Controller
 
 
         $kalimatNetral = [
-            "Sebagian besar pengguna $surveyName memiliki pandangan netral terhadap penggunaan kembali sistem ini(1).",
+            "Sebagian besar pengguna $surveyTheme memiliki pandangan netral terhadap penggunaan kembali sistem ini(1).",
             "Kebanyakan pengguna merasa cukup nyaman menggunakan sistem ini(2) ",
             "dan banyak pengguna merasa sistem ini agak sulit digunakan(3).",
             "Banyak pengguna merasa sistem ini perlu sedikit bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",

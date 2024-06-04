@@ -102,7 +102,7 @@ export default function Login() {
                             </div>
                             <div className="register text-center mt-3">
                                 Need an account?{" "}
-                                <Link href="/register">Register!</Link>
+                                <Link href="/register">Register</Link>
                             </div>
                         </div>
                     </div>

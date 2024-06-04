@@ -357,6 +357,7 @@ export default function SurveysCreate() {
                             label="Title Design"
                             type="text"
                             value={title}
+                            placeholder="Enter title, e.g., E-Learning Platform SmartLearn"
                             onChange={(e) => setTitle(e.target.value)}
                             error={errors.title}
                         />
@@ -364,6 +365,7 @@ export default function SurveysCreate() {
                             label="Theme Design"
                             type="text"
                             value={theme}
+                            placeholder="Enter theme, e.g., E-Learning Platform"
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
                         />
@@ -377,6 +379,7 @@ export default function SurveysCreate() {
                             label="URL Website"
                             type="text"
                             value={url_website}
+                            placeholder="https://example.com (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             onChange={(e) => setUrlWebsite(e.target.value)}
                             error={errors.url_website}
                         />
@@ -384,6 +387,7 @@ export default function SurveysCreate() {
                             label="Embed Design (Figma)"
                             type="text"
                             value={embed_design}
+                            placeholder="https://figma.com/embed-design (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             onChange={(e) => setEmbedDesign(e.target.value)}
                             error={errors.embed_design}
                         />
@@ -391,6 +395,7 @@ export default function SurveysCreate() {
                             label="Embed Prototype (Figma)"
                             type="text"
                             value={embed_prototype}
+                            placeholder="https://figma.com/embed-prototype (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             onChange={(e) => setEmbedPrototype(e.target.value)}
                             error={errors.embed_prototype}
                         />

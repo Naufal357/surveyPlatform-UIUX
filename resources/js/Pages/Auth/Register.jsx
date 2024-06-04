@@ -224,7 +224,7 @@ export default function Register() {
                             </div>
                             <div className="register text-center mt-3">
                                 Have an account?{" "}
-                                <Link href="/login">Login!</Link>
+                                <Link href="/login">Login</Link>
                             </div>
                         </div>
                     </div>

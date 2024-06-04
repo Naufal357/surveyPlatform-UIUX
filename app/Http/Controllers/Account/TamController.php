@@ -46,6 +46,7 @@ class TamController extends Controller
         $userID = auth()->user()->id;
         $survey = Survey::find($id);
         $surveyName = $survey->title;
+        $surveyTheme = $survey->theme;
         $responsesFormated = [];
 
         $cacheExpiredMinutes = 2 * 60;
@@ -119,7 +120,7 @@ class TamController extends Controller
         $tamSurveyResults = $this->getTAMResults($responsesFormated);
         $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses);
         $calculateRegression = $this->getCalculateRegression($respondents, $responses);
-        $getResumeDescription = $this->getResumeDescription($calculateRegression, $surveyName);
+        $getResumeDescription = $this->getResumeDescription($calculateRegression, $surveyTheme);
 
         return inertia('Account/TAM/Index', [
             'surveyTitles' => $surveyTitles,
@@ -404,13 +405,11 @@ class TamController extends Controller
         return $regressionResults;
     }
 
-    private function getResumeDescription($regressionResults, $surveyName)
+    private function getResumeDescription($regressionResults, $surveyTheme)
     {
         if ($regressionResults == null) {
             return null;
         }
-
-        $description = [];
 
         $getResumeDescription = [];
 
@@ -420,12 +419,13 @@ class TamController extends Controller
 
             foreach ($variables as $key => $value) {
                 $descriptionVariables = [
-                    "PEU" => "Kemudahan Penggunaan (PEU)",
-                    "PU" => "Kegunaan yang Dipersepsikan (PU)",
-                    "ATU" => "Sikap Terhadap Penggunaan (ATU)",
-                    "BI" => "Niat Perilaku (BI)",
-                    "ASU" => "Penggunaan Perilaku (ASU)"
+                    "PEU" => "Perceived Ease of Use (PEU)",
+                    "PU" => "Perceived Usefulness (PU)",
+                    "ATU" => "Attitude Toward Use (ATU)",
+                    "BI" => "Behavioral Intention (BI)",
+                    "ASU" => "Actual System Use (ASU)"
                 ];
+
                 if (array_key_exists($value, $descriptionVariables)) {
                     $variables[$key] = $descriptionVariables[$value];
                 }
@@ -435,28 +435,28 @@ class TamController extends Controller
             $variableDependent = $variables[1];
 
             $kalimatPositif = [
-                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyName, terlihat bahwa terdapat hubungan positif $variableIndependent terhadap $variableDependent(1). ",
+                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyTheme, terlihat bahwa semakin tinggi $variableIndependent maka $variableDependent akan semakin tinggi(1). ",
                 "$variableIndependent memberikan kontribusi positif terhadap $variableDependent(2). ",
                 "Pengaruh $variableIndependent terhadap $variableDependent juga terlihat positif(3). ",
-                "Sikap $variableIndependent dalam analisis regresi juga berdampak positif terhadap $variableDependent(4). ",
+                "$variableIndependent berdampak positif terhadap $variableDependent(4). ",
                 "Selain itu, terdapat hubungan positif antara $variableIndependent dan $variableDependent(5). ",
-                "Hasil regresi juga menunjukkan bahwa $variableIndependent berhubungan positif dengan $variableDependent(6). "
+                "Hasil regresi menunjukkan bahwa $variableIndependent berhubungan positif dengan $variableDependent(6). "
             ];
 
             $kalimatNetral = [
-                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyName, terlihat bahwa tidak ada hubungan yang signifikan $variableIndependent terhadap $variableDependent(1). ",
+                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyTheme, terlihat bahwa tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(1). ",
                 "$variableIndependent tidak menunjukkan pengaruh yang kuat terhadap $variableDependent(2). ",
-                "Pengaruh $variableIndependent terhadap $variableDependent terlihat cukup lemah(3). ",
-                "Sikap $variableIndependent dalam analisis regresi tidak menunjukkan dampak terhadap $variableDependent(4). ",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat lemah(3). ",
+                "$variableIndependent tidak berdampak signifikan terhadap $variableDependent(4). ",
                 "Tidak terdapat hubungan yang kuat antara $variableIndependent dan $variableDependent(5). ",
                 "Hasil regresi menunjukkan bahwa tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(6). "
             ];
 
             $kalimatNegatif = [
-                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyName, terlihat bahwa terdapat hubungan negatif $variableIndependent terhadap $variableDependent(1). ",
+                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyTheme, terlihat bahwa semakin tinggi $variableIndependent maka $variableDependent akan semakin rendah(1). ",
                 "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent(2). ",
                 "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif(3). ",
-                "Sikap $variableIndependent dalam analisis regresi berdampak negatif terhadap $variableDependent(4). ",
+                "$variableIndependent berdampak negatif terhadap $variableDependent(4). ",
                 "Hubungan antara $variableIndependent dan $variableDependent terlihat negatif(5). ",
                 "Hasil regresi menunjukkan bahwa $variableIndependent berhubungan negatif dengan $variableDependent(6). "
             ];

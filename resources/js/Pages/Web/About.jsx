@@ -17,11 +17,6 @@ export default function About() {
                     <div className="row">
                         <div className="col-md-12 text-center">
                             <h1>About Us</h1>
-                            <p className="blockquote">
-                                Misi kami adalah menjembatani kesenjangan antara
-                                pengguna dan teknologi dengan memberikan masukan
-                                yang berwawasan luas dan dapat ditindaklanjuti.
-                            </p>
                         </div>
                     </div>
                     <div className="row mt-5">
@@ -37,7 +32,6 @@ export default function About() {
                             />
                         </div>
                         <div className="col-md-8">
-                            <h2>Our Services</h2>
                             <p>
                                 Situs web kami bertujuan untuk menyediakan
                                 layanan pengujian kegunaan yang komprehensif
