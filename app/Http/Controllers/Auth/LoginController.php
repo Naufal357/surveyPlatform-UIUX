@@ -24,7 +24,8 @@ class LoginController extends Controller
             'Auth/Login',
             [
                 'auth' => auth()->user(),
-            ]);
+            ]
+        );
     }
 
     public function store(Request $request)
@@ -59,5 +60,25 @@ class LoginController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
+    }
+
+    public function forgotPassword()
+    {
+        return inertia('Auth/ForgotPassword');
+    }
+
+    public function forgotPasswordStore(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ], [
+            'email.exists' => 'The email address is not registered.',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+
+        
+        return back()->with('status', 'We have e-mailed your password reset link!');
     }
 }

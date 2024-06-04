@@ -22,6 +22,8 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login')->middleware('guest');
     Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store')->middleware('guest');
+    Route::get('/forgot-password', [\App\Http\Controllers\Auth\LoginController::class, 'forgotPassword'])->name('forgot.password')->middleware('guest');
+    Route::post('/forgot-password', [\App\Http\Controllers\Auth\LoginController::class, 'forgotPasswordStore'])->name('forgot.password.post')->middleware('guest');
 
     Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout')->middleware('auth');
 

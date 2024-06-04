@@ -142,7 +142,7 @@ function Layout({ children, footerVisible = true }) {
                                     </h5>
                                 </div> */}
 
-                                <div className="col-4 d-flex flex-column align-items-center">
+                                <div className="col-4 d-flex flex-column align-items-end">
                                     <div className="d-flex">
                                         <a
                                             href="/"

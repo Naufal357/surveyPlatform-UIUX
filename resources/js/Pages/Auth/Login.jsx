@@ -71,24 +71,28 @@ export default function Login() {
                                             placeholder="Password"
                                             error={errors.password}
                                         />
-                                        <div className="form-group form-check mb-3">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                id="rememberMe"
-                                                checked={rememberMe}
-                                                onChange={(e) =>
-                                                    setRememberMe(
-                                                        e.target.checked
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                className="form-check-label"
-                                                htmlFor="rememberMe"
-                                            >
-                                                Remember Me
-                                            </label>
+                                        <div className="row">
+                                            <div className="form-group form-check mb-3 col-6">
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    id="rememberMe"
+                                                    checked={rememberMe}
+                                                    onChange={(e) =>
+                                                        setRememberMe(
+                                                            e.target.checked
+                                                        )
+                                                    }
+                                                />
+                                                <label className="form-check-label">
+                                                    Remember Me
+                                                </label>
+                                            </div>
+                                            <div className="col-6 d-flex flex-column align-items-end">
+                                                <Link href="/forgot-password">
+                                                    Forgot Password
+                                                </Link>
+                                            </div>
                                         </div>
 
                                         <button
