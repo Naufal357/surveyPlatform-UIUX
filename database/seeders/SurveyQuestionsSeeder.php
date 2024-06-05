@@ -131,13 +131,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Rasa bosan",
                                 "questions": [
-                                    "Saya merasa bosan menggunakan Website Rumah Sakit ini"
+                                    "Saya merasa tidak bosan menggunakan Website Rumah Sakit ini"
                                 ]
                             },
                             {
                                 "name": "Tidak suka",
                                 "questions": [
-                                    "Saya tidak suka menggunakan Website Rumah Sakit ini"
+                                    "Saya suka menggunakan Website Rumah Sakit ini"
                                 ]
                             }
                         ]
@@ -303,13 +303,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Rasa bosan",
                                 "questions": [
-                                    "Saya merasa bosan menggunakan E-Commerce Fashion Aplication ini"
+                                    "Saya merasa tidak bosan menggunakan E-Commerce Fashion Aplication ini"
                                 ]
                             },
                             {
                                 "name": "Tidak suka",
                                 "questions": [
-                                    "Saya tidak suka menggunakan E-Commerce Fashion Aplication ini"
+                                    "Saya suka menggunakan E-Commerce Fashion Aplication ini"
                                 ]
                             }
                         ]
@@ -506,13 +506,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Rasa bosan",
                                 "questions": [
-                                    "Saya merasa bosan menggunakan Travel Booking App ini"
+                                    "Saya merasa tidak bosan menggunakan Travel Booking App ini"
                                 ]
                             },
                             {
                                 "name": "Tidak suka",
                                 "questions": [
-                                    "Saya tidak suka menggunakan Travel Booking App ini"
+                                    "Saya suka menggunakan Travel Booking App ini"
                                 ]
                             }
                         ]
@@ -697,13 +697,13 @@ class SurveyQuestionsSeeder extends Seeder
                         {
                             "name": "Rasa bosan",
                             "questions": [
-                                "Saya merasa bosan menggunakan Restaurant Website ini"
+                                "Saya merasa tidak bosan menggunakan Restaurant Website ini"
                             ]
                         },
                         {
                             "name": "Tidak suka",
                             "questions": [
-                                "Saya tidak suka menggunakan Restaurant Website ini"
+                                "Saya suka menggunakan Restaurant Website ini"
                             ]
                         }
                     ]
@@ -913,13 +913,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Rasa bosan",
                                 "questions": [
-                                    "Saya merasa bosan menggunakan Aplikasi Kesehatan Mental ini"
+                                    "Saya merasa tidak bosan menggunakan Aplikasi Kesehatan Mental ini"
                                 ]
                             },
                             {
                                 "name": "Tidak suka",
                                 "questions": [
-                                    "Saya tidak suka menggunakan Aplikasi Kesehatan Mental ini"
+                                    "Saya suka menggunakan Aplikasi Kesehatan Mental ini"
                                 ]
                             }
                         ]
@@ -1085,13 +1085,13 @@ class SurveyQuestionsSeeder extends Seeder
                             {
                                 "name": "Rasa bosan",
                                 "questions": [
-                                    "Saya merasa bosan menggunakan Aplikasi Kuliner ini"
+                                    "Saya merasa tidak bosan menggunakan Aplikasi Kuliner ini"
                                 ]
                             },
                             {
                                 "name": "Tidak suka",
                                 "questions": [
-                                    "Saya tidak suka menggunakan Aplikasi Kuliner ini"
+                                    "Saya suka menggunakan Aplikasi Kuliner ini"
                                 ]
                             }
                         ]
