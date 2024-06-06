@@ -3,6 +3,7 @@ import Layout from "../../Layouts/Header";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import AuthField from "../../Components/AuthField";
+import Swal from "sweetalert2";
 
 export default function ForgotPassword() {
     const { errors } = usePage().props;
@@ -14,6 +15,15 @@ export default function ForgotPassword() {
 
         Inertia.post("/forgot-password", {
             email: email,
+        }, {
+            onSuccess: () => {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Check your email to reset your password!",
+                    icon: "success",
+                    showConfirmButton: true,
+                })
+            },
         });
     };
 

@@ -32,7 +32,6 @@ class ResetPasswordController extends Controller
 
     public function showResetForm(Request $request, $token)
     {
-        dd($token);
         return inertia('Auth/ResetPassword', ['token' => $token, 'email' => $request->email]);
     }
 

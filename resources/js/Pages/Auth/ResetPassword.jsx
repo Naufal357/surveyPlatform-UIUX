@@ -3,6 +3,7 @@ import Layout from "../../Layouts/Header";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import AuthField from "../../Components/AuthField";
+import Swal from "sweetalert2";
 
 export default function ResetPassword({ token, email }) {
     const { errors } = usePage().props;
@@ -18,6 +19,15 @@ export default function ResetPassword({ token, email }) {
             email: email,
             password: password,
             password_confirmation: passwordConfirmation,
+        }, {
+            onSuccess: () => {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Password updated successfully!",
+                    icon: "success",
+                    showConfirmButton: true,
+                })
+            },
         });
     };
 
@@ -80,6 +90,12 @@ export default function ResetPassword({ token, email }) {
                                             placeholder="Confirm New Password"
                                             error={errors.password_confirmation}
                                         />
+                                        {errors.email && (
+                                            <div className="alert alert-danger">
+                                                {errors.email}
+                                            </div>
+                                        )}
+
                                         <button
                                             className="btn btn-success shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
