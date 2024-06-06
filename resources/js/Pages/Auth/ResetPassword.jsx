@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import Layout from "../../Layouts/Header";
-import { Head, usePage, Link } from "@inertiajs/inertia-react";
+import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import AuthField from "../../Components/AuthField";
 
-export default function Login() {
+export default function ResetPassword({ token, email }) {
     const { errors } = usePage().props;
 
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
+    const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-    const loginHandler = async (e) => {
+    const resetPasswordHandler = async (e) => {
         e.preventDefault();
 
-        Inertia.post("/login", {
+        Inertia.post("/reset-password", {
+            token: token,
             email: email,
             password: password,
-            remember: rememberMe,
+            password_confirmation: passwordConfirmation,
         });
     };
 
     return (
         <>
             <Head>
-                <title>Login Account - Survey Platform</title>
+                <title>Reset Password - Survey Platform</title>
             </Head>
             <Layout footerVisible={false}>
                 <div className="container">
@@ -44,71 +44,50 @@ export default function Login() {
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">
-                                            LOGIN ACCOUNT
+                                            Reset Your Password
                                         </h6>
                                         <hr />
                                     </div>
-                                    <form onSubmit={loginHandler}>
+                                    <form onSubmit={resetPasswordHandler}>
                                         <AuthField
                                             icon="fa fa-envelope"
                                             label="Email Address"
                                             type="text"
                                             value={email}
-                                            onChange={(e) =>
-                                                setEmail(e.target.value)
-                                            }
-                                            placeholder="Email Address"
-                                            error={errors.email}
+                                            disabled
                                         />
                                         <AuthField
                                             icon="fa fa-lock"
-                                            label="Password"
+                                            label="New Password"
                                             type="password"
                                             value={password}
                                             onChange={(e) =>
                                                 setPassword(e.target.value)
                                             }
-                                            placeholder="Password"
+                                            placeholder="New Password"
                                             error={errors.password}
                                         />
-                                        <div className="row mb-3">
-                                            <div className="col-6 d-flex">
-                                                <div>
-                                                    <input
-                                                        type="checkbox"
-                                                        className="form-check-input"
-                                                        id="rememberMe"
-                                                        checked={rememberMe}
-                                                        onChange={(e) =>
-                                                            setRememberMe(
-                                                                e.target.checked
-                                                            )
-                                                        }
-                                                    />
-                                                    <label className="ms-2">
-                                                        Remember Me
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="col-6 d-flex flex-column align-items-end">
-                                                <Link href="/forgot-password">
-                                                    Forgot Password
-                                                </Link>
-                                            </div>
-                                        </div>
-
+                                        <AuthField
+                                            icon="fa fa-lock"
+                                            label="Confirm New Password"
+                                            type="password"
+                                            value={passwordConfirmation}
+                                            onChange={(e) =>
+                                                setPasswordConfirmation(
+                                                    e.target.value
+                                                )
+                                            }
+                                            placeholder="Confirm New Password"
+                                            error={errors.password_confirmation}
+                                        />
                                         <button
                                             className="btn btn-success shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
-                                            LOGIN
+                                            Reset Password
                                         </button>
                                     </form>
                                 </div>
-                            </div>
-                            <div className="register text-center mt-3">
-                                Need an account?{" "}
-                                <Link href="/register">Register</Link>
                             </div>
                         </div>
                     </div>
