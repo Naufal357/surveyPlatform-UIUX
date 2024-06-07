@@ -102,21 +102,21 @@ function Layout({ children, footerVisible = true }) {
                     >
                         <div className="container">
                             <div className="row justify-content-between">
-                                <div className="col-4 d-flex align-items-center">
+                                <div className="col-12 col-md-4 d-flex justify-content-start justify-content-md-start align-items-center mb-3 mb-md-0">
                                     @{new Date().getFullYear()}
                                     &nbsp;
                                     <abbr title="Jurusan Teknologi Informasi">
                                         JTI
                                     </abbr>
-                                    -
+                                    &nbsp;-&nbsp;
                                     <abbr title="Politeknik Negeri Malang">
                                         POLINEMA
                                     </abbr>
                                 </div>
 
-                                <div className="col-4 d-flex align-items-center">
-                                    <div className="d-flex align-items-center flex-column flex-md-row ">
-                                        <p className="mb-0 me-2">
+                                <div className="col-12 col-md-4 d-flex justify-content-center align-items-center mb-3 mb-md-0">
+                                    <div className="d-flex flex-column flex-md-row align-items-center">
+                                        <p className="mb-0 me-md-2">
                                             Developed with dedication by
                                         </p>
                                         <a
@@ -146,13 +146,13 @@ function Layout({ children, footerVisible = true }) {
                                     <div className="d-flex">
                                         <a
                                             href="/"
-                                            className="text-decoration-none text-white me-3"
+                                            className="text-decoration-none text-white mb-2 mb-md-0 me-md-3"
                                         >
                                             Home
                                         </a>
                                         <a
                                             href="/articles"
-                                            className="text-decoration-none text-white me-3"
+                                            className="text-decoration-none text-white mb-2 mb-md-0 me-md-3"
                                         >
                                             Blog
                                         </a>
