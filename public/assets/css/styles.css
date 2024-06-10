@@ -523,5 +523,19 @@ html:not([dir="rtl"]) .mfe-3 {
     z-index: 998; 
 }
 
+.quote-wrapper {
+    background-color: #f8f9fa;
+    border-left: 4px solid #8f4130;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.quote-wrapper h2 {
+    font-size: 24px;
+    font-style: italic;
+    color: #333;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
 
 

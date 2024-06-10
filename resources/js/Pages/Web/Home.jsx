@@ -25,7 +25,6 @@ export default function Home() {
         };
     }, []);
 
-
     return (
         <>
             <Head>
@@ -36,7 +35,36 @@ export default function Home() {
                     <div className="fade-in">
                         <div className="row justify-content-center">
                             <div className="col-md-8">
-                                <div>
+                                <div className="row">
+                                    <div className="col-md-6 d-flex justify-content-center align-items-center flex-column">
+                                        <h2
+                                            style={{
+                                                fontFamily:
+                                                    "Lexend, sans-serif",
+                                            }}
+                                        >
+                                            Hubungkan pengembang dan pengguna
+                                            dengan UI/UX
+                                        </h2>
+                                        <p>
+                                            Survey Platform membantu pengembang
+                                            menemukan UI/UX kebutuhan mereka
+                                            dengan mudah, cepat, dan akurat.
+                                        </p>
+                                    </div>
+
+                                    <div className="col-lg-6 d-flex justify-content-center align-items-end">
+                                        <img
+                                            src="assets\images\Homepage-Brown.png"
+                                            style={{
+                                                maxHeight: "320px",
+                                                maxWidth: "320px",
+                                            }}
+                                            alt="Home Img"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mt-5">
                                     <div className="row justify-content-between mb-3">
                                         <div className="col-md-6 col-6 text-start">
                                             <strong> Categories</strong>
