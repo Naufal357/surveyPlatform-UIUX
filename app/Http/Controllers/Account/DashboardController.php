@@ -30,10 +30,10 @@ class DashboardController extends Controller
             $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
 
             $methodIds = $surveyMethods->pluck('method_id')->toArray();
-
             $surveyData[] = [
                 'survey_id' => $survey->id,
                 'title' => $survey->title,
+                'status' => $survey->status,
                 'response_count' => $survey->getTitleAndResponseCount(),
                 'method_ids' => $methodIds,
             ];

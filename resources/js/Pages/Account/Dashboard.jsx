@@ -44,7 +44,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <AccordionLayout
-                        title="Jumlah Respons Setiap Survey"
+                        title="Jumlah Respons Setiap Survei"
                         defaultOpen={true}
                     >
                         {surveyData.length > 0 ? (
@@ -59,7 +59,7 @@ export default function Dashboard() {
                         <Pagination links={surveys.links} align={"end"} />
                     </AccordionLayout>
                     <AccordionLayout
-                        title="Survey Yang Telah Diisi"
+                        title="Survei Yang Telah Diisi"
                         defaultOpen={false}
                     >
                         {filledOutSurvey.data.length > 0 ? (

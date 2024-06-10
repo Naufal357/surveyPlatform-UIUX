@@ -13,7 +13,8 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                     <tr>
                         <th>No</th>
                         <th>Judul Survei</th>
-                        <th>Jumlah Respons</th>
+                        <th>Status</th>
+                        <th>Jumlah Responden</th>
                         <th>Hasil</th>
                     </tr>
                 </thead>
@@ -26,6 +27,7 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                                         surveys.per_page}
                             </td>
                             <td>{survey.title}</td>
+                            <td>{survey.status}</td>
                             <td>{survey.response_count}</td>
                             <td>
                                 <div className="d-flex gap-2">
@@ -41,16 +43,16 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                                                         SUS
                                                     </Link>
                                                 );
-                                            } else if (methodId == 2) {
-                                                return (
-                                                    <Link
-                                                        href={`tam/${survey.survey_id}`}
-                                                        className="btn btn-sm btn-success border-0 shadow"
-                                                        type="button"
-                                                    >
-                                                        TAM
-                                                    </Link>
-                                                );
+                                            // } else if (methodId == 2) {
+                                            //     return (
+                                            //         <Link
+                                            //             href={`tam/${survey.survey_id}`}
+                                            //             className="btn btn-sm btn-success border-0 shadow"
+                                            //             type="button"
+                                            //         >
+                                            //             TAM
+                                            //         </Link>
+                                            //     );
                                             }
                                         }
                                     )}
