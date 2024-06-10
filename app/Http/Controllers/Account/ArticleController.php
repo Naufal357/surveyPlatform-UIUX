@@ -115,7 +115,9 @@ class ArticleController extends Controller
 
         if ($request->file('image')) {
 
-            Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
+            if ($article->image != 'articleFactory.png') {
+                Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
+            }
 
             $image = $request->file('image');
             $image->storeAs('public/image/articles/', $image->hashName());
@@ -147,7 +149,7 @@ class ArticleController extends Controller
         if ($article->image != 'articleFactory.png') {
             Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
         }
-        
+
         $article->delete();
         return redirect()->route('account.articles.index');
     }

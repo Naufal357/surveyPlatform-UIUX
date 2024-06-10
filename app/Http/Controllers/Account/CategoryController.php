@@ -30,7 +30,7 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        if($request->image != null){
+        if ($request->image != null) {
             $this->validate($request, [
                 'name'          => 'required|unique:categories',
                 'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
@@ -40,7 +40,7 @@ class CategoryController extends Controller
                 'name'          => 'required|unique:categories',
             ]);
         }
-       
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image->storeAs('public/image/categories/', $image->hashName());
@@ -70,7 +70,7 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        if($request->image != null){
+        if ($request->hasFile('image')) {
             $this->validate($request, [
                 'name'          => 'required|unique:categories,name,' . $category->id,
                 'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
@@ -80,10 +80,12 @@ class CategoryController extends Controller
                 'name'          => 'required|unique:categories,name,' . $category->id,
             ]);
         }
-        
+
 
         if ($request->hasFile('image')) {
-            Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
+            if ($category->image != 'image.png') {
+                Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
+            }
 
             $image = $request->file('image');
             $image->storeAs('public/image/categories/', $image->hashName());
@@ -109,6 +111,7 @@ class CategoryController extends Controller
         if ($category->image != 'image.png') {
             Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
         }
+        
         $category->delete();
 
         return redirect()->route('account.categories.index');

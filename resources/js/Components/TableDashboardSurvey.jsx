@@ -43,16 +43,16 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                                                         SUS
                                                     </Link>
                                                 );
-                                            // } else if (methodId == 2) {
-                                            //     return (
-                                            //         <Link
-                                            //             href={`tam/${survey.survey_id}`}
-                                            //             className="btn btn-sm btn-success border-0 shadow"
-                                            //             type="button"
-                                            //         >
-                                            //             TAM
-                                            //         </Link>
-                                            //     );
+                                            } else if (methodId == 2) {
+                                                return (
+                                                    <Link
+                                                        href={`tam/${survey.survey_id}`}
+                                                        className="btn btn-sm btn-success border-0 shadow"
+                                                        type="button"
+                                                    >
+                                                        TAM
+                                                    </Link>
+                                                );
                                             }
                                         }
                                     )}

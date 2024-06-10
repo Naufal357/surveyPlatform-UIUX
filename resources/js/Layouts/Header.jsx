@@ -102,7 +102,7 @@ function Layout({ children, footerVisible = true }) {
                     >
                         <div className="container">
                             <div className="row justify-content-between">
-                                <div className="col-12 col-md-4 d-flex justify-content-start justify-content-md-start align-items-center mb-3 mb-md-0">
+                                <div className="col-12 col-md-4 d-flex justify-content-md-start justify-content-center mb-3 mb-md-0">
                                     @{new Date().getFullYear()}
                                     &nbsp;
                                     <abbr title="Jurusan Teknologi Informasi">
@@ -116,7 +116,7 @@ function Layout({ children, footerVisible = true }) {
 
                                 <div className="col-12 col-md-4 d-flex justify-content-center align-items-center mb-3 mb-md-0">
                                     <div className="d-flex flex-column flex-md-row align-items-center">
-                                        <p className="mb-0 me-md-2">
+                                        <p className="mb-0 me-md-2 text-center text-md-start">
                                             Developed with dedication by
                                         </p>
                                         <a
@@ -130,29 +130,17 @@ function Layout({ children, footerVisible = true }) {
                                     </div>
                                 </div>
 
-                                {/* <div className="col-4 d-flex align-items-center">
-                                    <img
-                                        src="/assets/images/logo.png"
-                                        alt="Logo"
-                                        width="50"
-                                        className="mr-2 mt-1"
-                                    />
-                                    <h5 className="mb-0 mt-2">
-                                        <strong>Survey </strong> Platform UI/UX
-                                    </h5>
-                                </div> */}
-
-                                <div className="col-4 d-flex flex-column align-items-end">
-                                    <div className="d-flex">
+                                <div className="col-12 col-md-4 d-flex flex-column align-items-md-end align-items-center ">
+                                    <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-end">
                                         <a
                                             href="/"
-                                            className="text-decoration-none text-white mb-2 mb-md-0 me-md-3"
+                                            className="text-decoration-none text-white mb-2 me-md-3 mb-md-0"
                                         >
                                             Home
                                         </a>
                                         <a
                                             href="/articles"
-                                            className="text-decoration-none text-white mb-2 mb-md-0 me-md-3"
+                                            className="text-decoration-none text-white mb-2 me-md-3 mb-md-0"
                                         >
                                             Blog
                                         </a>

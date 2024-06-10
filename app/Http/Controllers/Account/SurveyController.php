@@ -33,6 +33,10 @@ class SurveyController extends Controller
                 ->paginate(10);
         }
 
+        if ($surveys->count() == 0) {
+            return redirect()->route('account.surveys.create');
+        }
+
         $surveys->appends(['q' => request()->q]);
 
         return inertia('Account/Surveys/Survey', [
@@ -222,7 +226,9 @@ class SurveyController extends Controller
         }
 
         if ($request->file('image')) {
-            Storage::disk('local')->delete('public/image/surveys/' . basename($survey->image));
+            if ($survey->image != 'surveyFactory.png') {
+                Storage::disk('local')->delete('storage/image/surveys/' . basename($survey->image));
+            }
 
             $image = $request->file('image');
             $image->storeAs('public/image/surveys/', $image->hashName());
