@@ -21,7 +21,7 @@ class SurveyController extends Controller
         if (auth()->user()->hasPermissionTo('surveys.index.full')) {
             $surveys = Survey::when(request()->q, function ($surveys) {
                 $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
-            })->orderBy('id')->paginate(10);
+            })->latest()->paginate(10);
 
             $surveys->load('user');
         } else {
@@ -192,6 +192,7 @@ class SurveyController extends Controller
                 'image'         => 'image|mimes:jpeg,jpg,png,svg|max:2048',
                 'theme'          => 'required',
                 'description'    => 'required',
+                'survey_categories' => 'required',
                 'survey_questions' => 'required',
                 'survey_visible' => 'required',
                 'url_website'    => 'required_without_all:embed_design,embed_prototype',
@@ -211,6 +212,7 @@ class SurveyController extends Controller
                     'title'          => 'required',
                     'theme'          => 'required',
                     'description'    => 'required',
+                    'survey_categories' => 'required',
                     'survey_questions' => 'required',
                     'survey_visible' => 'required',
                     'url_website'    => 'required_without_all:embed_design,embed_prototype',

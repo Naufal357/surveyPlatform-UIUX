@@ -3,15 +3,12 @@ import { Collapse } from "react-bootstrap";
 import { CaretDownFill, CaretRightFill } from "react-bootstrap-icons";
 
 const AccordionLayout = ({ title, children, defaultOpen = false }) => {
-    // State untuk mengelola status accordion
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
-    // Fungsi untuk mengganti status accordion
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
     };
 
-    // Gaya untuk accordion
     const accordionStyle = {
         backgroundColor: isOpen ? "#e0e0e0" : "#f9f9f9",
         borderRadius: "4px",
@@ -21,20 +18,17 @@ const AccordionLayout = ({ title, children, defaultOpen = false }) => {
         fontFamily: "Arial, sans-serif",
     };
 
-    // Gaya untuk judul accordion
     const titleStyle = {
         fontSize: "18px",
         fontWeight: "Bold",
         color: "#333",
     };
 
-    // Gaya untuk ikon panah
     const iconStyle = {
         marginRight: "10px",
         transition: "transform 0.3s",
     };
 
-    // Gaya hover untuk accordion
     const hoverStyle = {
         backgroundColor: "#e0e0e0",
     };

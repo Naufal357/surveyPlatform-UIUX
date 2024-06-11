@@ -355,6 +355,7 @@ export default function SurveysCreate() {
                         />
                         <InputField
                             label="Title Design"
+                            mustFill={true}
                             type="text"
                             value={title}
                             placeholder="Enter title, e.g., E-Learning Platform SmartLearn"
@@ -363,6 +364,7 @@ export default function SurveysCreate() {
                         />
                         <InputField
                             label="Theme Design"
+                            mustFill={true}
                             type="text"
                             value={theme}
                             placeholder="Enter theme, e.g., E-Learning Platform"
@@ -371,6 +373,7 @@ export default function SurveysCreate() {
                         />
                         <Editor
                             label="Description"
+                            mustFill={true}
                             value={description}
                             onChange={setDescription}
                             error={errors.description}
@@ -402,6 +405,7 @@ export default function SurveysCreate() {
                         <SelectCheckbox
                             id={"categories"}
                             label="Categories Survey"
+                            mustFill={true}
                             options={categories}
                             valueKey="id"
                             labelKey="name"
@@ -411,6 +415,7 @@ export default function SurveysCreate() {
                         <SelectCheckbox
                             id={"methods"}
                             label="Methods Survey"
+                            mustFill={true}
                             options={methods}
                             valueKey="id"
                             labelKey="name"
@@ -420,6 +425,7 @@ export default function SurveysCreate() {
                         <RadioSelect
                             id="survey_visibility"
                             label="General Access Survey"
+                            mustFill={true}
                             options={[
                                 {
                                     id: 1,

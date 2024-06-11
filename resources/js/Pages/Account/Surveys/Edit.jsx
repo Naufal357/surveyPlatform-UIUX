@@ -370,6 +370,7 @@ export default function SurveyEdit() {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             error={errors.title}
+                            mustFill={true}
                         />
                         <InputField
                             label="Theme Design"
@@ -377,18 +378,21 @@ export default function SurveyEdit() {
                             value={theme}
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
+                            mustFill={true}
                         />
                         <Editor
                             label="Description"
                             value={description}
                             onChange={setDescription}
                             error={errors.description}
+                            mustFill={true}
                         />
                         <InputField
                             label="URL Website"
                             type="text"
                             value={url_website}
                             onChange={(e) => setUrlWebsite(e.target.value)}
+                            placeholder="https://example.com (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             error={errors.url_website}
                         />
                         <InputField
@@ -396,6 +400,7 @@ export default function SurveyEdit() {
                             type="text"
                             value={embed_design}
                             onChange={(e) => setEmbedDesign(e.target.value)}
+                            placeholder="https://figma.com/embed-design (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             error={errors.embed_design}
                         />
                         <InputField
@@ -403,6 +408,7 @@ export default function SurveyEdit() {
                             type="text"
                             value={embed_prototype}
                             onChange={(e) => setEmbedPrototype(e.target.value)}
+                            placeholder="https://figma.com/embed-prototype (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             error={errors.embed_prototype}
                         />
                         <div className="mb-3">
@@ -415,6 +421,7 @@ export default function SurveyEdit() {
                                 onChange={handleCheckboxCategoriesChange}
                                 selectedValues={surveyCategoriesData}
                                 error={errors.survey_categories}
+                                mustFill={true}
                             />
                         </div>
                         <div>
@@ -427,6 +434,7 @@ export default function SurveyEdit() {
                                 onChange={handleCheckboxMethodsChange}
                                 selectedValues={surveyMethodsData}
                                 disabled={isCantEdited}
+                                mustFill={true}
                                 error={errors.survey_methods}
                             />
                         </div>
@@ -434,6 +442,7 @@ export default function SurveyEdit() {
                             <RadioSelect
                                 id={"survey_visible"}
                                 label="Visibility Survey"
+                                mustFill={true}
                                 options={[
                                     {
                                         id: 1,

@@ -6,7 +6,7 @@ import "react-quill/dist/quill.snow.css";
 
 // Quill.register("modules/blotFormatter", BlotFormatter);
 
-function Editor({ value, onChange, label, error }) {
+function Editor({ value, onChange, label, error, mustFill }) {
     const modules = {
         // blotFormatter: {
         //     embed: true,
@@ -50,7 +50,10 @@ function Editor({ value, onChange, label, error }) {
 
     return (
         <div className="mb-3">
-            <label className="form-label fw-bold">{label}</label>
+            <label className="form-label fw-bold">
+                {label}
+                {mustFill && <span className="text-danger">*</span>}
+            </label>
             <QuillEditor
                 theme="snow"
                 modules={modules}

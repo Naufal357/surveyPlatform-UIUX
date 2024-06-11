@@ -9,14 +9,16 @@ const SelectCheckbox = ({
     selectedValues,
     onChange,
     error,
+    mustFill,
     disabled,
 }) => {
     return (
         <div className="mb-3">
             {selectedValues ? (
                 <>
-                    <label className="fw-bold" htmlFor={id}>
+                    <label className="form-label fw-bold" htmlFor={id}>
                         {label}
+                        {mustFill && <span className="text-danger">*</span>}
                     </label>
                     <br />
                     {options.map((option, index) => (
@@ -46,8 +48,9 @@ const SelectCheckbox = ({
                 </>
             ) : (
                 <>
-                    <label className="fw-bold" htmlFor={id}>
+                    <label className="form-label fw-bold" htmlFor={id}>
                         {label}
+                        {mustFill && <span className="text-danger">*</span>}
                     </label>
                     <br />
                     {options.map((option, index) => (

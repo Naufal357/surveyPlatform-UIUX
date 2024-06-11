@@ -22,9 +22,10 @@ class HomeController extends Controller
             }
         }
 
+        $maxSurveys = 6;
         $user = auth()->user();
-        $categories = Category::latest()->take(4)->get();
-        $articles = Articles::latest()->where('status', 'Public')->take(9)->get();
+        $categories = Category::latest()->take(6)->get();
+        $articles = Articles::latest()->where('status', 'Public')->take(6)->get();
 
         if ($user) {
             $userSelectedCategories = UserSelectCategory::where('user_id', $user->id)->pluck('category_id');
@@ -33,19 +34,19 @@ class HomeController extends Controller
             })
                 ->where('status', 'Public')
                 ->latest()
-                ->take(9)
+                ->take($maxSurveys)
                 ->get();
-            if ($surveys->count() < 9) {
+            if ($surveys->count() < $maxSurveys) {
                 $additionalSurveys = Survey::whereNotIn('id', $surveys->pluck('id')->toArray())
                     ->where('status', 'Public')
                     ->inRandomOrder()
-                    ->take(9 - $surveys->count())
+                    ->take($maxSurveys - $surveys->count())
                     ->get();
 
                 $surveys = $surveys->merge($additionalSurveys);
             }
         } else {
-            $surveys = Survey::where('status', 'Public')->latest()->take(9)->get();
+            $surveys = Survey::where('status', 'Public')->latest()->take($maxSurveys)->get();
         }
         
         return inertia('Web/Home', [

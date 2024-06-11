@@ -34,15 +34,10 @@ export default function Home() {
                 <div className="container" style={{ marginTop: "80px" }}>
                     <div className="fade-in">
                         <div className="row justify-content-center">
-                            <div className="col-md-8">
+                            <div className="col-12">
                                 <div className="row">
-                                    <div className="col-md-6 d-flex justify-content-center align-items-center flex-column">
-                                        <h2
-                                            style={{
-                                                fontFamily:
-                                                    "Lexend, sans-serif",
-                                            }}
-                                        >
+                                    <div className="col-lg-6 d-flex justify-content-center align-items-center flex-column">
+                                        <h2>
                                             Hubungkan pengembang dan pengguna
                                             dengan UI/UX
                                         </h2>
@@ -110,10 +105,10 @@ export default function Home() {
                                         </div>
                                     </div>
 
-                                    <div className="row mb-5">
+                                    <div className="row mb-5 justify-content-center">
                                         {surveys.map((survey, index) => (
                                             <div
-                                                className="col-md-4 mb-4 col-6"
+                                                className="col-3 mb-4"
                                                 key={index}
                                             >
                                                 <CardItem
@@ -144,10 +139,10 @@ export default function Home() {
                                         </div>
                                     </div>
 
-                                    <div className="row mb-5">
+                                    <div className="row justify-content-center mb-5">
                                         {articles.map((article, index) => (
                                             <div
-                                                className="col-md-4 mb-4 col-6"
+                                                className="col-6 col-md-4 mb-4"
                                                 key={index}
                                             >
                                                 <CardItem

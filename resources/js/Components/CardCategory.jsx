@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/inertia-react";
 export default function CardCategory({ category }) {
     return (
         <>
-            <div className="col-md-3 col-6 mb-3">
+            <div className="col-2 mb-3">
                 <Link
                     href={`/categories/${category.slug}`}
                     className="text-decoration-none text-dark"
@@ -19,7 +19,7 @@ export default function CardCategory({ category }) {
                                 }
                                 className="card-img-top"
                                 alt={category.name}
-                                width="50"
+                                width="50px"
                             />
                             <p className="card-title mt-3">{category.name}</p>
                         </div>
