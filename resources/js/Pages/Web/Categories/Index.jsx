@@ -10,15 +10,13 @@ export default function CategoryIndex() {
     return (
         <>
             <Head>
-                <title>
-                    Categories - Survey Platform
-                </title>
+                <title>Categories - Survey Platform</title>
             </Head>
             <Layout>
                 <div className="container mt-80 mb-5">
                     <div className="fade-in">
                         <div className="row justify-content-center">
-                            <div className="col-md-8">
+                            <div className="col-md-12">
                                 <div className="row justify-content-center">
                                     <div className="col-md-12">
                                         <div className="alert alert-warning border-0 shadow-sm rounded-3">
@@ -27,10 +25,15 @@ export default function CategoryIndex() {
                                     </div>
 
                                     {categories.data.map((category, index) => (
-                                        <CardCategory
-                                            category={category}
+                                        <div
+                                            className="col-lg-2 col-md-4 col-6 mb-4"
                                             key={index}
-                                        />
+                                        >
+                                            <CardCategory
+                                                category={category}
+                                                key={index}
+                                            />
+                                        </div>
                                     ))}
 
                                     <div className="col-md-12 mt-4 mb-5">

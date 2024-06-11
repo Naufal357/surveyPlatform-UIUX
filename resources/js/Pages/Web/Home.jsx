@@ -79,10 +79,15 @@ export default function Home() {
 
                                     <div className="row justify-content-center">
                                         {categories.map((category, index) => (
-                                            <CardCategory
-                                                category={category}
+                                            <div
+                                                className="col-lg-2 col-md-4 col-6 mb-4"
                                                 key={index}
-                                            />
+                                            >
+                                                <CardCategory
+                                                    category={category}
+                                                    key={index}
+                                                />
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
@@ -108,7 +113,7 @@ export default function Home() {
                                     <div className="row mb-5 justify-content-center">
                                         {surveys.map((survey, index) => (
                                             <div
-                                                className="col-3 mb-4"
+                                                className="col-lg-3 col-md-4 col-6 mb-4"
                                                 key={index}
                                             >
                                                 <CardItem

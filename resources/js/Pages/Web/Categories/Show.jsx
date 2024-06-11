@@ -15,7 +15,7 @@ export default function CategoryShow() {
                 <div className="container" style={{ marginTop: "80px" }}>
                     <div className="fade-in">
                         <div className="row justify-content-center">
-                            <div className="col-md-8">
+                            <div className="col-md-12">
                                 <div className="col-md-12">
                                     <div className="alert alert-warning border-0 shadow-sm rounded-3">
                                         Surveys Category :{" "}
@@ -26,7 +26,7 @@ export default function CategoryShow() {
                                 <div className="row mb-5">
                                     {surveys.map((survey, index) => (
                                         <div
-                                            className="col-md-4 mb-4 col-6"
+                                            className="col-lg-3 col-md-4 col-6 mb-4"
                                             key={index}
                                         >
                                             <CardItem

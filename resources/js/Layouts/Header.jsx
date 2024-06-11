@@ -114,7 +114,7 @@ function Layout({ children, footerVisible = true }) {
                                     </abbr>
                                 </div>
 
-                                <div className="col-12 col-md-4 d-flex justify-content-center align-items-center mb-3 mb-md-0">
+                                {/* <div className="col-12 col-md-4 d-flex justify-content-center align-items-center mb-3 mb-md-0">
                                     <div className="d-flex flex-column flex-md-row align-items-center">
                                         <p className="mb-0 me-md-2 text-center text-md-start">
                                             Developed with dedication by
@@ -128,7 +128,7 @@ function Layout({ children, footerVisible = true }) {
                                             Naufal Rozan
                                         </a>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="col-12 col-md-4 d-flex flex-column align-items-md-end align-items-center ">
                                     <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-end">

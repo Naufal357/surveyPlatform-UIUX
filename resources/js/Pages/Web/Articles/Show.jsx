@@ -13,7 +13,7 @@ export default function ArticleShow() {
             <div className="container" style={{ marginTop: "80px" }}>
                 <div className="fade-in">
                     <div className="row justify-content-center">
-                        <div className="col-md-8">
+                        <div className="col-md-12">
                             <div className="col-md-12">
                                 <img
                                     src={article.image}
