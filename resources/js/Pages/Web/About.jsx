@@ -68,7 +68,7 @@ export default function About() {
                             icon="fa-poll"
                             background="info"
                             value={surveysCount}
-                            title="Jumlah Survey"
+                            title="Jumlah Survei"
                         />
                     </div>
                     {/* <div className="row mt-5">

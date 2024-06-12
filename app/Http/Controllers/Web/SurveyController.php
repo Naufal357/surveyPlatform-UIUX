@@ -10,8 +10,10 @@ class SurveyController extends Controller
 {
     public function index()
     {
-        $surveys = Survey::latest()->where('status', 'Public')->paginate(18);
-
+        $surveys = Survey::when(request()->q, function ($surveys) {
+            $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
+        })->latest()->where('status', 'Public')->paginate(18);
+        
         return inertia('Web/Surveys', [
             'auth' => auth()->user(),
             'surveys' => $surveys

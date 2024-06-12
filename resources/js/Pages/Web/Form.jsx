@@ -8,7 +8,8 @@ import EmbedDesign from "../../Components/EmbedDesign";
 import Swal from "sweetalert2";
 
 function Form() {
-    const { surveys, auth, surveyMethods, surveyMethodIds, surveyQuestions } = usePage().props;
+    const { surveys, auth, surveyMethods, surveyMethodIds, surveyQuestions } =
+        usePage().props;
 
     const initialFormData = {
         user_id: auth.id,
@@ -195,22 +196,22 @@ function Form() {
         });
     };
 
+    const responseData = {};
+
+    if (parsedSusQuestions.length > 0) {
+        responseData.sus = susValues;
+    }
+    if (parsedTamQuestions.length > 0) {
+        responseData.tam = tamValues;
+    }
+
     const submitForm = (e) => {
         e.preventDefault();
-
         const dataSubmit = {
             ...formData,
             survey_id: surveys.id,
-            response_data: JSON.stringify({
-                ...(surveyMethods.find((method) => method.method_id === 1) && {
-                    sus: susValues,
-                }),
-                ...(surveyMethods.find((method) => method.method_id === 2) && {
-                    tam: tamValues,
-                }),
-            }),
+            response_data: JSON.stringify(responseData),
         };
-
         Inertia.post("/form", dataSubmit, {
             onSuccess: () => {
                 Swal.fire({

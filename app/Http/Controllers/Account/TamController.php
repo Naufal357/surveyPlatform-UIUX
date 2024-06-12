@@ -363,7 +363,6 @@ class TamController extends Controller
         if (empty($filteredRegressionPath)) {
             return $regressionResults = null;
         }
-
         foreach ($filteredRegressionPath as $path) {
             $n = count($responsesFormated);
             $x = $respondentsAvg[$path[0]];
@@ -384,8 +383,15 @@ class TamController extends Controller
             $xy_sum = array_sum($xy);
             $x_sum_squared = $x_sum * $x_sum;
 
-            $a = (($y_sum * $x_squared_sum) - ($x_sum * $xy_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
-            $b = (($n * $xy_sum) - ($x_sum * $y_sum)) / (($n * $x_squared_sum) - ($x_sum_squared));
+            $denominator = ($n * $x_squared_sum) - ($x_sum_squared);
+
+            if ($denominator != 0) {
+                $a = (($y_sum * $x_squared_sum) - ($x_sum * $xy_sum)) / $denominator;
+                $b = (($n * $xy_sum) - ($x_sum * $y_sum)) / $denominator;
+            } else {
+                $a = 0;
+                $b = 0;
+            }
 
             $path_formatted = $path[0] . " ➔ " . $path[1];
 
