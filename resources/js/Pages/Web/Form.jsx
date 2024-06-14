@@ -8,7 +8,8 @@ import EmbedDesign from "../../Components/EmbedDesign";
 import Swal from "sweetalert2";
 
 function Form() {
-    const { surveys, auth, surveyMethods, surveyMethodIds, surveyQuestions } = usePage().props;
+    const { surveys, auth, surveyMethods, surveyMethodIds, surveyQuestions } =
+        usePage().props;
 
     const initialFormData = {
         user_id: auth.id,
@@ -20,6 +21,8 @@ function Form() {
         profession: auth.profession,
         educational_background: auth.educational_background,
     };
+
+    const [isSaving, setIsSaving] = useState(false);
 
     let idTamCounter = 0;
     let idSusCounter = 0;
@@ -196,6 +199,7 @@ function Form() {
     };
 
     const submitForm = (e) => {
+        setIsSaving("true");
         e.preventDefault();
 
         const dataSubmit = {
@@ -211,29 +215,36 @@ function Form() {
             }),
         };
 
-        Inertia.post("/form", dataSubmit, {
-            onSuccess: () => {
-                Swal.fire({
-                    title: "Thank You!",
-                    text: "Survey data submitted successfully!",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 3000,
-                }).then(() => {
-                    removeSurveyData();
-                    Inertia.visit("/");
-                });
+        Inertia.post(
+            "/form",
+            dataSubmit,
+            {
+                onSuccess: () => {
+                    Swal.fire({
+                        title: "Thank You!",
+                        text: "Survey data submitted successfully!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 3000,
+                    }).then(() => {
+                        removeSurveyData();
+                        Inertia.visit("/");
+                    });
+                    setIsSaving("false");
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Data failed to save!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    setIsSaving("false");
+                },
             },
-            onError: () => {
-                Swal.fire({
-                    title: "Error!",
-                    text: "Data failed to save!",
-                    icon: "error",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            },
-        });
+            setIsSaving("false")
+        );
     };
 
     return (
@@ -403,6 +414,7 @@ function Form() {
                                         <button
                                             type="submit"
                                             className="btn btn-primary btn-lg m-4"
+                                            disabled={isSaving}
                                         >
                                             Submit
                                         </button>

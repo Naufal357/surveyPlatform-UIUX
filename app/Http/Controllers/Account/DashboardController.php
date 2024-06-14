@@ -28,13 +28,15 @@ class DashboardController extends Controller
 
         foreach ($surveys as $survey) {
             $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
-
             $methodIds = $surveyMethods->pluck('method_id')->toArray();
+
+            $totalResponses = SurveyResponses::where('survey_id', $survey->id)->get()->count();
+
             $surveyData[] = [
                 'survey_id' => $survey->id,
                 'title' => $survey->title,
                 'status' => $survey->status,
-                'response_count' => $survey->getTitleAndResponseCount(),
+                'response_count' => $totalResponses,
                 'method_ids' => $methodIds,
             ];
         }

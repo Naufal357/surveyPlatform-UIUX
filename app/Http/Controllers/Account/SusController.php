@@ -164,7 +164,6 @@ class SusController extends Controller
 
     private function countRespondents($surveyId)
     {
-        // Menghitung jumlah responden dengan "sus" dalam response_data
         $totalResponsesWithSUS = SurveyResponses::where('survey_id', $surveyId)
             ->where('response_data', 'LIKE', '%"sus"%')
             ->count();

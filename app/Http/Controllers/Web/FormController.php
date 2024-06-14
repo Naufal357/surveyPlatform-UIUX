@@ -19,6 +19,7 @@ class FormController extends Controller
             abort(403, 'This survey is not available.');
         }
 
+
         $response = SurveyResponses::where('email', $user->email)->where('survey_id', $survey->id)->first();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
         $surveyMethodIds = $surveyMethods->pluck('method_id')->toArray();
