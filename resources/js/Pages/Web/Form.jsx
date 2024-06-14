@@ -198,22 +198,24 @@ function Form() {
         });
     };
 
+    const responseData = {};
+
+    if (parsedSusQuestions.length > 0) {
+        responseData.sus = susValues;
+    }
+    if (parsedTamQuestions.length > 0) {
+        responseData.tam = tamValues;
+    }
+
     const submitForm = (e) => {
         setIsSaving("true");
         e.preventDefault();
-
         const dataSubmit = {
             ...formData,
             survey_id: surveys.id,
-            response_data: JSON.stringify({
-                ...(surveyMethods.find((method) => method.method_id === 1) && {
-                    sus: susValues,
-                }),
-                ...(surveyMethods.find((method) => method.method_id === 2) && {
-                    tam: tamValues,
-                }),
-            }),
+            response_data: JSON.stringify(responseData),
         };
+<<<<<<< HEAD
 
         Inertia.post(
             "/form",
@@ -242,6 +244,20 @@ function Form() {
                     });
                     setIsSaving("false");
                 },
+=======
+        Inertia.post("/form", dataSubmit, {
+            onSuccess: () => {
+                Swal.fire({
+                    title: "Thank You!",
+                    text: "Survey data submitted successfully!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 3000,
+                }).then(() => {
+                    removeSurveyData();
+                    Inertia.visit("/");
+                });
+>>>>>>> c31517e85ce3136a5cfa0ec9f831fda08bf97095
             },
             setIsSaving("false")
         );
