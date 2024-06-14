@@ -228,7 +228,7 @@ class SurveyController extends Controller
         }
 
         if ($request->file('image')) {
-            if ($survey->image != 'surveyFactory.png') {
+            if ($survey->image != 'surveyFactory.jpg') {
                 Storage::disk('local')->delete('storage/image/surveys/' . basename($survey->image));
             }
 
@@ -273,7 +273,6 @@ class SurveyController extends Controller
 
         if ($request->has('survey_questions')) {
             $surveyQuestion->where('survey_id', $survey->id)->delete();
-            $surveyQuestionsData = $request->survey_questions;
             $surveyQuestion->create([
                 'survey_id' => $survey->id,
                 'questions_data' => $request->survey_questions
@@ -292,7 +291,7 @@ class SurveyController extends Controller
             return abort(403, 'You do not have permission to delete this survey.');
         }
 
-        if ($Survey->image != 'surveyFactory.png') {
+        if ($Survey->image != 'surveyFactory.jpg') {
             Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
         }
 

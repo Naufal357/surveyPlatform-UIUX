@@ -3,6 +3,7 @@ import Layout from "../../Layouts/Header";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import CardItem from "../../Components/CardItem";
 import Pagination from "../../Components/Pagination";
+import Search from "../../Components/Search";
 
 export default function Surveys() {
     const { surveys } = usePage().props;
@@ -17,13 +18,19 @@ export default function Surveys() {
                     <div className="fade-in">
                         <div className="row justify-content-center">
                             <div className="col-md-12">
-                                <div className="row justify-content-center">
-                                    <div className="col-md-12">
-                                        <div className="alert alert-warning border-0 shadow-sm rounded-3">
-                                            <strong>All Surveys</strong>
+                                <div className="col-md-12">
+                                    <div className="alert alert-warning border-0 shadow-sm rounded-3">
+                                        <div className="row d-flex">
+                                            <div className="col-6 justify-content-start mt-2">
+                                                <strong>All Surveys</strong>
+                                            </div>
+                                            <div className="col-6 justify-content-end">
+                                                <Search URL={"surveys"} />
+                                            </div>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div className="row justify-content-center">
                                     {surveys.data.map((survey, index) => (
                                         <div
                                             className="col-lg-3 col-md-4 col-6 mb-4"

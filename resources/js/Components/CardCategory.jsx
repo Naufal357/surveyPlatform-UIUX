@@ -8,19 +8,40 @@ export default function CardCategory({ category }) {
                 href={`/categories/${category.slug}`}
                 className="text-decoration-none text-dark"
             >
-                <div className="card border-0 rounded-3 h-100 shadow-sm">
+                <div className="card border-0 rounded-3 shadow-sm">
                     <div className="card-body text-center">
-                        <img
-                            src={
-                                category.image
-                                    ? category.image
-                                    : "/assets/images/image.png"
-                            }
-                            className="card-img-top"
-                            alt={category.name}
-                            width="50px"
-                        />
-                        <p className="card-title mt-3">{category.name}</p>
+                        <div
+                            style={{
+                                width: "100%",
+                                height: "135px",
+                                overflow: "hidden",
+                            }}
+                        >
+                            <img
+                                src={
+                                    category.image
+                                        ? category.image
+                                        : "/assets/images/image.png"
+                                }
+                                className="card-img-top"
+                                alt={category.name}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "cover",
+                                }}
+                            />
+                        </div>
+                        <p
+                            className="card-title text-center title-book mt-3"
+                            style={{
+                                height: "25px",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                            }}
+                        >
+                            {category.name}
+                        </p>
                     </div>
                 </div>
             </Link>
