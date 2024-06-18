@@ -9,7 +9,7 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
-                <thead className="thead-dark">
+                <thead className="thead">
                     <tr>
                         <th>No</th>
                         <th>Judul Survei</th>
@@ -37,7 +37,7 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                                                 return (
                                                     <Link
                                                         href={`sus/${survey.survey_id}`}
-                                                        className="btn btn-sm btn-success border-0 shadow"
+                                                        className="btn btn-sm btn-style border-0 shadow"
                                                         type="button"
                                                     >
                                                         SUS
@@ -47,7 +47,7 @@ const TableDashboardSurvey = ({ surveyData, surveys }) => {
                                                 return (
                                                     <Link
                                                         href={`tam/${survey.survey_id}`}
-                                                        className="btn btn-sm btn-success border-0 shadow"
+                                                        className="btn btn-sm btn-style border-0 shadow"
                                                         type="button"
                                                     >
                                                         TAM

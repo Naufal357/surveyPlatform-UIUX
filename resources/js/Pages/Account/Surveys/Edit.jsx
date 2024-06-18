@@ -247,12 +247,12 @@ export default function SurveyEdit() {
     };
 
     const updateSurvey = async (e) => {
-        setIsSaving("true");
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
-            setIsSaving("false");
+            setIsSaving(false);
             return;
         }
 
@@ -282,7 +282,6 @@ export default function SurveyEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving("false");
                 },
                 onError: () => {
                     Swal.fire({
@@ -292,10 +291,11 @@ export default function SurveyEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving("false");
+                },
+                onFinish: () => {
+                    setIsSaving(false);
                 },
             },
-            setIsSaving("false")
         );
     };
 

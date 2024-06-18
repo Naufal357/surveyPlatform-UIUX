@@ -17,7 +17,7 @@ export default function CategoryShow() {
                         <div className="row justify-content-center">
                             <div className="col-md-12">
                                 <div className="col-md-12">
-                                    <div className="alert alert-warning border-0 shadow-sm rounded-3">
+                                    <div className="card-body border-0 shadow-sm rounded-3 mb-4">
                                         Surveys Category :{" "}
                                         <strong>{category.name}</strong>
                                     </div>

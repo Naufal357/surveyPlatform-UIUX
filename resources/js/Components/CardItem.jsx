@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@inertiajs/inertia-react";
 
-const CardItem = ({ type, data, link, maxTitleLength }) => {
+const CardItem = ({ type, data, link, maxTitleLength, surveyFilled = false }) => {
     maxTitleLength = maxTitleLength || 80; 
 
     const truncatedTitle =
@@ -13,7 +13,7 @@ const CardItem = ({ type, data, link, maxTitleLength }) => {
         <>
             {type === "survey" && (
                 <Link href={link} className="text-dark text-decoration-none">
-                    <div className="card border-0 rounded-3 shadow-sm">
+                    <div className={`card border-0 rounded-3 shadow-sm survey`}>
                         <div
                             style={{
                                 width: "100%",
@@ -38,7 +38,7 @@ const CardItem = ({ type, data, link, maxTitleLength }) => {
                         </div>
                         <div className="card-body h-100">
                             <h6
-                                className="card-title text-center title-book"
+                                className={`card-title text-center title-book`}
                                 style={{
                                     height: "60px",
                                     overflow: "hidden",
@@ -53,7 +53,7 @@ const CardItem = ({ type, data, link, maxTitleLength }) => {
             )}
             {type === "article" && (
                 <Link href={link} className="text-dark text-decoration-none">
-                    <div className="card border-0 rounded-3 shadow-sm">
+                    <div className="card border-0 rounded-3 shadow-sm article">
                         <div
                             style={{
                                 width: "100%",

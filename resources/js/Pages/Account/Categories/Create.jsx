@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
 import InputField from "../../../Components/InputField";
+import RadioSelect from "../../../Components/RadioSelect";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
@@ -11,9 +12,14 @@ export default function CategoryCreate() {
     const { errors } = usePage().props;
 
     const [name, setName] = useState("");
+    const [status, setStatus] = useState("");
     const [image, setImage] = useState(null);
 
     const [isSaving, setIsSaving] = useState(false);
+
+    function handleVisibleChange(selectedValue) {
+        setStatus(selectedValue);
+    }
 
     const storeCategory = async (e) => {
         setIsSaving(true);
@@ -24,10 +30,12 @@ export default function CategoryCreate() {
             setIsSaving(false);
             return;
         }
+
         Inertia.post(
             "/account/categories",
             {
                 name: name,
+                status: status,
                 image: image,
             },
             {
@@ -39,7 +47,6 @@ export default function CategoryCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false);
                 },
                 onError: () => {
                     Swal.fire({
@@ -49,10 +56,11 @@ export default function CategoryCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false); 
+                },
+                onFinish: () => {
+                    setIsSaving(false);
                 },
             },
-            setIsSaving(false)
         );
     };
 
@@ -66,6 +74,16 @@ export default function CategoryCreate() {
                     <form onSubmit={storeCategory}>
                         <div className="mb-3">
                             <InputField
+                                label="Image (max 2 MB)"
+                                type="file"
+                                value={image}
+                                onChange={(e) => [setImage(e.target.files[0])]}
+                                error={errors.image}
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <InputField
                                 label="Category Name"
                                 name="name"
                                 value={name}
@@ -73,13 +91,34 @@ export default function CategoryCreate() {
                                 error={errors.name}
                             />
                         </div>
+
                         <div className="mb-3">
-                            <InputField
-                                label="Image (max 2 MB)"
-                                type="file"
-                                value={image}
-                                onChange={(e) => [setImage(e.target.files[0])]}
-                                error={errors.image}
+                            <RadioSelect
+                                id="survey_visibility"
+                                label="General Access Survey"
+                                mustFill={true}
+                                options={[
+                                    {
+                                        id: 1,
+                                        value: "Public",
+                                        label: "Public",
+                                    },
+                                    {
+                                        id: 2,
+                                        value: "Private",
+                                        label: "Private",
+                                    },
+                                    {
+                                        id: 3,
+                                        value: "Restricted",
+                                        label: "Only link holders can access",
+                                    },
+                                ]}
+                                valueKey="value"
+                                labelKey="label"
+                                onChange={handleVisibleChange}
+                                selectedValue={status}
+                                error={errors.status}
                             />
                         </div>
 

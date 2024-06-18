@@ -86,7 +86,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if ($id == 1) {
+        if (auth()->user()->cannot('users.index.full')) {
             abort(403, "Editing the user is not allowed.");
         }
 
@@ -105,10 +105,6 @@ class UserController extends Controller
 
     public function update(Request $request, User $user, UserSelectCategory $userPref)
     {
-        if (auth()->user()->id == 1) {
-            abort(403, "Editing the user is not allowed.");
-        }
-
         $this->validate($request, [
             'first_name'      => 'required',
             'surname'         => 'required',

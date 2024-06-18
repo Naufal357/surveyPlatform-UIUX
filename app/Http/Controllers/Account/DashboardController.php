@@ -16,6 +16,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
+        $app_url = config('app.url');
 
         if ($user->hasPermissionTo('dashboard.index.full')) {
             $surveys = Survey::latest()->paginate(10);
@@ -42,6 +43,7 @@ class DashboardController extends Controller
         }
 
         return inertia('Account/Dashboard', [
+            'app_url' => $app_url,
             'surveys' => $surveys,
             'surveyData' => $surveyData,
             'filledOutSurvey' => $filledOutSurvey,

@@ -23,6 +23,7 @@ export default function RoleCreate() {
 
     const [name, setName] = useState("");
     const [permissionsData, setPermissionsData] = useState([]);
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleCheckboxChange = (e) => {
         let data = permissionsData;
@@ -32,10 +33,12 @@ export default function RoleCreate() {
     };
 
     const storeRole = async (e) => {
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
+            setIsSaving(false);
             return;
         }
 
@@ -54,6 +57,18 @@ export default function RoleCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Something went wrong!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                },
+                onFinish: () => {
+                    setIsSaving(false);
                 },
             }
         );
@@ -102,6 +117,7 @@ export default function RoleCreate() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

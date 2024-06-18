@@ -22,9 +22,10 @@ class HomeController extends Controller
             }
         }
 
-        $maxSurveys = 6;
+        $maxSurveys = 12;
         $user = auth()->user();
-        $categories = Category::latest()->take(6)->get();
+        $auth = auth()->user();
+        $categories = Category::latest()->where('status', 'Public')->take(6)->get();
         $articles = Articles::latest()->where('status', 'Public')->take(6)->get();
 
         if ($user) {
@@ -53,7 +54,7 @@ class HomeController extends Controller
             'categories' => $categories,
             'surveys' => $surveys,
             'articles' => $articles,
-            'auth' => $user,
+            'auth' =>  $auth,
         ]);
     }
 }

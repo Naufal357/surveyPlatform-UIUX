@@ -18,10 +18,10 @@ const renderResponseTable = (data) => {
     return (
         <div
             className="table-responsive"
-            style={{ maxHeight: "60vh", overflowY: "auto" }}
+            style={{ overflowY: "auto" }}
         >
             <table className="table table-striped table-bordered">
-                <thead className="thead-dark">
+                <thead className="thead">
                     <tr>
                         <th>No</th>
                         <th>Respondent Name</th>
@@ -49,7 +49,7 @@ const renderResponseTable = (data) => {
 const renderDescriptiveStatisticsTable = (data) => {
     return (
         <table className="table table-striped table-bordered">
-            <thead className="thead-dark">
+            <thead className="thead">
                 <tr>
                     <th>Variabel</th>
                     <th>nI (Jumlah Pertanyaan)</th>
@@ -83,7 +83,7 @@ const renderRegressionTable = (data) => {
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
-                <thead className="thead-dark">
+                <thead className="thead">
                     <tr>
                         <th>Variable Regresi</th>
                         <th>n</th>

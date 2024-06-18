@@ -56,7 +56,6 @@ export default function ArticleCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false);
                 },
                 onError: () => {
                     Swal.fire({
@@ -66,10 +65,11 @@ export default function ArticleCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onFinish: () => {
                     setIsSaving(false);
                 },
             },
-            setIsSaving(false)
         );
     };
 

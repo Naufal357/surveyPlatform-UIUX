@@ -8,7 +8,7 @@ export default function CardCategory({ category }) {
                 href={`/categories/${category.slug}`}
                 className="text-decoration-none text-dark"
             >
-                <div className="card border-0 rounded-3 shadow-sm">
+                <div className="card border-0 rounded-3 shadow-sm category">
                     <div className="card-body text-center">
                         <div
                             style={{

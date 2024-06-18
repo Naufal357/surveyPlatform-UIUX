@@ -69,7 +69,7 @@ export default function Home() {
                                                 href="/categories"
                                                 className="text-dark"
                                             >
-                                                <strong>
+                                                <strong className="btn-text">
                                                     See More{" "}
                                                     <i className="fa fa-long-arrow-alt-right"></i>
                                                 </strong>
@@ -102,7 +102,7 @@ export default function Home() {
                                                 href="/surveys"
                                                 className="text-dark"
                                             >
-                                                <strong>
+                                                <strong className="btn-text">
                                                     See More{" "}
                                                     <i className="fa fa-long-arrow-alt-right"></i>
                                                 </strong>
@@ -136,7 +136,7 @@ export default function Home() {
                                                 href="/articles"
                                                 className="text-dark"
                                             >
-                                                <strong>
+                                                <strong className="btn-text">
                                                     See More{" "}
                                                     <i className="fa fa-long-arrow-alt-right"></i>
                                                 </strong>

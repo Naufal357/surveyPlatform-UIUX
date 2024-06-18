@@ -1,9 +1,17 @@
 import React, { useState } from "react";
+import { NavDropdown } from "react-bootstrap";
 import { Link, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
+import ThemeMode from "../Components/ThemeMode";
 
-function AuthMenu() {
-    const handleLogout = async (e) => {
+function AuthMenu(auth) {
+    auth = auth.auth;
+    
+    const profileHandler = async (e) => {
+        Inertia.get("/account/profile");
+    };
+
+    const logoutHandler = async (e) => {
         e.preventDefault();
         localStorage.clear();
         Inertia.post("/logout");
@@ -17,9 +25,26 @@ function AuthMenu() {
                 </Link>
             </li>
             <li className="nav-item">
-                <button className="btn text-white" onClick={handleLogout}>
-                    Logout
-                </button>
+                <NavDropdown
+                    title={
+                        <>
+                            {auth.roles.some(
+                                (role) => role.name == "verified user"
+                            ) && <i className="fas fa-user-check me-2" />}
+                            {`${auth.first_name} ${auth.surname}`}
+                        </>
+                    }
+                    id="basic-nav-dropdown"
+                >
+                    <NavDropdown.Item onClick={profileHandler}>
+                        <i className="fa fa-user me-2"></i>
+                        Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                        <i className="fa fa-sign-out-alt me-2"></i>
+                        Logout
+                    </NavDropdown.Item>
+                </NavDropdown>
             </li>
         </ul>
     );
@@ -52,7 +77,7 @@ function Layout({ children, footerVisible = true }) {
 
     return (
         <>
-            <nav className="navbar navbar-expand-md navbar-dark bg-green shadow fixed-top p-0">
+            <nav className="navbar navbar-expand-md navbar-light shadow fixed-top p-0">
                 <div className="container">
                     <Link
                         href="/"
@@ -88,7 +113,8 @@ function Layout({ children, footerVisible = true }) {
                         id="navbarNav"
                     >
                         <ul className="navbar-nav">
-                            {auth ? <AuthMenu /> : <NonAuthMenu />}
+                            {auth ? <AuthMenu auth={auth} /> : <NonAuthMenu />}
+                            <ThemeMode />
                         </ul>
                     </div>
                 </div>
@@ -132,24 +158,24 @@ function Layout({ children, footerVisible = true }) {
 
                                 <div className="col-12 col-md-4 d-flex flex-column align-items-md-end align-items-center ">
                                     <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-end">
-                                        <a
+                                        <Link
                                             href="/"
                                             className="text-decoration-none text-white mb-2 me-md-3 mb-md-0"
                                         >
                                             Home
-                                        </a>
-                                        <a
+                                        </Link>
+                                        <Link
                                             href="/articles"
                                             className="text-decoration-none text-white mb-2 me-md-3 mb-md-0"
                                         >
                                             Blog
-                                        </a>
-                                        <a
+                                        </Link>
+                                        <Link
                                             href="/about"
                                             className="text-decoration-none text-white"
                                         >
                                             About
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

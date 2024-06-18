@@ -89,7 +89,7 @@ export default function UserCreate() {
                     </div>
                     <div className="col-4">
                         <CardContent title={"Account Settings"}>
-                            <nav className="navbar d-flex flex-column">
+                            <nav className="d-flex flex-column">
                                 <Link
                                     href="/"
                                     className="btn btn-outline-primary btn-block mb-3"

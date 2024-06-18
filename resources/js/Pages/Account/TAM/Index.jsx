@@ -116,11 +116,11 @@ export default function Dashboard() {
     return (
         <>
             <Head>
-                <title>TAM Result - SurveyPlatform</title>
+                <title>TAM Result - Survey Platform</title>
             </Head>
             <LayoutAccount>
                 <div className="m-3">
-                    <div className="row alert alert-success border-0 shadow-sm mb-2">
+                    <div className="row card-body border-0 shadow-sm mb-2">
                         <div className="col-md-6">
                             Selamat Datang, <strong>{name}</strong> <br />
                             {currentSurveyTitle ? (
@@ -136,7 +136,7 @@ export default function Dashboard() {
                             <div className="mb-2">
                                 <div className="dropdown">
                                     <button
-                                        className="btn btn-secondary dropdown-toggle"
+                                        className="btn select-btn dropdown-toggle"
                                         type="button"
                                         id="dropdownMenuButton"
                                         data-bs-toggle="dropdown"
@@ -188,8 +188,24 @@ export default function Dashboard() {
 
                     {resumeDescription !== null ? (
                         <CardContent title="Kesimpulan">
-                            <div className="text-center">
+                            {/* <div className="text-center">
                                 {resumeDescription}
+                            </div> */}
+                            <div>
+                                {Object.keys(resumeDescription).map((key) => (
+                                    <div key={key}>
+                                        <p className="fw-bold text-center">
+                                            {key}
+                                        </p>
+                                        {resumeDescription[key].map(
+                                            (sentence, index) => (
+                                                <p key={index}>
+                                                    &bull; {sentence}
+                                                </p>
+                                            )
+                                        )}
+                                    </div>
+                                ))}
                             </div>
                             <hr />
                             <div className="row justify-content-center">

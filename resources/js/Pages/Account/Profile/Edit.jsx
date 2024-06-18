@@ -83,7 +83,6 @@ export default function ProfileEdit() {
                             showConfirmButton: false,
                             timer: 1500,
                         });
-                        setIsSaving(false);
                     },
                     onError: () => {
                         Swal.fire({
@@ -93,10 +92,11 @@ export default function ProfileEdit() {
                             showConfirmButton: false,
                             timer: 1500,
                         });
+                    },
+                    onFinish: () => {
                         setIsSaving(false);
                     },
                 },
-                setIsSaving(false)
             );
         }
     };
@@ -279,6 +279,7 @@ export default function ProfileEdit() {
                             label="Save"
                             color="btn-success"
                             iconClass="fa fa-save"
+                            isSaving={isSaving}
                         />
 
                         <ButtonCRUD

@@ -441,42 +441,53 @@ class TamController extends Controller
             $variableDependent = $variables[1];
 
             $kalimatPositif = [
-                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyTheme, terlihat bahwa semakin tinggi $variableIndependent maka $variableDependent akan semakin tinggi(1). ",
-                "$variableIndependent memberikan kontribusi positif terhadap $variableDependent(2). ",
-                "Pengaruh $variableIndependent terhadap $variableDependent juga terlihat positif(3). ",
-                "$variableIndependent berdampak positif terhadap $variableDependent(4). ",
-                "Selain itu, terdapat hubungan positif antara $variableIndependent dan $variableDependent(5). ",
-                "Hasil regresi menunjukkan bahwa $variableIndependent berhubungan positif dengan $variableDependent(6). "
+                "Dari hasil regresi TAM, semakin tinggi $variableIndependent, semakin tinggi juga $variableDependent(1).",
+                "$variableIndependent memberikan kontribusi positif terhadap $variableDependent(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat positif(3).",
+                "$variableIndependent berdampak positif terhadap $variableDependent(4).",
+                "Terdapat hubungan positif antara $variableIndependent dan $variableDependent(5).",
+                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, semakin tinggi pula $variableDependent(6)."
             ];
 
             $kalimatNetral = [
-                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyTheme, terlihat bahwa tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(1). ",
-                "$variableIndependent tidak menunjukkan pengaruh yang kuat terhadap $variableDependent(2). ",
-                "Pengaruh $variableIndependent terhadap $variableDependent terlihat lemah(3). ",
-                "$variableIndependent tidak berdampak signifikan terhadap $variableDependent(4). ",
-                "Tidak terdapat hubungan yang kuat antara $variableIndependent dan $variableDependent(5). ",
-                "Hasil regresi menunjukkan bahwa tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(6). "
+                "Dari hasil regresi TAM, tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(1).",
+                "$variableIndependent tidak menunjukkan pengaruh terhadap $variableDependent(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent tidak begitu terlihat(3).",
+                "$variableIndependent tidak berdampak terhadap $variableDependent(4).",
+                "Tidak terdapat hubungan antara $variableIndependent dan $variableDependent(5).",
+                "Hasil regresi menunjukkan bahwa tidak ada hubungan antara $variableIndependent dan $variableDependent(6)."
             ];
 
             $kalimatNegatif = [
-                "Dari hasil koefisien regresi dalam model Technology Acceptance Model (TAM) dari $surveyTheme, terlihat bahwa semakin tinggi $variableIndependent maka $variableDependent akan semakin rendah(1). ",
-                "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent(2). ",
-                "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif(3). ",
-                "$variableIndependent berdampak negatif terhadap $variableDependent(4). ",
-                "Hubungan antara $variableIndependent dan $variableDependent terlihat negatif(5). ",
-                "Hasil regresi menunjukkan bahwa $variableIndependent berhubungan negatif dengan $variableDependent(6). "
+                "Dari hasil regresi TAM, semakin tinggi $variableIndependent, maka semakin rendah $variableDependent(1).",
+                "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif dan berpengaruh buruk(3).",
+                "$variableIndependent berdampak negatif terhadap $variableDependent(4).",
+                "Hubungan antara $variableIndependent dan $variableDependent terlihat negatif(5).",
+                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, maka semakin rendah $variableDependent(6)."
             ];
 
+
+
+            // if ($regressionResult['a'] > 0) {
+            //     $getResumeDescription[] = $kalimatPositif[$index];
+            // } else if ($regressionResult['a'] == 0) {
+            //     $getResumeDescription[] = $kalimatNetral[$index];
+            // } else if ($regressionResult['a'] < 0) {
+            //     $getResumeDescription[] = $kalimatNegatif[$index];
+            // } else {
+            //     $getResumeDescription[] = "Nilai tidak valid";
+            // }
+
             if ($regressionResult['a'] > 0) {
-                $getResumeDescription[] = $kalimatPositif[$index];
+                $getResumeDescription['Positif'][] = $kalimatPositif[$index];
             } else if ($regressionResult['a'] == 0) {
-                $getResumeDescription[] = $kalimatNetral[$index];
+                $getResumeDescription['Netral'][] = $kalimatNetral[$index];
             } else if ($regressionResult['a'] < 0) {
-                $getResumeDescription[] = $kalimatNegatif[$index];
+                $getResumeDescription['Negatif'][] = $kalimatNegatif[$index];
             } else {
                 $getResumeDescription[] = "Nilai tidak valid";
             }
-                
         }
 
         return $getResumeDescription;

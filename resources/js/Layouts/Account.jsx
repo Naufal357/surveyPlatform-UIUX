@@ -3,6 +3,7 @@ import { NavDropdown } from "react-bootstrap";
 import { usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Sidebar from "../Layouts/Sidebar";
+import ThemeMode from "../Components/ThemeMode";
 
 export default function LayoutAccount({ children }) {
     const { auth } = usePage().props;
@@ -23,6 +24,10 @@ export default function LayoutAccount({ children }) {
         }
     };
 
+    const profileHandler = async (e) => {
+        Inertia.get("/account/profile");
+    };
+
     const logoutHandler = async (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -34,31 +39,31 @@ export default function LayoutAccount({ children }) {
         <>
             <div className="d-flex sb-sidenav-toggled" id="wrapper">
                 <div className="bg-sidebar" id="sidebar-wrapper">
-                    <div className="sidebar-heading bg-light text-center">
-                        <a href="/" className="btn text-white">
+                    <div className="sidebar-heading text-center">
+                        <Link href="/" className="btn text-white">
                             <img
                                 src="/assets/images/logo.png"
                                 width={"50"}
                                 alt="Logo"
                             />
                             <strong>Survey</strong> <small>Platform</small>
-                        </a>
+                        </Link>
                     </div>
                     <Sidebar />
                 </div>
                 <div id="page-content-wrapper" style={{ width: "100%" }}>
-                    <nav className="navbar navbar-wrapper navbar-expand-lg navbar-light bg-light fixed-top">
+                    <nav className="navbar navbar-wrapper navbar-expand-lg navbar-light fixed-top">
                         <div className="container-fluid">
                             <div className="toggled-sidebar">
                                 <button
-                                    className="btn btn-success-dark me-3"
+                                    className="btn btn-sidebar me-3"
                                     onClick={sidebarToggleHandler}
                                 >
                                     <i className="fa fa-list-ul"></i>
                                 </button>
                             </div>
                             <div className="navbar-header d-flex align-items-center">
-                                <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
+                                <ul className="navbar-nav d-flex flex-row align-items-center">
                                     <NavDropdown
                                         title={
                                             <>
@@ -75,14 +80,11 @@ export default function LayoutAccount({ children }) {
                                         className="fw-bold"
                                         id="basic-nav-dropdown"
                                     >
-                                        <NavDropdown.Item>
-                                            <Link
-                                                href="/account/profile"
-                                                className="d-flex align-items-center text-black text-decoration-none"
-                                            >
-                                                <i className="fa fa-user me-2"></i>
-                                                Profile
-                                            </Link>
+                                        <NavDropdown.Item
+                                            onClick={profileHandler}
+                                        >
+                                            <i className="fa fa-user me-2"></i>
+                                            Profile
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             onClick={logoutHandler}
@@ -91,6 +93,7 @@ export default function LayoutAccount({ children }) {
                                             Logout
                                         </NavDropdown.Item>
                                     </NavDropdown>
+                                    <ThemeMode />
                                 </ul>
                             </div>
                         </div>

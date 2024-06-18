@@ -184,11 +184,11 @@ export default function Certificates() {
                                 ></iframe>
                             ) : (
                                 <div
-                                    className="card text-center bg-black"
+                                    className="card-preview text-center bg-black"
                                     style={{ width: "100%", height: "600px" }}
                                 >
                                     <div className="card-body mt-4">
-                                        <p className="text-white ">
+                                        <p>
                                             Silakan pilih sertifikat pada
                                             navigasi sertifikat.
                                         </p>

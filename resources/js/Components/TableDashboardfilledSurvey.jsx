@@ -8,7 +8,7 @@ const TableDashboardFilledSurvey = ({ surveyFilled }) => {
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
-                <thead className="thead-dark">
+                <thead className="thead">
                     <tr>
                         <th>No</th>
                         <th>Judul Survei</th>

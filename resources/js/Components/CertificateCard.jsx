@@ -51,7 +51,7 @@ const CertificateCard = ({
                             : "none";
                 }}
             >
-                <div className="card-body text-center p-2">
+                <div className="text-center p-2">
                     <div className="mb-2">
                         <strong>
                             <i className="fas fa-award"></i>{" "}

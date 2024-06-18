@@ -4,7 +4,7 @@ import { Head, usePage } from "@inertiajs/inertia-react";
 import InfoCard from "../../Components/CardInfo";
 
 export default function About() {
-    const { usersCount, surveysCount } = usePage().props;
+    const { usersCount, surveysCount, responsesCount } = usePage().props;
     
     
     return (
@@ -69,6 +69,12 @@ export default function About() {
                             background="info"
                             value={surveysCount}
                             title="Jumlah Survei"
+                        />
+                        <InfoCard
+                            icon="fa-chart-line"
+                            background="warning"
+                            value={responsesCount}
+                            title="Jumlah Respon"
                         />
                     </div>
                     {/* <div className="row mt-5">

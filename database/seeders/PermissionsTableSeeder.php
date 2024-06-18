@@ -18,6 +18,7 @@ class PermissionsTableSeeder extends Seeder
         //permission dashboard
         Permission::create(['name' => 'dashboard.index', 'guard_name' => 'web']);
         Permission::create(['name' => 'dashboard.index.full', 'guard_name' => 'web']);
+        Permission::create(['name' => 'dashboard.full.manual.book', 'guard_name' => 'web']);
 
         //permission profile
         Permission::create(['name' => 'profile.index', 'guard_name' => 'web']);

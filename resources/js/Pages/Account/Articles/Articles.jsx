@@ -13,7 +13,7 @@ export default function articleIndex() {
     return (
         <>
             <Head>
-                <title>articles - article Platform</title>
+                <title>Articles - Survey Platform</title>
             </Head>
             <LayoutAccount>
                 <div className="row mt-5">
@@ -23,7 +23,7 @@ export default function articleIndex() {
                                 <div className="col-md-3 col-12 mb-2">
                                     <Link
                                         href="/account/articles/create"
-                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        className="btn btn-md btn-style border-0 shadow w-100"
                                         type="button"
                                     >
                                         <i className="fa fa-plus-circle me-2"></i>
@@ -42,7 +42,7 @@ export default function articleIndex() {
                         <>
                             <div className="table-responsive">
                                 <table className="table table-bordered table-striped table-hovered">
-                                    <thead>
+                                    <thead className="thead">
                                         <tr>
                                             <th
                                                 scope="col"

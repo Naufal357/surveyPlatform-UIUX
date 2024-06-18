@@ -33,6 +33,8 @@ export default function UserEdit() {
     const [rolesData, setRolesData] = useState([]);
     const [userPrefsData, setUserPrefsData] = useState([]);
 
+    const [isSaving, setIsSaving] = useState(false);
+
     useEffect(() => {
         setFirstName(user.first_name);
         setSurname(user.surname);
@@ -67,6 +69,7 @@ export default function UserEdit() {
     };
 
     const updateUser = async (e) => {
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
@@ -98,6 +101,18 @@ export default function UserEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Something went wrong!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                },
+                onFinish: () => {
+                    setIsSaving(false);
                 },
             }
         );
@@ -309,6 +324,7 @@ export default function UserEdit() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

@@ -20,6 +20,7 @@ class CategoryController extends Controller
 
         return inertia('Account/Categories/Categories', [
             'categories' => $categories,
+            'app_url' => config('app.url')
         ]);
     }
 
@@ -34,10 +35,12 @@ class CategoryController extends Controller
             $this->validate($request, [
                 'name'          => 'required|unique:categories',
                 'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'status'        => 'required',
             ]);
         } else {
             $this->validate($request, [
                 'name'          => 'required|unique:categories',
+                'status'        => 'required',
             ]);
         }
 
@@ -48,12 +51,14 @@ class CategoryController extends Controller
             Category::create([
                 'name'          => $request->name,
                 'image'         => $image->hashName(),
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         } else {
             Category::create([
                 'name'          => $request->name,
                 'image'         => 'image.png',
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         }
@@ -74,16 +79,17 @@ class CategoryController extends Controller
             $this->validate($request, [
                 'name'          => 'required|unique:categories,name,' . $category->id,
                 'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'status'        => 'required',
             ]);
         } else {
             $this->validate($request, [
                 'name'          => 'required|unique:categories,name,' . $category->id,
+                'status'        => 'required',
             ]);
         }
 
-
         if ($request->hasFile('image')) {
-            if ($category->image != 'image.png') {
+            if (!Str::contains($category->image, 'image.png')) {
                 Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
             }
 
@@ -93,11 +99,13 @@ class CategoryController extends Controller
             $category->update([
                 'name'          => $request->name,
                 'image'         => $image->hashName(),
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         } else {
             $category->update([
                 'name'          => $request->name,
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         }
@@ -108,7 +116,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        if ($category->image != 'image.png') {
+        if (!Str::contains($category->image, 'image.png')) {
             Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
         }
         

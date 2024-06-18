@@ -34,8 +34,12 @@ class SurveyController extends Controller
         }
 
         if ($surveys->count() == 0) {
-            return redirect()->route('account.surveys.create');
-        }
+            if (request()->q) {
+                $message = 'No surveys found for your search query.';
+            } else {
+                return redirect()->route('account.surveys.create');
+            }
+        } 
 
         $surveys->appends(['q' => request()->q]);
 
@@ -47,7 +51,11 @@ class SurveyController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        if (auth()->user()->hasPermissionTo('surveys.index.full')) {
+            $categories = Category::all();
+        } else {
+            $categories = Category::whereNotIn('status', ['Private'])->get();
+        }
         $methods = Method::all();
         $surveyQuestionsExample = SurveyQuestions::where('survey_id', 1)->get();
 
@@ -163,7 +171,11 @@ class SurveyController extends Controller
 
     public function edit(Survey $survey)
     {
-        $categories = Category::all();
+        if (auth()->user()->hasPermissionTo('surveys.index.full')) {
+            $categories = Category::all();
+        } else {
+            $categories = Category::whereNotIn('status', ['Private'])->get();
+        }        
         $methods = Method::all();
         $surveyCategories = SurveyHasCategories::where('survey_id', $survey->id)->get();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
@@ -228,7 +240,7 @@ class SurveyController extends Controller
         }
 
         if ($request->file('image')) {
-            if ($survey->image != 'surveyFactory.jpg') {
+            if (!Str::contains($survey->image, 'surveyFactory.jpg')) {
                 Storage::disk('local')->delete('storage/image/surveys/' . basename($survey->image));
             }
 
@@ -291,7 +303,7 @@ class SurveyController extends Controller
             return abort(403, 'You do not have permission to delete this survey.');
         }
 
-        if ($Survey->image != 'surveyFactory.jpg') {
+        if (!Str::contains($Survey->image, 'surveyFactory.jpg')) {
             Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
         }
 

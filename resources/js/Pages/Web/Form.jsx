@@ -208,14 +208,13 @@ function Form() {
     }
 
     const submitForm = (e) => {
-        setIsSaving("true");
+        setIsSaving(true);
         e.preventDefault();
         const dataSubmit = {
             ...formData,
             survey_id: surveys.id,
             response_data: JSON.stringify(responseData),
         };
-<<<<<<< HEAD
 
         Inertia.post(
             "/form",
@@ -232,7 +231,6 @@ function Form() {
                         removeSurveyData();
                         Inertia.visit("/");
                     });
-                    setIsSaving("false");
                 },
                 onError: () => {
                     Swal.fire({
@@ -242,24 +240,11 @@ function Form() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving("false");
                 },
-=======
-        Inertia.post("/form", dataSubmit, {
-            onSuccess: () => {
-                Swal.fire({
-                    title: "Thank You!",
-                    text: "Survey data submitted successfully!",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 3000,
-                }).then(() => {
-                    removeSurveyData();
-                    Inertia.visit("/");
-                });
->>>>>>> c31517e85ce3136a5cfa0ec9f831fda08bf97095
+                onFinish: () => {
+                    setIsSaving(false);
+                },
             },
-            setIsSaving("false")
         );
     };
 

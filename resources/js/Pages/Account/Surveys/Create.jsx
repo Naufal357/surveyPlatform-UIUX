@@ -221,7 +221,7 @@ export default function SurveysCreate() {
     };
 
     const storeSurvey = async (e) => {
-        setIsSaving("true");
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
@@ -255,7 +255,6 @@ export default function SurveysCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving("false");
                 },
                 onError: () => {
                     Swal.fire({
@@ -265,10 +264,11 @@ export default function SurveysCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving("false");
                 },
-            },
-            setIsSaving("false")
+                onFinish: () => {
+                    setIsSaving(false);
+                },
+            }
         );
     };
 

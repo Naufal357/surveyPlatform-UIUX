@@ -115,7 +115,7 @@ class ArticleController extends Controller
 
         if ($request->file('image')) {
 
-            if ($article->image != 'articleFactory.png') {
+            if (!Str::contains($article->image, 'articleFactory.png')) {
                 Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
             }
 
@@ -146,7 +146,7 @@ class ArticleController extends Controller
     {
         $article = Articles::find($id);
 
-        if ($article->image != 'articleFactory.png') {
+        if (!Str::contains($article->image, 'articleFactory.png')) {
             Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
         }
 

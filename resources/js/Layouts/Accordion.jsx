@@ -9,44 +9,23 @@ const AccordionLayout = ({ title, children, defaultOpen = false }) => {
         setIsOpen(!isOpen);
     };
 
-    const accordionStyle = {
-        backgroundColor: isOpen ? "#e0e0e0" : "#f9f9f9",
-        borderRadius: "4px",
-        padding: "10px",
-        cursor: "pointer",
-        transition: "background-color 0.3s",
-        fontFamily: "Arial, sans-serif",
-    };
-
-    const titleStyle = {
-        fontSize: "18px",
-        fontWeight: "Bold",
-        color: "#333",
-    };
-
-    const iconStyle = {
-        marginRight: "10px",
-        transition: "transform 0.3s",
-    };
-
-    const hoverStyle = {
-        backgroundColor: "#e0e0e0",
-    };
-
     return (
-        <div className="accordion" style={accordionStyle}>
+        <div className="accordion accordion-style">
             <div className="card">
-                <div className="card border-0 rounded shadow-sm border-top-success">
-                    <div className="card-header" onClick={toggleAccordion}>
-                        <h5
-                            className="mb-0 d-flex align-items-center justify-content-between"
-                            style={titleStyle}
-                        >
-                            {title}
+                <div className="card border-0 rounded shadow-sm border-top">
+                    <div className="card-header accordion-header" onClick={toggleAccordion}>
+                        <h5 className="mb-0 d-flex align-items-center justify-content-between accordion-title">
+                            <div className="accordion-title">{title}</div>
                             {isOpen ? (
-                                <CaretDownFill size={20} style={iconStyle} />
+                                <CaretDownFill
+                                    size={20}
+                                    className="accordion-icon"
+                                />
                             ) : (
-                                <CaretRightFill size={20} style={iconStyle} />
+                                <CaretRightFill
+                                    size={20}
+                                    className="accordion-icon"
+                                />
                             )}
                         </h5>
                     </div>

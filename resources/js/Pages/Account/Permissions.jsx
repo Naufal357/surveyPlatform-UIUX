@@ -16,7 +16,7 @@ export default function PermissionIndex() {
                 <CardContent title="Permissions" icon="fa fa-key">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped table-hovered">
-                            <thead>
+                            <thead className="thead">
                                 <tr>
                                     <th scope="col" style={{ width: "5%" }}>
                                         No.
