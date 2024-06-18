@@ -97,7 +97,7 @@ export default function ResetPassword({ token, email }) {
                                         )}
 
                                         <button
-                                            className="btn btn-success shadow-sm rounded-sm px-4 w-100"
+                                            className="btn btn-style shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
                                             Reset Password

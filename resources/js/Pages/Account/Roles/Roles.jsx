@@ -64,7 +64,7 @@ export default function RoleIndex() {
                                             {role.permissions.map(
                                                 (permission, index) => (
                                                     <span
-                                                        className="btn btn-success btn-sm shadow-sm border-0 ms-2 mb-2"
+                                                        className="btn btn-style btn-sm shadow-sm border-0 ms-2 mb-2"
                                                         key={index}
                                                     >
                                                         {permission.name}

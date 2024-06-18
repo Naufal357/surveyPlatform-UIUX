@@ -102,7 +102,7 @@ export default function SelectCategory() {
                                         />
 
                                         <button
-                                            className="btn btn-success shadow-sm rounded-sm px-4 w-100"
+                                            className="btn btn-style shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
                                             Save

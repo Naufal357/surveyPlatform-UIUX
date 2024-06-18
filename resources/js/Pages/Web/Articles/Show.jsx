@@ -13,40 +13,36 @@ export default function ArticleShow() {
             <div className="container" style={{ marginTop: "80px" }}>
                 <div className="fade-in">
                     <div className="row justify-content-center">
-                        <div className="col-md-12">
-                            <div className="col-md-12">
-                                <img
-                                    src={article.image}
-                                    alt={article.title}
-                                    className="img-fluid rounded mb-4 mx-auto d-block"
-                                    style={{
-                                        maxWidth: "100%",
-                                        maxHeight: "300px",
-                                        objectFit: "cover",
-                                    }}
-                                />
+                        <div className="col-md-8">
+                            <img
+                                src={article.image}
+                                alt={article.title}
+                                className="img-fluid rounded mb-4 mx-auto d-block"
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "300px",
+                                    objectFit: "cover",
+                                }}
+                            />
 
-                                <h1 className="fw-bold fs-1">
-                                    {article.title}
-                                </h1>
-                                <div className="row mb-3">
-                                    <div className="col-md-6">
-                                        {article.user.first_name +
-                                            " " +
-                                            article.user.surname}
-                                    </div>
-                                    <div className="col-md-6 text-end">
-                                        {article.updated_at}
-                                    </div>
+                            <h1 className="fw-bold fs-1">{article.title}</h1>
+                            <div className="row mb-3">
+                                <div className="col-md-6">
+                                    {article.user.first_name +
+                                        " " +
+                                        article.user.surname}
                                 </div>
-                                <hr />
-                                <div
-                                    className="mt-4"
-                                    dangerouslySetInnerHTML={{
-                                        __html: article.content,
-                                    }}
-                                ></div>
+                                <div className="col-md-6 text-end">
+                                    {article.updated_at}
+                                </div>
                             </div>
+                            <hr />
+                            <div
+                                className="mt-4"
+                                dangerouslySetInnerHTML={{
+                                    __html: article.content,
+                                }}
+                            ></div>
                         </div>
                     </div>
                 </div>
