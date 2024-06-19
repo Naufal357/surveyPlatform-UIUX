@@ -22,7 +22,7 @@ const InfoCard = ({ icon, background, value, title }) => {
                     </div>
                     <div>
                         <div>{value}</div>
-                        <div className="text-muted text-uppercase font-weight-bold small">
+                        <div className="text-uppercase font-weight-bold small">
                             {title}
                         </div>
                     </div>

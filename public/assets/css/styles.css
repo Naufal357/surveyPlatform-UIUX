@@ -34,19 +34,19 @@ body.light {
 }
 
 body.dark {
-    --bg-color: #383854;          
-    --nav-color: #16213e;
-    --bg-sidebar-color: #0f3460; 
-    --bg-sidebar-color-active: #303080;        
+    --bg-color: #121212;          
+    --nav-color: #5d6363;
+    --bg-sidebar-color: #192122; 
+    --bg-sidebar-color-active: #454c4c;        
     --title-color: #ffffff;      
     --font-color: #e0e0e0;
     --font-color2: #ffffff;        
-    --card-color: #0f3460;       
-    --card-color2: #303080;
+    --card-color: #2e3637;       
+    --card-color2: #3F3F3F;
     --card-color3: #292947;
-    --btn-color: #2c3c69;     
-    --table-odd-color: #283747;  
-    --table-even-color: #1b263b; 
+    --btn-color: #64888f;     
+    --table-odd-color: #5d6363;  
+    --table-even-color: #454c4c; 
 }
 
 body.warm {
@@ -449,7 +449,7 @@ html:not([dir="rtl"]) .mfe-3 {
 
 .dropdown-item:hover {
     color: white;
-    /* background-color: #198754; */
+    background-color: #198754; 
     background-color: #8f4030;
     border-radius: 5px;
 } */

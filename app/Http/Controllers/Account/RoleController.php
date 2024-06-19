@@ -47,10 +47,6 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        if ($id == 1) {
-            abort(403, "Editing the role is not allowed.");
-        }
-
         $role = Role::with('permissions')->findOrFail($id);
 
         $permissions = Permission::all();

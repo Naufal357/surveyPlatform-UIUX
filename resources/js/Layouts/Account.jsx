@@ -15,7 +15,6 @@ export default function LayoutAccount({ children }) {
         if (!sidebarToggle) {
             document.body.classList.add("sb-sidenav-toggled");
 
-            //set state "sidebarToggle" to true
             setSidebarToggle(true);
         } else {
             document.body.classList.remove("sb-sidenav-toggled");
@@ -64,6 +63,14 @@ export default function LayoutAccount({ children }) {
                             </div>
                             <div className="navbar-header d-flex align-items-center">
                                 <ul className="navbar-nav d-flex flex-row align-items-center">
+                                    <li className="nav-item">
+                                        <Link
+                                            href="/"
+                                            className="btn text-white"
+                                        >
+                                            Home
+                                        </Link>
+                                    </li>
                                     <NavDropdown
                                         title={
                                             <>
@@ -77,7 +84,6 @@ export default function LayoutAccount({ children }) {
                                                 {`${auth.user.first_name} ${auth.user.surname}`}
                                             </>
                                         }
-                                        className="fw-bold"
                                         id="basic-nav-dropdown"
                                     >
                                         <NavDropdown.Item
