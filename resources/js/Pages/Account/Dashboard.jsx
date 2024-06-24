@@ -5,13 +5,12 @@ import LayoutAccount from "../../Layouts/Account";
 import AccordionLayout from "../../Layouts/Accordion";
 import hasAnyPermission from "../../Utils/Permissions";
 import TableDashboardSurvey from "../../Components/TableDashboardSurvey";
-import TableDashboardFilledSurvey from "../../Components/TableDashboardfilledSurvey";
 
 export default function Dashboard() {
-    const { auth, app_url, surveys, surveyData, filledOutSurvey } =
+    const { auth, app_url, surveys, surveyData } =
         usePage().props;
-    console.log(`${app_url}`);
-    useEffect(() => {
+
+        useEffect(() => {
         const handleVisibilityChange = () => {
             document.title = document.hidden
                 ? "Survey Platform 👋😊"
@@ -89,29 +88,6 @@ export default function Dashboard() {
                         )}
 
                         <Pagination links={surveys.links} align={"end"} />
-                    </AccordionLayout>
-                    <AccordionLayout
-                        title="Survei Yang Telah Diisi"
-                        defaultOpen={false}
-                    >
-                        {filledOutSurvey.data.length > 0 ? (
-                            <>
-                                <TableDashboardFilledSurvey
-                                    surveyFilled={filledOutSurvey}
-                                />
-
-                                <Pagination
-                                    links={filledOutSurvey.links}
-                                    align={"end"}
-                                />
-                            </>
-                        ) : (
-                            <>
-                                <div className="text-center">
-                                    Tidak ada data
-                                </div>
-                            </>
-                        )}
                     </AccordionLayout>
                 </div>
             </LayoutAccount>

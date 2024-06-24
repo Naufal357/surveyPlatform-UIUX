@@ -229,11 +229,11 @@ class TamController extends Controller
         }
 
         $descriptiveStatistics = [];
+        $maxValues = [];
+        $sumValues = [];
 
         foreach ($responses as $response) {
             $responseData = json_decode($response->response_data, true);
-            $maxValues = [];
-            $sumValues = [];
             $formattedTamArray = [];
 
             foreach ($responseData['tam'] as $variable) {
@@ -255,17 +255,21 @@ class TamController extends Controller
             foreach ($formattedTamArray as $variable => $responses) {
                 $maxValue = count($responses) * 5;
                 $sumValue = array_sum($responses);
+                if (!isset($maxValues[$variable])) {
+                    $maxValues[$variable] = 0;
+                }
+                if (!isset($sumValues[$variable])) {
+                    $sumValues[$variable] = 0;
+                }
 
-                $maxValues[$variable] = $maxValue;
-                $sumValues[$variable] = $sumValue;
+                $maxValues[$variable] += $maxValue;
+                $sumValues[$variable] += $sumValue;
             }
         }
 
-        $descriptiveStatistics = [];
         foreach ($maxValues as $variable => $sumMaxValue) {
             $sumValue = $sumValues[$variable];
             if ($sumValue != 0) {
-                $avg = $sumValue / count($formattedTamArray[$variable]);
                 $p = ($sumValue / $sumMaxValue) * 100;
 
                 $minValue = min($formattedTamArray[$variable]);
@@ -275,7 +279,6 @@ class TamController extends Controller
             $descriptiveStatistics[] = [
                 'variable' => $variable,
                 'nI' => count($formattedTamArray[$variable]),
-                'avg' => number_format($avg, 2),
                 'min' => number_format($minValue, 2),
                 'max' => number_format($maxValue, 2),
                 'sum_SK' => $sumMaxValue,
@@ -419,6 +422,14 @@ class TamController extends Controller
 
         $getResumeDescription = [];
 
+        $translatedVariables = [
+            "Perceived Ease of Use (PEU)" => "mudah",
+            "Perceived Usefulness (PU)" => "manfaat",
+            "Attitude Toward Use (ATU)" => "sikap",
+            "Behavioral Intention (BI)" => "niat",
+            "Actual System Use (ASU)" => "aktual",
+        ];
+
         foreach ($regressionResults as $index => $regressionResult) {
             $path = $regressionResult['path'];
             $variables = explode(' ➔ ', $path);
@@ -441,12 +452,12 @@ class TamController extends Controller
             $variableDependent = $variables[1];
 
             $kalimatPositif = [
-                "Dari hasil regresi TAM, semakin tinggi $variableIndependent, semakin tinggi juga $variableDependent(1).",
-                "$variableIndependent memberikan kontribusi positif terhadap $variableDependent(2).",
-                "Pengaruh $variableIndependent terhadap $variableDependent terlihat positif(3).",
-                "$variableIndependent berdampak positif terhadap $variableDependent(4).",
-                "Terdapat hubungan positif antara $variableIndependent dan $variableDependent(5).",
-                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, semakin tinggi pula $variableDependent(6)."
+                "Terdapat hubungan positif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin besar $translatedVariables[$variableDependent] yang dirasakan pengguna(1).",
+                "$variableIndependent memberikan kontribusi positif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin positif $translatedVariables[$variableDependent] mereka terhadap sistem(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat positif. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin positif $translatedVariables[$variableDependent] mereka terhadap sistem(3).",
+                "$variableIndependent berdampak positif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin besar $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(4).",
+                "Terdapat hubungan positif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin positif $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin besar $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(5).",
+                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, semakin tinggi pula $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Dengan demikian menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] pengguna untuk menggunkan sistem, maka semakin besar pula penggunaan $translatedVariables[$variableDependent] mereka terhadap sistem (6)."
             ];
 
             $kalimatNetral = [
@@ -459,13 +470,14 @@ class TamController extends Controller
             ];
 
             $kalimatNegatif = [
-                "Dari hasil regresi TAM, semakin tinggi $variableIndependent, maka semakin rendah $variableDependent(1).",
-                "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent(2).",
-                "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif dan berpengaruh buruk(3).",
-                "$variableIndependent berdampak negatif terhadap $variableDependent(4).",
-                "Hubungan antara $variableIndependent dan $variableDependent terlihat negatif(5).",
-                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, maka semakin rendah $variableDependent(6)."
+                "Terdapat hubungan negatif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin kecil kemungkinan $translatedVariables[$variableDependent] yang dirasakan pengguna(1).",
+                "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin negatif $translatedVariables[$variableDependent] mereka terhadap sistem(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin negatif $translatedVariables[$variableDependent] mereka terhadap sistem(3).",
+                "$variableIndependent berdampak negatif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin kecil $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(4).",
+                "Terdapat hubungan negatif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin kecil $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(5).",
+                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, maka $variableDependent akan semakin rendah . Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Dengan demikian menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] pengguna untuk menggunkan sistem, maka semakin kecil penggunaan $translatedVariables[$variableDependent] mereka terhadap sistem (6)."
             ];
+
 
 
 
@@ -479,11 +491,11 @@ class TamController extends Controller
             //     $getResumeDescription[] = "Nilai tidak valid";
             // }
 
-            if ($regressionResult['a'] > 0) {
+            if ($regressionResult['b'] > 0) {
                 $getResumeDescription['Positif'][] = $kalimatPositif[$index];
-            } else if ($regressionResult['a'] == 0) {
+            } else if ($regressionResult['b'] == 0) {
                 $getResumeDescription['Netral'][] = $kalimatNetral[$index];
-            } else if ($regressionResult['a'] < 0) {
+            } else if ($regressionResult['b'] < 0) {
                 $getResumeDescription['Negatif'][] = $kalimatNegatif[$index];
             } else {
                 $getResumeDescription[] = "Nilai tidak valid";

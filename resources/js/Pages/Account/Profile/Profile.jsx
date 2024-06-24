@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
 import hasAnyPermission from "../../../Utils/Permissions";
+import TableDashboardFilledSurvey from "../../../Components/TableDashboardfilledSurvey";
+import AccordionLayout from "../../../Layouts/Accordion";
+import Pagination from "../../../Components/Pagination";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function UserCreate() {
-    const { user } = usePage().props;
+    const { user, filledOutSurvey } = usePage().props;
     const logoutHandler = async (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -20,7 +23,7 @@ export default function UserCreate() {
                 <title>Create Users - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <div className="row mb-5">
+                <div className="row">
                     <div className="col-8">
                         <CardContent title="Profile">
                             <div className="row">
@@ -143,6 +146,31 @@ export default function UserCreate() {
                             </nav>
                         </CardContent>
                     </div>
+                </div>
+                <div>
+                    <AccordionLayout
+                        title="Survei Yang Telah Diisi"
+                        defaultOpen={false}
+                    >
+                        {filledOutSurvey.data.length > 0 ? (
+                            <>
+                                <TableDashboardFilledSurvey
+                                    surveyFilled={filledOutSurvey}
+                                />
+
+                                <Pagination
+                                    links={filledOutSurvey.links}
+                                    align={"end"}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <div className="text-center">
+                                    Tidak ada data
+                                </div>
+                            </>
+                        )}
+                    </AccordionLayout>
                 </div>
             </LayoutAccount>
         </>

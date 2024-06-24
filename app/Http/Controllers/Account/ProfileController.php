@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Category;
 use App\Models\UserSelectCategory;
+use App\Models\SurveyResponses;
 use App\Models\User;
 use App\Models\Certificate;
 
@@ -16,13 +17,16 @@ class ProfileController extends Controller
 {
     public function index()
     {
+        $user = User::findOrFail(auth()->user()->id);
         $categories = Category::all();
         $userPrefs = UserSelectCategory::where('user_id', auth()->user()->id)->get();
+        $filledOutSurvey = SurveyResponses::with(['survey', 'user'])->where('user_id', $user->id)->latest()->paginate(8);
 
         return inertia('Account/Profile/Profile', [
             'user' => auth()->user(),
             'categories' => $categories,
-            'userPrefs' => $userPrefs
+            'userPrefs' => $userPrefs,
+            'filledOutSurvey' => $filledOutSurvey,
         ]);
     }
 

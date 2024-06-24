@@ -24,7 +24,6 @@ class DashboardController extends Controller
             $surveys = Survey::where('user_id', $user->id)->latest()->paginate(10);
         }
 
-        $filledOutSurvey = SurveyResponses::with(['survey', 'user'])->where('user_id', $user->id)->latest()->paginate(8);
         $surveyData = [];
 
         foreach ($surveys as $survey) {
@@ -46,7 +45,6 @@ class DashboardController extends Controller
             'app_url' => $app_url,
             'surveys' => $surveys,
             'surveyData' => $surveyData,
-            'filledOutSurvey' => $filledOutSurvey,
         ])->with('currentSurveyTitle');
     }
 }

@@ -79,7 +79,6 @@ body {
 .btn-style:hover {
     background: var(--btn-color);
     color: var(--font-color2);
-    border-color: #ffffff;
 }
 
 .btn-text {

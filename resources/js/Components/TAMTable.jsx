@@ -16,10 +16,7 @@ const renderResponseTable = (data) => {
     const keys = Object.keys(data[0]?.answerData);
 
     return (
-        <div
-            className="table-responsive"
-            style={{ overflowY: "auto" }}
-        >
+        <div className="table-responsive" style={{ overflowY: "auto" }}>
             <table className="table table-striped table-bordered">
                 <thead className="thead">
                     <tr>
@@ -55,9 +52,8 @@ const renderDescriptiveStatisticsTable = (data) => {
                     <th>nI (Jumlah Pertanyaan)</th>
                     <th>Min</th>
                     <th>Max</th>
-                    <th>Avg</th>
-                    <th>Jumlah SK (Nilai Maksimum)</th>
-                    <th>Jumlah SH (Nilai Yang Didapat)</th>
+                    <th>∑SH (Nilai Yang Didapat)</th>
+                    <th>∑SK (Nilai Maksimum)</th>
                     <th>P (Jumlah SH / Jumlah SK)</th>
                 </tr>
             </thead>
@@ -68,9 +64,8 @@ const renderDescriptiveStatisticsTable = (data) => {
                         <td>{result["nI"]}</td>
                         <td>{result["min"]}</td>
                         <td>{result["max"]}</td>
-                        <td>{result["avg"]}</td>
-                        <td>{result["sum_SK"]}</td>
                         <td>{result["sum_SH"]}</td>
+                        <td>{result["sum_SK"]}</td>
                         <td>{result["P"]}</td>
                     </tr>
                 ))}
@@ -115,6 +110,5 @@ const renderRegressionTable = (data) => {
         </div>
     );
 };
-
 
 export default TAMTable;

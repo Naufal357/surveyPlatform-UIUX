@@ -386,7 +386,7 @@ export default function Dashboard() {
                                                 "tam.export",
                                             ]) && (
                                                 <button
-                                                    className="btn btn-success"
+                                                    className="btn btn-style"
                                                     onClick={handleExport}
                                                 >
                                                     Export to Excel

@@ -329,7 +329,7 @@ export default function Dashboard() {
                                         <h4>Hasil Respon SUS</h4>
                                         {hasAnyPermission(["sus.export"]) && (
                                             <button
-                                                className="btn btn-success"
+                                                className="btn btn-style"
                                                 onClick={handleExport}
                                             >
                                                 Export to Excel
