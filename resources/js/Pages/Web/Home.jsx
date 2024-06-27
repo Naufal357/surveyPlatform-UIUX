@@ -6,7 +6,7 @@ import CardItem from "../../Components/CardItem";
 import CardCategory from "../../Components/CardCategory";
 
 export default function Home() {
-    const { surveys, categories, articles, auth } = usePage().props;
+    const { surveys, categories, articles } = usePage().props;
 
     useEffect(() => {
         const handleVisibilityChange = () => {

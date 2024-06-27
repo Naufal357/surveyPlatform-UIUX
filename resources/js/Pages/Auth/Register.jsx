@@ -48,10 +48,13 @@ export default function Register() {
                                     width={"60"}
                                 />
                                 <h4>
-                                    <strong>Survey</strong> Platform
+                                    <h4>
+                                        <strong>Survey</strong>{" "}
+                                        <small>Platform</small>
+                                    </h4>
                                 </h4>
                             </div>
-                            <div className="card border-0 rounded-3 shadow-sm border-top-success">
+                            <div className="card border-0 rounded-3 shadow-sm border-top">
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">

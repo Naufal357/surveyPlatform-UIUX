@@ -35,7 +35,7 @@ export default function ForgotPassword() {
             <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
-                        <div className="col-md-4 mt-80">
+                        <div className="col-md-6 mt-80">
                             <div className="text-center mb-4">
                                 <img
                                     src="/assets/images/logo.png"
@@ -46,7 +46,7 @@ export default function ForgotPassword() {
                                     <small>Platform</small>
                                 </h4>
                             </div>
-                            <div className="card border-0 rounded-3 shadow-sm border-top-success">
+                            <div className="card border-0 rounded-3 shadow-sm border-top">
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">

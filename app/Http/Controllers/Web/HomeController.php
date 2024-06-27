@@ -49,7 +49,7 @@ class HomeController extends Controller
         } else {
             $surveys = Survey::where('status', 'Public')->latest()->take($maxSurveys)->get();
         }
-        
+
         return inertia('Web/Home', [
             'categories' => $categories,
             'surveys' => $surveys,

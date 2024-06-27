@@ -10,7 +10,8 @@ class ResetPasswordController extends Controller
 {
     public function index()
     {
-        return inertia('Auth/ForgotPassword');
+        
+        return inertia('Auth/ForgotPassword', ['auth' => auth()->user()]);
     }
 
     public function store(Request $request)

@@ -66,7 +66,7 @@ export default function SelectCategory() {
                                     <strong>Survey</strong> Platform
                                 </h4>
                             </div>
-                            <div className="card border-0 rounded-3 shadow-sm border-top-success">
+                            <div className="card border-0 rounded-3 shadow-sm border-top">
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">
@@ -87,7 +87,8 @@ export default function SelectCategory() {
                                         />
 
                                         <hr />
-                                        <p>
+                                        <p className="bold fw-bold">Opsional</p>
+                                        <p className="text-muted fw-light">
                                             Pilih kategori yang Anda kuasai atau
                                             sukai, dan jika Anda memiliki
                                             sertifikat atau ijasah yang
