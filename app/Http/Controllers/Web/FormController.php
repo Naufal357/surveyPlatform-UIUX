@@ -15,7 +15,6 @@ class FormController extends Controller
     {
         $user = auth()->user();
         $survey = Survey::where('id', $id)->where('slug', $slug)->firstOrFail();
-        // dd($survey-> user_id, $user->id);
         if ($survey->status == 'Private' && $survey->user_id !== $user->id) {
             abort(403, 'This survey is not available.');
         }

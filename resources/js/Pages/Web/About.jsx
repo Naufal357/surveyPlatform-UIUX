@@ -5,8 +5,7 @@ import InfoCard from "../../Components/CardInfo";
 
 export default function About() {
     const { usersCount, surveysCount, responsesCount } = usePage().props;
-    
-    
+
     return (
         <>
             <Head>
@@ -19,8 +18,8 @@ export default function About() {
                             <h1>About Us</h1>
                         </div>
                     </div>
-                    <div className="row mt-5">
-                        <div className="col-md-4 text-center">
+                    <div className="row">
+                        <div className="col-md-12 col-lg-4 mt-5 text-center">
                             <img
                                 src="https://img.freepik.com/free-vector/isometric-style-cms-concept_23-2148807946.jpg"
                                 alt="Usability Testing"
@@ -31,7 +30,7 @@ export default function About() {
                                 }}
                             />
                         </div>
-                        <div className="col-md-8">
+                        <div className="col-md-12 col-lg-8 mt-5">
                             <p>
                                 Situs web kami bertujuan untuk menyediakan
                                 layanan pengujian kegunaan yang komprehensif
@@ -40,20 +39,42 @@ export default function About() {
                                 Technology Acceptance Model (TAM). Pengujian
                                 kegunaan sangat penting dalam memastikan bahwa
                                 produk memenuhi kebutuhan pengguna dan
-                                meningkatkan kepuasan pengguna.
+                                meningkatkan kepuasan pengguna. Dengan demikian,
+                                kami menawarkan berbagai layanan untuk mendukung
+                                pengembangan produk Anda.
                             </p>
                             <ul>
-                                <li>Pembuatan survei yang komprehensif</li>
-                                <li>Pengumpulan dan analisis data</li>
                                 <li>
-                                    Laporan yang disesuaikan untuk memenuhi
-                                    kebutuhan
+                                    Tersedia template pertanyaan yang dapat
+                                    disesuaikan untuk mempermudah pembuatan
+                                    survei.
+                                </li>
+                                <li>
+                                    Pembuatan survei yang komprehensif,
+                                    dirancang untuk menggali umpan balik
+                                    pengguna secara mendalam.
+                                </li>
+                                <li>
+                                    Pengumpulan dan analisis data yang akurat
+                                    untuk memberikan wawasan berharga.
+                                </li>
+                                <li>
+                                    Penghitungan kepuasan pengguna dengan
+                                    berbagai metrik yang relevan.
+                                </li>
+                                <li>
+                                    Penyusunan laporan yang disesuaikan untuk
+                                    memenuhi kebutuhan spesifik Anda, dengan
+                                    visualisasi data yang mudah dipahami.
                                 </li>
                             </ul>
                             <p>
                                 Layanan kami memastikan bahwa Anda mendapatkan
-                                wawasan berharga tentang pengalaman pengguna dan
-                                penerimaan produk.
+                                wawasan berharga tentang pengalaman dan
+                                penerimaan pengguna terhadap produk Anda. Kami
+                                juga menyediakan rekomendasi strategis untuk
+                                meningkatkan pengalaman pengguna dan
+                                meningkatkan kualitas produk Anda.
                             </p>
                         </div>
                     </div>
@@ -77,19 +98,20 @@ export default function About() {
                             title="Jumlah Respon"
                         />
                     </div>
+
                     {/* <div className="row mt-5">
-                        <div className="col-md-12 text-center">
-                            <img
-                                src="https://img.freepik.com/free-vector/mobile-app-development-abstract-set-with-testing-symbols-flat-isolated-vector-illustration_1284-77470.jpg"
-                                alt="User Experience"
-                                className="img-fluid rounded shadow-sm"
-                                style={{
-                                    maxWidth: "100%",
-                                    height: "300px",
-                                }}
-                            />
-                        </div>
-                    </div> */}
+                            <div className="col-md-12 text-center">
+                                <img
+                                    src="https://img.freepik.com/free-vector/mobile-app-development-abstract-set-with-testing-symbols-flat-isolated-vector-illustration_1284-77470.jpg"
+                                    alt="User Experience"
+                                    className="img-fluid rounded shadow-sm"
+                                    style={{
+                                        maxWidth: "100%",
+                                        height: "300px",
+                                    }}
+                                />
+                            </div>
+                        </div> */}
                 </div>
             </Layout>
         </>
