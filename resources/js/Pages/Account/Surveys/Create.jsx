@@ -566,7 +566,7 @@ export default function SurveysCreate() {
                                     alt="Technology Acceptance Model"
                                     className="img-fluid rounded shadow-sm"
                                     style={{
-                                        maxWidth: "70%",
+                                        maxWidth: "50%",
                                         height: "auto",
                                     }}
                                 />

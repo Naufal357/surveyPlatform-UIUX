@@ -3,6 +3,7 @@ import LayoutAccount from "../../Layouts/Account";
 import CardContent from "../../Layouts/CardContent";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import Pagination from "../../Components/Pagination";
+import Search from "../../Components/Search";
 
 export default function PermissionIndex() {
     const { permissions } = usePage().props;
@@ -13,6 +14,11 @@ export default function PermissionIndex() {
                 <title>Permissions - Survey Platform</title>
             </Head>
             <LayoutAccount>
+                <div>
+                    <div className="col-md-5 mb-2">
+                        <Search URL={"/account/permissions/"} />
+                    </div>
+                </div>
                 <CardContent title="Permissions" icon="fa fa-key">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped table-hovered">
