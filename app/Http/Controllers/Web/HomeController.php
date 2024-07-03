@@ -15,6 +15,9 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
+        $user = auth()->user();
+        $auth = auth()->user();
+        
         if (Cookie::has('remember_token')) {
             $user = User::where('remember_token', Cookie::get('remember_token'))->first();
             if ($user) {
@@ -23,8 +26,6 @@ class HomeController extends Controller
         }
 
         $maxSurveys = 12;
-        $user = auth()->user();
-        $auth = auth()->user();
         $categories = Category::latest()->where('status', 'Public')->take(6)->get();
         $articles = Articles::latest()->where('status', 'Public')->take(6)->get();
 
