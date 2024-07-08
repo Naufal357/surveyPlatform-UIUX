@@ -52,23 +52,23 @@ export default function Dashboard() {
                             <br />
                             <div className="row d-flex">
                                 <a
-                                    href={`${app_url}/assets/files/SurveyPlatform-UserManualBook(SUS).pdf`}
-                                    className="btn btn-style m-2 col-3"
+                                    href={`${app_url}/assets/files/SurveyPlatform-UserManualBook(TAM).pdf`}
+                                    className="btn btn-style m-2 col-md-3 col-11"
                                     target="_blank"
                                     download
                                 >
-                                    Unduh Manual Book SUS
+                                    Unduh Manual Book
                                 </a>
                                 {hasAnyPermission([
                                     "dashboard.full.manual.book",
                                 ]) && (
                                     <a
-                                        href={`${app_url}/assets/files/SurveyPlatform-FullManualBook(SUS).pdf`}
-                                        className="btn btn-style m-2 col-3"
+                                        href={`${app_url}/assets/files/SurveyPlatform-FullManualBook(TAM).pdf`}
+                                        className="btn btn-style m-2 col-md-3 col-11"
                                         target="_blank"
                                         download
                                     >
-                                        Unduh Manual Book SUS - Admin
+                                        Unduh Manual Book - Admin
                                     </a>
                                 )}
                             </div>

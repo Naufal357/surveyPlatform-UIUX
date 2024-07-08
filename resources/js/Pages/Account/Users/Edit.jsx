@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 
 export default function UserEdit() {
     const { errors, roles, user, categories, userPrefs } = usePage().props;
-
     let filteredRoles = roles;
 
     if (!hasAnyPermission(["users.index.full"])) {
@@ -288,6 +287,7 @@ export default function UserEdit() {
                                                 e.target.value
                                             )
                                         }
+                                        error={errors.password}
                                         placeholder="Password Confirmation"
                                     />
                                 </div>
@@ -302,6 +302,7 @@ export default function UserEdit() {
                                 valueKey="name"
                                 labelKey="name"
                                 selectedValues={rolesData}
+                                error={errors.roles}
                                 onChange={handleCheckboxRolesChange}
                             />
                         </div>
@@ -314,6 +315,7 @@ export default function UserEdit() {
                                 valueKey="id"
                                 labelKey="name"
                                 selectedValues={userPrefsData}
+                                error={errors.user_prefs}
                                 onChange={handleCheckboxUserPrefsChange}
                             />
                         </div>

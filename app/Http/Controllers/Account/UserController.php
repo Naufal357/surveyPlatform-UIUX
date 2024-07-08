@@ -113,7 +113,9 @@ class UserController extends Controller
             'gender'     => 'required',
             'profession'     => 'required',
             'educational_background'     => 'required',
-            'password' => 'nullable|confirmed'
+            'password' => 'nullable|confirmed',
+            'roles' => 'required',
+            'user_prefs' => 'required',
         ]);
 
         if ($request->password != '') {
