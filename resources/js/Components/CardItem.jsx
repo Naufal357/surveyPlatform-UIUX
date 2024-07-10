@@ -34,6 +34,7 @@ const CardItem = ({ type, data, link, maxTitleLength, surveyFilled = false }) =>
                                     height: "100%",
                                     objectFit: "cover",
                                 }}
+                                loading="lazy"
                             />
                         </div>
                         <div className="card-body h-100">
@@ -74,6 +75,7 @@ const CardItem = ({ type, data, link, maxTitleLength, surveyFilled = false }) =>
                                     height: "100%",
                                     objectFit: "cover",
                                 }}
+                                loading="lazy"
                             />
                         </div>
                         <div className="card-body h-100">

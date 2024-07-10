@@ -30,6 +30,7 @@ export default function CardCategory({ category }) {
                                     height: "100%",
                                     objectFit: "cover",
                                 }}
+                                loading="lazy"
                             />
                         </div>
                         <p
