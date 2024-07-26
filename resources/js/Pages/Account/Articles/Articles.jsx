@@ -97,24 +97,36 @@ export default function articleIndex() {
                                                                 1) *
                                                                 articles.per_page}
                                                     </td>
-                                                    <td>{article.title}</td>
+                                                    <td>
+                                                        {article.title || "-"}
+                                                    </td>
                                                     {hasAnyPermission([
                                                         "articles.index.full",
                                                     ]) && (
                                                         <td>
-                                                            {`${article.user.first_name} ${article.user.surname}`}
+                                                            {article.user
+                                                                ? `${article.user.first_name} ${article.user.surname}`
+                                                                : "-"}
                                                         </td>
                                                     )}
                                                     <td>
-                                                        {article.updated_at}
+                                                        {article.updated_at ||
+                                                            "-"}
                                                     </td>
                                                     <td className="text-center">
-                                                        <img
-                                                            src={article.image}
-                                                            className="rounded-3"
-                                                            width={"100"}
-                                                        />
+                                                        {article.image ? (
+                                                            <img
+                                                                src={
+                                                                    article.image
+                                                                }
+                                                                className="rounded-3"
+                                                                width={"100"}
+                                                            />
+                                                        ) : (
+                                                            "-"
+                                                        )}
                                                     </td>
+
                                                     <td className="text-center">
                                                         {hasAnyPermission([
                                                             "articles.edit",

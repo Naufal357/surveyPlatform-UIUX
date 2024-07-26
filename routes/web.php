@@ -72,8 +72,8 @@ Route::group(['middleware' => 'cors'], function () {
             Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account'])
                 ->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
 
-            Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index')
-                ->middleware('permission:permissions.index');
+            Route::resource('/permissions', \App\Http\Controllers\Account\PermissionController::class, ['as' => 'account'])
+                ->middleware('permission:permissions.index|permissions.create|permissions.edit|permissions.delete');
 
             Route::resource('/certificates', \App\Http\Controllers\Account\CertificateController::class, ['as' => 'account'])
                 ->middleware('permission:certificates.index|certificates.index.full|certificates.approve|certificates.reject');

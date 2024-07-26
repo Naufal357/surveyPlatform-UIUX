@@ -71,14 +71,18 @@ export default function CategoryIndex() {
                                                         1) *
                                                         categories.per_page}
                                             </td>
-                                            <td>{category.name}</td>
-                                            <td>{category.status}</td>
+                                            <td>{category.name || "-"}</td>
+                                            <td>{category.status || "-"}</td>
                                             <td className="text-center">
-                                                <img
-                                                    src={category.image}
-                                                    className="rounded-3"
-                                                    height={"45"}
-                                                />
+                                                {category.image ? (
+                                                    <img
+                                                        src={category.image}
+                                                        className="rounded-3"
+                                                        height={"45"}
+                                                    />
+                                                ) : (
+                                                    "-"
+                                                )}
                                             </td>
                                             <td className="text-center">
                                                 {hasAnyPermission([

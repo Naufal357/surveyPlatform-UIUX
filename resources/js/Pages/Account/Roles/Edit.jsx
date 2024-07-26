@@ -124,6 +124,7 @@ export default function RoleEdit() {
                                 labelKey="name"
                                 selectedValues={permissionsData}
                                 onChange={handleCheckboxChange}
+                                error={errors.permissions}
                             />
                         </div>
                         <div>

@@ -1,38 +1,22 @@
 import React, { useState } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
+import InputField from "../../../Components/InputField";
+import RadioSelect from "../../../Components/RadioSelect";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
-import SelectCheckbox from "../../../Components/SelectCheckbox";
-import hasAnyPermission from "../../../Utils/Permissions";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
 
-export default function RoleCreate() {
-    const { errors, permissions } = usePage().props;
-
-    let filteredPermissions = permissions;
-
-    if (!hasAnyPermission(["roles.index.full"])) {
-        filteredPermissions = filteredPermissions.filter(
-            (permission) =>
-                permission.name !== "users.index.full" &&
-                permission.name !== "roles.index.full"
-        );
-    }
+export default function CategoryCreate() {
+    const { errors } = usePage().props;
 
     const [name, setName] = useState("");
-    const [permissionsData, setPermissionsData] = useState([]);
+    const [guardName, setGuardName] = useState("");
+
     const [isSaving, setIsSaving] = useState(false);
 
-    const handleCheckboxChange = (e) => {
-        let data = permissionsData;
-        data.push(e.target.value);
-
-        setPermissionsData(data);
-    };
-
-    const storeRole = async (e) => {
+    const storeCategory = async (e) => {
         setIsSaving(true);
         e.preventDefault();
 
@@ -43,10 +27,10 @@ export default function RoleCreate() {
         }
 
         Inertia.post(
-            "/account/roles",
+            "/account/permissions",
             {
                 name: name,
-                permissions: permissionsData,
+                guard_name: guardName,
             },
             {
                 onSuccess: () => {
@@ -61,7 +45,7 @@ export default function RoleCreate() {
                 onError: () => {
                     Swal.fire({
                         title: "Error!",
-                        text: "Something went wrong!",
+                        text: "Data failed to save!",
                         icon: "error",
                         showConfirmButton: false,
                         timer: 1500,
@@ -73,41 +57,33 @@ export default function RoleCreate() {
             }
         );
     };
+
     return (
         <>
             <Head>
-                <title>Create Roles - Survey Platform</title>
+                <title>Create Permissions - Survey Platform</title>
             </Head>
             <LayoutAccount>
-                <CardContent title="Create Roles" icon="fa fa-shield-alt">
-                    <form onSubmit={storeRole}>
+                <CardContent title="Create Permissions" icon="fas fa-passport">
+                    <form onSubmit={storeCategory}>
                         <div className="mb-3">
-                            <label className="form-label fw-bold">
-                                Role Name
-                            </label>
-                            <input
-                                type="text"
-                                className="form-control"
+                            <InputField
+                                label="Permission Name"
+                                name="name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="Enter Role Name"
+                                error={errors.name}
                             />
                         </div>
-                        {errors.name && (
-                            <div className="alert alert-danger">
-                                {errors.name}
-                            </div>
-                        )}
-                        <hr />
+
                         <div className="mb-3">
-                            <SelectCheckbox
-                                id={"permissions"}
-                                label="Permissions"
-                                options={filteredPermissions}
-                                valueKey="name"
-                                labelKey="name"
-                                onChange={handleCheckboxChange}
-                                error={errors.permissions}
+                            <InputField
+                                label="Guard Name"
+                                name="guard_name"
+                                value={guardName}
+                                onChange={(e) => setGuardName(e.target.value)}
+                                error={errors.guard_name}
+                                placeholder={"web"}
                             />
                         </div>
 

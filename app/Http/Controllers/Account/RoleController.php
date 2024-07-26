@@ -59,21 +59,32 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
-        if ($request->name == "super admin") {
-            abort(403, "Editing the role is not allowed.");
+        if ($role->name == "super admin") {
+            $existingPermissions = $role->permissions->pluck('name')->toArray();
+
+            $requestedPermissions = $request->permissions;
+
+            $permissionsToRemove = array_diff($existingPermissions, $requestedPermissions);
+
+            if (!empty($permissionsToRemove)) {
+                return redirect()->back()->withErrors([
+                    'permissions' => 'Reducing permissions for this role is not allowed.',
+                ]);
+            }
         }
 
         $this->validate($request, [
-            'name'          => 'required',
-            'permissions'   => 'required',
+            'name' => 'required',
+            'permissions' => 'required|array',
         ]);
 
         $role->update(['name' => $request->name]);
 
-        $role->syncPermissions($request->permissions);
+        $role->syncPermissions($requestedPermissions);
 
         return redirect()->route('account.roles.index');
     }
+
 
     public function destroy($id)
     {
