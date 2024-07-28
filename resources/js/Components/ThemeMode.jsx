@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function ThemeMode() {
-    const [themes, setThemes] = useState(["warm", "light", "dark"]);
-    const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
+    const [themes] = useState(["warm", "light", "dark"]);
+    const [currentThemeIndex, setCurrentThemeIndex] = useState(() => {
+        const savedTheme = localStorage.getItem("currentThemeIndex");
+        return savedTheme ? JSON.parse(savedTheme) : 0;
+    });
+
+    useEffect(() => {
+        document.body.className = themes[currentThemeIndex];
+        localStorage.setItem(
+            "currentThemeIndex",
+            JSON.stringify(currentThemeIndex)
+        );
+    }, [currentThemeIndex, themes]);
 
     const toggleTheme = () => {
         const nextIndex = (currentThemeIndex + 1) % themes.length;
         setCurrentThemeIndex(nextIndex);
-        document.body.className = themes[nextIndex];
     };
 
     return (
