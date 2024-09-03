@@ -108,6 +108,7 @@ export default function Dashboard() {
     const handleExport = () => {
         window.location.href = `/account/responses/sus/${survey.id}/export`;
     };
+    
     return (
         <>
             <Head>

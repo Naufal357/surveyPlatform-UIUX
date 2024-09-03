@@ -42,7 +42,7 @@ export default function Home() {
             <Layout>
                 <div style={{ marginTop: "80px" }}>
                     <div className="fade-in">
-                        <div className="row justify-content-center">
+                        <div className="justify-content-center">
                             <div className="col-12">
                                 <div className="container">
                                     <div className="row">
@@ -110,7 +110,7 @@ export default function Home() {
                                                 />
                                             </div>
                                         </div>
-                                        <div className="text-center my-3">
+                                        <div className="text-center mt-3">
                                             <button
                                                 className="btn btn-style btn-lg"
                                                 onClick={handleStartNow}
