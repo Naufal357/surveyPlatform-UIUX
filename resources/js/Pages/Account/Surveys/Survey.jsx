@@ -23,7 +23,7 @@ export default function SurveyIndex() {
                                 <div className="col-md-3 col-12 mb-2">
                                     <Link
                                         href="/account/surveys/create"
-                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        className="btn btn-md btn-style border-0 shadow w-100"
                                         type="button"
                                     >
                                         <i className="fa fa-plus-circle me-2"></i>
@@ -40,7 +40,7 @@ export default function SurveyIndex() {
                 <CardContent title="Surveys Directory" icon="fa fa-folder">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped table-hovered">
-                            <thead>
+                            <thead className="thead">
                                 <tr>
                                     <th scope="col" style={{ width: "2%" }}>
                                         No.
@@ -77,8 +77,7 @@ export default function SurveyIndex() {
                             </thead>
                             <tbody>
                                 {surveys.data.map((survey, index) => {
-                                    // rubah url
-                                    const surveyUrl = `${app_url}:8000/form/${survey.id}/${survey.slug}`;
+                                    const surveyUrl = `${app_url}/form/${survey.id}/${survey.slug}`;
 
                                     return (
                                         <tr key={index}>

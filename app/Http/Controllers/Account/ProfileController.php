@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Category;
 use App\Models\UserSelectCategory;
+use App\Models\SurveyResponses;
 use App\Models\User;
 use App\Models\Certificate;
 
@@ -16,13 +17,16 @@ class ProfileController extends Controller
 {
     public function index()
     {
+        $user = User::findOrFail(auth()->user()->id);
         $categories = Category::all();
         $userPrefs = UserSelectCategory::where('user_id', auth()->user()->id)->get();
+        $filledOutSurvey = SurveyResponses::with(['survey', 'user'])->where('user_id', $user->id)->latest()->paginate(8);
 
         return inertia('Account/Profile/Profile', [
             'user' => auth()->user(),
             'categories' => $categories,
-            'userPrefs' => $userPrefs
+            'userPrefs' => $userPrefs,
+            'filledOutSurvey' => $filledOutSurvey,
         ]);
     }
 
@@ -51,6 +55,7 @@ class ProfileController extends Controller
             'gender'     => 'required',
             'profession'     => 'required',
             'educational_background'     => 'required',
+            'userPrefsData'     => 'required',
             'password' =>
             [
                 'required',
@@ -72,8 +77,8 @@ class ProfileController extends Controller
             'educational_background'     => $request->educational_background,
         ]);
 
-        if ($request->has('user_prefs')) {
-            $userPrefsData = $request->user_prefs;
+        if ($request->has('userPrefsData')) {
+            $userPrefsData = $request->userPrefsData;
             $userPref->where('user_id', $user->id)->delete();
 
             foreach ($userPrefsData as $category_id) {

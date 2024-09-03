@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Quill from "quill";
-import ReactQuill from "react-quill";
-import BlotFormatter from "quill-blot-formatter";
+import QuillEditor from "react-quill";
+// import BlotFormatter from "quill-blot-formatter";
 import "react-quill/dist/quill.snow.css";
 
-Quill.register("modules/blotFormatter", BlotFormatter);
+// Quill.register("modules/blotFormatter", BlotFormatter);
 
-function QuillEditor({ value, onChange, label, error }) {
+function Editor({ value, onChange, label, error, mustFill }) {
     const modules = {
-        blotFormatter: {},
+        // blotFormatter: {
+        //     embed: true,
+        // },
         toolbar: [
             [{ font: [] }],
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -19,7 +21,7 @@ function QuillEditor({ value, onChange, label, error }) {
                 { indent: "-1" },
                 { indent: "+1" },
             ],
-            [{ script: "sub" }, { script: "super" }, "blockquote"],
+            [{ script: "sub" }, { script: "super" }, "blockquote", "formula"],
             [{ align: [] }, { color: [] }, { background: [] }],
             ["link", "image"],
         ],
@@ -33,12 +35,14 @@ function QuillEditor({ value, onChange, label, error }) {
         "bold",
         "italic",
         "underline",
+        "list",
         "strike",
         "ordered",
         "bullet",
         "indent",
         "script",
         "blockquote",
+        "formula",
         "align",
         "color",
         "background",
@@ -48,8 +52,11 @@ function QuillEditor({ value, onChange, label, error }) {
 
     return (
         <div className="mb-3">
-            <label className="form-label fw-bold">{label}</label>
-            <ReactQuill
+            <label className="form-label fw-bold">
+                {label}
+                {mustFill && <span className="text-danger">*</span>}
+            </label>
+            <QuillEditor
                 theme="snow"
                 modules={modules}
                 formats={formats}
@@ -61,4 +68,4 @@ function QuillEditor({ value, onChange, label, error }) {
     );
 }
 
-export default QuillEditor;
+export default Editor;

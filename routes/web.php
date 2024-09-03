@@ -23,6 +23,11 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login')->middleware('guest');
     Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store')->middleware('guest');
 
+    Route::get('/forgot-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'index'])->name('forgotPassword')->middleware('guest');
+    Route::post('/forgot-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'store'])->name('forgotPassword.store')->middleware('guest');
+    Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset')->middleware('guest');
+    Route::post('/reset-password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+
     Route::post('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout')->middleware('auth');
 
     Route::get('/', \App\Http\Controllers\Web\HomeController::class)->name('web.home.index');
@@ -38,6 +43,8 @@ Route::group(['middleware' => 'cors'], function () {
     Route::get('/form/{id}/{slug}', [\App\Http\Controllers\Web\FormController::class, 'show'])->name('form.show')->middleware('auth');
     Route::post('/form', [\App\Http\Controllers\Web\FormController::class, 'store'])->middleware('auth');
 
+    Route::get('/about', [\App\Http\Controllers\Web\AboutController::class, 'index'])->name('web.about.index');
+
     Route::prefix('account')->group(function () {
         Route::group(['middleware' => ['auth']], function () {
             Route::get('/dashboard', [App\Http\Controllers\Account\DashboardController::class, 'index'])->name('account.dashboard');
@@ -46,10 +53,12 @@ Route::group(['middleware' => 'cors'], function () {
                 ->middleware('permission:profile.index|profile.edit');
             Route::get('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'certificate'])
                 ->middleware('permission:profile.upload.certificate')->name('account.profile.certificate');
-            Route::post('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'uploadCertificate'])->name('account.profile.uploadCertificate');
+            Route::post('profile/certificate', [\App\Http\Controllers\Account\ProfileController::class, 'uploadCertificate'])
+                ->middleware('permission:profile.upload.certificate')->name('account.profile.uploadCertificate');
             Route::get('profile/password', [\App\Http\Controllers\Account\ProfileController::class, 'password'])
                 ->middleware('permission:profile.change.password')->name('account.profile.password');
-            Route::put('profile/password/update', [\App\Http\Controllers\Account\ProfileController::class, 'updatePassword'])->name('account.profile.updatePassword');
+            Route::put('profile/password/update', [\App\Http\Controllers\Account\ProfileController::class, 'updatePassword'])
+                ->middleware('permission:profile.change.password')->name('account.profile.updatePassword');
 
             Route::resource('/surveys', \App\Http\Controllers\Account\SurveyController::class, ['as' => 'account'])
                 ->middleware('permission:surveys.index|surveys.index.full|surveys.create|surveys.edit|surveys.delete');
@@ -63,10 +72,10 @@ Route::group(['middleware' => 'cors'], function () {
             Route::resource('/roles', \App\Http\Controllers\Account\RoleController::class, ['as' => 'account'])
                 ->middleware('permission:roles.index|roles.create|roles.edit|roles.delete');
 
-            Route::get('/permissions', \App\Http\Controllers\Account\PermissionController::class)->name('account.permissions.index')
-                ->middleware('permission:permissions.index');
+            Route::resource('/permissions', \App\Http\Controllers\Account\PermissionController::class, ['as' => 'account'])
+                ->middleware('permission:permissions.index|permissions.create|permissions.edit|permissions.delete');
 
-            Route::resource('/certificates', \App\HTTP\Controllers\Account\CertificateController::class, ['as' => 'account'])
+            Route::resource('/certificates', \App\Http\Controllers\Account\CertificateController::class, ['as' => 'account'])
                 ->middleware('permission:certificates.index|certificates.index.full|certificates.approve|certificates.reject');
 
             Route::resource('/users', \App\Http\Controllers\Account\UserController::class, ['as' => 'account'])

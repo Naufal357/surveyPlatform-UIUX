@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->string('slug');
+            $table->string('status');
             $table->timestamps();
         });
     }

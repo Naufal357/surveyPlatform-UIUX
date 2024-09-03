@@ -60,7 +60,7 @@ export default function ProfileEdit() {
 
         if (result.isConfirmed) {
             setIsSaving(true);
-            Inertia.put(
+            Inertia.post(
                 `/account/profile/${user.id}`,
                 {
                     first_name: firstName,
@@ -72,6 +72,7 @@ export default function ProfileEdit() {
                     educational_background: educationalBackground,
                     password: password,
                     userPrefsData: userPrefsData,
+                    _method: "PUT",
                 },
                 {
                     onSuccess: () => {
@@ -82,7 +83,6 @@ export default function ProfileEdit() {
                             showConfirmButton: false,
                             timer: 1500,
                         });
-                        setIsSaving(false);
                     },
                     onError: () => {
                         Swal.fire({
@@ -92,10 +92,11 @@ export default function ProfileEdit() {
                             showConfirmButton: false,
                             timer: 1500,
                         });
+                    },
+                    onFinish: () => {
                         setIsSaving(false);
                     },
                 },
-                setIsSaving(false)
             );
         }
     };
@@ -278,6 +279,7 @@ export default function ProfileEdit() {
                             label="Save"
                             color="btn-success"
                             iconClass="fa fa-save"
+                            isSaving={isSaving}
                         />
 
                         <ButtonCRUD

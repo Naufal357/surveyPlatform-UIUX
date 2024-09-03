@@ -23,7 +23,7 @@ export default function UserIndex() {
                                 <div className="col-md-3 col-12 mb-2">
                                     <Link
                                         href="/account/users/create"
-                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        className="btn btn-md btn-style border-0 shadow w-100"
                                         type="button"
                                     >
                                         <i className="fa fa-plus-circle me-2"></i>
@@ -40,7 +40,7 @@ export default function UserIndex() {
                 <CardContent title="Users" icon="fa fa-users">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped table-hovered">
-                            <thead>
+                            <thead className="thead">
                                 <tr>
                                     <th scope="col" style={{ width: "5%" }}>
                                         No.
@@ -86,7 +86,7 @@ export default function UserIndex() {
                                         <td>
                                             {user.roles.map((role, index) => (
                                                 <span
-                                                    className="btn btn-success btn-sm shadow-sm border-0 ms-2 mb-2"
+                                                    className="btn btn-style btn-sm shadow-sm border-0 ms-2 mb-2"
                                                     key={index}
                                                 >
                                                     {role.name}

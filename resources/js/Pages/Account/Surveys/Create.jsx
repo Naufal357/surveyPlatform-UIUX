@@ -4,11 +4,12 @@ import CardContent from "../../../Layouts/CardContent";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import InputField from "../../../Components/InputField";
-import QuillEditor from "../../../Components/QuillEditor";
+import Editor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import RadioSelect from "../../../Components/RadioSelect";
 import AccordionLayout from "../../../Layouts/Accordion";
+import ImageView from "../../../Utils/ImageView";
 import Swal from "sweetalert2";
 
 export default function SurveysCreate() {
@@ -225,7 +226,7 @@ export default function SurveysCreate() {
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
             handleReset();
-            setIsSaving(false);
+            setIsSaving("false");
             return;
         }
 
@@ -254,7 +255,6 @@ export default function SurveysCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false);
                 },
                 onError: () => {
                     Swal.fire({
@@ -264,10 +264,11 @@ export default function SurveysCreate() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onFinish: () => {
                     setIsSaving(false);
                 },
-            },
-            setIsSaving(false)
+            }
         );
     };
 
@@ -354,20 +355,25 @@ export default function SurveysCreate() {
                         />
                         <InputField
                             label="Title Design"
+                            mustFill={true}
                             type="text"
                             value={title}
+                            placeholder="Enter title, e.g., E-Learning Platform SmartLearn"
                             onChange={(e) => setTitle(e.target.value)}
                             error={errors.title}
                         />
                         <InputField
                             label="Theme Design"
+                            mustFill={true}
                             type="text"
                             value={theme}
+                            placeholder="Enter theme, e.g., E-Learning Platform"
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
                         />
-                        <QuillEditor
+                        <Editor
                             label="Description"
+                            mustFill={true}
                             value={description}
                             onChange={setDescription}
                             error={errors.description}
@@ -376,6 +382,7 @@ export default function SurveysCreate() {
                             label="URL Website"
                             type="text"
                             value={url_website}
+                            placeholder="https://example.com (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             onChange={(e) => setUrlWebsite(e.target.value)}
                             error={errors.url_website}
                         />
@@ -383,6 +390,7 @@ export default function SurveysCreate() {
                             label="Embed Design (Figma)"
                             type="text"
                             value={embed_design}
+                            placeholder="https://figma.com/embed-design (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             onChange={(e) => setEmbedDesign(e.target.value)}
                             error={errors.embed_design}
                         />
@@ -390,12 +398,14 @@ export default function SurveysCreate() {
                             label="Embed Prototype (Figma)"
                             type="text"
                             value={embed_prototype}
+                            placeholder="https://figma.com/embed-prototype (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             onChange={(e) => setEmbedPrototype(e.target.value)}
                             error={errors.embed_prototype}
                         />
                         <SelectCheckbox
                             id={"categories"}
                             label="Categories Survey"
+                            mustFill={true}
                             options={categories}
                             valueKey="id"
                             labelKey="name"
@@ -405,6 +415,7 @@ export default function SurveysCreate() {
                         <SelectCheckbox
                             id={"methods"}
                             label="Methods Survey"
+                            mustFill={true}
                             options={methods}
                             valueKey="id"
                             labelKey="name"
@@ -414,6 +425,7 @@ export default function SurveysCreate() {
                         <RadioSelect
                             id="survey_visibility"
                             label="General Access Survey"
+                            mustFill={true}
                             options={[
                                 {
                                     id: 1,
@@ -479,24 +491,18 @@ export default function SurveysCreate() {
                                 </div>
 
                                 <p>
-                                    1. Pertanyaan yang sudah disimpan tidak bisa
-                                    diubah.
+                                    1. Pertanyaan SUS (System Usability Scale)
+                                    tidak bisa diubah.
                                     <br />
-                                    2. Pastikan mengisi semua pertanyaan.
-                                    <br />
-                                    3. Untuk setiap pertanyaan bernomor ganjil,
+                                    2. Untuk setiap pertanyaan bernomor ganjil,
                                     nilai tertinggi adalah 5 (menyatakan sangat
                                     setuju). Sehingga, isi pertanyaan bersifat
                                     positif untuk pertanyaan ganjil.
                                     <br />
-                                    4. Untuk setiap pertanyaan bernomor genap,
+                                    3. Untuk setiap pertanyaan bernomor genap,
                                     nilai terendah adalah 1 (menyatakan sangat
                                     tidak setuju). Sehingga, isi pertanyaan
                                     bersifat negatif untuk pertanyaan genap.
-                                    <br />
-                                    5. Bila masih tidak memahami aturan 3 dan 4,
-                                    silahkan perhatikan pertanyaan bawaan yang
-                                    sudah disediakan.
                                 </p>
                             </div>
                             <hr />
@@ -513,6 +519,7 @@ export default function SurveysCreate() {
                                         )
                                     }
                                     error={errors[`question${index + 1}`]}
+                                    disabled
                                 />
                             ))}
                         </div>
@@ -542,7 +549,6 @@ export default function SurveysCreate() {
                                     Model)
                                 </h5>
                             </div>
-
                             <p>
                                 1. Pertanyaan yang sudah disimpan tidak bisa
                                 diubah.
@@ -550,10 +556,24 @@ export default function SurveysCreate() {
                                 2. Variable, indikator, dan pertanyaan dapat
                                 dirubah sesuai kebutuhan.
                                 <br />
-                                3. Diharapkan menggunakan semua variable yang
-                                disedikan agar mendapat hasil yang maksimal.
+                                3. Diharapkan menggunakan semua variabel yang
+                                tersedia agar analisis regresi dapat memberikan
+                                hasil yang optimal.
+                            </p>
+                            <div className="text-center">
+                                <ImageView
+                                    src="/assets/images/technologyAcceptanceModel.png"
+                                    alt="Technology Acceptance Model"
+                                    className="img-fluid rounded shadow-sm"
+                                    style={{
+                                        maxWidth: "50%",
+                                        height: "auto",
+                                    }}
+                                />
+                            </div>
+                            <p>
                                 <br />
-                                4. Saat mengisi indikator, boleh saja
+                                4. Saat mengisi indikator, boleh mengisi
                                 menggunakan input yang sama.
                                 <br />
                                 5. Urutan pertanyaan dalam kuesioner akan diatur
@@ -569,6 +589,7 @@ export default function SurveysCreate() {
                             </p>
                         </div>
                         <hr />
+
                         {tamQuestionsData.map((question, index) => (
                             <div key={index} className="mb-3">
                                 <div className="row">

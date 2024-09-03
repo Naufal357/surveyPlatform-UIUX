@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use App\Exports\ResponsesSUSExport;
 use App\Models\SurveyResponses;
 use App\Models\Survey;
@@ -48,10 +49,13 @@ class SusController extends Controller
     public function show(Request $request, $id)
     {
         $userID = auth()->user()->id;
-
         $survey = Survey::find($id);
+        $surveyName = $survey->title;
+        $surveyTheme = $survey->theme;
 
-        if (!auth()->user()->hasPermissionTo('sus.index.full') && $survey->user_id !== $userID) {
+        $cacheExpiredMinutes = 2 * 60;
+
+        if (!auth()->user()->hasPermissionTo('sus.index.full') && $survey->user_id != $userID) {
             return abort(403, 'Unauthorized');
         }
 
@@ -68,13 +72,13 @@ class SusController extends Controller
                 ->get(['surveys.id', 'surveys.title']);
         }
 
-        $surveyName = $survey->title;
-
         $susQuestions = SurveyQuestions::where('survey_id', $id)->get();
 
-        $responses = SurveyResponses::where('survey_id', $id)
-            ->where('response_data', 'LIKE', '%"sus"%')
-            ->get();
+        $responses = Cache::remember('responses-sus-' . $id, $cacheExpiredMinutes, function () use ($id) {
+            return SurveyResponses::where('survey_id', $id)
+                ->where('response_data', 'LIKE', '%"sus"%')
+                ->get();
+        });
 
         $respondentCount = $this->countRespondents($id);
         $demographicRespondents = $this->demographicRespondents($responses);
@@ -83,7 +87,7 @@ class SusController extends Controller
         $susSurveyResults = $this->getSUSResults($responses);
         $getSUSChartData = $this->getSUSChartData($id, $responses);
         $getAverageAnswer = $this->getAverageAnswer($susSurveyResults);
-        $getResumeDescription = $this->getResumeDescription($getAverageAnswer, $surveyName);
+        $getResumeDescription = $this->getResumeDescription($getAverageAnswer, $surveyTheme);
 
         return inertia('Account/SUS/Index', [
             'surveyTitles' => $surveyTitles,
@@ -160,7 +164,6 @@ class SusController extends Controller
 
     private function countRespondents($surveyId)
     {
-        // Menghitung jumlah responden dengan "sus" dalam response_data
         $totalResponsesWithSUS = SurveyResponses::where('survey_id', $surveyId)
             ->where('response_data', 'LIKE', '%"sus"%')
             ->count();
@@ -304,7 +307,7 @@ class SusController extends Controller
         return $averageResults;
     }
 
-    private function getResumeDescription(&$getAverageAnswer, $surveyName)
+    private function getResumeDescription(&$getAverageAnswer, $surveyTheme)
     {
         if ($getAverageAnswer == null) {
             return null;
@@ -315,7 +318,7 @@ class SusController extends Controller
         $getResumeDescription = [];
 
         $kalimatPositif = [
-            "Sebagian besar pengguna $surveyName berniat untuk menggunakan kembali sistem ini(1).",
+            "Sebagian besar pengguna $surveyTheme berniat untuk menggunakan kembali sistem ini(1).",
             "Kebanyakan pengguna merasa sistem ini tidak rumit(2) ",
             "dan banyak pengguna merasa sistem ini mudah digunakan(3).",
             "Tanpa membutuhkan bantuan dari orang lain atau teknisi pengguna dapat menggunakan sistem(4).",
@@ -328,7 +331,7 @@ class SusController extends Controller
         ];
 
         $kalimatNegatif = [
-            "Sebagian besar pengguna $surveyName tidak berniat untuk menggunakan kembali sistem ini(1).",
+            "Sebagian besar pengguna $surveyTheme tidak berniat untuk menggunakan kembali sistem ini(1).",
             "Kebanyakan pengguna mengeluhkan kerumitan dalam menggunakan sistem ini(2) ",
             "dan banyak pengguna merasa sistem ini sulit digunakan(3).",
             "Banyak pengguna yang memerlukan bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",
@@ -342,7 +345,7 @@ class SusController extends Controller
 
 
         $kalimatNetral = [
-            "Sebagian besar pengguna $surveyName memiliki pandangan netral terhadap penggunaan kembali sistem ini(1).",
+            "Sebagian besar pengguna $surveyTheme memiliki pandangan netral terhadap penggunaan kembali sistem ini(1).",
             "Kebanyakan pengguna merasa cukup nyaman menggunakan sistem ini(2) ",
             "dan banyak pengguna merasa sistem ini agak sulit digunakan(3).",
             "Banyak pengguna merasa sistem ini perlu sedikit bantuan dari orang lain atau teknisi untuk menggunakan sistem ini(4).",

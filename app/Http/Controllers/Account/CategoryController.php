@@ -14,12 +14,13 @@ class CategoryController extends Controller
     {
         $categories = Category::when(request()->q, function ($categories) {
             $categories = $categories->where('name', 'like', '%' . request()->q . '%');
-        })->latest()->paginate(9);
+        })->latest()->paginate(10);
 
         $categories->appends(['q' => request()->q]);
 
         return inertia('Account/Categories/Categories', [
             'categories' => $categories,
+            'app_url' => config('app.url')
         ]);
     }
 
@@ -30,17 +31,19 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        if($request->image != null){
+        if ($request->image != null) {
             $this->validate($request, [
                 'name'          => 'required|unique:categories',
                 'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'status'        => 'required',
             ]);
         } else {
             $this->validate($request, [
                 'name'          => 'required|unique:categories',
+                'status'        => 'required',
             ]);
         }
-       
+
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image->storeAs('public/image/categories/', $image->hashName());
@@ -48,12 +51,14 @@ class CategoryController extends Controller
             Category::create([
                 'name'          => $request->name,
                 'image'         => $image->hashName(),
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         } else {
             Category::create([
                 'name'          => $request->name,
                 'image'         => 'image.png',
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         }
@@ -70,20 +75,23 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        if($request->image != null){
+        if ($request->hasFile('image')) {
             $this->validate($request, [
                 'name'          => 'required|unique:categories,name,' . $category->id,
                 'image'         => 'image|mimes:jpeg,png,jpg,gif,svg',
+                'status'        => 'required',
             ]);
         } else {
             $this->validate($request, [
                 'name'          => 'required|unique:categories,name,' . $category->id,
+                'status'        => 'required',
             ]);
         }
-        
 
         if ($request->hasFile('image')) {
-            Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
+            if (!Str::contains($category->image, 'image.png')) {
+                Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
+            }
 
             $image = $request->file('image');
             $image->storeAs('public/image/categories/', $image->hashName());
@@ -91,11 +99,13 @@ class CategoryController extends Controller
             $category->update([
                 'name'          => $request->name,
                 'image'         => $image->hashName(),
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         } else {
             $category->update([
                 'name'          => $request->name,
+                'status'        => $request->status,
                 'slug'          => Str::slug($request->name, '-')
             ]);
         }
@@ -106,9 +116,10 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        if ($category->image != 'image.png') {
+        if (!Str::contains($category->image, 'image.png')) {
             Storage::disk('local')->delete('public/image/categories/' . basename($category->image));
         }
+        
         $category->delete();
 
         return redirect()->route('account.categories.index');

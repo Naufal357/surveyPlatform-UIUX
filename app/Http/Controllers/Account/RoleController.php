@@ -34,7 +34,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'          => 'required',
+            'name'          => 'required|unique:roles',
             'permissions'   => 'required',
         ]);
 
@@ -47,10 +47,6 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        if ($id == 1) {
-            abort(403, "The user is not allowed to be edited.");
-        }
-
         $role = Role::with('permissions')->findOrFail($id);
 
         $permissions = Permission::all();
@@ -63,21 +59,32 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
-        if ($request->name == "super admin") {
-            abort(403, "The user is not allowed to be edited.");
+        if ($role->name == "super admin") {
+            $existingPermissions = $role->permissions->pluck('name')->toArray();
+
+            $requestedPermissions = $request->permissions;
+
+            $permissionsToRemove = array_diff($existingPermissions, $requestedPermissions);
+
+            if (!empty($permissionsToRemove)) {
+                return redirect()->back()->withErrors([
+                    'permissions' => 'Reducing permissions for this role is not allowed.',
+                ]);
+            }
         }
 
         $this->validate($request, [
-            'name'          => 'required',
-            'permissions'   => 'required',
+            'name' => 'required',
+            'permissions' => 'required|array',
         ]);
 
         $role->update(['name' => $request->name]);
 
-        $role->syncPermissions($request->permissions);
+        $role->syncPermissions($requestedPermissions);
 
         return redirect()->route('account.roles.index');
     }
+
 
     public function destroy($id)
     {

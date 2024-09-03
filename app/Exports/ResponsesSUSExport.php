@@ -48,7 +48,7 @@ class ResponsesSUSExport implements FromCollection, ShouldAutoSize, WithHeadings
             for ($i = 1; $i <= 10; $i++) {
                 $response['SUS' . $i] = isset($susData['sus' . $i]) ? $susData['sus' . $i] : null;
             }
-dd($response);
+
             // Hapus kolom first_name, surname, dan response_data
             unset($response['first_name']);
             unset($response['surname']);
@@ -92,16 +92,16 @@ dd($response);
             'Profession',
             'Educational Background',
             'Created At',
-            'SUS1',
-            'SUS2',
-            'SUS3',
-            'SUS4',
-            'SUS5',
-            'SUS6',
-            'SUS7',
-            'SUS8',
-            'SUS9',
-            'SUS10',
+            'Question 1',
+            'Question 2',
+            'Question 3',
+            'Question 4',
+            'Question 5',
+            'Question 6',
+            'Question 7',
+            'Question 8',
+            'Question 9',
+            'Question 10',
             'SUS Score',
         ];
     }

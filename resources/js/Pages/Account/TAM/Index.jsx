@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Head, usePage, Link } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import hasAnyPermission from "../../../Utils/Permissions";
 import LayoutAccount from "../../../Layouts/Account";
+import CardContent from "../../../Layouts/CardContent";
 import AccordionLayout from "../../../Layouts/Accordion";
 import InfoCard from "../../../Components/CardInfo";
 import PieChart from "../../../Components/PieChart";
@@ -21,10 +22,20 @@ export default function Dashboard() {
         calculateRegression,
         getTAMChartData,
         tamQustions,
+        resumeDescription,
     } = usePage().props;
 
     let idTamCounter = 0;
     const data = JSON.parse(tamQustions[0].questions_data);
+    const name = `${auth.user.first_name} ${auth.user.surname}`;
+
+    const formatAnswers = (calculateRegression) => {
+        return calculateRegression.map((regression, index) => {
+            const regresion = regression.path;
+            const bValue = regression.b;
+            return `Koefisien regresi (${regresion}) : ${bValue}`;
+        });
+    };
 
     const parsedTamQuestions = data.tam
         ? data.tam.flatMap((variable) =>
@@ -99,21 +110,19 @@ export default function Dashboard() {
     }));
 
     const handleExport = () => {
-        console.log(survey.id);
         window.location.href = `/account/responses/tam/${survey.id}/export`;
     };
 
     return (
         <>
             <Head>
-                <title>TAM Result - SurveyPlatform</title>
+                <title>TAM Result - Survey Platform</title>
             </Head>
             <LayoutAccount>
                 <div className="m-3">
-                    <div className="row alert alert-success border-0 shadow-sm mb-2">
+                    <div className="row card-body border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{auth.user.name}</strong>{" "}
-                            <br />
+                            Selamat Datang, <strong>{name}</strong> <br />
                             {currentSurveyTitle ? (
                                 <span>
                                     Hasil :{" "}
@@ -127,7 +136,7 @@ export default function Dashboard() {
                             <div className="mb-2">
                                 <div className="dropdown">
                                     <button
-                                        className="btn btn-secondary dropdown-toggle"
+                                        className="btn select-btn dropdown-toggle"
                                         type="button"
                                         id="dropdownMenuButton"
                                         data-bs-toggle="dropdown"
@@ -153,7 +162,7 @@ export default function Dashboard() {
                                                     onClick={(event) => {
                                                         event.preventDefault();
                                                         Inertia.get(
-                                                            `/account/sus/${survey.id}`
+                                                            `/account/tam/${survey.id}`
                                                         );
                                                     }}
                                                 >
@@ -177,6 +186,70 @@ export default function Dashboard() {
                         </div>
                     )}
 
+                    {resumeDescription !== null ? (
+                        <CardContent title="Kesimpulan">
+                            {/* <div className="text-center">
+                                {resumeDescription}
+                            </div> */}
+                            <div>
+                                {Object.keys(resumeDescription).map((key) => (
+                                    <div key={key}>
+                                        <p className="fw-bold text-center">
+                                            {key}
+                                        </p>
+                                        {resumeDescription[key].map(
+                                            (sentence, index) => (
+                                                <p key={index}>
+                                                    &bull; {sentence}
+                                                </p>
+                                            )
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                            <hr />
+                            <div className="row justify-content-center">
+                                {formatAnswers(calculateRegression).map(
+                                    (item, index) => (
+                                        <div
+                                            className="text-center col-lg-4 col-md-6 mb-4 mx-auto"
+                                            key={index}
+                                        >
+                                            {item}
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-lg-3 col-md-12 mb-4">
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <p>
+                                            Positif jika koefisien regresi{" "}
+                                            {"> 0"}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="col-lg-4 col-md-12 mb-4">
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <p>
+                                            Netral jika koefisien regresi{" "}
+                                            {"= 0"}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="col-lg-4 col-md-12 mb-4">
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <p>
+                                            Negatif jika koefisien regresi{" "}
+                                            {"< 0"}{" "}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    ) : null}
+
                     <AccordionLayout
                         title="Demografi Responden"
                         defaultOpen={true}
@@ -185,7 +258,7 @@ export default function Dashboard() {
                             <div className="row justify-content-center">
                                 {demographicsData.map((item, index) => (
                                     <div
-                                        className="col-lg-4 col-md-6 mb-4 mx-auto"
+                                        className="col-lg-3 col-md-6 mb-4 mx-auto"
                                         key={index}
                                     >
                                         <div className="card">
@@ -226,7 +299,12 @@ export default function Dashboard() {
                                         >
                                             <div className="card">
                                                 <div className="card-body">
-                                                    <h6 className="card-title">
+                                                    <h6
+                                                        className="card-title"
+                                                        style={{
+                                                            minHeight: "50px",
+                                                        }}
+                                                    >
                                                         {index + 1}.
                                                         {item.question}
                                                     </h6>
@@ -255,14 +333,18 @@ export default function Dashboard() {
                                 defaultOpen={false}
                             >
                                 {tamSurveyResults.length > 0 ? (
-                                    <div>
-                                        <TAMTable
-                                            data={
-                                                calculateDescriptiveStatistics
-                                            }
-                                            type={"descriptiveStatisticsTable"}
-                                        />
-                                    </div>
+                                    <>
+                                        <div>
+                                            <TAMTable
+                                                data={
+                                                    calculateDescriptiveStatistics
+                                                }
+                                                type={
+                                                    "descriptiveStatisticsTable"
+                                                }
+                                            />
+                                        </div>
+                                    </>
                                 ) : (
                                     <div className="text-center">
                                         Tidak ada data
@@ -271,18 +353,40 @@ export default function Dashboard() {
                             </AccordionLayout>
 
                             <AccordionLayout
-                                title="Data Responses TAM"
+                                title="Hasil Statistik Regresi"
+                                defaultOpen={false}
+                            >
+                                {tamSurveyResults.length > 0 ? (
+                                    <>
+                                        <div>
+                                            <TAMTable
+                                                data={calculateRegression}
+                                                type={
+                                                    "regressionStatisticsTable"
+                                                }
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="text-center">
+                                        Tidak ada data
+                                    </div>
+                                )}
+                            </AccordionLayout>
+
+                            <AccordionLayout
+                                title="Tabel Hasil"
                                 defaultOpen={false}
                             >
                                 {tamSurveyResults.length > 0 ? (
                                     <div>
                                         <div className="d-flex justify-content-between align-items-center mb-4">
-                                            <h4>Hasil TAM</h4>
+                                            <h4>Hasil Respon TAM</h4>
                                             {hasAnyPermission([
                                                 "tam.export",
                                             ]) && (
                                                 <button
-                                                    className="btn btn-success"
+                                                    className="btn btn-style"
                                                     onClick={handleExport}
                                                 >
                                                     Export to Excel

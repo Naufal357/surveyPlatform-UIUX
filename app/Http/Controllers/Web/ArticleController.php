@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Articles;
+use App\Models\User;
 
 class ArticleController extends Controller
 {
     public function index()
     {
+        $auth = auth()->user();
         $articles = Articles::latest()->where('status', 'Public')->paginate(8);
 
         return inertia('Web/Articles/Index', [
+            'auth' => $auth,
             'articles' => $articles
         ]);
     }
@@ -28,7 +31,7 @@ class ArticleController extends Controller
         };
 
         return inertia('Web/Articles/Show', [
-            'auth' => auth()->user(),
+            'auth' => $user,
             'article' => $article
         ]);
     }

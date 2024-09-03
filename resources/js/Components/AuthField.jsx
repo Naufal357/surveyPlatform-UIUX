@@ -1,6 +1,6 @@
 import React from "react";
 
-const AuthField = ({ label, type, value, onChange, placeholder, error, icon, fieldselect, required, options }) => {
+const AuthField = ({ label, type, value, onChange, placeholder, error, icon, fieldselect, required, options, disabled }) => {
   return (
       <div className="mb-3">
           {fieldselect ? (
@@ -43,6 +43,7 @@ const AuthField = ({ label, type, value, onChange, placeholder, error, icon, fie
                           onChange={onChange}
                           placeholder={placeholder}
                           required={required}
+                          disabled={disabled}
                       />
                   </div>
                   {error && <div className="alert alert-danger">{error}</div>}

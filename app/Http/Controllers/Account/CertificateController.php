@@ -35,7 +35,7 @@ class CertificateController extends Controller
             $pendingCertificates = Certificate::where('user_id', auth()->user()->id)
                 ->with('user')
                 ->latest()
-                ->paginate(8);
+                ->paginate(10);
 
             $certificateHistory = Certificate::where('user_id', auth()->user()->id)
                 ->with('user')

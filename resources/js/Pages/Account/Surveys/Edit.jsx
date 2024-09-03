@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import LayoutAccount from "../../../Layouts/Account";
 import CardContent from "../../../Layouts/CardContent";
 import InputField from "../../../Components/InputField";
-import QuillEditor from "../../../Components/QuillEditor";
+import Editor from "../../../Components/QuillEditor";
 import ButtonCRUD from "../../../Components/ButtonCRUD";
 import SelectCheckbox from "../../../Components/SelectCheckbox";
 import RadioSelect from "../../../Components/RadioSelect";
 import AccordionLayout from "../../../Layouts/Accordion";
+import ImageView from "../../../Utils/ImageView";
 import { Head, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
 import Swal from "sweetalert2";
@@ -22,7 +23,7 @@ export default function SurveyEdit() {
         surveyMethods,
         surveyQuestions,
     } = usePage().props;
-console.log(errors);
+
     const [title, setTitle] = useState("");
     const [image, setImage] = useState(null);
     const [theme, setTheme] = useState("");
@@ -281,7 +282,6 @@ console.log(errors);
                         showConfirmButton: false,
                         timer: 1500,
                     });
-                    setIsSaving(false);
                 },
                 onError: () => {
                     Swal.fire({
@@ -291,10 +291,11 @@ console.log(errors);
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onFinish: () => {
                     setIsSaving(false);
                 },
             },
-            setIsSaving(false)
         );
     };
 
@@ -369,6 +370,7 @@ console.log(errors);
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             error={errors.title}
+                            mustFill={true}
                         />
                         <InputField
                             label="Theme Design"
@@ -376,18 +378,21 @@ console.log(errors);
                             value={theme}
                             onChange={(e) => setTheme(e.target.value)}
                             error={errors.theme}
+                            mustFill={true}
                         />
-                        <QuillEditor
+                        <Editor
                             label="Description"
                             value={description}
                             onChange={setDescription}
                             error={errors.description}
+                            mustFill={true}
                         />
                         <InputField
                             label="URL Website"
                             type="text"
                             value={url_website}
                             onChange={(e) => setUrlWebsite(e.target.value)}
+                            placeholder="https://example.com (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             error={errors.url_website}
                         />
                         <InputField
@@ -395,6 +400,7 @@ console.log(errors);
                             type="text"
                             value={embed_design}
                             onChange={(e) => setEmbedDesign(e.target.value)}
+                            placeholder="https://figma.com/embed-design (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             error={errors.embed_design}
                         />
                         <InputField
@@ -402,6 +408,7 @@ console.log(errors);
                             type="text"
                             value={embed_prototype}
                             onChange={(e) => setEmbedPrototype(e.target.value)}
+                            placeholder="https://figma.com/embed-prototype (Fill at least one: URL, Embed Design, or Embed Prototype)"
                             error={errors.embed_prototype}
                         />
                         <div className="mb-3">
@@ -414,6 +421,7 @@ console.log(errors);
                                 onChange={handleCheckboxCategoriesChange}
                                 selectedValues={surveyCategoriesData}
                                 error={errors.survey_categories}
+                                mustFill={true}
                             />
                         </div>
                         <div>
@@ -426,6 +434,7 @@ console.log(errors);
                                 onChange={handleCheckboxMethodsChange}
                                 selectedValues={surveyMethodsData}
                                 disabled={isCantEdited}
+                                mustFill={true}
                                 error={errors.survey_methods}
                             />
                         </div>
@@ -433,6 +442,7 @@ console.log(errors);
                             <RadioSelect
                                 id={"survey_visible"}
                                 label="Visibility Survey"
+                                mustFill={true}
                                 options={[
                                     {
                                         id: 1,
@@ -492,24 +502,18 @@ console.log(errors);
                                 </div>
 
                                 <p>
-                                    1. Pertanyaan yang sudah disimpan tidak bisa
-                                    diubah.
+                                    1. Pertanyaan SUS (System Usability Scale)
+                                    tidak bisa diubah.
                                     <br />
-                                    2. Pastikan mengisi semua pertanyaan.
-                                    <br />
-                                    3. Untuk setiap pertanyaan bernomor ganjil,
+                                    2. Untuk setiap pertanyaan bernomor ganjil,
                                     nilai tertinggi adalah 5 (menyatakan sangat
                                     setuju). Sehingga, isi pertanyaan bersifat
                                     positif untuk pertanyaan ganjil.
                                     <br />
-                                    4. Untuk setiap pertanyaan bernomor genap,
+                                    3. Untuk setiap pertanyaan bernomor genap,
                                     nilai terendah adalah 1 (menyatakan sangat
                                     tidak setuju). Sehingga, isi pertanyaan
                                     bersifat negatif untuk pertanyaan genap.
-                                    <br />
-                                    5. Bila masih tidak memahami aturan 3 dan 4,
-                                    silahkan perhatikan pertanyaan bawaan yang
-                                    sudah disediakan.
                                 </p>
                             </div>
                             <hr />
@@ -548,7 +552,8 @@ console.log(errors);
                 {isMethodTamFilled && (
                     <AccordionLayout
                         title="Preview Question - Technology Acceptence Model"
-                        defaultOpen={false}a
+                        defaultOpen={false}
+                        a
                     >
                         <div className="alert alert-danger">
                             <div className="d-flex align-items-center">
@@ -566,10 +571,24 @@ console.log(errors);
                                 2. Variable, indikator, dan pertanyaan dapat
                                 dirubah sesuai kebutuhan.
                                 <br />
-                                3. Diharapkan menggunakan semua variable yang
-                                disedikan agar mendapat hasil yang maksimal.
+                                3. Diharapkan menggunakan semua variabel yang
+                                tersedia agar analisis regresi dapat memberikan
+                                hasil yang optimal.
+                            </p>
+                            <div className="text-center">
+                                <ImageView
+                                    src="/assets/images/technologyAcceptanceModel.png"
+                                    alt="Technology Acceptance Model"
+                                    className="img-fluid rounded shadow-sm"
+                                    style={{
+                                        maxWidth: "70%",
+                                        height: "auto",
+                                    }}
+                                />
+                            </div>
+                            <p>
                                 <br />
-                                4. Saat mengisi indikator, boleh saja
+                                4. Saat mengisi indikator, boleh mengisi
                                 menggunakan input yang sama.
                                 <br />
                                 5. Urutan pertanyaan dalam kuesioner akan diatur

@@ -1,9 +1,17 @@
 import React, { useState } from "react";
+import { NavDropdown } from "react-bootstrap";
 import { Link, usePage } from "@inertiajs/inertia-react";
 import { Inertia } from "@inertiajs/inertia";
+import ThemeMode from "../Components/ThemeMode";
 
-function AuthMenu() {
-    const handleLogout = async (e) => {
+function AuthMenu(auth) {
+    auth = auth.auth;
+    
+    const profileHandler = async (e) => {
+        Inertia.get("/account/profile");
+    };
+
+    const logoutHandler = async (e) => {
         e.preventDefault();
         localStorage.clear();
         Inertia.post("/logout");
@@ -17,9 +25,26 @@ function AuthMenu() {
                 </Link>
             </li>
             <li className="nav-item">
-                <button className="btn text-white" onClick={handleLogout}>
-                    Logout
-                </button>
+                <NavDropdown
+                    title={
+                        <>
+                            {auth.roles.some(
+                                (role) => role.name == "verified user"
+                            ) && <i className="fas fa-user-check me-2" />}
+                            {`${auth.first_name} ${auth.surname}`}
+                        </>
+                    }
+                    id="basic-nav-dropdown"
+                >
+                    <NavDropdown.Item onClick={profileHandler}>
+                        <i className="fa fa-user me-2"></i>
+                        Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                        <i className="fa fa-sign-out-alt me-2"></i>
+                        Logout
+                    </NavDropdown.Item>
+                </NavDropdown>
             </li>
         </ul>
     );
@@ -42,7 +67,7 @@ function NonAuthMenu() {
     );
 }
 
-function Layout({ children }) {
+function Layout({ children, footerVisible = true }) {
     const { auth } = usePage().props;
     const [menuVisible, setMenuVisible] = useState(false);
 
@@ -52,7 +77,7 @@ function Layout({ children }) {
 
     return (
         <>
-            <nav className="navbar navbar-expand-md navbar-dark bg-green shadow fixed-top p-0">
+            <nav className="navbar navbar-expand-md navbar-light shadow fixed-top p-0">
                 <div className="container">
                     <Link
                         href="/"
@@ -88,13 +113,76 @@ function Layout({ children }) {
                         id="navbarNav"
                     >
                         <ul className="navbar-nav">
-                            {auth ? <AuthMenu /> : <NonAuthMenu />}
+                            {auth ? <AuthMenu auth={auth} /> : <NonAuthMenu />}
+                            <ThemeMode />
                         </ul>
                     </div>
                 </div>
             </nav>
+            <div style={{ minHeight: "86vh" }}>{children}</div>
+            {footerVisible ? (
+                <div>
+                    <footer
+                        className="footer text-center text-lg-start text-white py-3 mt-auto"
+                        style={{ backgroundColor: "#1c2331" }}
+                    >
+                        <div className="container">
+                            <div className="row justify-content-between">
+                                <div className="col-12 col-md-4 d-flex justify-content-md-start justify-content-center mb-3 mb-md-0">
+                                    @{new Date().getFullYear()}
+                                    &nbsp;
+                                    <abbr title="Jurusan Teknologi Informasi">
+                                        JTI
+                                    </abbr>
+                                    &nbsp;-&nbsp;
+                                    <abbr title="Politeknik Negeri Malang">
+                                        POLINEMA
+                                    </abbr>
+                                </div>
 
-            {children}
+                                <div className="col-12 col-md-4 d-flex justify-content-center align-items-center mb-3 mb-md-0">
+                                    <div className="d-flex flex-column flex-md-row align-items-center">
+                                        <p className="mb-0 me-md-2 text-center text-md-start">
+                                            Developed with dedication by
+                                        </p>
+                                        <a
+                                            href="https://www.linkedin.com/in/naufal357/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-decoration-none text-white"
+                                        >
+                                            Naufal Rozan
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div className="col-12 col-md-4 d-flex flex-column align-items-md-end align-items-center ">
+                                    <div className="d-flex flex-column flex-md-row justify-content-center justify-content-md-end">
+                                        <Link
+                                            href="/"
+                                            className="text-decoration-none text-white mb-2 me-md-3 mb-md-0"
+                                        >
+                                            Home
+                                        </Link>
+                                        <Link
+                                            href="/articles"
+                                            className="text-decoration-none text-white mb-2 me-md-3 mb-md-0"
+                                        >
+                                            Blog
+                                        </Link>
+                                        <Link
+                                            href="/about"
+                                            className="text-decoration-none text-white"
+                                        >
+                                            About
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            ) : null}
         </>
     );
 }

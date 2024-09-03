@@ -53,7 +53,7 @@ export default function SelectCategory() {
             <Head>
                 <title>Preference Categories - Survey Platform</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-md-6 mt-80">
@@ -66,7 +66,7 @@ export default function SelectCategory() {
                                     <strong>Survey</strong> Platform
                                 </h4>
                             </div>
-                            <div className="card border-0 rounded-3 shadow-sm border-top-success">
+                            <div className="card border-0 rounded-3 shadow-sm border-top">
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">
@@ -87,7 +87,8 @@ export default function SelectCategory() {
                                         />
 
                                         <hr />
-                                        <p>
+                                        <p className="bold fw-bold">Opsional</p>
+                                        <p className="text-muted fw-light">
                                             Pilih kategori yang Anda kuasai atau
                                             sukai, dan jika Anda memiliki
                                             sertifikat atau ijasah yang
@@ -102,7 +103,7 @@ export default function SelectCategory() {
                                         />
 
                                         <button
-                                            className="btn btn-success shadow-sm rounded-sm px-4 w-100"
+                                            className="btn btn-style shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
                                             Save
@@ -112,7 +113,7 @@ export default function SelectCategory() {
                             </div>
                             <div className="register text-center mt-3">
                                 Have an account?{" "}
-                                <Link href="/login">Login!</Link>
+                                <Link href="/login">Login</Link>
                             </div>
                         </div>
                     </div>

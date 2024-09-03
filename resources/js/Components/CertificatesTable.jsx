@@ -6,11 +6,11 @@ const TableCertificates = ({ certificates }) => {
     if (!certificates || certificates.length === 0) {
         return <div>Tidak Ada Data Survei</div>;
     }
-console.log(certificates);
+
     return (
         <div className="table-responsive">
             <table className="table table-striped table-bordered">
-                <thead className="thead-dark">
+                <thead className="thead">
                     <tr>
                         <th>No</th>
                         <th>File Name</th>

@@ -6,12 +6,14 @@ const RadioSelect = ({
     options,
     selectedValue,
     onChange,
+    mustFill,
     error,
 }) => {
     return (
         <div className="mb-3">
-            <label className="fw-bold" htmlFor={id}>
+            <label className="form-label fw-bold" htmlFor={id}>
                 {label}
+                {mustFill && <span className="text-danger">*</span>}
             </label>
             <br />
             {options.map((option) => (

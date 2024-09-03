@@ -21,6 +21,7 @@ class FormController extends Controller
 
         $response = SurveyResponses::where('email', $user->email)->where('survey_id', $survey->id)->first();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
+        $surveyMethodIds = $surveyMethods->pluck('method_id')->toArray();
         $surveyQuestions = SurveyQuestions::where('survey_id', $survey->id)->get();
 
         if ($response) {
@@ -31,6 +32,7 @@ class FormController extends Controller
             'surveys' => $survey,
             'auth' => auth()->user(),
             'surveyMethods' => $surveyMethods,
+            'surveyMethodIds' => $surveyMethodIds,
             'surveyQuestions' => $surveyQuestions
         ]);
     }
@@ -39,8 +41,8 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         $validatedData = $request->validate([
+            'user_id'               => 'required',
             'survey_id'             => 'required|exists:surveys,id',
             'first_name'             => 'required',
             'surname'              => 'required',
@@ -51,7 +53,6 @@ class FormController extends Controller
             'educational_background' => 'required',
             'response_data'        => 'required|json',
         ]);
-
         $userId = auth()->user()->id;
 
         $survey = Survey::find($validatedData['survey_id']);

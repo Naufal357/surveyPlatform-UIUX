@@ -7,10 +7,10 @@ export default function InputField({
     onChange,
     placeholder,
     error,
+    mustFill,
     disabled,
 }) {
     const [previewImage, setPreviewImage] = useState(value);
-
     useEffect(() => {
         setPreviewImage(value);
     }, [value]);
@@ -31,7 +31,12 @@ export default function InputField({
 
     return (
         <div className="mb-3">
-            {label && <label className="form-label fw-bold">{label}</label>}{" "}
+            {label && (
+                <label className="form-label fw-bold">
+                    {label}
+                    {mustFill && <span className="text-danger">*</span>}
+                </label>
+            )}{" "}
             {type === "textarea" ? (
                 <textarea
                     className="form-control"

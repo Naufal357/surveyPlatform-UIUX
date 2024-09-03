@@ -5,7 +5,7 @@ import { Inertia } from "@inertiajs/inertia";
 import AuthField from "../../Components/AuthField";
 
 export default function Login() {
-    const { errors} = usePage().props;
+    const { errors } = usePage().props;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,10 +26,10 @@ export default function Login() {
             <Head>
                 <title>Login Account - Survey Platform</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
-                        <div className="col-md-4 mt-80">
+                        <div className="col-md-6 mt-80">
                             <div className="text-center mb-4">
                                 <img
                                     src="/assets/images/logo.png"
@@ -40,7 +40,7 @@ export default function Login() {
                                     <small>Platform</small>
                                 </h4>
                             </div>
-                            <div className="card border-0 rounded-3 shadow-sm border-top-success">
+                            <div className="card border-0 rounded-3 shadow-sm border-top">
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">
@@ -71,28 +71,34 @@ export default function Login() {
                                             placeholder="Password"
                                             error={errors.password}
                                         />
-                                        <div className="form-group form-check mb-3">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                id="rememberMe"
-                                                checked={rememberMe}
-                                                onChange={(e) =>
-                                                    setRememberMe(
-                                                        e.target.checked
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                className="form-check-label"
-                                                htmlFor="rememberMe"
-                                            >
-                                                Remember Me
-                                            </label>
+                                        <div className="row mb-3">
+                                            <div className="col-6 d-flex">
+                                                <div>
+                                                    <input
+                                                        type="checkbox"
+                                                        className="form-check-input"
+                                                        id="rememberMe"
+                                                        checked={rememberMe}
+                                                        onChange={(e) =>
+                                                            setRememberMe(
+                                                                e.target.checked
+                                                            )
+                                                        }
+                                                    />
+                                                    <label className="ms-2">
+                                                        Remember Me
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div className="col-6 d-flex flex-column align-items-end">
+                                                <Link href="/forgot-password">
+                                                    Forgot Password
+                                                </Link>
+                                            </div>
                                         </div>
 
                                         <button
-                                            className="btn btn-success shadow-sm rounded-sm px-4 w-100"
+                                            className="btn btn-style shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
                                             LOGIN
@@ -102,7 +108,7 @@ export default function Login() {
                             </div>
                             <div className="register text-center mt-3">
                                 Need an account?{" "}
-                                <Link href="/register">Register!</Link>
+                                <Link href="/register">Register</Link>
                             </div>
                         </div>
                     </div>

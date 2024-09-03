@@ -9,6 +9,7 @@ import CardContent from "../../Layouts/CardContent";
 import SelectCheckbox from "../../Components/SelectCheckbox";
 import ButtonCRUD from "../../Components/ButtonCRUD";
 import TableCertificates from "../../Components/CertificatesTable";
+import CertificateCard from "../../Components/CertificateCard";
 import Search from "../../Components/Search";
 
 export default function Certificates() {
@@ -107,7 +108,7 @@ export default function Certificates() {
                     setIsSaving(false)
                 );
             }
-            is
+            is;
         }
     };
 
@@ -183,11 +184,11 @@ export default function Certificates() {
                                 ></iframe>
                             ) : (
                                 <div
-                                    className="card text-center bg-black"
+                                    className="card-preview text-center bg-black"
                                     style={{ width: "100%", height: "600px" }}
                                 >
                                     <div className="card-body mt-4">
-                                        <p className="text-white ">
+                                        <p>
                                             Silakan pilih sertifikat pada
                                             navigasi sertifikat.
                                         </p>
@@ -209,64 +210,17 @@ export default function Certificates() {
                                     >
                                         {pendingCertificates.data.map(
                                             (certificate) => (
-                                                <div
+                                                <CertificateCard
                                                     key={certificate.id}
-                                                    className={`mb-3 ${
-                                                        selectedCertificateId ===
-                                                        certificate.id
-                                                            ? "selected"
-                                                            : ""
-                                                    }`}
-                                                    onClick={() =>
-                                                        handleCardClick(
-                                                            certificate.id,
-                                                            certificate.certificate,
-                                                            certificate.original_certificate
-                                                        )
+                                                    background="#EE7E34"
+                                                    certificate={certificate}
+                                                    selectedCertificateId={
+                                                        selectedCertificateId
                                                     }
-                                                >
-                                                    <div
-                                                        className="card p-1"
-                                                        style={{
-                                                            backgroundColor:
-                                                                selectedCertificateId ===
-                                                                certificate.id
-                                                                    ? "#ffcc00"
-                                                                    : "#a2a80f",
-                                                            color: "white",
-                                                        }}
-                                                    >
-                                                        <p className="card-text text-center">
-                                                            <strong>
-                                                                {
-                                                                    certificate.original_certificate
-                                                                }
-                                                            </strong>
-                                                        </p>
-                                                        <p className="card-text">
-                                                            <strong>
-                                                                User:
-                                                            </strong>{" "}
-                                                            {
-                                                                certificate.user
-                                                                    .first_name
-                                                            }{" "}
-                                                            {
-                                                                certificate.user
-                                                                    .surname
-                                                            }
-                                                        </p>
-                                                        <p className="card-text">
-                                                            <strong>
-                                                                Tanggal:
-                                                            </strong>{" "}
-                                                            {
-                                                                certificate.created_at
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                    <hr />
-                                                </div>
+                                                    handleCardClick={
+                                                        handleCardClick
+                                                    }
+                                                />
                                             )
                                         )}
                                     </div>
@@ -279,7 +233,9 @@ export default function Certificates() {
                         </div>
                     </div>
                     {hasAnyPermission([
-                        "certificates.index.full","certificates.approve","certificates.reject"
+                        "certificates.index.full",
+                        "certificates.approve",
+                        "certificates.reject",
                     ]) && (
                         <AccordionLayout
                             title="Kategori Sertifikat"

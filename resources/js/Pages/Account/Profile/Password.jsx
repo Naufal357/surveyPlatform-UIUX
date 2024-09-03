@@ -56,7 +56,6 @@ export default function ProfilePassword() {
                             showConfirmButton: false,
                             timer: 1500,
                         });
-                        setIsSaving(false);
                     },
                     onError: () => {
                         Swal.fire({
@@ -66,6 +65,8 @@ export default function ProfilePassword() {
                             showConfirmButton: false,
                             timer: 1500,
                         });
+                    },
+                    onFinish: () => {
                         setIsSaving(false);
                     },
                 }
@@ -90,6 +91,7 @@ export default function ProfilePassword() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Email Address"
                                 error={errors.email}
+                                disabled
                                 required
                             />
                         </div>

@@ -8,7 +8,6 @@ import AccordionLayout from "../../../Layouts/Accordion";
 import PieChart from "../../../Components/PieChart";
 import InfoCard from "../../../Components/CardInfo";
 import SUSTableResponses from "../../../Components/SUSTableResponses";
-import { LockFill } from "react-bootstrap-icons";
 
 export default function Dashboard() {
     const {
@@ -26,6 +25,8 @@ export default function Dashboard() {
         resumeDescription,
         averageAnswer,
     } = usePage().props;
+
+    const name = `${auth.user.first_name} ${auth.user.surname}`;
 
     const formatAnswers = (averageAnswer) => {
         return averageAnswer.map((answer, index) => {
@@ -107,7 +108,7 @@ export default function Dashboard() {
     const handleExport = () => {
         window.location.href = `/account/responses/sus/${survey.id}/export`;
     };
-
+    
     return (
         <>
             <Head>
@@ -115,10 +116,9 @@ export default function Dashboard() {
             </Head>
             <LayoutAccount>
                 <div className="m-3">
-                    <div className="row alert alert-success border-0 shadow-sm mb-2">
+                    <div className="row card-body border-0 shadow-sm mb-2">
                         <div className="col-md-6">
-                            Selamat Datang, <strong>{auth.user.name}</strong>{" "}
-                            <br />
+                            Selamat Datang, <strong>{name}</strong> <br />
                             {currentSurveyTitle ? (
                                 <span>
                                     Hasil :{" "}
@@ -132,7 +132,7 @@ export default function Dashboard() {
                             <div className="mb-2">
                                 <div className="dropdown">
                                     <button
-                                        className="btn btn-secondary dropdown-toggle"
+                                        className="btn select-btn dropdown-toggle"
                                         type="button"
                                         id="dropdownMenuButton"
                                         data-bs-toggle="dropdown"
@@ -213,35 +213,33 @@ export default function Dashboard() {
                                     </div>
                                     <hr />
                                     <div className="row">
-                                        <div className="col-lg-4 col-md-12 mb-4">
-                                            <div className="text-center">
+                                        <div className="col-lg-3 col-md-12 mb-4">
+                                            <div className="d-flex align-items-center justify-content-center">
                                                 <p>
                                                     Positif jika rata-rata{" "}
-                                                    {">= 3.5"}{" "}
+                                                    {">= 3.5"}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-12 mb-4">
-                                            <div className="text-center">
+                                            <div className="d-flex align-items-center justify-content-center">
                                                 <p>
                                                     Netral jika rata-rata{" "}
-                                                    {"> 2.5 & < 3.5"}{" "}
+                                                    {"> 2.5 & < 3.5"}
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="col-lg-4 col-md-12 mb-4">
-                                            <div className="text-center">
+                                            <div className="d-flex align-items-center justify-content-center">
                                                 <p>
                                                     Negatif jika rata-rata{" "}
-                                                    {"<= 2.5"}{" "}
+                                                    {"<= 2.5"}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </CardContent>
-                            ) : (
-                                ""
-                            )}
+                            ) : null}
                         </>
                     )}
 
@@ -294,7 +292,12 @@ export default function Dashboard() {
                                         >
                                             <div className="card">
                                                 <div className="card-body">
-                                                    <h6 className="card-title">
+                                                    <h6
+                                                        className="card-title"
+                                                        style={{
+                                                            minHeight: "50px",
+                                                        }}
+                                                    >
                                                         {index + 1}.{" "}
                                                         {item.question}
                                                     </h6>
@@ -324,10 +327,10 @@ export default function Dashboard() {
                             {susSurveyResults.length > 0 ? (
                                 <div>
                                     <div className="d-flex justify-content-between align-items-center mb-4">
-                                        <h4>Hasil SUS</h4>
+                                        <h4>Hasil Respon SUS</h4>
                                         {hasAnyPermission(["sus.export"]) && (
                                             <button
-                                                className="btn btn-success"
+                                                className="btn btn-style"
                                                 onClick={handleExport}
                                             >
                                                 Export to Excel

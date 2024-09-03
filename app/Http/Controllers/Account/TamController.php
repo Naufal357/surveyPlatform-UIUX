@@ -10,6 +10,7 @@ use App\Models\Survey;
 use App\Models\SurveyQuestions;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResponsesTAMExport;
+use Illuminate\Support\Facades\Cache;
 
 class TamController extends Controller
 {
@@ -44,10 +45,14 @@ class TamController extends Controller
     {
         $userID = auth()->user()->id;
         $survey = Survey::find($id);
+        $surveyName = $survey->title;
+        $surveyTheme = $survey->theme;
         $responsesFormated = [];
 
+        $cacheExpiredMinutes = 2 * 60;
+
         $survey = Survey::find($id);
-        if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id !== $userID) {
+        if (!auth()->user()->hasPermissionTo('tam.index.full') && $survey->user_id != $userID) {
             return abort(403, 'Unauthorized');
         }
 
@@ -64,9 +69,11 @@ class TamController extends Controller
                 ->get(['surveys.id', 'surveys.title']);
         }
 
-        $responses = SurveyResponses::where('survey_id', $id)
-            ->where('response_data', 'LIKE', '%"tam"%')
-            ->get();
+        $responses = Cache::remember('responses-tam-' . $id, $cacheExpiredMinutes, function () use ($id) {
+            return SurveyResponses::where('survey_id', $id)
+                ->where('response_data', 'LIKE', '%"tam"%')
+                ->get();
+        });
 
         // Mulai - Format data TAM - responsesFormated
         $responsesFormatedJson = [];
@@ -96,9 +103,9 @@ class TamController extends Controller
             $responsesFormatedJson[] = json_encode($responseDataFormated);
         }
 
-        foreach ($responses as $response) {
+        foreach ($responses as $index => $response) {
             $responseCopy = clone $response;
-            $responseCopy->response_data = $responsesFormatedJson[$response->id - 1];
+            $responseCopy->response_data = $responsesFormatedJson[$index];
             $responsesFormated[] = $responseCopy;
         }
         // Akhir - Format data TAM - responsesFormated
@@ -112,7 +119,8 @@ class TamController extends Controller
         $demographicRespondents = $this->demographicRespondents($responses);
         $tamSurveyResults = $this->getTAMResults($responsesFormated);
         $calculateDescriptiveStatistics = $this->getCalculateDescriptiveStatistics($respondents, $responses);
-        // $calculateRegression = $this->getCalculateRegression($respondents, $responses);
+        $calculateRegression = $this->getCalculateRegression($respondents, $responses);
+        $getResumeDescription = $this->getResumeDescription($calculateRegression, $surveyTheme);
 
         return inertia('Account/TAM/Index', [
             'surveyTitles' => $surveyTitles,
@@ -122,54 +130,17 @@ class TamController extends Controller
             'demographicRespondents' => $demographicRespondents,
             'getTAMChartData' => $getTAMChartData,
             'calculateDescriptiveStatistics' => $calculateDescriptiveStatistics,
-            // 'calculateRegression' => $calculateRegression,
+            'calculateRegression' => $calculateRegression,
             'tamSurveyResults' => $tamSurveyResults,
-            'tamQustions' => $tamQustions
+            'tamQustions' => $tamQustions,
+            'resumeDescription' => $getResumeDescription
         ])->with('currentSurveyTitle', $survey->title);
     }
-
-    private $variables = [
-        [
-            'name' => 'Perceived Ease of Use',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 1,
-            'end_question' => 3,
-        ],
-        [
-            'name' => 'Perceived Usefulness',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 4,
-            'end_question' => 6,
-        ],
-        [
-            'name' => 'Attitude Toward Using',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 7,
-            'end_question' => 9,
-        ],
-        [
-            'name' => 'Behavioral intention to use',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 10,
-            'end_question' => 12,
-        ],
-        [
-            'name' => 'Actual System use',
-            'questions' => 3,
-            'max_score' => 5,
-            'start_question' => 13,
-            'end_question' => 15,
-        ],
-    ];
 
     private function countRespondents($surveyId, $responsesFormated)
     {
         $totalResponsesWithTAM = SurveyResponses::where('survey_id', $surveyId)
-            ->where('response_data', 'LIKE', '%"sus"%')
+            ->where('response_data', 'LIKE', '%"tam"%')
             ->count();
 
         return $totalResponsesWithTAM;
@@ -258,11 +229,11 @@ class TamController extends Controller
         }
 
         $descriptiveStatistics = [];
+        $maxValues = [];
+        $sumValues = [];
 
         foreach ($responses as $response) {
             $responseData = json_decode($response->response_data, true);
-            $maxValues = [];
-            $sumValues = [];
             $formattedTamArray = [];
 
             foreach ($responseData['tam'] as $variable) {
@@ -284,24 +255,33 @@ class TamController extends Controller
             foreach ($formattedTamArray as $variable => $responses) {
                 $maxValue = count($responses) * 5;
                 $sumValue = array_sum($responses);
+                if (!isset($maxValues[$variable])) {
+                    $maxValues[$variable] = 0;
+                }
+                if (!isset($sumValues[$variable])) {
+                    $sumValues[$variable] = 0;
+                }
 
-                $maxValues[$variable] = $maxValue;
-                $sumValues[$variable] = $sumValue;
+                $maxValues[$variable] += $maxValue;
+                $sumValues[$variable] += $sumValue;
             }
         }
 
-        $descriptiveStatistics = [];
-        foreach ($maxValues as $variable => $maxValue) {
+        foreach ($maxValues as $variable => $sumMaxValue) {
             $sumValue = $sumValues[$variable];
-            $p = 0;
             if ($sumValue != 0) {
-                $p = ($sumValue / $maxValue) * 100;
+                $p = ($sumValue / $sumMaxValue) * 100;
+
+                $minValue = min($formattedTamArray[$variable]);
+                $maxValue = max($formattedTamArray[$variable]);
             }
 
             $descriptiveStatistics[] = [
                 'variable' => $variable,
                 'nI' => count($formattedTamArray[$variable]),
-                'sum_SK' => $maxValue,
+                'min' => number_format($minValue, 2),
+                'max' => number_format($maxValue, 2),
+                'sum_SK' => $sumMaxValue,
                 'sum_SH' => $sumValue,
                 'P' => number_format($p, 2) . '%',
             ];
@@ -312,9 +292,14 @@ class TamController extends Controller
 
     private function getCalculateRegression($respondents, $responsesFormated)
     {
+        if ($responsesFormated->isEmpty()) {
+            return null;
+        }
         $responseData = json_decode($responsesFormated[0]->response_data, true);
         $variablesAnswerCount = [];
-        $variableValues = [];
+        $respondentsValues = [];
+        $respondentsSum = [];
+        $respondentsAvg = [];
 
         foreach ($responseData['tam'] as $variable) {
             $tamCount = 0;
@@ -329,98 +314,196 @@ class TamController extends Controller
             $variablesAnswerCount[$variable['name']] = $tamCount;
         }
 
-        foreach ($responsesFormated as $response) {
-            $responseData = json_decode($response->response_data, true);
-            $values = $responseData['tam'];
+        // Awal menghitung rata-rata dan jumlah nilai variable setiap responden
+        foreach ($responsesFormated as $responseFormated) {
+            $responseData = json_decode($responseFormated->response_data, true);
+            $response = $responseData['tam'];
 
-            foreach ($values as $value) {
-                $variableName = $value['name'];
-                $responseCount = 0;
+            foreach ($response as $variable) {
+                $variableName = $variable['name'];
+                $varValue = [];
+                $sum = 0;
+                $avg = 0;
 
-                foreach ($value['responses'] as $response) {
-                    foreach ($response['value'] as $value) {
-                        $responseCount += $value[1];
+                foreach ($variable['responses'] as $indicator) {
+                    foreach ($indicator['value'] as $value) {
+                        $varValue[] = $value[1];
+                        $sum += $value[1];
                     }
                 }
+                $avg = $sum / $variablesAnswerCount[$variableName];
 
-                if (!isset($variableValues[$variableName])) {
-                    $variableValues[$variableName] = 0;
+                $variablesValues[$variableName] = $varValue;
+
+                if (!isset($respondentsSum[$variableName])) {
+                    $respondentsSum[$variableName] = [];
                 }
-                $variableValues[$variableName] += $responseCount;
+                if (!isset($respondentsAvg[$variableName])) {
+                    $respondentsAvg[$variableName] = [];
+                }
+                $respondentsSum[$variableName][] = $sum;
+                $respondentsAvg[$variableName][] = $avg;
+            }
+            $respondentsValues[] = $variablesValues;
+        }
+        // Akhir menghitung rata-rata dan jumlah nilai variable setiap responden
+
+        $regressionResults = [];
+        $regressionPathDefault = [
+            ['PEU', 'PU'],
+            ['PEU', 'ATU'],
+            ['PU', 'ATU'],
+            ['PU', 'BI'],
+            ['ATU', 'BI'],
+            ['BI', 'ASU']
+        ];
+        $regressionPath = $regressionPath ?? $regressionPathDefault;
+
+        $filteredRegressionPath = array_filter($regressionPath, function ($path) use ($respondentsAvg) {
+            return isset($respondentsAvg[$path[0]]) && isset($respondentsAvg[$path[1]]);
+        });
+
+        if (empty($filteredRegressionPath)) {
+            return $regressionResults = null;
+        }
+        foreach ($filteredRegressionPath as $path) {
+            $n = count($responsesFormated);
+            $x = $respondentsAvg[$path[0]];
+            $y = $respondentsAvg[$path[1]];
+            $xSquared = [];
+            $xy = [];
+
+            foreach ($x as $value) {
+                $xSquared[] = $value * $value;
+            }
+            foreach ($x as $index => $value) {
+                $xy[] = $value * $y[$index];
             }
 
-        }
+            $x_sum = array_sum($x);
+            $y_sum = array_sum($y);
+            $x_squared_sum = array_sum($xSquared);
+            $xy_sum = array_sum($xy);
+            $x_sum_squared = $x_sum * $x_sum;
 
-        foreach ($variableValues as $key => $value) {
-            $avg[$key]['valueTotal'] = $variableValues[$key];
-            $avg[$key]['count'] = $variablesAnswerCount[$key];
-            $avg[$key]['avg'] = $value / $variablesAnswerCount[$key];
-            $avg[$key]['maxValue'] = $variablesAnswerCount[$key] * 5 * $respondents;
-        }
-        // dd($avg);
-        if ($variableName == 'Perceived Ease of Use') {
-            $PU = $variableValues;
-            $avg_PU = $avg;
-        } elseif ($variableName == 'Perceived Usefulness') {
-            $PEU = $variableValues;
-            $avg_PEU = $avg;
-        } elseif ($variableName == 'Attitude Toward Using') {
-            $ATU = $variableValues;
-            $avg_ATU = $avg;
-        } elseif ($variableName == 'Behavioral intention to use') {
-            $BI = $variableValues;
-            $avg_BI = $avg;
-        } elseif ($variableName == 'Actual System use') {
-            $ASU = $variableValues;
-            $avg_ASU = $avg;
-        }
+            $denominator = ($n * $x_squared_sum) - ($x_sum_squared);
 
-        $PEU_PU = $this->calculateRegressionCoefficient($PEU, $PU, $avg_PEU, $avg_PU);
-        $PEU_ATU = $this->calculateRegressionCoefficient($PEU, $ATU, $avg_PEU, $avg_ATU);
-        $PU_ATU = $this->calculateRegressionCoefficient($PU, $ATU, $avg_PU, $avg_ATU);
-        $PU_BI = $this->calculateRegressionCoefficient($PU, $BI, $avg_PU, $avg_BI);
-        $ATU_BI = $this->calculateRegressionCoefficient($ATU, $BI, $avg_ATU, $avg_BI);
-        $BI_ASU = $this->calculateRegressionCoefficient($BI, $ASU, $avg_BI, $avg_ASU);
+            if ($denominator != 0) {
+                $a = (($y_sum * $x_squared_sum) - ($x_sum * $xy_sum)) / $denominator;
+                $b = (($n * $xy_sum) - ($x_sum * $y_sum)) / $denominator;
+            } else {
+                $a = 0;
+                $b = 0;
+            }
 
-        $regressionResults = [
-            'PEU_PU' => $this->calculateRegressionResult($avg_PEU, $PEU_PU['intercept'], $PEU_PU['slope']),
-            'PEU_ATU' => $this->calculateRegressionResult($avg_PEU, $PEU_ATU['intercept'], $PEU_ATU['slope']),
-            'PU_ATU' => $this->calculateRegressionResult($avg_PU, $PU_ATU['intercept'], $PU_ATU['slope']),
-            'PU_BI' => $this->calculateRegressionResult($avg_PU, $PU_BI['intercept'], $PU_BI['slope']),
-            'ATU_BI' => $this->calculateRegressionResult($avg_ATU, $ATU_BI['intercept'], $ATU_BI['slope']),
-            'BI_ASU' => $this->calculateRegressionResult($avg_BI, $BI_ASU['intercept'], $BI_ASU['slope']),
-        ];
+            $path_formatted = $path[0] . " ➔ " . $path[1];
+
+            $regressionResults[] = [
+                'path' => $path_formatted,
+                'n' => $n,
+                'x_sum' => number_format($x_sum, 2, '.', ''),
+                'y_sum' => number_format($y_sum, 2, '.', ''),
+                'x_squared_sum' => number_format($x_squared_sum, 2, '.', ''),
+                'xy_sum' => number_format($xy_sum, 2, '.', ''),
+                'x_sum_squared' => number_format($x_sum_squared, 2, '.', ''),
+                'a' => number_format($a, 2, '.', ''),
+                'b' => number_format($b, 2, '.', ''),
+            ];
+        }
 
         return $regressionResults;
     }
 
-    private function calculateRegressionCoefficient($valueX, $valueY, $avgX, $avgY)
+    private function getResumeDescription($regressionResults, $surveyTheme)
     {
-        $numerator = 0;
-        $denominator = 0;
-
-        foreach ($valueX as $key => $x) {
-            $numerator += ($x - $avgX) * ($valueY[$key] - $avgY);
-            $denominator += pow($x - $avgX, 2);
+        if ($regressionResults == null) {
+            return null;
         }
 
-        $slope = ($denominator != 0) ? $numerator / $denominator : 0;
+        $getResumeDescription = [];
 
-        $intercept = $avgY - $slope * $avgX;
-        return [
-            'slope' => $slope,
-            'intercept' => $intercept,
+        $translatedVariables = [
+            "Perceived Ease of Use (PEU)" => "mudah",
+            "Perceived Usefulness (PU)" => "manfaat",
+            "Attitude Toward Use (ATU)" => "sikap",
+            "Behavioral Intention (BI)" => "niat",
+            "Actual System Use (ASU)" => "aktual",
         ];
+
+        foreach ($regressionResults as $index => $regressionResult) {
+            $path = $regressionResult['path'];
+            $variables = explode(' ➔ ', $path);
+
+            foreach ($variables as $key => $value) {
+                $descriptionVariables = [
+                    "PEU" => "Perceived Ease of Use (PEU)",
+                    "PU" => "Perceived Usefulness (PU)",
+                    "ATU" => "Attitude Toward Use (ATU)",
+                    "BI" => "Behavioral Intention (BI)",
+                    "ASU" => "Actual System Use (ASU)"
+                ];
+
+                if (array_key_exists($value, $descriptionVariables)) {
+                    $variables[$key] = $descriptionVariables[$value];
+                }
+            }
+
+            $variableIndependent = $variables[0];
+            $variableDependent = $variables[1];
+
+            $kalimatPositif = [
+                "Terdapat hubungan positif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin besar $translatedVariables[$variableDependent] yang dirasakan pengguna(1).",
+                "$variableIndependent memberikan kontribusi positif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin positif $translatedVariables[$variableDependent] mereka terhadap sistem(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat positif. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin positif $translatedVariables[$variableDependent] mereka terhadap sistem(3).",
+                "$variableIndependent berdampak positif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin besar $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(4).",
+                "Terdapat hubungan positif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin positif $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin besar $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(5).",
+                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, semakin tinggi pula $variableDependent. Setiap peningkatan satu poin $variableIndependent akan meningkatkan poin $variableDependent sebesar $regressionResult[b] poin. Dengan demikian menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] pengguna untuk menggunkan sistem, maka semakin besar pula penggunaan $translatedVariables[$variableDependent] mereka terhadap sistem (6)."
+            ];
+
+            $kalimatNetral = [
+                "Dari hasil regresi TAM, tidak ada hubungan yang signifikan antara $variableIndependent dan $variableDependent(1).",
+                "$variableIndependent tidak menunjukkan pengaruh terhadap $variableDependent(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent tidak begitu terlihat(3).",
+                "$variableIndependent tidak berdampak terhadap $variableDependent(4).",
+                "Tidak terdapat hubungan antara $variableIndependent dan $variableDependent(5).",
+                "Hasil regresi menunjukkan bahwa tidak ada hubungan antara $variableIndependent dan $variableDependent(6)."
+            ];
+
+            $kalimatNegatif = [
+                "Terdapat hubungan negatif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin kecil kemungkinan $translatedVariables[$variableDependent] yang dirasakan pengguna(1).",
+                "$variableIndependent memberikan kontribusi negatif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin negatif $translatedVariables[$variableDependent] mereka terhadap sistem(2).",
+                "Pengaruh $variableIndependent terhadap $variableDependent terlihat negatif. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin negatif $translatedVariables[$variableDependent] mereka terhadap sistem(3).",
+                "$variableIndependent berdampak negatif terhadap $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] yang dirasakan pengguna dari sistem, maka semakin kecil $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(4).",
+                "Terdapat hubungan negatif antara $variableIndependent dan $variableDependent. Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Ini menunjukkan bahwa semakin positif $translatedVariables[$variableIndependent] pengguna dalam menggunakan sistem, maka semakin kecil $translatedVariables[$variableDependent] mereka untuk menggunakan sistem(5).",
+                "Hasil regresi menunjukkan bahwa semakin tinggi $variableIndependent, maka $variableDependent akan semakin rendah . Setiap peningkatan satu poin $variableIndependent akan mengurangi poin $variableDependent sebesar $regressionResult[b] poin. Dengan demikian menunjukkan bahwa semakin besar $translatedVariables[$variableIndependent] pengguna untuk menggunkan sistem, maka semakin kecil penggunaan $translatedVariables[$variableDependent] mereka terhadap sistem (6)."
+            ];
+
+
+
+
+            // if ($regressionResult['a'] > 0) {
+            //     $getResumeDescription[] = $kalimatPositif[$index];
+            // } else if ($regressionResult['a'] == 0) {
+            //     $getResumeDescription[] = $kalimatNetral[$index];
+            // } else if ($regressionResult['a'] < 0) {
+            //     $getResumeDescription[] = $kalimatNegatif[$index];
+            // } else {
+            //     $getResumeDescription[] = "Nilai tidak valid";
+            // }
+
+            if ($regressionResult['b'] > 0) {
+                $getResumeDescription['Positif'][] = $kalimatPositif[$index];
+            } else if ($regressionResult['b'] == 0) {
+                $getResumeDescription['Netral'][] = $kalimatNetral[$index];
+            } else if ($regressionResult['b'] < 0) {
+                $getResumeDescription['Negatif'][] = $kalimatNegatif[$index];
+            } else {
+                $getResumeDescription[] = "Nilai tidak valid";
+            }
+        }
+
+        return $getResumeDescription;
     }
-
-    private function calculateRegressionResult($x, $intercept, $slope)
-    {
-        $predictedValues = $intercept + $slope * $x;
-
-        return $predictedValues;
-    }
-
-
 
     private function getTamResults($responsesFormated)
     {

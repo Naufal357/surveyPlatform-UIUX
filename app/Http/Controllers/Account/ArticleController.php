@@ -25,7 +25,7 @@ class ArticleController extends Controller
             })
                 ->where('user_id', auth()->user()->id)
                 ->latest()
-                ->paginate(8);
+                ->paginate(10);
         }
 
         $articles->appends(['q' => request()->q]);
@@ -115,7 +115,9 @@ class ArticleController extends Controller
 
         if ($request->file('image')) {
 
-            Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
+            if (!Str::contains($article->image, 'articleFactory.png')) {
+                Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
+            }
 
             $image = $request->file('image');
             $image->storeAs('public/image/articles/', $image->hashName());
@@ -144,10 +146,10 @@ class ArticleController extends Controller
     {
         $article = Articles::find($id);
 
-        if ($article->image != 'articleFactory.png') {
+        if (!Str::contains($article->image, 'articleFactory.png')) {
             Storage::disk('local')->delete('public/image/articles/' . basename($article->image));
         }
-        
+
         $article->delete();
         return redirect()->route('account.articles.index');
     }

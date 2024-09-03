@@ -21,7 +21,7 @@ export default function RoleIndex() {
                                 <div className="col-md-3 col-12 mb-2">
                                     <Link
                                         href="/account/roles/create"
-                                        className="btn btn-md btn-success border-0 shadow w-100"
+                                        className="btn btn-md btn-style border-0 shadow w-100"
                                         type="button"
                                     >
                                         <i className="fa fa-plus-circle me-2"></i>
@@ -35,7 +35,7 @@ export default function RoleIndex() {
                 <CardContent title="Roles" icon="fa fa-shield-alt">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped table-hovered">
-                            <thead>
+                            <thead className="thead">
                                 <tr>
                                     <th scope="col" style={{ width: "5%" }}>
                                         No.
@@ -59,18 +59,21 @@ export default function RoleIndex() {
                                                 (roles.current_page - 1) *
                                                     roles.per_page}
                                         </td>
-                                        <td>{role.name}</td>
+                                        <td>{role.name || "-"}</td>
                                         <td>
-                                            {role.permissions.map(
-                                                (permission, index) => (
-                                                    <span
-                                                        className="btn btn-success btn-sm shadow-sm border-0 ms-2 mb-2"
-                                                        key={index}
-                                                    >
-                                                        {permission.name}
-                                                    </span>
-                                                )
-                                            )}
+                                            {role.permissions &&
+                                            role.permissions.length > 0
+                                                ? role.permissions.map(
+                                                      (permission, index) => (
+                                                          <span
+                                                              className="btn btn-style btn-sm shadow-sm border-0 ms-2 mb-2"
+                                                              key={index}
+                                                          >
+                                                              {permission.name}
+                                                          </span>
+                                                      )
+                                                  )
+                                                : "-"}
                                         </td>
                                         <td className="text-center">
                                             {hasAnyPermission([

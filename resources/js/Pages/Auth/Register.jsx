@@ -38,7 +38,7 @@ export default function Register() {
             <Head>
                 <title>Register Account - Survey Platform</title>
             </Head>
-            <Layout>
+            <Layout footerVisible={false}>
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-md-6 mt-80">
@@ -48,10 +48,13 @@ export default function Register() {
                                     width={"60"}
                                 />
                                 <h4>
-                                    <strong>Survey</strong> Platform
+                                    <h4>
+                                        <strong>Survey</strong>{" "}
+                                        <small>Platform</small>
+                                    </h4>
                                 </h4>
                             </div>
-                            <div className="card border-0 rounded-3 shadow-sm border-top-success">
+                            <div className="card border-0 rounded-3 shadow-sm border-top">
                                 <div className="card-body">
                                     <div className="text-center">
                                         <h6 className="fw-bold">
@@ -214,7 +217,7 @@ export default function Register() {
                                             </div>
                                         </div>
                                         <button
-                                            className="btn btn-success shadow-sm rounded-sm px-4 w-100"
+                                            className="btn btn-style shadow-sm rounded-sm px-4 w-100"
                                             type="submit"
                                         >
                                             Next
@@ -224,7 +227,7 @@ export default function Register() {
                             </div>
                             <div className="register text-center mt-3">
                                 Have an account?{" "}
-                                <Link href="/login">Login!</Link>
+                                <Link href="/login">Login</Link>
                             </div>
                         </div>
                     </div>

@@ -25,6 +25,8 @@ export default function RoleEdit() {
     const [permissionsData, setPermissionsData] = useState(
         role.permissions.map((obj) => obj.name)
     );
+        const [isSaving, setIsSaving] = useState(false);
+
 
     const handleCheckboxChange = (e) => {
         const permissionName = e.target.value;
@@ -47,6 +49,7 @@ export default function RoleEdit() {
     };
 
     const updateRole = async (e) => {
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
@@ -69,6 +72,18 @@ export default function RoleEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Something went wrong!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                },
+                onFinish: () => {
+                    setIsSaving(false);
                 },
             }
         );
@@ -109,6 +124,7 @@ export default function RoleEdit() {
                                 labelKey="name"
                                 selectedValues={permissionsData}
                                 onChange={handleCheckboxChange}
+                                error={errors.permissions}
                             />
                         </div>
                         <div>
@@ -117,6 +133,7 @@ export default function RoleEdit() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                isSaving={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

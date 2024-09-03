@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 
 export default function UserEdit() {
     const { errors, roles, user, categories, userPrefs } = usePage().props;
-
     let filteredRoles = roles;
 
     if (!hasAnyPermission(["users.index.full"])) {
@@ -32,6 +31,8 @@ export default function UserEdit() {
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [rolesData, setRolesData] = useState([]);
     const [userPrefsData, setUserPrefsData] = useState([]);
+
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         setFirstName(user.first_name);
@@ -67,6 +68,7 @@ export default function UserEdit() {
     };
 
     const updateUser = async (e) => {
+        setIsSaving(true);
         e.preventDefault();
 
         if (e.nativeEvent.submitter.getAttribute("type") === "Cancel") {
@@ -98,6 +100,18 @@ export default function UserEdit() {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                },
+                onError: () => {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Something went wrong!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                },
+                onFinish: () => {
+                    setIsSaving(false);
                 },
             }
         );
@@ -273,6 +287,7 @@ export default function UserEdit() {
                                                 e.target.value
                                             )
                                         }
+                                        error={errors.password}
                                         placeholder="Password Confirmation"
                                     />
                                 </div>
@@ -287,6 +302,7 @@ export default function UserEdit() {
                                 valueKey="name"
                                 labelKey="name"
                                 selectedValues={rolesData}
+                                error={errors.roles}
                                 onChange={handleCheckboxRolesChange}
                             />
                         </div>
@@ -299,6 +315,7 @@ export default function UserEdit() {
                                 valueKey="id"
                                 labelKey="name"
                                 selectedValues={userPrefsData}
+                                error={errors.user_prefs}
                                 onChange={handleCheckboxUserPrefsChange}
                             />
                         </div>
@@ -309,6 +326,7 @@ export default function UserEdit() {
                                 label="Save"
                                 color="btn-success"
                                 iconClass="fa fa-save"
+                                disabled={isSaving}
                             />
                             <ButtonCRUD
                                 type="Cancel"

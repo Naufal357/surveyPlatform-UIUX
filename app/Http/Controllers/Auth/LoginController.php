@@ -24,7 +24,8 @@ class LoginController extends Controller
             'Auth/Login',
             [
                 'auth' => auth()->user(),
-            ]);
+            ]
+        );
     }
 
     public function store(Request $request)

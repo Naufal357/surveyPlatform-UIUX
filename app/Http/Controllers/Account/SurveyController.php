@@ -11,6 +11,7 @@ use App\Models\SurveyQuestions;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class SurveyController extends Controller
@@ -20,7 +21,7 @@ class SurveyController extends Controller
         if (auth()->user()->hasPermissionTo('surveys.index.full')) {
             $surveys = Survey::when(request()->q, function ($surveys) {
                 $surveys = $surveys->where('title', 'like', '%' . request()->q . '%');
-            })->orderBy('id')->paginate(8);
+            })->latest()->paginate(10);
 
             $surveys->load('user');
         } else {
@@ -29,8 +30,16 @@ class SurveyController extends Controller
             })
                 ->where('user_id', auth()->user()->id)
                 ->latest()
-                ->paginate(8);
+                ->paginate(10);
         }
+
+        if ($surveys->count() == 0) {
+            if (request()->q) {
+                $message = 'No surveys found for your search query.';
+            } else {
+                return redirect()->route('account.surveys.create');
+            }
+        } 
 
         $surveys->appends(['q' => request()->q]);
 
@@ -42,7 +51,11 @@ class SurveyController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        if (auth()->user()->hasPermissionTo('surveys.index.full')) {
+            $categories = Category::all();
+        } else {
+            $categories = Category::whereNotIn('status', ['Private'])->get();
+        }
         $methods = Method::all();
         $surveyQuestionsExample = SurveyQuestions::where('survey_id', 1)->get();
 
@@ -93,7 +106,6 @@ class SurveyController extends Controller
                 'embed_prototype.required_without_all' => 'At least one of URL Website, Embed Design, or Embed Prototype is required.',
             ]);
         }
-
 
         if ($request->file('image')) {
             $image = $request->file('image');
@@ -159,7 +171,11 @@ class SurveyController extends Controller
 
     public function edit(Survey $survey)
     {
-        $categories = Category::all();
+        if (auth()->user()->hasPermissionTo('surveys.index.full')) {
+            $categories = Category::all();
+        } else {
+            $categories = Category::whereNotIn('status', ['Private'])->get();
+        }        
         $methods = Method::all();
         $surveyCategories = SurveyHasCategories::where('survey_id', $survey->id)->get();
         $surveyMethods = SurveyHasMethods::where('survey_id', $survey->id)->get();
@@ -188,6 +204,7 @@ class SurveyController extends Controller
                 'image'         => 'image|mimes:jpeg,jpg,png,svg|max:2048',
                 'theme'          => 'required',
                 'description'    => 'required',
+                'survey_categories' => 'required',
                 'survey_questions' => 'required',
                 'survey_visible' => 'required',
                 'url_website'    => 'required_without_all:embed_design,embed_prototype',
@@ -207,6 +224,7 @@ class SurveyController extends Controller
                     'title'          => 'required',
                     'theme'          => 'required',
                     'description'    => 'required',
+                    'survey_categories' => 'required',
                     'survey_questions' => 'required',
                     'survey_visible' => 'required',
                     'url_website'    => 'required_without_all:embed_design,embed_prototype',
@@ -222,7 +240,9 @@ class SurveyController extends Controller
         }
 
         if ($request->file('image')) {
-            Storage::disk('local')->delete('public/image/surveys/' . basename($survey->image));
+            if (!Str::contains($survey->image, 'surveyFactory.jpg')) {
+                Storage::disk('local')->delete('storage/image/surveys/' . basename($survey->image));
+            }
 
             $image = $request->file('image');
             $image->storeAs('public/image/surveys/', $image->hashName());
@@ -265,7 +285,6 @@ class SurveyController extends Controller
 
         if ($request->has('survey_questions')) {
             $surveyQuestion->where('survey_id', $survey->id)->delete();
-            $surveyQuestionsData = $request->survey_questions;
             $surveyQuestion->create([
                 'survey_id' => $survey->id,
                 'questions_data' => $request->survey_questions
@@ -284,9 +303,13 @@ class SurveyController extends Controller
             return abort(403, 'You do not have permission to delete this survey.');
         }
 
-        if ($Survey->image != 'surveyFactory.png') {
+        if (!Str::contains($Survey->image, 'surveyFactory.jpg')) {
             Storage::disk('local')->delete('public/image/surveys/' . basename($Survey->image));
         }
+
+        Cache::forget('responses-tam-' . $id);
+        Cache::forget('responses-sus-' . $id);
+
         $Survey->delete();
 
         return redirect()->route('account.surveys.index');

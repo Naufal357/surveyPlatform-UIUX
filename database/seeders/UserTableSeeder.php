@@ -40,7 +40,7 @@ class UserTableSeeder extends Seeder
             'email' => 'rozan@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
-            'profession' => 'Student',
+            'profession' => 'Professor',
             'educational_background' => "Bachelor's Degree",
             'password' => bcrypt('123'),
         ]);
@@ -51,8 +51,8 @@ class UserTableSeeder extends Seeder
             'email' => 'basic@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
-            'profession' => 'Student',
-            'educational_background' => "Bachelor's Degree",
+            'profession' => 'Other',
+            'educational_background' => "High School",
             'password' => bcrypt('123'),
         ]);
 
@@ -62,7 +62,7 @@ class UserTableSeeder extends Seeder
             'email' => 'joe@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
-            'profession' => 'Student',
+            'profession' => 'Private Workers',
             'educational_background' => "Bachelor's Degree",
             'password' => bcrypt('123'),
         ]);
@@ -73,8 +73,8 @@ class UserTableSeeder extends Seeder
             'email' => 'jane@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
-            'profession' => 'Student',
-            'educational_background' => "Bachelor's Degree",
+            'profession' => 'Government Employee',
+            'educational_background' => "Master's Degree",
             'password' => bcrypt('123'),
         ]);
 
@@ -84,8 +84,8 @@ class UserTableSeeder extends Seeder
             'email' => 'john@123',
             'birth_date' => '2002-05-17',
             'gender' => 'Male',
-            'profession' => 'Student',
-            'educational_background' => "Bachelor's Degree",
+            'profession' => 'Armed Forces',
+            'educational_background' => "High School",
             'password' => bcrypt('123'),
         ]);
 

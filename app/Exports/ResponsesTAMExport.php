@@ -34,7 +34,7 @@ class ResponsesTAMExport implements FromCollection, ShouldAutoSize, WithHeadings
             // Menguraikan response_data dari format JSON
             $responseData = json_decode($response['response_data']);
 
-            // Mengambil hanya data "sus" jika tersedia
+            // Mengambil hanya data "tam" jika tersedia
             return isset($responseData->tam);
         })->map(function ($response) {
             // Menggabungkan first_name dan surname
@@ -98,12 +98,12 @@ class ResponsesTAMExport implements FromCollection, ShouldAutoSize, WithHeadings
         $exampleResponse = SurveyResponses::select('response_data')->where('survey_id', $this->survey_id)->first();
         if ($exampleResponse) {
             $responseData = json_decode($exampleResponse->response_data);
-
+            $index = 1;
             if (isset($responseData->tam)) {
                 foreach ($responseData->tam as $tam) {
                     foreach ($tam->responses as $variable) {
                         foreach ($variable->value as $value) {
-                            $headings[] = $value[0];
+                            $headings[] = "Question " . $index++;
                         }
                     }
                 }
