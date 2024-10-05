@@ -307,8 +307,10 @@ body {
 }
 
 #sidebar-wrapper .list-group {
+    max-height: 84vh;
+    height: 94vh; 
+    min-width: 15rem;
     width: 15rem;
-    max-height: 100vh;
     overflow-y: auto;
 }
 
